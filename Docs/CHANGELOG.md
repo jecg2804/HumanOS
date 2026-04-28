@@ -24,3 +24,19 @@ Formato: cada sesión agrega una entrada con fecha. Para cambios de BD usar `[bd
 - `CLAUDE.md`, `humanos-mvp-spec.md`, `.claude/rules/supabase-branch.md`, `Docs/CHANGELOG.md` actualizados para reflejar arquitectura branch + DDL/DML libre en `humanos.*`.
 - `.claude/rules/supabase-readonly.md` REMOVIDO (reemplazado por `supabase-branch.md`).
 - `Docs/feature-specs/MODULE-1-SOLICITUDES.md` creado — guía priorizada de los 5 forms P1.
+
+---
+
+## 2026-04-28 — Module 1 implementación (Fase 0)
+
+### Repo
+- Scaffold Next.js 16 + TypeScript strict + Tailwind 4 + ESLint flat config (commit `eef1be9`). Notas: `next lint` removido en Next 16 (ahora `eslint .`); `eslint-config-next` v16 exporta flat config nativo (no `FlatCompat`); `typedRoutes` desactivado para MVP (bloquea redirects dinámicos).
+- Supabase clients (`server`, `browser`, `admin`) en `src/lib/supabase/` + tipos compartidos en `src/types/database.ts` (`ab6b94d`).
+- Auth flow: `middleware.ts`, `/login` page + actions, `getMe()` con cache + role determination (`c139aed`).
+- shadcn/ui base instalado (`94fcb6c`): button, input, label, select, textarea, card, dialog, badge, sonner. Tokens ICONSA (navy/gold/etc) preservados en `globals.css` junto a tokens de shadcn.
+- AppShell con sidebar desktop + bottom-tabs mobile + UserMenu con logout (`29fa107`). Item "Admin" visible solo si `me.role === 'hr_admin'`.
+- Resend client + 3 templates HTML (solicitud-enviada, solicitud-decidida, decision-final) con header navy/gold + footer estándar + test-mode redirect via `NOTIFICATION_TEST_EMAIL` (`32f749d`).
+
+### [bd] Storage bucket para adjuntos
+- Bucket `humanos-attachments` creado: privado, 10MB max, MIME jpeg/png/webp/pdf.
+- Policies sobre `storage.objects`: authenticated INSERT y SELECT scopeadas al bucket. (Migration: `supabase/migrations/20260428_007_create_storage_bucket.sql`).
