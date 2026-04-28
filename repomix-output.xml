@@ -1,0 +1,753 @@
+This file is a merged representation of a subset of the codebase, containing specifically included files and files not matching ignore patterns, combined into a single document by Repomix.
+The content has been processed where line numbers have been added.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of a subset of the repository's contents that is considered the most important context.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Only files matching these patterns are included: src/**, Docs/**, .claude/**, CLAUDE.md, humanos-mvp-spec.md, package.json, tsconfig.json, next.config.*, tailwind.config.*, middleware.ts
+- Files matching these patterns are excluded: node_modules/**, .next/**, dist/**, build/**, *.log, .env*, package-lock.json, yarn.lock, pnpm-lock.yaml, *.test.*.snap, playwright-report/**, test-results/**, public/**, *.ico, *.png, *.jpg, *.jpeg, *.svg, *.woff*, repomix-output.xml
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Line numbers have been added to the beginning of each line
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+.claude/commands/deploy-check.md
+.claude/commands/fix-bug.md
+.claude/rules/commit-after-step.md
+.claude/rules/git-workflow.md
+.claude/rules/plan-lifecycle.md
+.claude/rules/spec-lifecycle.md
+.claude/rules/supabase-readonly.md
+.claude/rules/tool-usage.md
+.claude/skills/.gitkeep
+CLAUDE.md
+Docs/BACKLOG.md
+Docs/CHANGELOG.md
+Docs/feature-specs/.gitkeep
+Docs/SOPs, Formularios y Documentos/Descripicion de labores, Suntracs-Santraico 2010.pdf
+Docs/SOPs, Formularios y Documentos/IC-RH-D-01 Inducción para Personal de Campo.pdf
+Docs/SOPs, Formularios y Documentos/IC-RH-D-02 Condiciones especiales para la solicitud de prestamo de empleado.pdf
+Docs/SOPs, Formularios y Documentos/IC-RH-D-04 Folleto Informativo sobre Calculo de Impuesto Sobre la Renta.pdf
+Docs/SOPs, Formularios y Documentos/IC-RH-D-05 Glosario y aplicación de prestaciones segun Contratos de Trabajo.pdf
+Docs/SOPs, Formularios y Documentos/IC-RH-D-06 Normas de convivencia dentro del comedor.pdf
+Docs/SOPs, Formularios y Documentos/IC-RH-D-07  Política contra el trabajo infantil y trata de personas..pdf
+Docs/SOPs, Formularios y Documentos/IC-RH-F-00-01 Registro de Pruebas de Alcoholimetro y Alcoholemia.doc
+Docs/SOPs, Formularios y Documentos/IC-RH-F-00-04 Entrega de Combustible.pdf
+Docs/SOPs, Formularios y Documentos/IC-RH-F-00-05 Entrevista Salida.pdf
+Docs/SOPs, Formularios y Documentos/IC-RH-F-00-06 Solicitud de Referencias Laborales.pdf
+Docs/SOPs, Formularios y Documentos/IC-RH-F-00-07 Actualización de Datos.pdf
+Docs/SOPs, Formularios y Documentos/IC-RH-F-00-08 Solicitud de Permiso (HORAS).doc
+Docs/SOPs, Formularios y Documentos/IC-RH-F-01-08 Formato de Solicitud de Empleo vv2.pdf
+Docs/SOPs, Formularios y Documentos/IC-RH-F-01-09  Hoja de Entrada de Personal vv2.pdf
+Docs/SOPs, Formularios y Documentos/IC-RH-F-02-04 Lista de Asistencia a Capacitacion.pdf
+Docs/SOPs, Formularios y Documentos/IC-RH-F-02-05 Evaluacion post entrenamiento.pdf
+Docs/SOPs, Formularios y Documentos/IC-RH-F-02-07 Firma de Recibida Inducción de Personal de Campo.pdf
+Docs/SOPs, Formularios y Documentos/IC-RH-F-02-09 Solicitud y Evaluación de Entrenamiento por Supervisores.pdf
+Docs/SOPs, Formularios y Documentos/IC-RH-F-03-03 Evaluacion de desempeño corta semestral.pdf
+Docs/SOPs, Formularios y Documentos/IC-RH-F-03-04 Evaluacion de empleado de campo.pdf
+Docs/SOPs, Formularios y Documentos/IC-RH-F-04-01 informacion de emergencia del empleado.pdf
+Docs/SOPs, Formularios y Documentos/IC-RH-F-05-01 Acciones de personal.pdf
+Docs/SOPs, Formularios y Documentos/IC-RH-F-05-02 Prestamo a Empleados.pdf
+Docs/SOPs, Formularios y Documentos/IC-RH-F-05-03 Solicitud de Vacaciones.pdf
+Docs/SOPs, Formularios y Documentos/IC-RH-F-05-04 Memo de Constancia de Amonestacion.pdf
+Docs/SOPs, Formularios y Documentos/IC-RH-F-05-05 Reclamo sobre pago.pdf
+Docs/SOPs, Formularios y Documentos/IC-RH-M-01 Manual de Ética y Conducta VV01.pdf
+Docs/SOPs, Formularios y Documentos/IC-RH-PO-01 Selección y Contratación del Personal.pdf
+Docs/SOPs, Formularios y Documentos/IC-RH-PO-05 Acciones de Personal.pdf
+Docs/SOPs, Formularios y Documentos/IC-RH-PO-06 Administración de Planilla.pdf
+Docs/SOPs, Formularios y Documentos/Solicitud de día libre a la empresa.doc
+Docs/superpowers/plans/.gitkeep
+Docs/superpowers/specs/.gitkeep
+Docs/TRAIL.md
+humanos-mvp-spec.md
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path=".claude/commands/deploy-check.md">
+ 1: ## Checks
+ 2: 1. `npm run build` — debe pasar sin errores
+ 3: 2. `npx tsc --noEmit` — TypeScript sin errores
+ 4: 3. Buscar console.log: `grep -rn "console.log" src/ --include="*.ts" --include="*.tsx" -l`
+ 5: 4. Buscar secrets: `grep -rn "sbp_\|sk-\|password.*=.*['\"]" src/ --include="*.ts" --include="*.tsx"`
+ 6: 5. `git status` — reportar archivos sin commit
+ 7: 6. Verificar branch actual
+ 8: 
+ 9: ## Output
+10: Reportar: **READY** o **BLOCKED** con razones específicas para cada check que falle.
+</file>
+
+<file path=".claude/commands/fix-bug.md">
+ 1: Corregir: $ARGUMENTS
+ 2: 
+ 3: ## Workflow
+ 4: 1. Entender el bug — reproducirlo mentalmente o con Playwright
+ 5: 2. Encontrar el código relevante (grep, read files)
+ 6: 3. Si toca BD: verificar schema via Supabase MCP
+ 7: 4. Implementar el fix (mínimo cambio necesario)
+ 8: 5. Verificar que el fix funciona
+ 9: 6. Commit: `fix: descripción del bug corregido`
+10: 7. Documentar en `Docs/CHANGELOG.md`
+</file>
+
+<file path=".claude/rules/commit-after-step.md">
+ 1: # Rule: Commit After Step
+ 2: 
+ 3: Después de completar cada step de un plan o cada fix verificado, hacer commit inmediatamente.
+ 4: 
+ 5: ## Formato de commit
+ 6: 
+ 7: ```
+ 8: feat: descripción corta en inglés
+ 9: fix: descripción corta en inglés
+10: docs: descripción corta en inglés
+11: chore: descripción corta en inglés
+12: refactor: descripción corta en inglés
+13: ```
+14: 
+15: ## Reglas
+16: 
+17: - Un commit por step completado. No acumular cambios.
+18: - Mensaje en inglés, lowercase, sin punto final.
+19: - Si el step toca BD: NO commitear el SQL — documentarlo en CHANGELOG como `[bd-pending]`.
+20: - Branch de desarrollo: `main` (hasta que se establezca un branch de dev).
+21: - Verificar que `npm run build` pase antes de commitear features nuevos.
+</file>
+
+<file path=".claude/rules/git-workflow.md">
+ 1: # Rule: Git Workflow
+ 2: 
+ 3: ## Branches
+ 4: 
+ 5: - `main` — producción (deploy automático a Vercel)
+ 6: - Feature branches según necesidad: `feat/nombre-del-feature`
+ 7: 
+ 8: ## Convenciones
+ 9: 
+10: - Commits pequeños y frecuentes (1 step = 1 commit)
+11: - No force push a main
+12: - No commitear .env, .env.local, ni secrets
+13: - No commitear node_modules, .next, dist
+14: 
+15: ## Pre-commit
+16: 
+17: Antes de cada commit verificar:
+18: 1. `npm run build` — sin errores
+19: 2. No console.log sueltos en código de producción
+20: 3. No secrets hardcodeados
+</file>
+
+<file path=".claude/rules/plan-lifecycle.md">
+ 1: # Ciclo de vida de plan files
+ 2: 
+ 3: Path canónico: `Docs/superpowers/plans/<slug>.md`
+ 4: 
+ 5: ## Cuándo crear
+ 6: - Tras brainstorming acordado, invocar writing-plans para tareas ~3+ commits.
+ 7: - Un file por tarea.
+ 8: 
+ 9: ## Qué contiene (y qué NO)
+10: **Sí:** contexto, bloques/fases con pasos, archivos tocados, fuera de scope.
+11: **No:** historia de commits (→ CHANGELOG), features diferidos (→ BACKLOG), aprendizajes (→ skills).
+12: 
+13: ## Cuándo limpiar
+14: - Tras cada bloque commiteado: marcar ✅ o eliminar del plan.
+15: - Si supera 300 líneas: PARAR y limpiar.
+16: - Al cerrar tarea completa: borrar el plan file.
+17: 
+18: ## Integración
+19: - Al inicio de sesión: leer TRAIL.md para ubicación.
+20: - Al cerrar task: actualizar TRAIL.md.
+21: - Al commitear bloque: eliminar ese bloque del plan.
+</file>
+
+<file path=".claude/rules/spec-lifecycle.md">
+ 1: # Ciclo de vida de spec files
+ 2: 
+ 3: Specs viven en `Docs/superpowers/specs/` y `Docs/feature-specs/`.
+ 4: 
+ 5: ## Specs de brainstorming (superpowers/specs/)
+ 6: - Generados por brainstorming sessions
+ 7: - Capturan decisiones arquitectónicas
+ 8: - Se archivan cuando se implementan (no borrar — son registro de decisiones)
+ 9: 
+10: ## Feature specs (feature-specs/)
+11: - Escritos por Claude Chat, 200-400 líneas por módulo
+12: - Son la referencia para implementación
+13: - Actualizar DESPUÉS de implementar + commitear spec y código juntos
+14: - Incluir Decision Log al final para prevenir drift
+</file>
+
+<file path=".claude/rules/supabase-readonly.md">
+ 1: # Rule: Supabase — Read-Only
+ 2: 
+ 3: Claude Code NUNCA escribe a la base de datos directamente. Supabase MCP está configurado en modo read-only.
+ 4: 
+ 5: ## Cambios de BD
+ 6: 
+ 7: Los cambios de BD los ejecuta Claude Chat (web) con aprobación explícita de James. El patrón es:
+ 8: 
+ 9: 1. Code identifica que necesita un cambio de BD
+10: 2. Code documenta el SQL necesario en `Docs/CHANGELOG.md` como `[bd-pending]`
+11: 3. James lleva el SQL a Claude Chat → Chat ejecuta con aprobación
+12: 4. Entrada se actualiza a `[bd]` en CHANGELOG
+13: 
+14: ## Queries
+15: 
+16: - Verificar schema via Supabase MCP antes de tocar código que interactúa con BD
+17: - Para schema `humanos`: usar `.schema('humanos').from('table')`
+18: - Para schema `public`: usar `.from('table')` normal
+19: - NUNCA asumir estructura de tablas — siempre verificar con MCP
+</file>
+
+<file path=".claude/rules/tool-usage.md">
+ 1: # Rule: Uso de Herramientas
+ 2: 
+ 3: ## Modelo de 3 actores
+ 4: 
+ 5: - **Claude Chat**: arquitecto, planifica, escribe a Supabase (con aprobación de James), genera prompts goal-oriented.
+ 6: - **Claude Code (tú)**: implementa, lee codebase, verifica su propio trabajo. NUNCA escribe a BD.
+ 7: - **James**: decisiones, aprobaciones, testing, contexto de negocio.
+ 8: 
+ 9: ## Lectura eficiente al inicio de sesión
+10: 
+11: 1. `Docs/TRAIL.md` — dónde estamos en el árbol de tareas
+12: 2. `Docs/CHANGELOG.md` — últimas entradas, contexto reciente
+13: 3. `humanos-mvp-spec.md` — solo la sección relevante a la tarea
+14: 4. Supabase MCP — verificar schema de las tablas que vas a tocar
+15: 
+16: ## Superpowers — obligatorio
+17: 
+18: - **Feature nuevo (3+ commits esperados)** → invocar `brainstorming` ANTES de escribir código.
+19: - **Después de brainstorming aprobado** → `writing-plans` genera plan en `Docs/superpowers/plans/`
+20: - **Ejecución del plan** → `executing-plans`
+21: - **Bug complejo (3+ archivos)** → `systematic-debugging`
+22: - **Después de step mayor** → `requesting-code-review`
+23: - **Fix trivial (1 archivo, obvio)**: decir "skip brainstorming" explícitamente.
+24: 
+25: ## Supabase MCP — read-only
+26: 
+27: SIEMPRE antes de tocar código que interactúa con BD: verificar schema via MCP.
+28: NUNCA escribir a BD. Documentar cambios necesarios en CHANGELOG como `[bd-pending]`.
+29: 
+30: ## Playwright MCP
+31: 
+32: Usar para QA visual: verificar que páginas cargan, formularios funcionan, responsive.
+</file>
+
+<file path=".claude/skills/.gitkeep">
+1: 
+</file>
+
+<file path="CLAUDE.md">
+  1: # HumanOS — Plataforma de RRHH de ICONSA
+  2: 
+  3: App interna de RRHH para Ingeniería Continental S.A. (ICONSA), empresa de construcción pesada en Panamá (~200 empleados). Reemplaza Excel y procesos manuales. Comparte BD Supabase con MovimientOS (app de logística en producción).
+  4: 
+  5: ## Stack
+  6: 
+  7: | Capa | Tecnología |
+  8: |------|-----------|
+  9: | Frontend | Next.js (App Router) + TypeScript + Tailwind CSS |
+ 10: | Base de datos | Supabase PostgreSQL (schema `humanos` + shared `public.people`) |
+ 11: | Auth | Supabase Auth (compartido con MovimientOS) |
+ 12: | Deploy | Vercel |
+ 13: 
+ 14: ## Commands
+ 15: 
+ 16: ```bash
+ 17: npm run dev          # Dev server
+ 18: npm run build        # Production build
+ 19: npm run lint         # ESLint
+ 20: npx tsc --noEmit     # TypeScript check
+ 21: ```
+ 22: 
+ 23: ## Directory Structure
+ 24: 
+ 25: ```
+ 26: src/
+ 27: ├── app/             # Next.js App Router pages
+ 28: │   ├── (app)/       # Authenticated layout (sidebar/bottom tabs)
+ 29: │   │   ├── inicio/
+ 30: │   │   ├── directorio/
+ 31: │   │   ├── perfil/
+ 32: │   │   ├── solicitudes/
+ 33: │   │   ├── ayuda/
+ 34: │   │   └── admin/
+ 35: │   └── login/
+ 36: ├── components/      # Reusable UI components
+ 37: ├── hooks/           # Custom hooks (useEmployee, useRequests, etc.)
+ 38: ├── lib/             # Supabase clients, utilities
+ 39: │   ├── supabase/    # Client configs (public + humanos schemas)
+ 40: │   └── utils/       # Helpers
+ 41: └── types/           # TypeScript interfaces
+ 42: ```
+ 43: 
+ 44: ## Database — 2 schemas
+ 45: 
+ 46: ### Schema `public` (compartido, NO MODIFICAR)
+ 47: - `people` — 182 empleados. Identidad base: name, code, email, cedula, hire_date, department, position, supervisor_id, auth_id, status
+ 48: - `projects` — Proyectos de ICONSA
+ 49: 
+ 50: ### Schema `humanos` (nuestro)
+ 51: - `employee_profiles` — Datos HR extendidos. FK: person_id → people.id. 36 registros con data importada.
+ 52: - `request_types` — 12 tipos de solicitud (vacaciones, permisos, acciones de personal, préstamos, etc.)
+ 53: - `requests` — Solicitudes RRHH. form_data JSONB dinámico por tipo. Status: Borrador → Enviada → En Revisión → Aprobada/Rechazada → Completada
+ 54: - `request_approvals` — Cadena de aprobaciones por solicitud
+ 55: - `sequences` — Auto-numeración de solicitudes
+ 56: 
+ 57: ### Supabase client usage
+ 58: ```typescript
+ 59: // Para schema humanos
+ 60: const humanos = createClient(url, key, { db: { schema: 'humanos' } })
+ 61: // Para schema public (people, projects)  
+ 62: const supabase = createClient(url, key)
+ 63: // O per-query
+ 64: const { data } = await supabase.schema('humanos').from('employee_profiles').select('*')
+ 65: ```
+ 66: 
+ 67: ## Source of truth
+ 68: 
+ 69: | Recurso | Uso |
+ 70: |---------|-----|
+ 71: | Supabase MCP | Schema actual. Consultar antes de tocar BD. |
+ 72: | humanos-mvp-spec.md | Reglas de negocio, formularios, flujos. |
+ 73: 
+ 74: ## Coding Conventions
+ 75: 
+ 76: - TypeScript strict. No `any`.
+ 77: - Functional components, Server Components by default. `'use client'` solo con interactividad.
+ 78: - Tailwind para estilos. No CSS modules.
+ 79: - Todos los IDs son UUID (`gen_random_uuid()`).
+ 80: - Todas las tablas: `created_at` + `updated_at` con trigger.
+ 81: - RLS habilitado en todas las tablas.
+ 82: - Nombres de variables en **inglés**. UI y comentarios en **español**.
+ 83: - Named exports, never default exports.
+ 84: 
+ 85: ## Design Tokens
+ 86: 
+ 87: ```
+ 88: Navy:   #1B3A5C  (primary — headers, nav)
+ 89: Gold:   #F5A623  (accent — ICONSA brand)
+ 90: Blue:   #0A6EBD  (info, links, Enviada)
+ 91: Green:  #1A7F5A  (success, Aprobada)
+ 92: Orange: #B45309  (warning, En Revisión)
+ 93: Red:    #C0392B  (error, Rechazada)
+ 94: Gray:   #5A6272  (secondary text)
+ 95: ```
+ 96: 
+ 97: ## 3 Roles del Sistema
+ 98: 
+ 99: | Rol | Quién | Acceso |
+100: |-----|-------|--------|
+101: | employee | Todos los empleados | Mi perfil, directorio, mis solicitudes, knowledge base |
+102: | supervisor | Jefes de departamento | + Aprobar solicitudes de subordinados |
+103: | hr_admin | Samantha, Rocío, Milagros, Jerelyn | + Ver todo, aprobar todo, editar perfiles, dashboard |
+104: 
+105: ## Reglas Críticas
+106: 
+107: 1. **NUNCA modificar `public.people` desde código.** Solo leer. Cambios de BD van por Claude Chat.
+108: 2. **UI 100% español.** Botones, labels, mensajes, placeholders.
+109: 3. **Mobile-first.** Empleados acceden desde celular.
+110: 4. **form_data es JSONB dinámico** — cada request_type tiene campos diferentes.
+111: 5. **Approval chain viene de request_types.approval_chain[]** — no hardcodear.
+112: 6. **Redirect después de enviar solicitud** → lista de mis solicitudes.
+113: 7. **Filtrar request_types por is_active = true** en la UI.
+114: 8. **Knowledge base muestra TODOS los tipos** con descripción, SOP reference, y quién aprueba.
+</file>
+
+<file path="Docs/BACKLOG.md">
+ 1: # HumanOS — Backlog
+ 2: 
+ 3: ## MVP (demo para Samantha)
+ 4: - [ ] Directorio de empleados con búsqueda y filtros
+ 5: - [ ] Perfil de empleado completo
+ 6: - [ ] Formulario de Solicitud de Vacaciones (ICRHF0503)
+ 7: - [ ] Formulario de Actualización de Datos (ICRHF0007)
+ 8: - [ ] Formulario de Acción de Personal (ICRHF0501)
+ 9: - [ ] Formulario de Solicitud de Préstamo (ICRHF0502)
+10: - [ ] Mis solicitudes (lista con estado)
+11: - [ ] Knowledge base / FAQ
+12: - [ ] Dashboard admin para HR
+13: 
+14: ## Post-MVP
+15: - [ ] Notificaciones por email (Resend)
+16: - [ ] Notificaciones por WhatsApp (Twilio)
+17: - [ ] Upload de fotos de empleados
+18: - [ ] Evaluaciones de desempeño (ICRHF0303, ICRHF0304)
+19: - [ ] Capacitaciones (ICRHF0204, ICRHF0205, ICRHF0209)
+20: - [ ] Encuestas (clima organizacional, buzón)
+21: - [ ] Chat entre empleados
+22: - [ ] Revista / eventos / cumpleaños
+23: - [ ] Expediente digital del empleado (ICRHIT01)
+24: - [ ] Cálculo de vacaciones según ley panameña
+25: - [ ] Cálculo de ISR (requiere abogado laboral)
+26: - [ ] Migración a schema `core` (cuando jaime/dev y main de MovimientOS estén merged)
+</file>
+
+<file path="Docs/CHANGELOG.md">
+ 1: # HumanOS — Changelog
+ 2: 
+ 3: ## 2026-04-28 — Chat: Schema + Data Import
+ 4: 
+ 5: ### Schema `humanos` creado [bd]
+ 6: - `humanos.employee_profiles` — datos HR extendidos, FK a public.people
+ 7: - `humanos.request_types` — 12 tipos de solicitud con SOP references
+ 8: - `humanos.requests` — solicitudes con form_data JSONB
+ 9: - `humanos.request_approvals` — cadena de aprobaciones
+10: - `humanos.sequences` — auto-numeración
+11: - RLS habilitado en todas las tablas
+12: - GRANTs ejecutados para anon, authenticated, service_role
+13: 
+14: ### Data import [bd]
+15: - public.people enriquecida: 35 con cédula, 37 con hire_date (antes: 0)
+16: - 36 employee_profiles creados del Excel de Samantha
+17: - 12 request_types seeded con referencias a SOPs de ICONSA
+</file>
+
+<file path="Docs/feature-specs/.gitkeep">
+1: 
+</file>
+
+<file path="Docs/superpowers/plans/.gitkeep">
+1: 
+</file>
+
+<file path="Docs/superpowers/specs/.gitkeep">
+1: 
+</file>
+
+<file path="Docs/TRAIL.md">
+ 1: # HumanOS — Trail (Posición Actual)
+ 2: 
+ 3: ## Árbol de tareas
+ 4: 
+ 5: ```
+ 6: HumanOS MVP
+ 7: ├── [DONE] Schema humanos creado en Supabase
+ 8: ├── [DONE] Data importada del Excel de Samantha (36 perfiles, 12 tipos de solicitud)
+ 9: ├── [ACTIVE] Setup del proyecto
+10: │   ├── [ ] Next.js + TypeScript + Tailwind
+11: │   ├── [ ] Supabase auth
+12: │   ├── [ ] CLAUDE.md + .claude/ config
+13: │   └── [ ] Deploy a Vercel
+14: ├── [ ] Módulo 1: Directorio de Empleados
+15: ├── [ ] Módulo 2: Mi Perfil
+16: ├── [ ] Módulo 3: Solicitudes RRHH (4 formularios)
+17: ├── [ ] Módulo 4: Knowledge Base
+18: └── [ ] Módulo 5: Dashboard Admin
+19: ```
+</file>
+
+<file path="humanos-mvp-spec.md">
+  1: # HumanOS MVP — Spec para Claude Code
+  2: 
+  3: ## Qué es HumanOS
+  4: 
+  5: App interna de RRHH para ICONSA (empresa de construcción pesada en Panamá, ~200 empleados). Reemplaza un Excel y procesos manuales de la gerente de RRHH Samantha Kosmas. Usa la misma base de datos Supabase que MovimientOS (app hermana de logística ya en producción).
+  6: 
+  7: ## Stack
+  8: 
+  9: - Next.js (App Router) + TypeScript + Tailwind CSS
+ 10: - Supabase (auth + PostgreSQL + RLS + Storage)
+ 11: - Schema: `humanos` (separado de `public` que usa MovimientOS)
+ 12: - La tabla `public.people` es compartida — es la identidad base de cada empleado
+ 13: - Deploy: Vercel
+ 14: - PWA (mobile-first — los empleados acceden desde el celular)
+ 15: 
+ 16: ## Base de datos — ya creada
+ 17: 
+ 18: ### Tablas compartidas (schema public, NO MODIFICAR)
+ 19: - `public.people` — 182 empleados. Campos: id, name, code, email, phone, department, position, cedula, hire_date, supervisor_id, status, app_role, auth_id
+ 20: - `public.projects` — Proyectos de ICONSA
+ 21: 
+ 22: ### Tablas de HumanOS (schema humanos)
+ 23: - `humanos.employee_profiles` — 36 registros. Datos HR extendidos: job_status, job_title, office, date_of_birth, gender, nationality, marital_status, num_dependents, education, blood_type, address, city, cell_phone, css_number, photo_url. FK: person_id → public.people.id
+ 24: - `humanos.request_types` — 12 tipos de solicitud con code, name, description, sop_reference, requires_approval, approval_chain[], category, icon
+ 25: - `humanos.requests` — Solicitudes. FK: type_id → request_types.id, requester_id → public.people.id. Campos: status ('Borrador','Enviada','En Revisión','Aprobada','Rechazada','Completada'), form_data (JSONB), date_submitted, date_resolved, attachments
+ 26: - `humanos.request_approvals` — Cadena de aprobaciones. FK: request_id → requests.id, approver_id → public.people.id. Campos: approval_role, decision, decision_date, comments, step_order
+ 27: - `humanos.sequences` — Para generar request_number auto
+ 28: 
+ 29: ### IMPORTANTE — Supabase client config
+ 30: Para queries al schema `humanos`, usar:
+ 31: ```typescript
+ 32: // Opción 1: Client con schema
+ 33: const humanosClient = createClient(url, key, { db: { schema: 'humanos' } })
+ 34: 
+ 35: // Opción 2: Sin crear otro client, usar .schema()
+ 36: const { data } = await supabase.schema('humanos').from('employee_profiles').select('*')
+ 37: ```
+ 38: 
+ 39: Para queries a `public.people`, usar el client normal sin `.schema()`.
+ 40: 
+ 41: ## Usuarios y Roles
+ 42: 
+ 43: ### Empleado (todos)
+ 44: - Ve su propio perfil con toda su información
+ 45: - Puede crear solicitudes (vacaciones, permisos, actualización de datos, etc.)
+ 46: - Ve el estado de sus solicitudes
+ 47: - Ve el directorio de empleados (solo datos básicos, no sensibles como salario)
+ 48: - Ve la base de conocimiento (qué formulario usar para qué)
+ 49: 
+ 50: ### HR Admin (Samantha Kosmas, Rocío Olmedo, Milagros Manyoma, Jerelyn Mendoza)
+ 51: - Todo lo del empleado PLUS:
+ 52: - Ve TODOS los perfiles completos
+ 53: - Ve TODAS las solicitudes de todos los empleados
+ 54: - Aprueba/rechaza solicitudes
+ 55: - Edita perfiles de empleados
+ 56: - Ve dashboard con métricas
+ 57: 
+ 58: ### Supervisor (jefes de departamento)
+ 59: - Todo lo del empleado PLUS:
+ 60: - Aprueba solicitudes de sus subordinados directos
+ 61: - Ve perfiles de sus subordinados
+ 62: 
+ 63: ## Autenticación
+ 64: 
+ 65: Usar Supabase Auth (mismo sistema que MovimientOS). Los empleados que ya tienen auth_id pueden acceder. Para el MVP, el login es por email + password. La función `get_my_app_role()` existe pero es de MovimientOS. Para HumanOS, determinar el rol así:
+ 66: - Si el person.id está en la lista de HR admins → hr_admin
+ 67: - Si el person tiene subordinados (other people.supervisor_id = person.id) → supervisor
+ 68: - Default → employee
+ 69: 
+ 70: ## Páginas del MVP
+ 71: 
+ 72: ### 1. Login (/login)
+ 73: - Email + password vía Supabase Auth
+ 74: - Después de login, redirigir a /inicio
+ 75: - UI limpia, logo ICONSA, colores corporativos (amarillo #F5A623, azul oscuro #1B3A5C)
+ 76: 
+ 77: ### 2. Inicio (/inicio) — Landing page post-login
+ 78: - Saludo personalizado: "Hola, [nombre]"
+ 79: - Cards rápidas:
+ 80:   - "Mi Perfil" → /perfil
+ 81:   - "Nueva Solicitud" → /solicitudes/nueva
+ 82:   - "Mis Solicitudes" → /solicitudes
+ 83:   - "Directorio" → /directorio
+ 84: - Si es HR admin: card adicional "Dashboard RRHH" → /admin
+ 85: - Si tiene solicitudes pendientes de aprobar: badge con count
+ 86: 
+ 87: ### 3. Mi Perfil (/perfil)
+ 88: - Muestra TODA la información del empleado logueado
+ 89: - Datos de public.people: nombre, código, departamento, cargo, email, teléfono, cédula, fecha de contratación
+ 90: - Datos de humanos.employee_profiles: cargo detallado, educación, fecha de nacimiento, nacionalidad, estado civil, dependientes, tipo de sangre, dirección, seguro social
+ 91: - Sección "Mis Solicitudes Recientes" con las últimas 5
+ 92: - Botón "Actualizar Datos" que abre el formulario de ACTUALIZACION_DATOS
+ 93: 
+ 94: ### 4. Directorio de Empleados (/directorio)
+ 95: - Lista de TODOS los empleados activos
+ 96: - Búsqueda por nombre
+ 97: - Filtros: departamento, cargo, proyecto/oficina
+ 98: - Card de cada empleado: foto (placeholder si no hay), nombre, cargo, departamento, email, teléfono
+ 99: - Click → perfil público (sin datos sensibles como salario, cédula)
+100: 
+101: ### 5. Nueva Solicitud (/solicitudes/nueva)
+102: - Grid de tipos de solicitud (de humanos.request_types)
+103: - Agrupados por categoría: permisos, datos, documentos, compensación, acciones, desarrollo
+104: - Cada tipo muestra: icon, nombre, descripción corta
+105: - Click → formulario específico del tipo
+106: - Los formularios son dinámicos — pero para el MVP, implementar al menos:
+107: 
+108: #### 5a. Solicitud de Vacaciones (ICRHF0503)
+109: Campos del formulario real de ICONSA:
+110: - Nombre del empleado (auto-filled del perfil)
+111: - No. Cédula (auto-filled)
+112: - Tipo de pago: radio buttons → "Completas" | "Adelanto sobre acumulado" | "Descuento de días solicitados"
+113: - Tiempo solicitado: radio → "Completas" | "Parciales"
+114: - Desglose de períodos (hasta 3): Fecha inicio (Del) + Fecha fin (Al) para cada período
+115: - Días calculados automáticamente de cada período
+116: - Observaciones (textarea)
+117: - Mostrar: días disponibles según antigüedad (Panama: 1 día por cada 11 trabajados, se calcula de hire_date)
+118: - Flujo de aprobación según SOP ICRHPO05 sección 5.8-5.9: Empleado envía → Planilla verifica acumulados → Gerente de Proyecto aprueba/rechaza → Gerente General autoriza → RRHH distribuye resumen
+119: 
+120: #### 5b. Actualización de Datos (ICRHF0007)
+121: Campos del formulario real:
+122: - Nombre completo (auto-filled, read-only)
+123: - Cédula (auto-filled, read-only)
+124: - Dirección: Calle/Barriada + Apartamento/Casa No.
+125: - Teléfono de casa
+126: - Celular personal
+127: - Estado civil: radio → Soltero(a) | Casado(a) | Unido(a)
+128: - Nombre de esposo(a)/compañero(a)
+129: - Teléfono/celular del esposo(a)
+130: - Dependientes: lista editable (nombre + parentesco)
+131: - NO requiere aprobación formal — va directo a HR para procesar (solo lectura/aceptación)
+132: 
+133: #### 5c. Acción de Personal (ICRHF0501)
+134: Formulario multi-propósito. Campos reales:
+135: - Nombre (auto-filled)
+136: - Cédula (auto-filled)
+137: - Departamento/Proyecto (auto-filled, editable)
+138: - Tipo de acción: checkboxes (seleccionar uno o más):
+139:   - Aumento de Salario
+140:   - Autorización de Horas Extras
+141:   - Permisos
+142:   - Descuento
+143:   - Despido
+144:   - Orden de Liquidación
+145: - Si "Orden de Liquidación": campo adicional "nombre del empleado y último día de labores"
+146: - Observaciones (textarea obligatorio — explicar la acción)
+147: - Flujo según SOP ICRHPO05 sección 5.1: Empleado o Supervisor llena → Supervisor inmediato aprueba → Gerente General aprueba → RRHH recibe → Planillas procesa
+148: 
+149: #### 5d. Solicitud de Préstamo (ICRHF0502)
+150: Campos reales:
+151: - Nombre del empleado (auto-filled)
+152: - No. Cédula (auto-filled)
+153: - Monto solicitado (numérico, máx $250 por defecto, más requiere aprobación Gerencia)
+154: - Descuento propuesto por bisemana
+155: - Motivo de la solicitud (textarea obligatorio — debe ser necesidad, no deuda)
+156: - Flujo según SOP ICRHPO05 sección 5.4-5.7: Empleado → Supervisor (mérito + tiempo restante de empleo) → RRHH (evalúa beneficio social, verifica no otras deudas) → Gerencia General autoriza pago
+157: 
+158: ### 6. Mis Solicitudes (/solicitudes)
+159: - Lista de solicitudes del empleado logueado
+160: - Filtros: tipo, estado
+161: - Cada solicitud muestra: número, tipo, fecha, estado (badge con color)
+162: - Click → detalle con timeline de aprobaciones
+163: 
+164: ### 7. Base de Conocimiento (/ayuda)
+165: - Lista de todos los tipos de solicitud con:
+166:   - Nombre
+167:   - Descripción detallada
+168:   - Para qué sirve
+169:   - Qué necesitas para solicitarlo
+170:   - Referencia al SOP (ICRHF0503, etc.)
+171:   - Quién aprueba
+172: - Búsqueda
+173: - FAQ basado en los SOPs reales de ICONSA:
+174:   - "¿Cómo solicito vacaciones?" → Llenar ICRHF0503. Staff de proyectos: proporcional según asignaciones. Permanentes: programar fecha anual.
+175:   - "¿Cómo actualizo mis datos?" → Llenar ICRHF0007 cuando cambien datos personales.
+176:   - "¿Cómo pido un préstamo?" → Llenar ICRHF0502. Máximo $250. Solo para necesidades (no deudas). Descuento bisemanal.
+177:   - "¿Cómo solicito horas extras?" → Usar Acción de Personal ICRHF0501, marcar "Autorización de Horas Extras".
+178:   - "¿Qué tipos de contrato hay?" → Definido, Indefinido, Por Obra, Servicios Profesionales (ver ICRHD05 para prestaciones de cada uno).
+179:   - "¿Cómo se calcula el ISR?" → Ver ICRHD04 folleto informativo. Depende de ingreso anual estimado.
+180:   - "¿Cuáles son las normas del comedor?" → Ver ICRHD06 (30 min, horario designado, mantener limpieza).
+181:   - "¿Qué pasa si me amonestan?" → Verbal → Escrita → Suspensión → Despido. Formulario ICRHF0504.
+182:   - "¿Qué documentos necesito al entrar?" → Cédula, CSS, licencia (si aplica), certificaciones. Ver ICRHF0109.
+183:   - "¿Cómo organizo mi expediente?" → Ver ICRHIT01. Lado izquierdo: documentos legales. Lado derecho: acciones, certificaciones, préstamos.
+184: - Categorías: Permisos y Vacaciones, Compensación, Datos Personales, Documentos, Capacitación, Vida en ICONSA
+185: 
+186: ### 8. Dashboard RRHH (/admin) — Solo HR admins
+187: - KPIs: total empleados activos, solicitudes pendientes, solicitudes esta semana
+188: - Lista de solicitudes pendientes de aprobación
+189: - Acceso rápido a directorio con edición
+190: - Tabla de empleados con filtros avanzados
+191: 
+192: ### 9. Aprobación de Solicitudes (/admin/solicitudes/[id])
+193: - Detalle completo de la solicitud
+194: - Información del solicitante
+195: - Botones: Aprobar / Rechazar / Solicitar más información
+196: - Campo de comentarios
+197: 
+198: ## Navegación
+199: 
+200: - Sidebar en desktop, bottom tabs en mobile (PWA)
+201: - Items: Inicio, Directorio, Solicitudes, Ayuda, Mi Perfil
+202: - HR admins ven tab adicional: Admin
+203: 
+204: ## UI/UX
+205: 
+206: - Mobile-first (los empleados de campo usan celular)
+207: - Colores ICONSA: amarillo #F5A623, azul oscuro #1B3A5C, gris claro #F5F5F5
+208: - Tipografía: Inter o similar sans-serif
+209: - Todo el texto UI en español
+210: - Badges de estado con colores: Borrador (gris), Enviada (azul), En Revisión (amarillo), Aprobada (verde), Rechazada (rojo)
+211: - Loading states y empty states en todas las páginas
+212: - Toast notifications para acciones exitosas/errores
+213: 
+214: ## Lo que NO incluir en MVP
+215: - Sistema de notificaciones por email/WhatsApp (futuro)
+216: - Upload de fotos (futuro)
+217: - Chat entre usuarios (futuro)
+218: - Revista/eventos/cumpleaños (futuro)
+219: - Cálculo de liquidaciones (requiere validación de abogado)
+220: - Cálculo de ISR (requiere validación de abogado)
+221: - Evaluaciones de desempeño (módulo futuro)
+222: - Capacitaciones (módulo futuro)
+223: - Encuestas (módulo futuro)
+224: 
+225: ## Setup de Claude Code — replicar de MovimientOS
+226: 
+227: El repo hermano (MovimientOS) usa esta estructura probada. Replicar:
+228: 
+229: ### CLAUDE.md (~100-130 líneas)
+230: - Tech stack, directory structure, key commands (dev, build, lint, test)
+231: - Reference docs table pointing to feature specs
+232: - Coding conventions (TypeScript strict, functional components, Server Components by default, Tailwind)
+233: - Design tokens (mismos colores ICONSA: Navy #1B3A5C, Gold #F0A500 aka #F5A623)
+234: - Roles del sistema (employee, supervisor, hr_admin)
+235: - Reglas críticas (max 15, en español)
+236: - Source of truth: Supabase MCP para schema, feature spec para reglas de negocio
+237: 
+238: ### .claude/rules/ — copiar de MovimientOS y adaptar:
+239: - `supabase-readonly.md` — nunca escribir a BD desde Code
+240: - `commit-after-step.md` — commit después de cada step completado
+241: - `git-workflow.md` — branches, commit format (feat:, fix:, docs:)
+242: - `plan-lifecycle.md` — cómo manejar planes de Superpowers
+243: - `spec-lifecycle.md` — cómo manejar specs
+244: - `tool-usage.md` — modelo 3 actores, cuándo usar qué herramienta
+245: 
+246: ### .claude/skills/ — empezar vacío, crear a medida que surjan patrones:
+247: - NO copiar skills de MovimientOS (crud-page, events-page, etc.) — son específicos de logística
+248: - Crear skills después cuando identifiquemos patrones repetibles en HumanOS
+249: 
+250: ### .claude/commands/
+251: - `deploy-check.md` — copiar de MovimientOS
+252: - `fix-bug.md` — copiar de MovimientOS
+253: 
+254: ### Superpowers — fork pcvelz/superpowers
+255: ```bash
+256: /plugin marketplace add pcvelz/superpowers-marketplace  
+257: /plugin install superpowers@superpowers-marketplace
+258: ```
+259: Plan Mode nativo DESACTIVADO. Todo flow de planificación pasa por Superpowers.
+260: 
+261: ### Docs/
+262: ```
+263: Docs/
+264: ├── TRAIL.md           — posición actual en árbol de tareas
+265: ├── CHANGELOG.md       — log de sesiones + [bd-pending]/[bd] para SQL
+266: ├── BACKLOG.md         — pendientes
+267: ├── superpowers/
+268: │   ├── specs/         — specs de brainstorming
+269: │   └── plans/         — planes de ejecución
+270: └── feature-specs/     — specs modulares por módulo (200-400 líneas)
+271:     ├── directorio.md
+272:     ├── solicitudes.md
+273:     └── knowledge-base.md
+274: ```
+</file>
+
+</files>

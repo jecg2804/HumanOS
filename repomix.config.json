@@ -1,0 +1,53 @@
+{
+  "output": {
+    "filePath": "repomix-output.xml",
+    "style": "xml",
+    "fileSummary": true,
+    "directoryStructure": true,
+    "removeComments": false,
+    "removeEmptyLines": false,
+    "showLineNumbers": true,
+    "topFilesLength": 5
+  },
+  "include": [
+    "src/**",
+    "Docs/**",
+    ".claude/**",
+    "CLAUDE.md",
+    "humanos-mvp-spec.md",
+    "package.json",
+    "tsconfig.json",
+    "next.config.*",
+    "tailwind.config.*",
+    "middleware.ts"
+  ],
+  "ignore": {
+    "useGitignore": true,
+    "useDefaultPatterns": true,
+    "customPatterns": [
+      "node_modules/**",
+      ".next/**",
+      "dist/**",
+      "build/**",
+      "*.log",
+      ".env*",
+      "package-lock.json",
+      "yarn.lock",
+      "pnpm-lock.yaml",
+      "*.test.*.snap",
+      "playwright-report/**",
+      "test-results/**",
+      "public/**",
+      "*.ico",
+      "*.png",
+      "*.jpg",
+      "*.jpeg",
+      "*.svg",
+      "*.woff*",
+      "repomix-output.xml"
+    ]
+  },
+  "security": {
+    "enableSecurityCheck": true
+  }
+}
