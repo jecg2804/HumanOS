@@ -5,7 +5,9 @@
     {
       "id": 1,
       "subject": "Task 1: Scaffold Next.js 16 + TS strict + Tailwind 4 + ESLint",
-      "status": "pending",
+      "status": "completed",
+      "commitSha": "eef1be9",
+      "notes": "Adaptado a Next 16: next lint removido (uso eslint .); eslint-config-next v16 exporta flat config nativo; typedRoutes movido a top-level; experimental.eslint removido. page.tsx con placeholder (redirect en Task 5).",
       "description": "**Goal:** Repo levanta `npm run dev` con página por defecto + lint/build pasando.\n\n**Files:** package.json, tsconfig.json, next.config.ts, postcss.config.mjs, eslint.config.mjs, src/app/layout.tsx, src/app/page.tsx, src/app/globals.css, .gitignore, .env.example\n\n**Verify:** `npm run build && npm run lint && npx tsc --noEmit`\n\n```json:metadata\n{\"files\":[\"package.json\",\"tsconfig.json\",\"next.config.ts\",\"postcss.config.mjs\",\"eslint.config.mjs\",\"src/app/layout.tsx\",\"src/app/page.tsx\",\"src/app/globals.css\",\".env.example\"],\"verifyCommand\":\"npm run build && npm run lint && npx tsc --noEmit\",\"acceptanceCriteria\":[\"npm install corre sin errores\",\"npm run dev levanta servidor en :3001\",\"npm run lint y build pasan\",\"tsc --noEmit pasa\"]}\n```"
     },
     {
