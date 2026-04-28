@@ -40,3 +40,12 @@ Formato: cada sesión agrega una entrada con fecha. Para cambios de BD usar `[bd
 ### [bd] Storage bucket para adjuntos
 - Bucket `humanos-attachments` creado: privado, 10MB max, MIME jpeg/png/webp/pdf.
 - Policies sobre `storage.objects`: authenticated INSERT y SELECT scopeadas al bucket. (Migration: `supabase/migrations/20260428_007_create_storage_bucket.sql`).
+
+### [bd] Seed de supervisor_id por departamento (plan B del spec §4.1.1)
+- 35 de 52 activos ahora tienen `supervisor_id`. Mapeo: RH→KOSM01, Equipo→VAL130, Ingeniería→AVE629, Contabilidad→RIO806, Construcción→Franklin Marciaga (Denise Marciaga está Inactivo, fallback per nota original), CUC166+EIS809→EIS772, top-tier managers (KOSM01/VAL130/AVE629/RIO806/Franklin)→EIS772.
+- 17 activos quedan con `supervisor_id=NULL`: Cumplimiento (3), Seguridad (3), Presupuesto (2), Movilizaciones (1), VAL130 mismo (1), Administración general (7), EIS772 (1, top). Los cubre fallback A en `humanos.resolve_approver` (skip step + RAISE NOTICE).
+- Migration: `supabase/migrations/20260428_005_seed_supervisor_ids.sql`.
+
+### Repo (cont.)
+- `scripts/copy-sops-to-public.ts` (`acc63f8`): copia los 29 PDFs de SOPs a `public/sops/` con nombres sanitizados + `index.json` mapeando `sop_reference` (ej. `ICRHF0503`) → URL servible. Hook `prebuild` y `predev`. 28 PDFs indexados (uno no matchea regex IC-RH-...).
+- `scripts/seed-auth-users.ts` (`07d07f0`): seed idempotente de 6 cuentas auth de prueba (HR team + Rodrigo + Jaime). Password inicial: `TestPass2026!`. Run: `npm run seed:auth-users`. **James debe correrlo después de configurar `.env.local` con `SUPABASE_SERVICE_ROLE_KEY`.**
