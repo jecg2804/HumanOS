@@ -56,3 +56,41 @@ Formato: cada sesión agrega una entrada con fecha. Para cambios de BD usar `[bd
 - `humanos.decide_approval(approval_id, decider_id, decision, comments)` atómica (`37b3388`). Estados: Aprobada/Rechazada/En Revisión.
 - Re-seed approval_chain semántico para los 12 tipos (`9f0893b`). ACTUALIZACION_DATOS pasó de requires_approval=false → true.
 - Reemplazo de RLS permisiva por policies reales por rol (`880a181`). Writes solo via RPC SECURITY DEFINER o service-role.
+
+### Fase 2 — Engine wiring (Tasks 16-19)
+- `roles.ts` con ROLE_LABEL + `chains.ts` con `effectiveChain` (extiende a Presidencia para PRESTAMO>$250) — commit `84107ee`.
+- `submitRequestAction`: invoca RPC + envía email al primer aprobador (`00ab820`).
+- `decideApprovalAction`: invoca RPC + email al siguiente aprobador o decisión final al solicitante (`94479c3`).
+- `applyActDatosAction`: HR-only, mapea form_data → people (address, phone, marital_status, num_kids); status → Completada (`25a2c02`).
+
+### Fase 3 — 5 forms P1 (Tasks 20-26)
+- zod schemas y form registry (`b959cfd`). Adaptado a zod v4 API.
+- VacacionesForm + Detail con field array 1-3 rangos (`03a0a6f`).
+- AccionPersonalForm + Detail con dropdown de subordinados según rol + callout sobre Hrs Extras post-facto (`713dcc3`). Helper `collectErrorMessages` extraído a `src/lib/forms/error-utils.ts`.
+- PrestamoForm + Detail con modal de escalación >$250 — 2 botones reales "Continuar con $X" / "Reducir a $250" citando IC-RH-D-02 (`65460dc`).
+- ActualizacionDatosForm + Detail con pre-fill server-side y submit con diff (`08b6387`). `_changes: string[]` en form_data marca campos cambiados.
+- ReclamoPagoForm + Detail con tabla 5×3 + auto-cálculo diferencia + upload a Storage `humanos-attachments` (`2817134`). Concerns documentados: path no atado a request_id (UUID temporal cliente), archivos huérfanos al fail submit, signed URL TTL 1 año.
+- RequestActions con apply button para HR + decide buttons con dialog (`9f06a95`).
+
+### Fase 4 — Pages (Tasks 27-31)
+- `/ayuda` knowledge base agrupada por categoría con SOP links + callout Hrs Extras (`42735eb`).
+- `/solicitudes/nueva` grid 12 tipos (P1 link, P2 disabled) (`38484ab`).
+- `/solicitudes/nueva/[code]` dynamic route con auto-fill y prefill ACT_DATOS (`b5dd373`).
+- `/solicitudes` lista mis + `/solicitudes/[id]` detalle con timeline + RequestList/StatusBadge/Timeline/DetailRenderer + callout "Falta supervisor" cuando base chain incluye `supervisor_directo` pero no hay row con ese role_required (`b2dfefe`).
+- `/admin` dashboard server-gated por `me.role === 'hr_admin'` con 4 KPIs reales + tabla filtrable (`f77635f`).
+
+### Fase 5 — Module 1.5 (Tasks 32-33)
+- `/directorio` con search por nombre/code/email + filter pills por departamento y oficina (`7d5b4dc`).
+- `/perfil` read-only con secciones Identidad/Contacto/Laboral/Otros + CTA a Actualización de Datos (`62b9788`).
+
+### Fase 6 — Wrap-up (Tasks 34-36)
+- `Docs/MANUAL_VERIFICATION.md` con 10 secciones / ~22 pasos para verificación end-to-end pre-demo (`d78a828`).
+- `Docs/TRAIL.md` actualizado: Module 1 marcado DONE; Module 2 (Expediente) y P2 forms en backlog.
+
+### Notas de implementación importantes
+- **typedRoutes desactivado** en `next.config.ts` para permitir redirects dinámicos. Re-evaluar post-MVP.
+- **shadcn-ui v4** instalado vía `npx shadcn init -y -d`. components.json apunta a `@/lib/utils` (no a `@/lib/utils/cn` como decía el plan).
+- **zod v4** cambió API: `invalid_type_error` no existe; `errorMap` reemplazado por `message` directo en `z.literal`.
+- **Resend keys** comentados en `.env.local` por seguridad. James debe descomentarlos antes de probar emails. Helper `sendNotification` no crashea si la key falta — solo log warning.
+- **Pre-deploy verificación local OK**: `npm run lint` (5 warnings RHF watch, 0 errors), `npx tsc --noEmit` (clean), `npm run build` (clean).
+- **Push pendiente** a `origin/main` para disparar Vercel deploy preview. Requiere permiso explícito de James.
