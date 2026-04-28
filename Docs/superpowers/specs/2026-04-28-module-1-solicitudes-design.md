@@ -158,6 +158,28 @@ Chains seed:
 
 (P2 chains se mantienen como están; no son funcionales en el MVP.)
 
+### 4.1.1 Pre-flight: `humanos.people.supervisor_id` está vacío
+
+**Hallazgo crítico:** los 52 empleados activos tienen `supervisor_id = NULL`. Sin esto, la cadena `supervisor_directo` no funciona en ningún submit. Resolución combinada A + B:
+
+**A. Fallback defensivo en `resolve_approver` (obligatorio):** si `supervisor_directo` resuelve a NULL, la función retorna NULL, `submit_request` saltea ese step, y un `RAISE NOTICE` deja huella en logs. El submit NO falla — queda 1 step menos en el chain. Esto evita que el demo muera por datos faltantes.
+
+**B. Seed manual de supervisores en Fase 0:** durante la implementación, una migración `[bd]` asigna `supervisor_id` por departamento usando los siguientes managers (todos verificados en BD):
+
+| Departamento | Manager (supervisor_id ←) | Excepciones |
+|---|---|---|
+| Recursos Humanos | KOSM01 (Samantha) | KOSM01 misma → EIS772 |
+| Equipo | VAL130 (Adolfo Valderrama) | VAL130 mismo → EIS772 |
+| Construcción | "Denise Marciaga" (lookup by name, sin code) | — |
+| Ingeniería | AVE629 (Alejandro Avendaño) | AVE629 mismo → EIS772; Franklin Marciaga (sin code) → EIS772 |
+| Contabilidad | RIO806 (Damaris Rios) | RIO806 misma → EIS772 |
+| Administración | EIS772 (Rodrigo) para CUC166 + EIS809; resto → EIS772 | EIS772 mismo → NULL (top) |
+| Cumplimiento, Seguridad, Presupuesto, Movilizaciones (9 empleados, no mapeados) | NULL — fallback A los cubre | — |
+
+Esto deja ~5-9 empleados con `supervisor_id=NULL` (los managers top-tier + departamentos no mapeados). Para esos, los submits de tipos que requieren `supervisor_directo` arrancan saltando ese step. Aceptable para MVP demo.
+
+**C. Diferido a post-MVP:** crear automáticamente una fila en `request_approvals` con `decision='Solicita Info'` y comentario "Supervisor no asignado, contactar RRHH" cuando se active el fallback A. Da observabilidad en la UI sin necesidad de revisar logs.
+
 ### 4.2 Nuevas funciones Postgres
 
 ```sql
@@ -169,6 +191,9 @@ DECLARE
 BEGIN
   IF p_role = 'supervisor_directo' THEN
     SELECT supervisor_id INTO v_id FROM humanos.people WHERE id = p_requester_id;
+    IF v_id IS NULL THEN
+      RAISE NOTICE 'resolve_approver: requester % has no supervisor_id, skipping step', p_requester_id;
+    END IF;
     RETURN v_id;
   ELSIF p_role = 'hr_oficial' THEN
     SELECT id INTO v_id FROM humanos.people WHERE code = 'OLM206';
@@ -427,7 +452,10 @@ Enviada   → (1er approve) → En Revisión
 - `acepta_descuento_liquidacion`: checkbox required ("Acepto que en caso de liquidación, el saldo pendiente se descuente de mi liquidación").
 
 **Validaciones cliente + server:**
-- Si `monto_solicitado > 250` → mostrar warning amarillo: *"Este monto excede el límite normal de $250. Tu solicitud requerirá aprobación adicional de Presidencia, lo cual puede tardar más."* No bloquea submit.
+- Si `monto_solicitado > 250` → modal/callout amarillo con texto específico:
+  > ⚠️ *Este monto excede el límite estándar de $250 establecido en IC-RH-D-02. Tu solicitud requerirá aprobación adicional de Presidencia, lo cual puede tardar más. ¿Deseas continuar?*
+
+  Botones: **"Continuar con $X"** (procede con escalación) o **"Reducir a $250"** (autorelleno → $250 y submit en flujo estándar). NO se permite submit silencioso sin elegir.
 - `descuento_propuesto > 0` Y `descuento_propuesto <= monto_solicitado`.
 
 **Aprobación dinámica:**
@@ -448,14 +476,19 @@ Enviada   → (1er approve) → En Revisión
 **Aplicación al expediente** (HR-only, post-aprobada):
 - Botón "Aplicar al expediente" en el detalle (visible solo para HR si status='Aprobada' Y type='ACTUALIZACION_DATOS').
 - Server action: hace `UPDATE humanos.people SET ... WHERE id = requester_id` + `UPDATE requests SET status='Completada'`.
-- Mapeo `form_data` → `humanos.people` columnas (lo que SE aplica al expediente):
-  - `direccion.calle_barriada` + `direccion.apartamento_casa_no` → concat con coma → `address`.
-  - `celular_personal` → `phone`. (`humanos.people.phone` es el teléfono primario.)
-  - `estado_civil` → `marital_status`.
-  - `pareja` y `dependientes` → JSONB en `humanos.people.notification_preferences` (campo ya existente JSONB) bajo keys `pareja` y `dependientes`. Refactor a columnas formales en Module 2 si surge necesidad.
-- Lo que NO se aplica pero SÍ se preserva en `requests.form_data` para auditoría:
-  - `telefono_casa` — no hay columna en `people`. El form lo recolecta porque el PDF lo pide; el apply lo ignora. Si en el futuro se agrega `home_phone`, los requests pasados son backfilleable.
-- (Esto evita una migración de schema en `people` ahora. Module 2 puede formalizar pareja/dependientes/home_phone si necesario.)
+
+**Mapeo `form_data` → `humanos.people` (lo que SE aplica al expediente, columnas YA existentes — sin migración):**
+- `direccion.calle_barriada` + `direccion.apartamento_casa_no` → concat con coma → `address`.
+- `celular_personal` → `phone`. (`humanos.people.phone` es el teléfono primario.)
+- `estado_civil` → `marital_status` (columna ya existe).
+- `dependientes.length` (count) → `num_kids` (columna ya existe). Aproximación válida: el PDF agrupa todos los dependientes (hijos + otros) bajo "Depende de usted las siguientes personas". `num_kids` lo aceptamos como "número de personas a cargo" pragmáticamente.
+
+**Lo que NO se aplica al expediente pero SÍ se preserva en `requests.form_data` para historial/compliance:**
+- `telefono_casa` — el PDF lo pide; no hay columna en `people`. Se conserva en `form_data`.
+- `pareja` (nombre + teléfono del cónyuge/compañero).
+- `dependientes` detallados (nombres, parentesco de cada uno).
+
+Razón: estos campos no se usan operativamente en el MVP. Quedan auditables en el request más reciente Aprobado del empleado. Si Module 2 (expediente) o un proceso de RRHH los necesita, se denormalizan ahí.
 
 **Aprobación:** `[hr_oficial, hr_gerente]`.
 
@@ -635,23 +668,63 @@ Middleware `src/middleware.ts`:
 
 ## 13. Testing strategy (MVP — pragmática)
 
-**No unit tests automatizados** para el MVP. Verificación manual + lint + build.
+**No unit tests automatizados** para el MVP. Confianza viene de 3 capas: (a) build/lint/tsc, (b) smoke tests inline en migrations, (c) checklist manual ejecutado por James pre-demo.
 
-**Flujos críticos a probar manualmente antes de cerrar sesión:**
-1. Login con Samantha (KOSM01) → ve `/admin` con cards reales.
-2. Login con un empleado normal → no ve `/admin`.
-3. Empleado envía VACACIONES → email llega a su supervisor → supervisor aprueba → email a Rocío → Rocío aprueba → email a Samantha → Samantha aprueba → email final al empleado. Status correcto en cada paso.
-4. Préstamo $100 → 3 steps. Préstamo $300 → 4 steps (incluye Presidencia).
-5. ACTUALIZACION_DATOS → al final Samantha hace "Aplicar al expediente" → cambios visibles en `humanos.people`.
-6. Empleado intenta ver solicitud de otro empleado por URL directo → blocked (RLS).
-
-**Verificación pre-deploy:**
+### 13.1 Build verification (Code antes de commitear cambios significativos)
 - `npm run lint` — sin errores.
 - `npx tsc --noEmit` — sin errores de tipo.
 - `npm run build` — pasa.
 - Vercel preview URL accesible.
 
-**Deferred (Module 2 o post-MVP):** Playwright e2e, RLS policy tests con pgTAP.
+### 13.2 Smoke tests en migrations (Code los incluye al final de cada migration que cree funciones)
+
+Cada una de las 4 funciones Postgres lleva una llamada de prueba happy-path al final del archivo de migración con `RAISE NOTICE` mostrando el resultado. Si la migration aplica sin error, las funciones al menos compilan y corren con un caso real.
+
+```sql
+-- Ejemplo al final de la migration que crea submit_request:
+DO $$
+DECLARE
+  r RECORD;
+BEGIN
+  -- Smoke test: submit dummy con un requester real (Samantha) y type VACACIONES
+  SELECT * INTO r FROM humanos.submit_request(
+    'VACACIONES',
+    (SELECT id FROM humanos.people WHERE code='KOSM01'),
+    '{"smoke_test": true, "desglose": [{"desde":"2099-01-01","hasta":"2099-01-02"}]}'::jsonb,
+    '[]'::jsonb,
+    ARRAY['hr_oficial','hr_gerente']  -- saltamos supervisor para el smoke
+  );
+  RAISE NOTICE 'submit_request smoke OK: id=%, number=%, first=%', r.request_id, r.request_number, r.first_approver_id;
+  -- Limpieza
+  DELETE FROM humanos.request_approvals WHERE request_id = r.request_id;
+  DELETE FROM humanos.requests WHERE id = r.request_id;
+  UPDATE humanos.sequences SET current_value = current_value - 1 WHERE name='request_number';
+END $$;
+```
+
+Análogo para `resolve_approver`, `next_request_number`, `decide_approval`. Cada smoke test verifica el caso happy-path y limpia los datos.
+
+### 13.3 Manual verification checklist — `Docs/MANUAL_VERIFICATION.md`
+
+Code genera este archivo al final de la implementación. Es la lista que James ejecuta antes de mostrarle la app a Samantha. Estructura:
+
+- **Pre-requisitos**: env vars, branch, seeds aplicados, npm run dev corriendo en localhost:3001.
+- **Sección "Auth & roles"** (3 pasos): login KOSM01 → ve /admin; login CUC166 → no ve /admin; logout.
+- **Sección "Knowledge base"** (2 pasos): /ayuda muestra 12 tipos agrupados por categoría; click en "Iniciar solicitud" de un P2 → deshabilitado con badge "Próximamente".
+- **Sección "Submit + flujo VACACIONES"** (4 pasos): empleado normal envía vacaciones, recibe redirect a detalle, supervisor recibe email (revisar inbox de NOTIFICATION_TEST_EMAIL), supervisor aprueba en /solicitudes/[id], chain avanza.
+- **Sección "Submit PRESTAMO"** (3 pasos): $200 → 3 steps; $400 → modal con 2 botones aparece, "Continuar con $400" → 4 steps incluye Presidencia.
+- **Sección "ACTUALIZACION_DATOS apply"** (3 pasos): empleado envía cambios, HR aprueba 2 steps, Samantha clickea "Aplicar al expediente" → verificar en BD que `humanos.people` cambió.
+- **Sección "RLS"** (2 pasos): empleado A no puede ver request de empleado B navegando a `/solicitudes/[id]` directo (404 o "no autorizado").
+- **Sección "Admin dashboard"** (2 pasos): KPIs muestran números correctos; tabla filtrable por estado.
+- **Sección "Module 1.5"** (2 pasos): /directorio lista 52 activos con búsqueda; /perfil muestra mi data correcta.
+
+Total: ~20 pasos. Tiempo estimado de ejecución: 15-20 min.
+
+### 13.4 Deferred (Module 2 o post-MVP)
+- Playwright e2e tests.
+- pgTAP para RLS policies.
+- Unit tests de zod schemas.
+- Load testing.
 
 ## 14. Decisión documental: nombrado de columnas en form_data JSONB
 
@@ -684,9 +757,12 @@ Mantengo nombres de campos del PDF (en español, ej. `pago_vacaciones`, `monto_s
 | 2026-04-28 | Engine atómico con 2 funciones Postgres + server actions | Atomicidad en BD, side effects (email) fuera | Code decide |
 | 2026-04-28 | Estados: Aprobada es final excepto ACT_DATOS (→ Completada al apply) | Mapeo simple del state machine existente | Code decide |
 | 2026-04-28 | Módulo Permisos pre-facto vs Hrs Extras post-facto: documentado en /ayuda | Confusión señalada por James | Code documenta |
-| 2026-04-28 | Apply de ACT_DATOS al expediente: pareja/dependientes a JSONB en people, no nuevas columnas | Evita migración de schema; refactor en M2 si necesario | Code decide |
 | 2026-04-28 | UI library: shadcn/ui base + Tailwind | Velocidad MVP, cero runtime extra | Code decide |
-| 2026-04-28 | Sin Playwright/pgTAP en MVP — solo verificación manual + build/lint/tsc | Velocidad MVP | Code decide |
+| 2026-04-28 | `supervisor_id` está NULL en los 52 activos: Fase 0 hace seed B (mapping por dept con managers verificados) + fallback A defensivo en `resolve_approver` (skip step + RAISE NOTICE) | Sin esto el primer submit explota en demo | James detecta, Code+James acuerdan estrategia A+B; C diferido |
+| 2026-04-28 | ACT_DATOS apply usa solo columnas existentes (`address`, `phone`, `marital_status`, `num_kids`); pareja/dependientes detallados quedan SOLO en `form_data` para historial | Evita el hack semánticamente incorrecto de `notification_preferences`; cero migración nueva | James propone, Code adopta |
+| 2026-04-28 | Préstamo >$250: modal con 2 botones explícitos ("Continuar con $X" / "Reducir a $250") citando IC-RH-D-02 | Evita decisiones inadvertidas y deja claro el costo del flujo extendido | James propone, Code adopta |
+| 2026-04-28 | Smoke tests con `RAISE NOTICE` al final de cada migration que crea funciones + `Docs/MANUAL_VERIFICATION.md` con ~20 pasos para James pre-demo | Piso de confianza sin Playwright | James propone, Code adopta |
+| 2026-04-28 | Sin Playwright/pgTAP en MVP — verificación manual + build/lint/tsc + smoke en migrations | Velocidad MVP | Code decide |
 
 ## 17. Open questions
 
