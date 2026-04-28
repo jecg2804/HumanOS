@@ -1,0 +1,253 @@
+{
+  "planPath": "Docs/superpowers/plans/2026-04-28-module-1-solicitudes-plan.md",
+  "lastUpdated": "2026-04-28T00:00:00Z",
+  "tasks": [
+    {
+      "id": 1,
+      "subject": "Task 1: Scaffold Next.js 16 + TS strict + Tailwind 4 + ESLint",
+      "status": "pending",
+      "description": "**Goal:** Repo levanta `npm run dev` con página por defecto + lint/build pasando.\n\n**Files:** package.json, tsconfig.json, next.config.ts, postcss.config.mjs, eslint.config.mjs, src/app/layout.tsx, src/app/page.tsx, src/app/globals.css, .gitignore, .env.example\n\n**Verify:** `npm run build && npm run lint && npx tsc --noEmit`\n\n```json:metadata\n{\"files\":[\"package.json\",\"tsconfig.json\",\"next.config.ts\",\"postcss.config.mjs\",\"eslint.config.mjs\",\"src/app/layout.tsx\",\"src/app/page.tsx\",\"src/app/globals.css\",\".env.example\"],\"verifyCommand\":\"npm run build && npm run lint && npx tsc --noEmit\",\"acceptanceCriteria\":[\"npm install corre sin errores\",\"npm run dev levanta servidor en :3001\",\"npm run lint y build pasan\",\"tsc --noEmit pasa\"]}\n```"
+    },
+    {
+      "id": 2,
+      "subject": "Task 2: Supabase clients (server, browser, admin)",
+      "status": "pending",
+      "blockedBy": [1],
+      "description": "**Goal:** 3 wrappers tipados con schema 'humanos' + un client public para auth.\n\n**Files:** src/lib/supabase/{server,browser,admin}.ts, src/types/database.ts\n\n**Verify:** `npm run build`\n\n```json:metadata\n{\"files\":[\"src/lib/supabase/server.ts\",\"src/lib/supabase/browser.ts\",\"src/lib/supabase/admin.ts\",\"src/types/database.ts\"],\"verifyCommand\":\"npm run build\",\"acceptanceCriteria\":[\"createServerClient usa cookies de Next\",\"createBrowserClient para client components\",\"createAdminClient solo importable desde server-only paths\"]}\n```"
+    },
+    {
+      "id": 3,
+      "subject": "Task 3: Login page + actions + middleware + getMe",
+      "status": "pending",
+      "blockedBy": [2],
+      "description": "**Goal:** Auth flow completo: /login con form, redirect post-login, middleware protege rutas, getMe() retorna {...person, role}.\n\n**Files:** src/middleware.ts, src/app/login/page.tsx, src/app/login/actions.ts, src/lib/auth/getMe.ts\n\n**Verify:** browser test manual con un user de Supabase auth.\n\n```json:metadata\n{\"files\":[\"src/middleware.ts\",\"src/app/login/page.tsx\",\"src/app/login/actions.ts\",\"src/lib/auth/getMe.ts\"],\"verifyCommand\":\"npm run dev y test manual\",\"acceptanceCriteria\":[\"sin sesion redirige a /login\",\"login valido setea cookie y redirige\",\"logout limpia cookie\",\"getMe retorna persona con role\"]}\n```"
+    },
+    {
+      "id": 4,
+      "subject": "Task 4: shadcn/ui setup + 9 components base",
+      "status": "pending",
+      "blockedBy": [1],
+      "description": "**Goal:** Instalar shadcn y traer button, input, label, select, textarea, card, dialog, badge, toast.\n\n**Files:** components.json, src/components/ui/*, src/lib/utils/cn.ts\n\n**Verify:** `npm run build`\n\n```json:metadata\n{\"files\":[\"components.json\",\"src/components/ui/button.tsx\",\"src/components/ui/input.tsx\",\"src/components/ui/label.tsx\",\"src/components/ui/select.tsx\",\"src/components/ui/textarea.tsx\",\"src/components/ui/card.tsx\",\"src/components/ui/dialog.tsx\",\"src/components/ui/badge.tsx\",\"src/components/ui/toast.tsx\",\"src/lib/utils/cn.ts\"],\"verifyCommand\":\"npm run build\",\"acceptanceCriteria\":[\"cn helper exists\",\"9 components compilable\"]}\n```"
+    },
+    {
+      "id": 5,
+      "subject": "Task 5: AppShell layout (sidebar desktop + bottom-tabs mobile)",
+      "status": "pending",
+      "blockedBy": [3, 4],
+      "description": "**Goal:** Layout (app) con header navy/gold, Sidebar (md+), BottomTabs (md-), UserMenu con logout.\n\n**Files:** src/app/(app)/layout.tsx, src/components/shell/{AppShell,Sidebar,BottomTabs,UserMenu}.tsx, src/app/(app)/inicio/page.tsx (placeholder)\n\n**Verify:** browser manual + breakpoint mobile.\n\n```json:metadata\n{\"files\":[\"src/app/(app)/layout.tsx\",\"src/components/shell/AppShell.tsx\",\"src/components/shell/Sidebar.tsx\",\"src/components/shell/BottomTabs.tsx\",\"src/components/shell/UserMenu.tsx\",\"src/app/(app)/inicio/page.tsx\"],\"verifyCommand\":\"npm run build\",\"acceptanceCriteria\":[\"header navy + ICONSA gold\",\"sidebar md+ y tabs md-\",\"logout funciona\",\"no-HR no ve admin item\"]}\n```"
+    },
+    {
+      "id": 6,
+      "subject": "Task 6: Resend client + 3 email templates + sendNotification helper",
+      "status": "pending",
+      "blockedBy": [2],
+      "description": "**Goal:** sendNotification(type, payload) con test-mode redirect via NOTIFICATION_TEST_EMAIL.\n\n**Files:** src/lib/email/{client,send}.ts, src/lib/email/templates/{base,solicitud-enviada,solicitud-decidida,decision-final}.ts\n\n**Verify:** smoke con tsx scripts/test-email.ts (luego removido).\n\n```json:metadata\n{\"files\":[\"src/lib/email/client.ts\",\"src/lib/email/send.ts\",\"src/lib/email/templates/base.ts\",\"src/lib/email/templates/solicitud-enviada.ts\",\"src/lib/email/templates/solicitud-decidida.ts\",\"src/lib/email/templates/decision-final.ts\"],\"verifyCommand\":\"smoke test script\",\"acceptanceCriteria\":[\"no crashea sin RESEND_API_KEY\",\"NOTIFICATION_TEST_EMAIL redirige todos\",\"template base navy/gold con footer estandar\"]}\n```"
+    },
+    {
+      "id": 7,
+      "subject": "Task 7: Storage bucket humanos-attachments",
+      "status": "pending",
+      "description": "**Goal:** Bucket Supabase para adjuntos con policies.\n\n**Files:** supabase/migrations/20260428_007_create_storage_bucket.sql\n\n**Verify:** SELECT id FROM storage.buckets WHERE id='humanos-attachments'.\n\n```json:metadata\n{\"files\":[\"supabase/migrations/20260428_007_create_storage_bucket.sql\"],\"verifyCommand\":\"sql query against storage.buckets\",\"acceptanceCriteria\":[\"bucket exists public=false\",\"policies INSERT/SELECT scopeadas\"]}\n```"
+    },
+    {
+      "id": 8,
+      "subject": "Task 8: copy-sops-to-public script + prebuild integration",
+      "status": "pending",
+      "blockedBy": [1],
+      "description": "**Goal:** PDFs de Docs/SOPs copiados a public/sops/ con index.json.\n\n**Files:** scripts/copy-sops-to-public.ts, public/sops/.gitkeep, package.json (prebuild)\n\n**Verify:** `npm run build:sops && ls public/sops`.\n\n```json:metadata\n{\"files\":[\"scripts/copy-sops-to-public.ts\",\"public/sops/.gitkeep\",\"package.json\"],\"verifyCommand\":\"npm run build:sops\",\"acceptanceCriteria\":[\"public/sops contiene PDFs sanitizados\",\"index.json mapea sop_reference a URL\"]}\n```"
+    },
+    {
+      "id": 9,
+      "subject": "Task 9: Seed auth users script (6 testers)",
+      "status": "pending",
+      "blockedBy": [2],
+      "description": "**Goal:** scripts/seed-auth-users.ts crea 6 cuentas auth y vincula auth_id en humanos.people.\n\n**Files:** scripts/seed-auth-users.ts\n\n**Verify:** SELECT con auth_id IS NOT NULL para los 6 codes.\n\n```json:metadata\n{\"files\":[\"scripts/seed-auth-users.ts\"],\"verifyCommand\":\"npm run seed:auth-users\",\"acceptanceCriteria\":[\"6 cuentas creadas idempotente\",\"auth_id vinculado en people\"]}\n```"
+    },
+    {
+      "id": 10,
+      "subject": "Task 10: Migration seed supervisor_id por departamento",
+      "status": "pending",
+      "description": "**Goal:** Plan B del spec §4.1.1 — asignar supervisor_id a >= 30 de los 52 activos.\n\n**Files:** supabase/migrations/20260428_005_seed_supervisor_ids.sql\n\n**Verify:** SELECT COUNT por dept con supervisor_id.\n\n```json:metadata\n{\"files\":[\"supabase/migrations/20260428_005_seed_supervisor_ids.sql\"],\"verifyCommand\":\"sql aggregate query\",\"acceptanceCriteria\":[\">=30 de 52 con supervisor\",\"ningun self-report\"]}\n```"
+    },
+    {
+      "id": 11,
+      "subject": "Task 11: Migration helper functions (me, is_hr, resolve_approver, next_request_number)",
+      "status": "pending",
+      "description": "**Goal:** 4 funciones SQL con smoke RAISE NOTICE.\n\n**Files:** supabase/migrations/20260428_001_helper_functions.sql\n\n**Verify:** apply_migration sin error, NOTICE visible.\n\n```json:metadata\n{\"files\":[\"supabase/migrations/20260428_001_helper_functions.sql\"],\"verifyCommand\":\"apply_migration via supabase MCP\",\"acceptanceCriteria\":[\"4 funciones existen\",\"smoke notices visibles\",\"resolve sin supervisor retorna NULL + NOTICE\"]}\n```"
+    },
+    {
+      "id": 12,
+      "subject": "Task 12: Migration submit_request RPC + smoke",
+      "status": "pending",
+      "blockedBy": [11],
+      "description": "**Goal:** Funcion atomica submit_request con happy-path probado.\n\n**Files:** supabase/migrations/20260428_002_submit_request.sql\n\n**Verify:** apply_migration + NOTICE de smoke.\n\n```json:metadata\n{\"files\":[\"supabase/migrations/20260428_002_submit_request.sql\"],\"verifyCommand\":\"apply_migration\",\"acceptanceCriteria\":[\"crea request + N approvals + numero\",\"skipea steps con approver NULL\",\"smoke crea y limpia dummy\"]}\n```"
+    },
+    {
+      "id": 13,
+      "subject": "Task 13: Migration decide_approval RPC + smoke",
+      "status": "pending",
+      "blockedBy": [11, 12],
+      "description": "**Goal:** Funcion atomica decide_approval con paths happy y rechazo.\n\n**Files:** supabase/migrations/20260428_003_decide_approval.sql\n\n**Verify:** apply_migration + 2 NOTICES smoke (step 1 y step 2).\n\n```json:metadata\n{\"files\":[\"supabase/migrations/20260428_003_decide_approval.sql\"],\"verifyCommand\":\"apply_migration\",\"acceptanceCriteria\":[\"aprobacion parcial → En Revisión\",\"final → Aprobada\",\"rechazo → Rechazada\",\"doble decisión → exception\",\"non-approver → exception\"]}\n```"
+    },
+    {
+      "id": 14,
+      "subject": "Task 14: Migration reseed approval_chain semantico + ACT_DATOS requires_approval",
+      "status": "pending",
+      "description": "**Goal:** 12 tipos con chains semanticos correctos.\n\n**Files:** supabase/migrations/20260428_004_reseed_approval_chains.sql\n\n**Verify:** SELECT chains de los 5 P1.\n\n```json:metadata\n{\"files\":[\"supabase/migrations/20260428_004_reseed_approval_chains.sql\"],\"verifyCommand\":\"sql select request_types\",\"acceptanceCriteria\":[\"VACACIONES = supervisor_directo,hr_oficial,hr_gerente\",\"ACTUALIZACION_DATOS requires_approval=true\",\"todos los 5 P1 OK\"]}\n```"
+    },
+    {
+      "id": 15,
+      "subject": "Task 15: Migration replace permissive RLS with real policies",
+      "status": "pending",
+      "blockedBy": [11],
+      "description": "**Goal:** Policies por rol segun spec §11.\n\n**Files:** supabase/migrations/20260428_006_replace_rls_policies.sql\n\n**Verify:** smoke + manual (Task 34).\n\n```json:metadata\n{\"files\":[\"supabase/migrations/20260428_006_replace_rls_policies.sql\"],\"verifyCommand\":\"apply_migration\",\"acceptanceCriteria\":[\"policies viejas removidas\",\"requests visibility por relacion\",\"sequences sin acceso directo\"]}\n```"
+    },
+    {
+      "id": 16,
+      "subject": "Task 16: roles.ts + chains.ts (label map + dynamic chain helper)",
+      "status": "pending",
+      "blockedBy": [1],
+      "description": "**Goal:** Labels y effectiveChain helper para PRESTAMO>250.\n\n**Files:** src/lib/approvals/{roles,chains}.ts\n\n**Verify:** typecheck.\n\n```json:metadata\n{\"files\":[\"src/lib/approvals/roles.ts\",\"src/lib/approvals/chains.ts\"],\"verifyCommand\":\"npx tsc --noEmit\",\"acceptanceCriteria\":[\"ROLE_LABEL completo\",\"effectiveChain extiende para PRESTAMO>250\"]}\n```"
+    },
+    {
+      "id": 17,
+      "subject": "Task 17: submitRequestAction server action",
+      "status": "pending",
+      "blockedBy": [3, 6, 12, 14, 16],
+      "description": "**Goal:** Action invoca RPC submit_request + dispara email al primer approver.\n\n**Files:** src/lib/approvals/submit.ts\n\n**Verify:** typecheck + manual smoke desde un form.\n\n```json:metadata\n{\"files\":[\"src/lib/approvals/submit.ts\"],\"verifyCommand\":\"npx tsc --noEmit\",\"acceptanceCriteria\":[\"resuelve chain efectivo\",\"llama RPC y mapea respuesta\",\"envia email al first_approver\"]}\n```"
+    },
+    {
+      "id": 18,
+      "subject": "Task 18: decideApprovalAction server action",
+      "status": "pending",
+      "blockedBy": [3, 6, 13, 16],
+      "description": "**Goal:** Action invoca RPC decide_approval + email apropiado.\n\n**Files:** src/lib/approvals/decide.ts\n\n**Verify:** typecheck + manual.\n\n```json:metadata\n{\"files\":[\"src/lib/approvals/decide.ts\"],\"verifyCommand\":\"npx tsc --noEmit\",\"acceptanceCriteria\":[\"verifica approver_id = me.id\",\"is_final → email solicitante\",\"else → email next_approver\",\"revalidatePath\"]}\n```"
+    },
+    {
+      "id": 19,
+      "subject": "Task 19: applyActDatosAction server action",
+      "status": "pending",
+      "blockedBy": [3],
+      "description": "**Goal:** HR-only, aplica form_data al people record (mapeo del spec §6.4).\n\n**Files:** src/lib/approvals/apply-act-datos.ts\n\n**Verify:** typecheck + manual.\n\n```json:metadata\n{\"files\":[\"src/lib/approvals/apply-act-datos.ts\"],\"verifyCommand\":\"npx tsc --noEmit\",\"acceptanceCriteria\":[\"solo hr_admin\",\"solo type=ACTUALIZACION_DATOS y status=Aprobada\",\"mapea address/phone/marital_status/num_kids\",\"status → Completada\"]}\n```"
+    },
+    {
+      "id": 20,
+      "subject": "Task 20: zod schemas (5) + form registry",
+      "status": "pending",
+      "blockedBy": [1],
+      "description": "**Goal:** 5 schemas zod con validaciones del spec §6 + registry mapping code → {schema, helpInfo}.\n\n**Files:** src/lib/forms/schemas/*.ts (5), src/lib/forms/registry.ts\n\n**Verify:** typecheck.\n\n```json:metadata\n{\"files\":[\"src/lib/forms/schemas/vacaciones.ts\",\"src/lib/forms/schemas/accion-personal.ts\",\"src/lib/forms/schemas/prestamo.ts\",\"src/lib/forms/schemas/actualizacion-datos.ts\",\"src/lib/forms/schemas/reclamo-pago.ts\",\"src/lib/forms/registry.ts\"],\"verifyCommand\":\"npx tsc --noEmit\",\"acceptanceCriteria\":[\"5 schemas con refinements del spec\",\"registry exporta helpInfo y chain_legible\"]}\n```"
+    },
+    {
+      "id": 21,
+      "subject": "Task 21: VacacionesForm + VacacionesDetail",
+      "status": "pending",
+      "blockedBy": [4, 17, 20],
+      "description": "**Goal:** Form RHF+zod, 1-3 rangos dinamicos, submit → action.\n\n**Files:** src/components/forms/Vacaciones{Form,Detail}.tsx\n\n**Verify:** browser manual.\n\n```json:metadata\n{\"files\":[\"src/components/forms/VacacionesForm.tsx\",\"src/components/forms/VacacionesDetail.tsx\"],\"verifyCommand\":\"manual browser\",\"acceptanceCriteria\":[\"3 rangos togglable\",\"submit redirige a detalle\",\"detail renderiza form_data\"]}\n```"
+    },
+    {
+      "id": 22,
+      "subject": "Task 22: AccionPersonalForm + Detail",
+      "status": "pending",
+      "blockedBy": [4, 17, 20],
+      "description": "**Goal:** Form con sub_tipo select + observaciones + dropdown de subordinados directos.\n\n**Files:** src/components/forms/AccionPersonal{Form,Detail}.tsx\n\n**Verify:** browser manual.\n\n```json:metadata\n{\"files\":[\"src/components/forms/AccionPersonalForm.tsx\",\"src/components/forms/AccionPersonalDetail.tsx\"],\"verifyCommand\":\"manual\",\"acceptanceCriteria\":[\"6 sub-tipos del PDF\",\"empleado_objeto default = me; supervisor/HR pueden para subordinados\"]}\n```"
+    },
+    {
+      "id": 23,
+      "subject": "Task 23: PrestamoForm + Detail (con modal $250)",
+      "status": "pending",
+      "blockedBy": [4, 17, 20],
+      "description": "**Goal:** Modal Dialog con 2 botones Continuar / Reducir a $250 cuando monto > 250.\n\n**Files:** src/components/forms/Prestamo{Form,Detail}.tsx\n\n**Verify:** manual con $200 (sin modal) y $400 (modal aparece).\n\n```json:metadata\n{\"files\":[\"src/components/forms/PrestamoForm.tsx\",\"src/components/forms/PrestamoDetail.tsx\"],\"verifyCommand\":\"manual\",\"acceptanceCriteria\":[\"modal abre con monto>250\",\"texto cita IC-RH-D-02\",\"2 botones funcionales\"]}\n```"
+    },
+    {
+      "id": 24,
+      "subject": "Task 24: ActualizacionDatosForm + Detail (pre-fill + diff)",
+      "status": "pending",
+      "blockedBy": [4, 17, 20],
+      "description": "**Goal:** Pre-fill desde humanos.people del solicitante; submit guarda diff.\n\n**Files:** src/components/forms/ActualizacionDatos{Form,Detail}.tsx\n\n**Verify:** manual.\n\n```json:metadata\n{\"files\":[\"src/components/forms/ActualizacionDatosForm.tsx\",\"src/components/forms/ActualizacionDatosDetail.tsx\"],\"verifyCommand\":\"manual\",\"acceptanceCriteria\":[\"campos pre-poblados\",\"form_data captura cambios\"]}\n```"
+    },
+    {
+      "id": 25,
+      "subject": "Task 25: ReclamoPagoForm + Detail (tabla 5x3)",
+      "status": "pending",
+      "blockedBy": [4, 17, 20],
+      "description": "**Goal:** Tabla 5x3 con auto-calculo de diferencia.\n\n**Files:** src/components/forms/ReclamoPago{Form,Detail}.tsx\n\n**Verify:** manual.\n\n```json:metadata\n{\"files\":[\"src/components/forms/ReclamoPagoForm.tsx\",\"src/components/forms/ReclamoPagoDetail.tsx\"],\"verifyCommand\":\"manual\",\"acceptanceCriteria\":[\"5 categorias fijas\",\"diferencia=empleado-supervisor watch\"]}\n```"
+    },
+    {
+      "id": 26,
+      "subject": "Task 26: ACT_DATOS apply button en RequestActions",
+      "status": "pending",
+      "blockedBy": [19],
+      "description": "**Goal:** Boton 'Aplicar al expediente' visible solo para HR si type=ACT_DATOS y status=Aprobada.\n\n**Files:** src/components/solicitudes/RequestActions.tsx\n\n**Verify:** manual con request aprobado.\n\n```json:metadata\n{\"files\":[\"src/components/solicitudes/RequestActions.tsx\"],\"verifyCommand\":\"manual\",\"acceptanceCriteria\":[\"boton aparece bajo condiciones\",\"click ejecuta action y revalida\"]}\n```"
+    },
+    {
+      "id": 27,
+      "subject": "Task 27: /ayuda knowledge base",
+      "status": "pending",
+      "blockedBy": [5, 8, 14, 16, 20],
+      "description": "**Goal:** Lista 12 tipos por categoria con SOP links + callout Hrs Extras.\n\n**Files:** src/app/(app)/ayuda/page.tsx\n\n**Verify:** manual.\n\n```json:metadata\n{\"files\":[\"src/app/(app)/ayuda/page.tsx\"],\"verifyCommand\":\"manual\",\"acceptanceCriteria\":[\"P1 con boton activo\",\"P2 con badge Próximamente\",\"links SOP funcionan\"]}\n```"
+    },
+    {
+      "id": 28,
+      "subject": "Task 28: /solicitudes/nueva grid de 12 tipos",
+      "status": "pending",
+      "blockedBy": [5, 14],
+      "description": "**Goal:** Grid de cards. P1 link, P2 disabled.\n\n**Files:** src/app/(app)/solicitudes/nueva/page.tsx\n\n**Verify:** manual.\n\n```json:metadata\n{\"files\":[\"src/app/(app)/solicitudes/nueva/page.tsx\"],\"verifyCommand\":\"manual\",\"acceptanceCriteria\":[\"12 tipos visibles\",\"P1 navega; P2 no\"]}\n```"
+    },
+    {
+      "id": 29,
+      "subject": "Task 29: /solicitudes/nueva/[code] dynamic form route",
+      "status": "pending",
+      "blockedBy": [21, 22, 23, 24, 25],
+      "description": "**Goal:** Server component switch sobre code; pre-fetch initialValues.\n\n**Files:** src/app/(app)/solicitudes/nueva/[code]/page.tsx\n\n**Verify:** manual con cada P1.\n\n```json:metadata\n{\"files\":[\"src/app/(app)/solicitudes/nueva/[code]/page.tsx\"],\"verifyCommand\":\"manual\",\"acceptanceCriteria\":[\"5 codes P1 renderizan form correcto\",\"code invalido → 404 o /ayuda\"]}\n```"
+    },
+    {
+      "id": 30,
+      "subject": "Task 30: /solicitudes lista + /solicitudes/[id] detalle",
+      "status": "pending",
+      "blockedBy": [5, 15, 18, 21, 22, 23, 24, 25, 26],
+      "description": "**Goal:** Mis solicitudes + detalle con timeline + actions contextuales.\n\n**Files:** src/app/(app)/solicitudes/page.tsx, src/app/(app)/solicitudes/[id]/page.tsx, src/components/solicitudes/{RequestList,RequestStatusBadge,RequestTimeline,RequestActions,RequestDetailRenderer}.tsx\n\n**Verify:** manual flujo completo.\n\n```json:metadata\n{\"files\":[\"src/app/(app)/solicitudes/page.tsx\",\"src/app/(app)/solicitudes/[id]/page.tsx\",\"src/components/solicitudes/RequestList.tsx\",\"src/components/solicitudes/RequestStatusBadge.tsx\",\"src/components/solicitudes/RequestTimeline.tsx\",\"src/components/solicitudes/RequestActions.tsx\",\"src/components/solicitudes/RequestDetailRenderer.tsx\"],\"verifyCommand\":\"manual\",\"acceptanceCriteria\":[\"lista filtra por requester=me\",\"timeline muestra steps en orden\",\"actions contextuales por rol\"]}\n```"
+    },
+    {
+      "id": 31,
+      "subject": "Task 31: /admin dashboard HR",
+      "status": "pending",
+      "blockedBy": [5, 15, 18],
+      "description": "**Goal:** 4 KPIs + tabla filtrable. Gateado a hr_admin.\n\n**Files:** src/app/(app)/admin/page.tsx, src/components/admin/{AdminKPICards,AdminRequestsTable}.tsx\n\n**Verify:** login HR + login non-HR.\n\n```json:metadata\n{\"files\":[\"src/app/(app)/admin/page.tsx\",\"src/components/admin/AdminKPICards.tsx\",\"src/components/admin/AdminRequestsTable.tsx\"],\"verifyCommand\":\"manual\",\"acceptanceCriteria\":[\"4 KPIs reales\",\"tabla con filtros estado/tipo/requester/fecha\",\"non-HR redirige\"]}\n```"
+    },
+    {
+      "id": 32,
+      "subject": "Task 32: /directorio (Module 1.5)",
+      "status": "pending",
+      "blockedBy": [5],
+      "description": "**Goal:** Lista 52 activos con search + filter pills.\n\n**Files:** src/app/(app)/directorio/page.tsx\n\n**Verify:** manual.\n\n```json:metadata\n{\"files\":[\"src/app/(app)/directorio/page.tsx\"],\"verifyCommand\":\"manual\",\"acceptanceCriteria\":[\"52 activos visibles\",\"search funciona\",\"filter pills por dept y office\"]}\n```"
+    },
+    {
+      "id": 33,
+      "subject": "Task 33: /perfil read-only (Module 1.5)",
+      "status": "pending",
+      "blockedBy": [5],
+      "description": "**Goal:** Datos del empleado autenticado read-only + CTA actualizacion.\n\n**Files:** src/app/(app)/perfil/page.tsx\n\n**Verify:** manual.\n\n```json:metadata\n{\"files\":[\"src/app/(app)/perfil/page.tsx\"],\"verifyCommand\":\"manual\",\"acceptanceCriteria\":[\"secciones Identidad/Contacto/Laboral/Otros\",\"CTA → /solicitudes/nueva/actualizacion-datos\"]}\n```"
+    },
+    {
+      "id": 34,
+      "subject": "Task 34: Docs/MANUAL_VERIFICATION.md",
+      "status": "pending",
+      "blockedBy": [27, 28, 29, 30, 31, 32, 33],
+      "description": "**Goal:** Checklist ~20 pasos para James pre-demo (spec §13.3).\n\n**Files:** Docs/MANUAL_VERIFICATION.md\n\n**Verify:** revision visual.\n\n```json:metadata\n{\"files\":[\"Docs/MANUAL_VERIFICATION.md\"],\"verifyCommand\":\"none\",\"acceptanceCriteria\":[\"secciones Auth/KB/Submit/Prestamo/ActDatos/RLS/Admin/M1.5\",\"~20 pasos numerados\"]}\n```"
+    },
+    {
+      "id": 35,
+      "subject": "Task 35: Pre-deploy verification + Vercel preview",
+      "status": "pending",
+      "blockedBy": [9, 10, 34],
+      "description": "**Goal:** lint+tsc+build pasan; deploy preview accesible.\n\n**Files:** none (push + deploy)\n\n**Verify:** npm run lint && npx tsc --noEmit && npm run build && deploy URL responde.\n\n```json:metadata\n{\"files\":[],\"verifyCommand\":\"npm run lint && npx tsc --noEmit && npm run build\",\"acceptanceCriteria\":[\"lint+tsc+build OK\",\"deploy preview URL funciona\",\"login KOSM01 OK en preview\"]}\n```"
+    },
+    {
+      "id": 36,
+      "subject": "Task 36: CHANGELOG resumen + TRAIL update",
+      "status": "pending",
+      "blockedBy": [35],
+      "description": "**Goal:** Cierre del plan: CHANGELOG con [bd] lines + features + decision log; TRAIL marca M1 done.\n\n**Files:** Docs/CHANGELOG.md, Docs/TRAIL.md\n\n**Verify:** revision visual.\n\n```json:metadata\n{\"files\":[\"Docs/CHANGELOG.md\",\"Docs/TRAIL.md\"],\"verifyCommand\":\"none\",\"acceptanceCriteria\":[\"CHANGELOG entry de la sesion\",\"TRAIL Module 1 marcado done\"]}\n```"
+    }
+  ]
+}
