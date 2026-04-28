@@ -49,3 +49,10 @@ Formato: cada sesión agrega una entrada con fecha. Para cambios de BD usar `[bd
 ### Repo (cont.)
 - `scripts/copy-sops-to-public.ts` (`acc63f8`): copia los 29 PDFs de SOPs a `public/sops/` con nombres sanitizados + `index.json` mapeando `sop_reference` (ej. `ICRHF0503`) → URL servible. Hook `prebuild` y `predev`. 28 PDFs indexados (uno no matchea regex IC-RH-...).
 - `scripts/seed-auth-users.ts` (`07d07f0`): seed idempotente de 6 cuentas auth de prueba (HR team + Rodrigo + Jaime). Password inicial: `TestPass2026!`. Run: `npm run seed:auth-users`. **James debe correrlo después de configurar `.env.local` con `SUPABASE_SERVICE_ROLE_KEY`.**
+
+### [bd] Fase 1 — Funciones Postgres + RLS (Tasks 11-15)
+- `humanos.me()`, `humanos.is_hr()`, `humanos.resolve_approver(role, requester_id)`, `humanos.next_request_number()` (`52a3e01`). `resolve_approver` con fallback A: si supervisor_directo es NULL, retorna NULL + RAISE NOTICE.
+- `humanos.submit_request(type_code, requester_id, form_data, attachments, chain[])` atómica (`c2f0482`). Saltea steps con approver=NULL.
+- `humanos.decide_approval(approval_id, decider_id, decision, comments)` atómica (`37b3388`). Estados: Aprobada/Rechazada/En Revisión.
+- Re-seed approval_chain semántico para los 12 tipos (`9f0893b`). ACTUALIZACION_DATOS pasó de requires_approval=false → true.
+- Reemplazo de RLS permisiva por policies reales por rol (`880a181`). Writes solo via RPC SECURITY DEFINER o service-role.
