@@ -1,10 +1,5 @@
-export function RootPage() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-8">
-      <h1 className="text-3xl font-semibold">HumanOS</h1>
-      <p className="mt-2 text-sm text-gray-500">Plataforma de RRHH de ICONSA</p>
-    </main>
-  );
-}
+import { redirect } from 'next/navigation';
 
-export default RootPage;
+export default function Root() {
+  redirect('/inicio');
+}
