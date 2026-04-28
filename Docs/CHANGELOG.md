@@ -94,3 +94,7 @@ Formato: cada sesión agrega una entrada con fecha. Para cambios de BD usar `[bd
 - **Resend keys** comentados en `.env.local` por seguridad. James debe descomentarlos antes de probar emails. Helper `sendNotification` no crashea si la key falta — solo log warning.
 - **Pre-deploy verificación local OK**: `npm run lint` (5 warnings RHF watch, 0 errors), `npx tsc --noEmit` (clean), `npm run build` (clean).
 - **Push pendiente** a `origin/main` para disparar Vercel deploy preview. Requiere permiso explícito de James.
+
+### Fix — URL base de emails resuelta automáticamente
+
+- `src/lib/utils/app-url.ts` nuevo con `getAppUrl()` y `'server-only'` directive. Cascada: `NEXT_PUBLIC_APP_URL` (override manual) → `https://${VERCEL_URL}` (inyectada por Vercel en cada deploy) → `http://localhost:3001` (dev). `src/lib/email/send.ts` reemplazó el `process.env.NEXT_PUBLIC_APP_URL ?? ...` por `getAppUrl()`. Ya no es necesario setear `NEXT_PUBLIC_APP_URL` en Vercel a menos que se quiera fijar un dominio custom (ej. `humanos.iconsa.com.pa`).

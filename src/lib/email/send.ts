@@ -3,6 +3,7 @@ import { getResend } from './client';
 import { renderSolicitudEnviada } from './templates/solicitud-enviada';
 import { renderSolicitudDecidida } from './templates/solicitud-decidida';
 import { renderDecisionFinal } from './templates/decision-final';
+import { getAppUrl } from '@/lib/utils/app-url';
 
 export type NotificationType = 'solicitud-enviada' | 'solicitud-decidida' | 'decision-final';
 
@@ -31,7 +32,7 @@ export async function sendNotification(
   const testMode = process.env.NOTIFICATION_TEST_EMAIL;
   const toAddress = testMode || payload.to;
   const subjectPrefix = testMode ? `[to=${payload.to}] ` : '';
-  const link = `${process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3001'}/solicitudes/${payload.request_id}`;
+  const link = `${getAppUrl()}/solicitudes/${payload.request_id}`;
 
   let subject = '';
   let html = '';
