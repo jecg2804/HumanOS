@@ -5,6 +5,7 @@ import { useForm, useFieldArray, type FieldErrors } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { vacacionesSchema, type VacacionesData } from '@/lib/forms/schemas/vacaciones';
 import { submitRequestAction } from '@/lib/approvals/submit';
+import { collectErrorMessages } from '@/lib/forms/error-utils';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -166,18 +167,4 @@ function FormErrors({ errors }: { errors: FieldErrors<VacacionesData> }) {
       ))}
     </ul>
   );
-}
-
-function collectErrorMessages(errors: FieldErrors<VacacionesData>): string[] {
-  const out: string[] = [];
-  function walk(node: unknown) {
-    if (!node || typeof node !== 'object') return;
-    const obj = node as Record<string, unknown>;
-    if (typeof obj.message === 'string') out.push(obj.message);
-    for (const k of Object.keys(obj)) {
-      if (k !== 'message' && k !== 'ref' && k !== 'type') walk(obj[k]);
-    }
-  }
-  walk(errors);
-  return Array.from(new Set(out));
 }
