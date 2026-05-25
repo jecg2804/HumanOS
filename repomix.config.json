@@ -18,7 +18,11 @@
     "package.json",
     "tsconfig.json",
     "next.config.*",
+    "repomix.config.json",
+    "Target_docs/**",
     "tailwind.config.*",
+    "supabase/**",
+    "README_APPLY.md",
     "middleware.ts"
   ],
   "ignore": {

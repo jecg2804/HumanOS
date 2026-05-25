@@ -33,7 +33,7 @@ The content is organized as follows:
 <notes>
 - Some files may have been excluded based on .gitignore rules and Repomix's configuration
 - Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
-- Only files matching these patterns are included: src/**, Docs/**, .claude/**, CLAUDE.md, humanos-mvp-spec.md, package.json, tsconfig.json, next.config.*, tailwind.config.*, middleware.ts
+- Only files matching these patterns are included: src/**, Docs/**, .claude/**, CLAUDE.md, humanos-mvp-spec.md, package.json, tsconfig.json, next.config.*, repomix.config.json, Target_docs/**, tailwind.config.*, supabase/**, README_APPLY.md, middleware.ts
 - Files matching these patterns are excluded: node_modules/**, .next/**, dist/**, build/**, *.log, .env*, package-lock.json, yarn.lock, pnpm-lock.yaml, *.test.*.snap, playwright-report/**, test-results/**, public/**, *.ico, *.png, *.jpg, *.jpeg, *.svg, *.woff*, repomix-output.xml
 - Files matching patterns in .gitignore are excluded
 - Files matching default ignore patterns are excluded
@@ -57,6 +57,7 @@ CLAUDE.md
 Docs/BACKLOG.md
 Docs/CHANGELOG.md
 Docs/feature-specs/.gitkeep
+Docs/feature-specs/humanos-mvp-spec.md
 Docs/feature-specs/MODULE-1-SOLICITUDES.md
 Docs/MANUAL_VERIFICATION.md
 Docs/superpowers/plans/.gitkeep
@@ -65,9 +66,10 @@ Docs/superpowers/plans/2026-04-28-module-1-solicitudes-plan.md.tasks.json
 Docs/superpowers/specs/.gitkeep
 Docs/superpowers/specs/2026-04-28-module-1-solicitudes-design.md
 Docs/TRAIL.md
-humanos-mvp-spec.md
 next.config.ts
 package.json
+README_APPLY.md
+repomix.config.json
 src/app/(app)/admin/page.tsx
 src/app/(app)/ayuda/page.tsx
 src/app/(app)/directorio/DirectoryClient.tsx
@@ -140,11 +142,261 @@ src/lib/utils.ts
 src/lib/utils/app-url.ts
 src/middleware.ts
 src/types/database.ts
+supabase/migrations/20260428_001_helper_functions.sql
+supabase/migrations/20260428_002_submit_request.sql
+supabase/migrations/20260428_003_decide_approval.sql
+supabase/migrations/20260428_004_reseed_approval_chains.sql
+supabase/migrations/20260428_005_seed_supervisor_ids.sql
+supabase/migrations/20260428_006_replace_rls_policies.sql
+supabase/migrations/20260428_007_create_storage_bucket.sql
+Target_docs/COMUNICADOS/IC-CU-001 Cambios en Formularios de Incidentes y Accidentes y Control de Calidad.pdf
+Target_docs/COMUNICADOS/IC-CU-002 Implementación de Acciones Preventivas.pdf
+Target_docs/COMUNICADOS/Memo - Responsabilidad sobre Vehiculos y Equipos de la empre.pdf
+Target_docs/COMUNICADOS/Memo-Politica de uso de celulares (firma).pdf
+Target_docs/COMUNICADOS/Memo-Politica de uso de celulares en Areas de Trabajo.pdf
+Target_docs/COMUNICADOS/Memorandum - Equipos de devolucion con Liquidacion de Emplea.pdf
+Target_docs/COMUNICADOS/Memorandum - Firma de contrato de trabajo.pdf
+Target_docs/COMUNICADOS/Memorandum - Vehiculos de la empresa transp de empleados.pdf
+Target_docs/COMUNICADOS/Memorandum -Prohibicion sobre apropiacion de materiales.pdf
+Target_docs/IC-GP-F-01-14 Hoja de Tiempo.doc
+Target_docs/IC-GP-F-01-15 Planilla payday.xls
+Target_docs/Informatica/Documentos/IC-TI-D-01 Politica de Equipo de computo y claves de acceso.pdf
+Target_docs/Informatica/Documentos/IC-TI-D-02 Politica de uso de internet y correo electronico.pdf
+Target_docs/Informatica/Documentos/IC-TI-D-03 Politica de mantenimiento de equipos.pdf
+Target_docs/RECURSOS HUMANOS/desktop.ini
+Target_docs/RECURSOS HUMANOS/Documentos/Descripicion de labores, Suntracs-Santraico 2010.pdf
+Target_docs/RECURSOS HUMANOS/Documentos/IC-RH-D-01 Inducción para Personal de Campo.pdf
+Target_docs/RECURSOS HUMANOS/Documentos/IC-RH-D-02 Condiciones especiales para la solicitud de prestamo de empleado.pdf
+Target_docs/RECURSOS HUMANOS/Documentos/IC-RH-D-04 Folleto Informativo sobre Calculo de Impuesto Sobre la Renta.pdf
+Target_docs/RECURSOS HUMANOS/Documentos/IC-RH-D-05 Glosario y aplicación de prestaciones segun Contratos de Trabajo.pdf
+Target_docs/RECURSOS HUMANOS/Documentos/IC-RH-D-06 Normas de convivencia dentro del comedor.pdf
+Target_docs/RECURSOS HUMANOS/Documentos/IC-RH-D-07  Política contra el trabajo infantil y trata de personas..pdf
+Target_docs/RECURSOS HUMANOS/Formularios externos/ASSA/ASSA Tarjeta de Colectivo de Vida Editable 2021.pdf
+Target_docs/RECURSOS HUMANOS/Formularios externos/Banco/Formulario-de-Datos-y-Activacion-de-Cuentas-Paquetes-Planilla(26 mayo 22).docx
+Target_docs/RECURSOS HUMANOS/Formularios externos/Banco/VIEJOS/Formulario BGeneral, datos persona natural.pdf
+Target_docs/RECURSOS HUMANOS/Formularios externos/Banco/VIEJOS/Formulario de Auto-Certificación de Residencia Fiscal de Persona Natural - BG.pdf
+Target_docs/RECURSOS HUMANOS/Formularios externos/Banco/VIEJOS/PC6840-Autorizacion de Apertura de Cuenta Planilla.doc
+Target_docs/RECURSOS HUMANOS/Formularios externos/CSS/#2 CSS Reporte Acc de trabajo jul 2013.pdf
+Target_docs/RECURSOS HUMANOS/Formularios externos/CSS/#3 Formulario  Pago RProfesional.pdf
+Target_docs/RECURSOS HUMANOS/Formularios externos/CSS/Formulario recaída de accidente de trabajo o enfermedad profesional.pdf
+Target_docs/RECURSOS HUMANOS/Formularios externos/CSS/Tramite CSS Primera Vez/CSS, Solicitud de afiliacion.pdf
+Target_docs/RECURSOS HUMANOS/Formularios externos/CSS/Tramite CSS Primera Vez/Tarjeta Testamentaria (Herederos) CSS.pdf
+Target_docs/RECURSOS HUMANOS/Formularios externos/Sindicato/Hoja de afiliacion de Sindicato.pdf
+Target_docs/RECURSOS HUMANOS/Formularios Generales/Formatos no ISO/Acuerdo de pago-Sábado 19 de abril.docx
+Target_docs/RECURSOS HUMANOS/Formularios Generales/Formatos no ISO/Calculo de Impuesto Sobre la Renta.xlsx
+Target_docs/RECURSOS HUMANOS/Formularios Generales/Formatos no ISO/Formulario de Control de Pago de Horas.xls
+Target_docs/RECURSOS HUMANOS/Formularios Generales/Formatos no ISO/Solicitud de día libre a la empresa.doc
+Target_docs/RECURSOS HUMANOS/Formularios Generales/IC-RH-F-00-01 Registro de Pruebas de Alcoholimetro y Alcoholemia.doc
+Target_docs/RECURSOS HUMANOS/Formularios Generales/IC-RH-F-00-02 Matriz de valoración de Formulario de PNC.xls
+Target_docs/RECURSOS HUMANOS/Formularios Generales/IC-RH-F-00-03 Matriz de valoración de Formulario de  NC.xls
+Target_docs/RECURSOS HUMANOS/Formularios Generales/IC-RH-F-00-04 Entrega de Combustible.pdf
+Target_docs/RECURSOS HUMANOS/Formularios Generales/IC-RH-F-00-05 Entrevista Salida.pdf
+Target_docs/RECURSOS HUMANOS/Formularios Generales/IC-RH-F-00-06 Solicitud de Referencias Laborales.pdf
+Target_docs/RECURSOS HUMANOS/Formularios Generales/IC-RH-F-00-07 Actualización de Datos.pdf
+Target_docs/RECURSOS HUMANOS/Formularios Generales/IC-RH-F-00-08 Solicitud de Permiso (HORAS).doc
+Target_docs/RECURSOS HUMANOS/IC-RH-F-04-01 informacion de emergencia del empleado.pdf
+Target_docs/RECURSOS HUMANOS/Instrucciones Tecnicas/IC-RH-IT-01 Instrucción para organizar el expediente de personal.pdf
+Target_docs/RECURSOS HUMANOS/Instrucciones Tecnicas/IC-RH-IT-02 Para descuento directo de empleado y pago a acreedores.pdf
+Target_docs/RECURSOS HUMANOS/Instrucciones Tecnicas/IC-RH-IT-03 Para estimacion y calculo de descuento de ISR.pdf
+Target_docs/RECURSOS HUMANOS/Instrucciones Tecnicas/IC-RH-IT-04 Guia para el desarrollo del formulario de evaluación de empleado de campo (IC-RH-F-03-04).pdf
+Target_docs/RECURSOS HUMANOS/Manuales/IC-RH-M-01 Manual de Ética y Conducta VV01.pdf
+Target_docs/RECURSOS HUMANOS/RH-01 Formularios de Seleccion y Contratacion (publicos)/IC-RH-F-01-08 Formato de Solicitud de Empleo vv2.pdf
+Target_docs/RECURSOS HUMANOS/RH-01 Formularios de Seleccion y Contratacion (publicos)/IC-RH-F-01-09  Hoja de Entrada de Personal vv2.pdf
+Target_docs/RECURSOS HUMANOS/RH-01 Formularios de Seleccion y Contratacion (publicos)/IC-RH-PO-01 Selección y Contratación del Personal.pdf
+Target_docs/RECURSOS HUMANOS/RH-02 Capacitacion (Publico)/IC-RH-F-02-04 Lista de Asistencia a Capacitacion.pdf
+Target_docs/RECURSOS HUMANOS/RH-02 Capacitacion (Publico)/IC-RH-F-02-05 Evaluacion post entrenamiento.pdf
+Target_docs/RECURSOS HUMANOS/RH-02 Capacitacion (Publico)/IC-RH-F-02-07 Firma de Recibida Inducción de Personal de Campo.pdf
+Target_docs/RECURSOS HUMANOS/RH-02 Capacitacion (Publico)/IC-RH-F-02-09 Solicitud y Evaluación de Entrenamiento por Supervisores.pdf
+Target_docs/RECURSOS HUMANOS/RH-03 Formularios de Evaluacion de Desempeno (publicos)/IC-RH-F-03-03 Evaluacion de desempeño corta semestral.pdf
+Target_docs/RECURSOS HUMANOS/RH-03 Formularios de Evaluacion de Desempeno (publicos)/IC-RH-F-03-04 Evaluacion de empleado de campo.pdf
+Target_docs/RECURSOS HUMANOS/RH-05 Acciones de personal/Formularios/IC-RH-F-05-01 Acciones de personal.pdf
+Target_docs/RECURSOS HUMANOS/RH-05 Acciones de personal/Formularios/IC-RH-F-05-02 Prestamo a Empleados.pdf
+Target_docs/RECURSOS HUMANOS/RH-05 Acciones de personal/Formularios/IC-RH-F-05-03 Solicitud de Vacaciones.pdf
+Target_docs/RECURSOS HUMANOS/RH-05 Acciones de personal/Formularios/IC-RH-F-05-04 Memo de Constancia de Amonestacion.pdf
+Target_docs/RECURSOS HUMANOS/RH-05 Acciones de personal/Formularios/IC-RH-F-05-05 Reclamo sobre pago.pdf
+Target_docs/RECURSOS HUMANOS/RH-05 Acciones de personal/IC-RH-PO-05 Acciones de Personal.pdf
+Target_docs/RECURSOS HUMANOS/RH-06 Administración de Planilla/IC-RH-PO-06 Administración de Planilla.pdf
+Target_docs/SEGURIDAD, SALUD OCUP. Y AMBIENTE (SSOA)/Documentos/IC-SSOA-D-00-01 Inducción de Personal de Campo.pdf
+Target_docs/SEGURIDAD, SALUD OCUP. Y AMBIENTE (SSOA)/Documentos/IC-SSOA-D-00-02  Guia para el manejo seguro de agua de sentina.pdf
+Target_docs/SEGURIDAD, SALUD OCUP. Y AMBIENTE (SSOA)/Documentos/IC-SSOA-D-00-03 Protocolo de Trabajo Seguro en Operaciones Marinas.pdf
+Target_docs/SEGURIDAD, SALUD OCUP. Y AMBIENTE (SSOA)/Formularios Generales/IC-SSOA-F-00-01 Reporte Diario de SSOA vv02.doc
+Target_docs/SEGURIDAD, SALUD OCUP. Y AMBIENTE (SSOA)/Formularios Generales/IC-SSOA-F-00-02 Declaración de Hecho.doc
+Target_docs/SEGURIDAD, SALUD OCUP. Y AMBIENTE (SSOA)/Formularios Generales/IC-SSOA-F-00-03  Ficha de Control de Prueba de Equipo de Protección Personal.doc
+Target_docs/SEGURIDAD, SALUD OCUP. Y AMBIENTE (SSOA)/Formularios Generales/IC-SSOA-F-00-14 Informe de Acción Preventiva.doc
+Target_docs/SEGURIDAD, SALUD OCUP. Y AMBIENTE (SSOA)/Formularios/IC-SSOA-F-01-01 Analisis de Trabajo Seguro ATS.doc
+Target_docs/SEGURIDAD, SALUD OCUP. Y AMBIENTE (SSOA)/Formularios/IC-SSOA-F-01-02 Reporte de Incidente y Accidente VV04 final.docx
+Target_docs/SEGURIDAD, SALUD OCUP. Y AMBIENTE (SSOA)/Formularios/IC-SSOA-F-01-03 Registro de Asistencia a Charlas de SSOA  VV02 final.pdf
+Target_docs/SEGURIDAD, SALUD OCUP. Y AMBIENTE (SSOA)/Formularios/IC-SSOA-F-01-04 Control de extintores en Proyectos.docx
+Target_docs/SEGURIDAD, SALUD OCUP. Y AMBIENTE (SSOA)/Formularios/IC-SSOA-F-01-05 Inspección de EPPs en proyecto y sucursales.docx
+Target_docs/SEGURIDAD, SALUD OCUP. Y AMBIENTE (SSOA)/Formularios/IC-SSOA-F-01-06 Requerimientos de SSOA para proyectos y sucursales b3.doc
+Target_docs/SEGURIDAD, SALUD OCUP. Y AMBIENTE (SSOA)/Formularios/IC-SSOA-F-01-07 Auditorías Internas de Cumplimiento de SOA.docx
+Target_docs/SEGURIDAD, SALUD OCUP. Y AMBIENTE (SSOA)/Formularios/IC-SSOA-F-01-08 Control de Limpieza de baños portátiles VV02 final.pdf
+Target_docs/SEGURIDAD, SALUD OCUP. Y AMBIENTE (SSOA)/Formularios/IC-SSOA-F-01-09 Lista de revisión de seguridad salud e Higiene b1.doc
+Target_docs/SEGURIDAD, SALUD OCUP. Y AMBIENTE (SSOA)/Formularios/IC-SSOA-F-01-10 Líneas de Emergencias.doc
+Target_docs/SEGURIDAD, SALUD OCUP. Y AMBIENTE (SSOA)/Formularios/IC-SSOA-F-01-11 Checklist para Botiquín VV03 final.pdf
+Target_docs/SEGURIDAD, SALUD OCUP. Y AMBIENTE (SSOA)/Formularios/IC-SSOA-F-01-12 Lista de Chequeo del Taller de Chilibre vv2.pdf
+Target_docs/SEGURIDAD, SALUD OCUP. Y AMBIENTE (SSOA)/Formularios/IC-SSOA-F-01-13 Lista de Verificación PAMA.pdf
+Target_docs/SEGURIDAD, SALUD OCUP. Y AMBIENTE (SSOA)/Instrucciones Tecnicas/IC-SSOA-IT-01 Modelo de Reporte Diario de SSOA.pdf
+Target_docs/SEGURIDAD, SALUD OCUP. Y AMBIENTE (SSOA)/Instrucciones Tecnicas/IC-SSOA-IT-02 Para completar informe de incidentes y accidentes.pdf
+Target_docs/SEGURIDAD, SALUD OCUP. Y AMBIENTE (SSOA)/Instrucciones Tecnicas/IC-SSOA-IT-03 Instrucción técnica para trabajos con actividad eléctrica.pdf
+Target_docs/SEGURIDAD, SALUD OCUP. Y AMBIENTE (SSOA)/Manuales/IC-SSOA-M-01 MANUAL SEGURIDAD ICONSA.pdf
+Target_docs/SEGURIDAD, SALUD OCUP. Y AMBIENTE (SSOA)/Manuales/IC-SSOA-M-03 Respuesta ante derrames de hidrocarburos.pdf
+Target_docs/SEGURIDAD, SALUD OCUP. Y AMBIENTE (SSOA)/Manuales/IC-SSOA-M-04 Manual de protección ambiental.pdf
 tsconfig.json
 </directory_structure>
 
 <files>
 This section contains the contents of the repository's files.
+
+<file path="Docs/feature-specs/humanos-mvp-spec.md">
+  1: # HumanOS MVP — Spec para Claude Code
+  2: 
+  3: ## Qué es HumanOS
+  4: 
+  5: App interna de RRHH para ICONSA (empresa de construcción pesada en Panamá). Reemplaza Excel + papel + WhatsApp para los procesos de Samantha Kosmas (Gerente RRHH). Es una app productiva — Samantha y su equipo la van a usar después del MVP.
+  6: 
+  7: Reemplaza también a Humand (~$4/usuario/mes), una plataforma genérica que ICONSA pagó pero nunca configuró bien.
+  8: 
+  9: ## Stack
+ 10: - Next.js 16 (App Router) + TypeScript + Tailwind
+ 11: - Supabase (auth + Postgres + RLS + Storage) — branch `humanos-dev` (project_ref `woonbmfmconldxbeqdnr`)
+ 12: - Resend para email (`noreply@rein-eisenwerk.com`)
+ 13: - Vercel deploy
+ 14: - Mobile-first (los empleados acceden desde celular)
+ 15: 
+ 16: ## Los 5 pilares del MVP
+ 17: 
+ 18: 1. **Knowledge Base / FAQ** — un empleado entra y entiende qué formulario usar para qué necesidad, quién aprueba, qué documento le pide RRHH. Se basa en los SOPs de ICONSA. Reemplaza el "voy a preguntarle a Rocío qué papel tengo que llenar."
+ 19: 
+ 20: 2. **Formularios digitales** — los 12 tipos de solicitud, llenables desde el celular. Cada uno con campos específicos (form_data JSONB). Los datos del solicitante se autocompletan desde `humanos.people`.
+ 21: 
+ 22: 3. **Flujos de aprobación** — cada formulario dispara una cadena de aprobaciones definida en `request_types.approval_chain`. Notificación por email al siguiente aprobador. Estados: Borrador → Enviada → En Revisión → Aprobada/Rechazada → Completada.
+ 23: 
+ 24: 4. **Dashboard de Samantha (HR Admin)** — vista global: todas las solicitudes, KPIs (pendientes, esta semana, vencidas), atajos a las que requieren su decisión.
+ 25: 
+ 26: 5. **Expediente del empleado** — vista única por empleado para HR: datos completos, historial de solicitudes, documentos. Para empleado: su propia versión simplificada de "Mi Perfil".
+ 27: 
+ 28: ## Base de datos — ya creada
+ 29: 
+ 30: Branch `woonbmfmconldxbeqdnr`. Code tiene **DDL/DML completo** sobre `humanos.*`. Puede agregar tablas, columnas, índices, RLS — lo que necesite. Nunca toca `public`/`hr`/`payroll` ni producción.
+ 31: 
+ 32: ### Tablas existentes
+ 33: - `humanos.people` — 239 empleados (52 activos, 187 históricos). Una sola tabla con identidad + datos personales + laborales. Ver "Deuda técnica" en `CLAUDE.md`.
+ 34: - `humanos.request_types` — 12 tipos seeded. Campos: `code`, `name`, `description`, `category` ('autoservicio_empleado'|'cambios_personal'|'reclutamiento'), `sop_reference`, `requires_approval`, `approval_chain` (JSONB array de roles), `icon`, `is_active`.
+ 35: - `humanos.requests` — id, request_number (auto), type_id, requester_id, status, form_data (JSONB), date_submitted, date_resolved, attachments (JSONB).
+ 36: - `humanos.request_approvals` — id, request_id, approver_id, approval_role, decision, decision_date, comments, step_order.
+ 37: - `humanos.sequences` — para auto-numerar (formato `HUM-2026-0001`).
+ 38: 
+ 39: ### Cliente Supabase
+ 40: ```typescript
+ 41: import { createClient } from '@supabase/supabase-js'
+ 42: const humanos = createClient(url, anonKey, { db: { schema: 'humanos' } })
+ 43: const { data } = await humanos.from('people').select('*')
+ 44: ```
+ 45: 
+ 46: ## Roles y autenticación
+ 47: 
+ 48: Login via Supabase Auth (email + password). El rol se determina al login:
+ 49: - `KOSM01`, `OLM206`, `MAN943`, `MEN943` → `hr_admin`
+ 50: - Tiene subordinados (otros con `supervisor_id = me.id`) → `supervisor`
+ 51: - Default → `employee`
+ 52: 
+ 53: (En el MVP, si un empleado no tiene `auth_id`, HR puede crearle el account desde el admin.)
+ 54: 
+ 55: ## Páginas del MVP
+ 56: 
+ 57: ### Auth
+ 58: - `/login` — email + password. Redirige a `/inicio` post-login.
+ 59: 
+ 60: ### App (todos los roles)
+ 61: - `/inicio` — saludo, cards de acceso rápido, badge de pendientes para HR.
+ 62: - `/directorio` — todos los empleados activos, búsqueda + filtros (depto, oficina, cargo). Solo datos básicos (nombre, cargo, departamento, foto, email, ext.).
+ 63: - `/perfil` — Mi Perfil. Datos del empleado autenticado. Read-only para empleados (cambios via formulario "Actualización de Datos"). Editable para HR.
+ 64: - `/perfil/[id]` — Perfil de otro empleado. Empleados ven versión limitada; HR ve todo + expediente.
+ 65: - `/solicitudes` — Mis Solicitudes (lista). Filtro por estado. Muestra request_number, tipo, fecha, estado, tiempo en estado actual.
+ 66: - `/solicitudes/nueva` — grilla de los 12 tipos para iniciar. Cada uno con icon, descripción, "quién aprueba", link al SOP.
+ 67: - `/solicitudes/nueva/[type_code]` — render del form específico para ese tipo. Campos vienen de la definición del tipo (ver "Formularios" abajo).
+ 68: - `/solicitudes/[id]` — detalle con timeline de aprobaciones, comentarios, documentos adjuntos, acciones disponibles (cancelar si Borrador, aprobar/rechazar si soy aprobador pendiente).
+ 69: - `/ayuda` — Knowledge Base / FAQ. Lista los 12 tipos agrupados por categoría con: descripción, "qué necesitas para llenarlo", flujo de aprobación, link al SOP en `Docs/SOPs, Formularios y Documentos/`.
+ 70: 
+ 71: ### Admin (solo `hr_admin`)
+ 72: - `/admin` — Dashboard. KPIs: solicitudes pendientes de mi acción, solicitudes esta semana, vencidas (>5 días sin acción), por tipo. Tabla con todas las solicitudes filtrable.
+ 73: - `/admin/empleados` — Tabla de empleados con búsqueda. Click → expediente.
+ 74: - `/admin/empleados/[id]` — Expediente: perfil completo + historial de solicitudes + documentos.
+ 75: 
+ 76: ## Formularios — los 12 tipos (P1 = mandatorios para MVP)
+ 77: 
+ 78: Code DEBE leer el PDF correspondiente en `Docs/SOPs, Formularios y Documentos/` antes de implementar cada form. Los campos exactos vienen del PDF. Lo que sigue es la lista priorizada y los aprobadores.
+ 79: 
+ 80: ### P1 — Formularios obligatorios para el MVP funcional
+ 81: 
+ 82: | Code | Nombre | SOP / PDF | Aprobadores | Notas críticas |
+ 83: |------|--------|-----------|-------------|----------------|
+ 84: | `VACACIONES` | Solicitud de Vacaciones | `IC-RH-F-05-03 Solicitud de Vacaciones.pdf` | Supervisor → RRHH (Rocío) → Samantha | Validar fechas no traslapan otra solicitud aprobada del mismo empleado. |
+ 85: | `ACCION_PERSONAL` | Acción de Personal | `IC-RH-F-05-01 Acciones de personal.pdf` + SOP `IC-RH-PO-05` | Supervisor → Samantha → Presidencia (Rodrigo) | Cubre cambios de salario, posición, traslado, terminación. Tipos seleccionables dentro del form. |
+ 86: | `PRESTAMO` | Préstamo a Empleados | `IC-RH-F-05-02 Prestamo a Empleados.pdf` + `IC-RH-D-02 Condiciones especiales...` | Supervisor → Milagros (Planillas) → Samantha | **Validación dura: monto ≤ $250** (regla del IC-RH-D-02). |
+ 87: | `ACTUALIZACION_DATOS` | Actualización de Datos Personales | `IC-RH-F-00-07 Actualización de Datos.pdf` | Rocío → Samantha | Form con secciones: contacto, dirección, contacto de emergencia, estado civil, dependientes, educación. Al aprobarse, HR aplica los cambios al perfil del empleado. |
+ 88: | `RECLAMO_PAGO` | Reclamo sobre Pago | `IC-RH-F-05-05 Reclamo sobre pago.pdf` | Milagros → Samantha | Periodo, descripción del problema, monto esperado vs cobrado, evidencia (upload). |
+ 89: 
+ 90: ### P2 — Si hay tiempo, sino quedan listados pero el form no genera flujo todavía
+ 91: 
+ 92: | Code | Nombre | SOP / PDF |
+ 93: |------|--------|-----------|
+ 94: | `PERMISO` | Solicitud de Permiso (horas / días) | `IC-RH-F-00-08 Solicitud de Permiso (HORAS).doc` |
+ 95: | `CONSTANCIA_TRABAJO` | Carta de Trabajo | (no hay form, se genera) |
+ 96: | `REFERENCIA_LABORAL` | Solicitud de Referencias Laborales | `IC-RH-F-00-06 Solicitud de Referencias Laborales.pdf` |
+ 97: | `ENTREVISTA_SALIDA` | Entrevista de Salida | `IC-RH-F-00-05 Entrevista Salida.pdf` |
+ 98: | `CAPACITACION` | Solicitud de Entrenamiento | `IC-RH-F-02-09 Solicitud y Evaluación de Entrenamiento por Supervisores.pdf` |
+ 99: | `LIQUIDACION` | Liquidación | (proceso interno, sin form físico) |
+100: | `HORAS_EXTRAS` | Reporte de Horas Extras | (Excel actualmente) |
+101: 
+102: ### Patrón común para todos los formularios
+103: 1. Render dinámico desde la definición de campos (puede vivir en `request_types.form_schema` JSONB o en una tabla aparte).
+104: 2. Auto-fill: nombre, code, cédula, departamento, oficina vienen de `humanos.people` del solicitante.
+105: 3. Validaciones del form ANTES de submit (zod recomendado).
+106: 4. Al `Enviar`: INSERT en `requests` (status='Enviada'), crear filas en `request_approvals` según `approval_chain`, enviar email al primer aprobador.
+107: 5. Al aprobar/rechazar: UPDATE `request_approvals`, si era el último → UPDATE `requests.status`, email al solicitante.
+108: 
+109: ## Email (Resend)
+110: 
+111: Variables ya en `.env.local`:
+112: - `RESEND_API_KEY=...`
+113: - Dominio: `rein-eisenwerk.com` (verificado, mismo de MovimientOS)
+114: - Sender: `HumanOS <noreply@rein-eisenwerk.com>`
+115: 
+116: Templates a implementar (3 mínimos):
+117: 1. **Solicitud enviada → primer aprobador**: "Tienes una solicitud nueva por aprobar". Botón "Ver Solicitud".
+118: 2. **Aprobación parcial → siguiente aprobador**: igual al anterior.
+119: 3. **Decisión final → solicitante**: "Tu solicitud fue Aprobada/Rechazada". Botón "Ver Detalle".
+120: 
+121: Diseño: copiar el template de MovimientOS — header navy `#1B3A5C` con "ICONSA" gold + "HumanOS" white. Card blanca con título, badge de estado, key-value de IDs, botón navy. Footer "Este es un mensaje automático del sistema HumanOS de ICONSA. No responda a este correo."
+122: 
+123: ## Out of scope para el MVP (P3)
+124: 
+125: - WhatsApp / Twilio
+126: - PWA service worker / offline (responsivo sí, instalable no)
+127: - Cualquier cálculo de Payday (ISR, días disponibles de vacaciones, liquidaciones)
+128: - Generación de PDFs de cartas (si sale tiempo, solo Carta de Trabajo básica)
+129: - Onboarding wizard de empleados nuevos
+130: - Módulo de Eventos / Magazine que pidió Samantha (Module 2)
+131: 
+132: ## Aceptación del MVP — checklist
+133: 
+134: - [ ] `/login` funcional con Supabase Auth
+135: - [ ] `/inicio` carga, muestra cards y saludo
+136: - [ ] `/directorio` lista 52 activos, búsqueda funciona
+137: - [ ] `/perfil` muestra datos del empleado autenticado
+138: - [ ] `/ayuda` muestra los 12 tipos con descripción + SOP reference
+139: - [ ] `/solicitudes/nueva` muestra los 12 tipos
+140: - [ ] Los **5 forms P1** crean `requests` correctamente con `form_data` válido
+141: - [ ] El motor de aprobación crea `request_approvals` y los avanza
+142: - [ ] `/solicitudes` muestra mis solicitudes con estado
+143: - [ ] `/solicitudes/[id]` muestra detalle + timeline
+144: - [ ] `/admin` muestra dashboard con KPIs reales
+145: - [ ] HR puede aprobar/rechazar desde la UI y el estado avanza
+146: - [ ] Resend manda los 3 emails (al menos uno, idealmente los 3)
+147: - [ ] Deploy preview en Vercel funciona
+</file>
 
 <file path=".claude/commands/deploy-check.md">
  1: ## Checks
@@ -2985,6 +3237,60 @@ This section contains the contents of the repository's files.
 1: 
 </file>
 
+<file path="README_APPLY.md">
+ 1: # HumanOS Setup Package — Instrucciones
+ 2: 
+ 3: Pega estos archivos al repo de HumanOS sobreescribiendo lo existente, luego hacer commit y arrancar Code.
+ 4: 
+ 5: ## Archivos a copiar al repo
+ 6: 
+ 7: ```
+ 8: CLAUDE.md                                       → REEMPLAZA el actual
+ 9: humanos-mvp-spec.md                             → REEMPLAZA el actual
+10: .claude/rules/supabase-branch.md                → NUEVO (ver paso 1 abajo)
+11: Docs/CHANGELOG.md                               → REEMPLAZA el actual
+12: Docs/feature-specs/MODULE-1-SOLICITUDES.md      → NUEVO
+13: CLAUDE_CODE_KICKOFF_PROMPT.md                   → NO va al repo, es para pegar a Code (ver paso 3)
+14: ```
+15: 
+16: ## Paso 1 — Borrar la regla obsoleta
+17: 
+18: ```bash
+19: rm .claude/rules/supabase-readonly.md
+20: ```
+21: 
+22: (Reemplazada por `supabase-branch.md`).
+23: 
+24: ## Paso 2 — Verificar `.env.local`
+25: 
+26: Debe tener (ya las pegamos en sesiones anteriores):
+27: 
+28: ```
+29: NEXT_PUBLIC_SUPABASE_URL=https://woonbmfmconldxbeqdnr.supabase.co
+30: NEXT_PUBLIC_SUPABASE_ANON_KEY=...
+31: SUPABASE_SERVICE_ROLE_KEY=...
+32: RESEND_API_KEY=...
+33: ```
+34: 
+35: Si alguna falta, copiar del dashboard del branch en `https://supabase.com/dashboard/project/woonbmfmconldxbeqdnr/settings/api`.
+36: 
+37: ## Paso 3 — Arrancar Code
+38: 
+39: 1. `git add -A && git commit -m "Setup HumanOS: branch architecture, MVP spec, Module 1"`
+40: 2. `git push`
+41: 3. Abrir nueva sesión de Claude Code (en VS Code, en el repo de HumanOS).
+42: 4. Pegar el contenido completo de `CLAUDE_CODE_KICKOFF_PROMPT.md` como primer mensaje.
+43: 5. Code arranca solo con `/brainstorm` de Superpowers y avanza durante la noche.
+44: 
+45: ## Estado del branch al arrancar Code
+46: 
+47: - **Project ref**: `woonbmfmconldxbeqdnr`
+48: - **Schema `humanos`**: 5 tablas (`people`, `request_types`, `requests`, `request_approvals`, `sequences`)
+49: - **Datos**: 239 personas, 12 tipos de solicitud
+50: - **Schemas vacíos / no tocar**: `public`, `hr`, `payroll`
+51: - **Producción**: `bzeoszympkkicwlfdtcn` — NO tocar
+</file>
+
 <file path="src/app/(app)/admin/page.tsx">
   1: import { redirect } from 'next/navigation';
   2: import { getMe } from '@/lib/auth/getMe';
@@ -4496,30 +4802,6 @@ This section contains the contents of the repository's files.
 153:     </div>
 154:   );
 155: }
-</file>
-
-<file path="src/app/layout.tsx">
- 1: import './globals.css';
- 2: import type { Metadata } from 'next';
- 3: import { Geist } from "next/font/google";
- 4: import { cn } from "@/lib/utils";
- 5: 
- 6: const geist = Geist({subsets:['latin'],variable:'--font-sans'});
- 7: 
- 8: export const metadata: Metadata = {
- 9:   title: 'HumanOS — ICONSA',
-10:   description: 'Plataforma de RRHH de ICONSA',
-11: };
-12: 
-13: export function RootLayout({ children }: { children: React.ReactNode }) {
-14:   return (
-15:     <html lang="es" className={cn("font-sans", geist.variable)}>
-16:       <body>{children}</body>
-17:     </html>
-18:   );
-19: }
-20: 
-21: export default RootLayout;
 </file>
 
 <file path="src/app/login/actions.ts">
@@ -9281,6 +9563,403 @@ This section contains the contents of the repository's files.
 82: };
 </file>
 
+<file path="supabase/migrations/20260428_001_helper_functions.sql">
+ 1: -- Module 1 — Task 11: Funciones auxiliares para auth, role resolution y numeración atómica.
+ 2: -- Aplicado via Supabase MCP el 2026-04-28. Smoke tests al final emitieron NOTICEs OK.
+ 3: 
+ 4: CREATE OR REPLACE FUNCTION humanos.me() RETURNS uuid LANGUAGE sql STABLE AS $$
+ 5:   SELECT id FROM humanos.people WHERE auth_id = auth.uid()
+ 6: $$;
+ 7: 
+ 8: CREATE OR REPLACE FUNCTION humanos.is_hr() RETURNS boolean LANGUAGE sql STABLE AS $$
+ 9:   SELECT EXISTS (
+10:     SELECT 1 FROM humanos.people WHERE auth_id = auth.uid()
+11:     AND code IN ('KOSM01','OLM206','MAN943','MEN943')
+12:   )
+13: $$;
+14: 
+15: -- Resolución de roles semánticos a person uuid. supervisor_directo retorna NULL si el requester no
+16: -- tiene supervisor_id (fallback A del spec §4.1.1) y emite RAISE NOTICE para trazabilidad.
+17: CREATE OR REPLACE FUNCTION humanos.resolve_approver(p_role text, p_requester_id uuid)
+18: RETURNS uuid LANGUAGE plpgsql STABLE SECURITY DEFINER AS $$
+19: DECLARE v_id uuid;
+20: BEGIN
+21:   IF p_role = 'supervisor_directo' THEN
+22:     SELECT supervisor_id INTO v_id FROM humanos.people WHERE id = p_requester_id;
+23:     IF v_id IS NULL THEN
+24:       RAISE NOTICE 'resolve_approver: requester % has no supervisor_id, skipping step', p_requester_id;
+25:     END IF;
+26:   ELSIF p_role = 'hr_oficial' THEN
+27:     SELECT id INTO v_id FROM humanos.people WHERE code='OLM206';
+28:   ELSIF p_role = 'hr_planilla' THEN
+29:     SELECT id INTO v_id FROM humanos.people WHERE code='MAN943';
+30:   ELSIF p_role = 'hr_gerente' THEN
+31:     SELECT id INTO v_id FROM humanos.people WHERE code='KOSM01';
+32:   ELSIF p_role = 'presidencia' THEN
+33:     SELECT id INTO v_id FROM humanos.people WHERE code='EIS772';
+34:   ELSE
+35:     RAISE EXCEPTION 'unknown role: %', p_role;
+36:   END IF;
+37:   RETURN v_id;
+38: END;
+39: $$;
+40: 
+41: -- Numerador atómico: HUM-YYYY-NNNN.
+42: CREATE OR REPLACE FUNCTION humanos.next_request_number() RETURNS text LANGUAGE plpgsql AS $$
+43: DECLARE v_n bigint;
+44: BEGIN
+45:   UPDATE humanos.sequences SET current_value = current_value + 1
+46:   WHERE name='request_number' RETURNING current_value INTO v_n;
+47:   RETURN format('HUM-%s-%s', extract(year from now())::int, lpad(v_n::text, 4, '0'));
+48: END;
+49: $$;
+50: 
+51: -- Smoke
+52: DO $$
+53: DECLARE r1 uuid; r2 uuid; r3 text;
+54: BEGIN
+55:   SELECT humanos.resolve_approver('hr_gerente', NULL) INTO r1;
+56:   RAISE NOTICE 'resolve(hr_gerente)=%', r1;
+57: 
+58:   SELECT humanos.resolve_approver('supervisor_directo',
+59:     (SELECT id FROM humanos.people WHERE code='KOSM01')) INTO r2;
+60:   RAISE NOTICE 'resolve(supervisor_directo of KOSM01)=%', r2;
+61: 
+62:   SELECT humanos.next_request_number() INTO r3;
+63:   RAISE NOTICE 'next_request_number=%', r3;
+64:   UPDATE humanos.sequences SET current_value = current_value - 1 WHERE name='request_number';
+65: END $$;
+</file>
+
+<file path="supabase/migrations/20260428_002_submit_request.sql">
+ 1: -- Module 1 — Task 12: submit_request RPC atómica.
+ 2: -- Crea humanos.requests + N humanos.request_approvals según chain resuelto.
+ 3: -- Steps con approver=NULL se saltean (fallback A). Si todo el chain queda vacío, request → Aprobada inmediata.
+ 4: -- Aplicado via MCP el 2026-04-28; smoke OK.
+ 5: 
+ 6: CREATE OR REPLACE FUNCTION humanos.submit_request(
+ 7:   p_type_code text,
+ 8:   p_requester_id uuid,
+ 9:   p_form_data jsonb,
+10:   p_attachments jsonb,
+11:   p_approval_chain text[]
+12: ) RETURNS TABLE(request_id uuid, request_number text, first_approver_id uuid)
+13: LANGUAGE plpgsql AS $$
+14: DECLARE
+15:   v_type_id uuid;
+16:   v_request_id uuid;
+17:   v_number text;
+18:   v_role text;
+19:   v_approver uuid;
+20:   v_step int := 1;
+21:   v_first uuid := NULL;
+22: BEGIN
+23:   SELECT id INTO v_type_id FROM humanos.request_types
+24:    WHERE code = p_type_code AND is_active = true;
+25:   IF v_type_id IS NULL THEN
+26:     RAISE EXCEPTION 'unknown or inactive type: %', p_type_code;
+27:   END IF;
+28: 
+29:   v_number := humanos.next_request_number();
+30: 
+31:   INSERT INTO humanos.requests (request_number, type_id, requester_id, status, form_data, attachments, date_submitted)
+32:   VALUES (v_number, v_type_id, p_requester_id, 'Enviada', p_form_data, p_attachments, now())
+33:   RETURNING id INTO v_request_id;
+34: 
+35:   FOREACH v_role IN ARRAY p_approval_chain LOOP
+36:     v_approver := humanos.resolve_approver(v_role, p_requester_id);
+37:     IF v_approver IS NOT NULL THEN
+38:       INSERT INTO humanos.request_approvals (request_id, approver_id, step_order, role_required, decision)
+39:       VALUES (v_request_id, v_approver, v_step, v_role, 'Pendiente');
+40:       IF v_first IS NULL THEN v_first := v_approver; END IF;
+41:       v_step := v_step + 1;
+42:     END IF;
+43:   END LOOP;
+44: 
+45:   IF v_first IS NULL THEN
+46:     UPDATE humanos.requests SET status='Aprobada', date_resolved=now() WHERE id = v_request_id;
+47:   END IF;
+48: 
+49:   RETURN QUERY SELECT v_request_id, v_number, v_first;
+50: END;
+51: $$;
+52: 
+53: -- Smoke
+54: DO $$
+55: DECLARE r RECORD;
+56: BEGIN
+57:   SELECT * INTO r FROM humanos.submit_request(
+58:     'VACACIONES',
+59:     (SELECT id FROM humanos.people WHERE code='KOSM01'),
+60:     '{"smoke_test": true}'::jsonb,
+61:     '[]'::jsonb,
+62:     ARRAY['hr_oficial','hr_gerente']
+63:   );
+64:   RAISE NOTICE 'submit_request smoke: id=%, number=%, first=%', r.request_id, r.request_number, r.first_approver_id;
+65:   DELETE FROM humanos.request_approvals WHERE request_id = r.request_id;
+66:   DELETE FROM humanos.requests WHERE id = r.request_id;
+67:   UPDATE humanos.sequences SET current_value = current_value - 1 WHERE name='request_number';
+68: END $$;
+</file>
+
+<file path="supabase/migrations/20260428_003_decide_approval.sql">
+ 1: -- Module 1 — Task 13: decide_approval RPC atómica.
+ 2: -- Verifica ownership del approval, aplica decisión, cierra o avanza el flujo.
+ 3: -- Aplicado via MCP el 2026-04-28; smoke OK (2 NOTICEs: step 1 partial, step 2 final).
+ 4: 
+ 5: CREATE OR REPLACE FUNCTION humanos.decide_approval(
+ 6:   p_approval_id uuid,
+ 7:   p_decider_id uuid,
+ 8:   p_decision text,
+ 9:   p_comments text
+10: ) RETURNS TABLE(request_status text, next_approver_id uuid, is_final boolean)
+11: LANGUAGE plpgsql AS $$
+12: DECLARE
+13:   v_approval humanos.request_approvals%ROWTYPE;
+14:   v_request_id uuid;
+15:   v_next humanos.request_approvals%ROWTYPE;
+16: BEGIN
+17:   SELECT * INTO v_approval FROM humanos.request_approvals WHERE id = p_approval_id FOR UPDATE;
+18:   IF v_approval.id IS NULL THEN RAISE EXCEPTION 'approval not found'; END IF;
+19:   IF v_approval.approver_id != p_decider_id THEN RAISE EXCEPTION 'not your approval'; END IF;
+20:   IF v_approval.decision != 'Pendiente' THEN RAISE EXCEPTION 'already decided'; END IF;
+21:   IF p_decision NOT IN ('Aprobada','Rechazada','Solicita Info') THEN RAISE EXCEPTION 'bad decision'; END IF;
+22: 
+23:   v_request_id := v_approval.request_id;
+24: 
+25:   UPDATE humanos.request_approvals
+26:      SET decision=p_decision, comments=p_comments, decided_at=now()
+27:    WHERE id = p_approval_id;
+28: 
+29:   IF p_decision = 'Rechazada' THEN
+30:     UPDATE humanos.requests SET status='Rechazada', date_resolved=now() WHERE id=v_request_id;
+31:     RETURN QUERY SELECT 'Rechazada'::text, NULL::uuid, true;
+32:     RETURN;
+33:   END IF;
+34: 
+35:   -- Solicita Info: por ahora se trata igual que Aprobada parcial (UI v1 solo expone Aprobar/Rechazar).
+36:   SELECT * INTO v_next FROM humanos.request_approvals
+37:    WHERE request_id = v_request_id AND decision = 'Pendiente'
+38:    ORDER BY step_order ASC LIMIT 1;
+39: 
+40:   IF v_next.id IS NULL THEN
+41:     UPDATE humanos.requests SET status='Aprobada', date_resolved=now() WHERE id=v_request_id;
+42:     RETURN QUERY SELECT 'Aprobada'::text, NULL::uuid, true;
+43:   ELSE
+44:     UPDATE humanos.requests SET status='En Revisión' WHERE id=v_request_id AND status='Enviada';
+45:     RETURN QUERY SELECT 'En Revisión'::text, v_next.approver_id, false;
+46:   END IF;
+47: END;
+48: $$;
+49: 
+50: -- Smoke: crea dummy con 2 approvals (Rocío → Samantha), decide ambos, verifica transiciones.
+51: DO $$
+52: DECLARE
+53:   r RECORD; appr1 uuid; appr2 uuid; samantha uuid; rocio uuid;
+54:   d1 RECORD; d2 RECORD;
+55: BEGIN
+56:   SELECT id INTO samantha FROM humanos.people WHERE code='KOSM01';
+57:   SELECT id INTO rocio FROM humanos.people WHERE code='OLM206';
+58: 
+59:   SELECT * INTO r FROM humanos.submit_request(
+60:     'VACACIONES', samantha, '{"smoke":"decide"}'::jsonb, '[]'::jsonb,
+61:     ARRAY['hr_oficial','hr_gerente']
+62:   );
+63:   SELECT id INTO appr1 FROM humanos.request_approvals WHERE request_id=r.request_id AND step_order=1;
+64:   SELECT id INTO appr2 FROM humanos.request_approvals WHERE request_id=r.request_id AND step_order=2;
+65: 
+66:   SELECT * INTO d1 FROM humanos.decide_approval(appr1, rocio, 'Aprobada', 'smoke step 1');
+67:   RAISE NOTICE 'decide step1: status=%, next=%, final=%', d1.request_status, d1.next_approver_id, d1.is_final;
+68: 
+69:   SELECT * INTO d2 FROM humanos.decide_approval(appr2, samantha, 'Aprobada', 'smoke step 2');
+70:   RAISE NOTICE 'decide step2: status=%, next=%, final=%', d2.request_status, d2.next_approver_id, d2.is_final;
+71: 
+72:   DELETE FROM humanos.request_approvals WHERE request_id=r.request_id;
+73:   DELETE FROM humanos.requests WHERE id=r.request_id;
+74:   UPDATE humanos.sequences SET current_value = current_value - 1 WHERE name='request_number';
+75: END $$;
+</file>
+
+<file path="supabase/migrations/20260428_004_reseed_approval_chains.sql">
+ 1: -- Module 1 — Task 14: Re-seed approval_chain con roles semánticos por tipo + ACT_DATOS requires_approval=true.
+ 2: -- Aplicado via MCP el 2026-04-28; smoke verifica los 5 P1.
+ 3: 
+ 4: UPDATE humanos.request_types SET approval_chain = ARRAY['supervisor_directo','hr_oficial','hr_gerente'], requires_approval=true WHERE code='VACACIONES';
+ 5: UPDATE humanos.request_types SET approval_chain = ARRAY['supervisor_directo','hr_gerente','presidencia'], requires_approval=true WHERE code='ACCION_PERSONAL';
+ 6: UPDATE humanos.request_types SET approval_chain = ARRAY['supervisor_directo','hr_planilla','hr_gerente'], requires_approval=true WHERE code='PRESTAMO';
+ 7: UPDATE humanos.request_types SET approval_chain = ARRAY['hr_oficial','hr_gerente'], requires_approval=true WHERE code='ACTUALIZACION_DATOS';
+ 8: UPDATE humanos.request_types SET approval_chain = ARRAY['hr_planilla','hr_gerente'], requires_approval=true WHERE code='RECLAMO_PAGO';
+ 9: 
+10: -- P2 placeholders (chains preliminares; no funcionales para MVP).
+11: UPDATE humanos.request_types SET approval_chain = ARRAY['supervisor_directo','hr_oficial'] WHERE code='PERMISO';
+12: UPDATE humanos.request_types SET approval_chain = ARRAY['hr_oficial'] WHERE code='CONSTANCIA_TRABAJO';
+13: UPDATE humanos.request_types SET approval_chain = ARRAY['hr_oficial'] WHERE code='REFERENCIA_LABORAL';
+14: UPDATE humanos.request_types SET approval_chain = ARRAY['hr_oficial'] WHERE code='ENTREVISTA_SALIDA';
+15: UPDATE humanos.request_types SET approval_chain = ARRAY['supervisor_directo','hr_oficial'] WHERE code='CAPACITACION';
+16: UPDATE humanos.request_types SET approval_chain = ARRAY['supervisor_directo','hr_gerente','presidencia'] WHERE code='LIQUIDACION';
+17: UPDATE humanos.request_types SET approval_chain = ARRAY['supervisor_directo','hr_planilla'] WHERE code='HORAS_EXTRAS';
+18: 
+19: DO $$
+20: DECLARE r RECORD;
+21: BEGIN
+22:   RAISE NOTICE 'reseed verify:';
+23:   FOR r IN SELECT code, approval_chain, requires_approval FROM humanos.request_types
+24:            WHERE code IN ('VACACIONES','ACCION_PERSONAL','PRESTAMO','ACTUALIZACION_DATOS','RECLAMO_PAGO')
+25:            ORDER BY code LOOP
+26:     RAISE NOTICE '  %: chain=%, required=%', r.code, r.approval_chain, r.requires_approval;
+27:   END LOOP;
+28: END $$;
+</file>
+
+<file path="supabase/migrations/20260428_005_seed_supervisor_ids.sql">
+ 1: -- Module 1 — Task 10: Plan B del spec §4.1.1 — asignación por departamento.
+ 2: -- Aplicado via Supabase MCP el 2026-04-28 en 2 pasos:
+ 3: --   1) Mapeo principal por dept (KOSM01/VAL130/AVE629/RIO806/EIS772 + CUC166/EIS809→EIS772).
+ 4: --   2) Fix: Denise Marciaga (Construcción) está Inactivo, así que Construcción → Franklin Marciaga (Ing, Activo)
+ 5: --      per nota de James: "Si no es claro, reportan a Franklin Marciaga (Director de Ingeniería y Const.)".
+ 6: --
+ 7: -- Resultado: 35/52 activos con supervisor_id. Cumplimiento/Seguridad/Presupuesto/Movilizaciones/Admin general
+ 8: -- + top-tier (EIS772) quedan NULL → fallback A en humanos.resolve_approver los cubre (skip step + RAISE NOTICE).
+ 9: 
+10: -- Paso 1: mapeo principal
+11: WITH mgr AS (
+12:   SELECT
+13:     (SELECT id FROM humanos.people WHERE code='KOSM01') AS kosm01,
+14:     (SELECT id FROM humanos.people WHERE code='VAL130') AS val130,
+15:     (SELECT id FROM humanos.people WHERE code='AVE629') AS ave629,
+16:     (SELECT id FROM humanos.people WHERE code='RIO806') AS rio806,
+17:     (SELECT id FROM humanos.people WHERE code='EIS772') AS eis772
+18: )
+19: UPDATE humanos.people p
+20: SET supervisor_id = CASE
+21:   WHEN p.department = 'Recursos Humanos' AND p.code != 'KOSM01' THEN (SELECT kosm01 FROM mgr)
+22:   WHEN p.department = 'Equipo' AND p.code != 'VAL130' THEN (SELECT val130 FROM mgr)
+23:   WHEN p.department = 'Ingeniería' AND p.code != 'AVE629' AND p.name != 'Franklin Marciaga' THEN (SELECT ave629 FROM mgr)
+24:   WHEN p.department = 'Contabilidad' AND p.code != 'RIO806' THEN (SELECT rio806 FROM mgr)
+25:   WHEN p.code IN ('CUC166','EIS809') THEN (SELECT eis772 FROM mgr)
+26:   WHEN p.code IN ('KOSM01','VAL130','AVE629','RIO806') THEN (SELECT eis772 FROM mgr)
+27:   WHEN p.name = 'Franklin Marciaga' AND p.department = 'Ingeniería' THEN (SELECT eis772 FROM mgr)
+28:   ELSE p.supervisor_id
+29: END
+30: WHERE p.status = 'Activo';
+31: 
+32: -- Paso 2: Construcción → Franklin (Denise está Inactivo)
+33: WITH mgr AS (
+34:   SELECT (SELECT id FROM humanos.people WHERE name='Franklin Marciaga' AND status='Activo' LIMIT 1) AS franklin
+35: )
+36: UPDATE humanos.people p
+37: SET supervisor_id = (SELECT franklin FROM mgr)
+38: WHERE p.status = 'Activo'
+39:   AND p.department = 'Construcción'
+40:   AND p.supervisor_id IS NULL;
+41: 
+42: -- Smoke
+43: DO $$
+44: DECLARE
+45:   n_with_sup int; n_total int; n_self int;
+46: BEGIN
+47:   SELECT
+48:     COUNT(*) FILTER (WHERE supervisor_id IS NOT NULL),
+49:     COUNT(*)
+50:   INTO n_with_sup, n_total
+51:   FROM humanos.people WHERE status='Activo';
+52: 
+53:   SELECT COUNT(*) INTO n_self FROM humanos.people WHERE supervisor_id = id;
+54: 
+55:   RAISE NOTICE 'seed_supervisors: % de % activos con supervisor (% reportan a sí mismos — debe ser 0)',
+56:     n_with_sup, n_total, n_self;
+57: 
+58:   IF n_self > 0 THEN RAISE EXCEPTION 'self-reporting detected'; END IF;
+59: END $$;
+</file>
+
+<file path="supabase/migrations/20260428_006_replace_rls_policies.sql">
+ 1: -- Module 1 — Task 15: reemplazar policies permisivas (USING true) con policies por rol.
+ 2: -- Aplicado via MCP el 2026-04-28. INSERT/UPDATE de requests y request_approvals queda exclusivamente
+ 3: -- via RPCs SECURITY DEFINER (submit_request, decide_approval) o service-role; por eso no hay policy
+ 4: -- de WRITE para usuarios authenticated en esas tablas.
+ 5: 
+ 6: DROP POLICY IF EXISTS authenticated_all_people ON humanos.people;
+ 7: DROP POLICY IF EXISTS authenticated_all_request_types ON humanos.request_types;
+ 8: DROP POLICY IF EXISTS authenticated_all_requests ON humanos.requests;
+ 9: DROP POLICY IF EXISTS authenticated_all_approvals ON humanos.request_approvals;
+10: DROP POLICY IF EXISTS authenticated_all_sequences ON humanos.sequences;
+11: 
+12: -- people
+13: CREATE POLICY people_select_authenticated
+14:   ON humanos.people FOR SELECT TO authenticated USING (true);
+15: 
+16: CREATE POLICY people_update_hr
+17:   ON humanos.people FOR UPDATE TO authenticated
+18:   USING (humanos.is_hr())
+19:   WITH CHECK (humanos.is_hr());
+20: 
+21: -- request_types
+22: CREATE POLICY request_types_select_authenticated
+23:   ON humanos.request_types FOR SELECT TO authenticated USING (true);
+24: 
+25: -- requests: visibility por relación
+26: CREATE POLICY requests_select_visible
+27:   ON humanos.requests FOR SELECT TO authenticated USING (
+28:     requester_id = humanos.me()
+29:     OR humanos.is_hr()
+30:     OR EXISTS (
+31:       SELECT 1 FROM humanos.request_approvals ra
+32:        WHERE ra.request_id = humanos.requests.id AND ra.approver_id = humanos.me()
+33:     )
+34:   );
+35: 
+36: -- request_approvals: misma visibilidad
+37: CREATE POLICY approvals_select_visible
+38:   ON humanos.request_approvals FOR SELECT TO authenticated USING (
+39:     approver_id = humanos.me()
+40:     OR humanos.is_hr()
+41:     OR EXISTS (
+42:       SELECT 1 FROM humanos.requests r
+43:        WHERE r.id = humanos.request_approvals.request_id
+44:          AND r.requester_id = humanos.me()
+45:     )
+46:   );
+47: 
+48: -- sequences: 0 policies + RLS habilitado = denegado a authenticated. Solo RPCs SECURITY DEFINER.
+49: 
+50: DO $$
+51: DECLARE n_pol int;
+52: BEGIN
+53:   SELECT COUNT(*) INTO n_pol FROM pg_policy p
+54:    JOIN pg_class c ON p.polrelid = c.oid
+55:    JOIN pg_namespace n ON c.relnamespace = n.oid
+56:    WHERE n.nspname = 'humanos';
+57:   RAISE NOTICE 'rls policies installed: %', n_pol;
+58: END $$;
+</file>
+
+<file path="supabase/migrations/20260428_007_create_storage_bucket.sql">
+ 1: -- Module 1 — Task 7: Storage bucket para adjuntos de solicitudes (Reclamo de Pago, Préstamo, etc).
+ 2: -- Aplicado via Supabase MCP el 2026-04-28.
+ 3: 
+ 4: INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+ 5: VALUES (
+ 6:   'humanos-attachments',
+ 7:   'humanos-attachments',
+ 8:   false,
+ 9:   10485760,
+10:   ARRAY['image/jpeg','image/png','image/webp','application/pdf']
+11: )
+12: ON CONFLICT (id) DO NOTHING;
+13: 
+14: DROP POLICY IF EXISTS humanos_attachments_authenticated_insert ON storage.objects;
+15: DROP POLICY IF EXISTS humanos_attachments_authenticated_select ON storage.objects;
+16: 
+17: CREATE POLICY humanos_attachments_authenticated_insert
+18:   ON storage.objects FOR INSERT TO authenticated
+19:   WITH CHECK (bucket_id = 'humanos-attachments');
+20: 
+21: CREATE POLICY humanos_attachments_authenticated_select
+22:   ON storage.objects FOR SELECT TO authenticated
+23:   USING (bucket_id = 'humanos-attachments');
+</file>
+
 <file path="tsconfig.json">
  1: {
  2:   "compilerOptions": {
@@ -10514,156 +11193,6 @@ This section contains the contents of the repository's files.
 35: - BD migrations: `supabase/migrations/2026042*_*.sql` (7 files, todas aplicadas)
 </file>
 
-<file path="humanos-mvp-spec.md">
-  1: # HumanOS MVP — Spec para Claude Code
-  2: 
-  3: ## Qué es HumanOS
-  4: 
-  5: App interna de RRHH para ICONSA (empresa de construcción pesada en Panamá). Reemplaza Excel + papel + WhatsApp para los procesos de Samantha Kosmas (Gerente RRHH). Es una app productiva — Samantha y su equipo la van a usar después del MVP.
-  6: 
-  7: Reemplaza también a Humand (~$4/usuario/mes), una plataforma genérica que ICONSA pagó pero nunca configuró bien.
-  8: 
-  9: ## Stack
- 10: - Next.js 16 (App Router) + TypeScript + Tailwind
- 11: - Supabase (auth + Postgres + RLS + Storage) — branch `humanos-dev` (project_ref `woonbmfmconldxbeqdnr`)
- 12: - Resend para email (`noreply@rein-eisenwerk.com`)
- 13: - Vercel deploy
- 14: - Mobile-first (los empleados acceden desde celular)
- 15: 
- 16: ## Los 5 pilares del MVP
- 17: 
- 18: 1. **Knowledge Base / FAQ** — un empleado entra y entiende qué formulario usar para qué necesidad, quién aprueba, qué documento le pide RRHH. Se basa en los SOPs de ICONSA. Reemplaza el "voy a preguntarle a Rocío qué papel tengo que llenar."
- 19: 
- 20: 2. **Formularios digitales** — los 12 tipos de solicitud, llenables desde el celular. Cada uno con campos específicos (form_data JSONB). Los datos del solicitante se autocompletan desde `humanos.people`.
- 21: 
- 22: 3. **Flujos de aprobación** — cada formulario dispara una cadena de aprobaciones definida en `request_types.approval_chain`. Notificación por email al siguiente aprobador. Estados: Borrador → Enviada → En Revisión → Aprobada/Rechazada → Completada.
- 23: 
- 24: 4. **Dashboard de Samantha (HR Admin)** — vista global: todas las solicitudes, KPIs (pendientes, esta semana, vencidas), atajos a las que requieren su decisión.
- 25: 
- 26: 5. **Expediente del empleado** — vista única por empleado para HR: datos completos, historial de solicitudes, documentos. Para empleado: su propia versión simplificada de "Mi Perfil".
- 27: 
- 28: ## Base de datos — ya creada
- 29: 
- 30: Branch `woonbmfmconldxbeqdnr`. Code tiene **DDL/DML completo** sobre `humanos.*`. Puede agregar tablas, columnas, índices, RLS — lo que necesite. Nunca toca `public`/`hr`/`payroll` ni producción.
- 31: 
- 32: ### Tablas existentes
- 33: - `humanos.people` — 239 empleados (52 activos, 187 históricos). Una sola tabla con identidad + datos personales + laborales. Ver "Deuda técnica" en `CLAUDE.md`.
- 34: - `humanos.request_types` — 12 tipos seeded. Campos: `code`, `name`, `description`, `category` ('autoservicio_empleado'|'cambios_personal'|'reclutamiento'), `sop_reference`, `requires_approval`, `approval_chain` (JSONB array de roles), `icon`, `is_active`.
- 35: - `humanos.requests` — id, request_number (auto), type_id, requester_id, status, form_data (JSONB), date_submitted, date_resolved, attachments (JSONB).
- 36: - `humanos.request_approvals` — id, request_id, approver_id, approval_role, decision, decision_date, comments, step_order.
- 37: - `humanos.sequences` — para auto-numerar (formato `HUM-2026-0001`).
- 38: 
- 39: ### Cliente Supabase
- 40: ```typescript
- 41: import { createClient } from '@supabase/supabase-js'
- 42: const humanos = createClient(url, anonKey, { db: { schema: 'humanos' } })
- 43: const { data } = await humanos.from('people').select('*')
- 44: ```
- 45: 
- 46: ## Roles y autenticación
- 47: 
- 48: Login via Supabase Auth (email + password). El rol se determina al login:
- 49: - `KOSM01`, `OLM206`, `MAN943`, `MEN943` → `hr_admin`
- 50: - Tiene subordinados (otros con `supervisor_id = me.id`) → `supervisor`
- 51: - Default → `employee`
- 52: 
- 53: (En el MVP, si un empleado no tiene `auth_id`, HR puede crearle el account desde el admin.)
- 54: 
- 55: ## Páginas del MVP
- 56: 
- 57: ### Auth
- 58: - `/login` — email + password. Redirige a `/inicio` post-login.
- 59: 
- 60: ### App (todos los roles)
- 61: - `/inicio` — saludo, cards de acceso rápido, badge de pendientes para HR.
- 62: - `/directorio` — todos los empleados activos, búsqueda + filtros (depto, oficina, cargo). Solo datos básicos (nombre, cargo, departamento, foto, email, ext.).
- 63: - `/perfil` — Mi Perfil. Datos del empleado autenticado. Read-only para empleados (cambios via formulario "Actualización de Datos"). Editable para HR.
- 64: - `/perfil/[id]` — Perfil de otro empleado. Empleados ven versión limitada; HR ve todo + expediente.
- 65: - `/solicitudes` — Mis Solicitudes (lista). Filtro por estado. Muestra request_number, tipo, fecha, estado, tiempo en estado actual.
- 66: - `/solicitudes/nueva` — grilla de los 12 tipos para iniciar. Cada uno con icon, descripción, "quién aprueba", link al SOP.
- 67: - `/solicitudes/nueva/[type_code]` — render del form específico para ese tipo. Campos vienen de la definición del tipo (ver "Formularios" abajo).
- 68: - `/solicitudes/[id]` — detalle con timeline de aprobaciones, comentarios, documentos adjuntos, acciones disponibles (cancelar si Borrador, aprobar/rechazar si soy aprobador pendiente).
- 69: - `/ayuda` — Knowledge Base / FAQ. Lista los 12 tipos agrupados por categoría con: descripción, "qué necesitas para llenarlo", flujo de aprobación, link al SOP en `Docs/SOPs, Formularios y Documentos/`.
- 70: 
- 71: ### Admin (solo `hr_admin`)
- 72: - `/admin` — Dashboard. KPIs: solicitudes pendientes de mi acción, solicitudes esta semana, vencidas (>5 días sin acción), por tipo. Tabla con todas las solicitudes filtrable.
- 73: - `/admin/empleados` — Tabla de empleados con búsqueda. Click → expediente.
- 74: - `/admin/empleados/[id]` — Expediente: perfil completo + historial de solicitudes + documentos.
- 75: 
- 76: ## Formularios — los 12 tipos (P1 = mandatorios para MVP)
- 77: 
- 78: Code DEBE leer el PDF correspondiente en `Docs/SOPs, Formularios y Documentos/` antes de implementar cada form. Los campos exactos vienen del PDF. Lo que sigue es la lista priorizada y los aprobadores.
- 79: 
- 80: ### P1 — Formularios obligatorios para el MVP funcional
- 81: 
- 82: | Code | Nombre | SOP / PDF | Aprobadores | Notas críticas |
- 83: |------|--------|-----------|-------------|----------------|
- 84: | `VACACIONES` | Solicitud de Vacaciones | `IC-RH-F-05-03 Solicitud de Vacaciones.pdf` | Supervisor → RRHH (Rocío) → Samantha | Validar fechas no traslapan otra solicitud aprobada del mismo empleado. |
- 85: | `ACCION_PERSONAL` | Acción de Personal | `IC-RH-F-05-01 Acciones de personal.pdf` + SOP `IC-RH-PO-05` | Supervisor → Samantha → Presidencia (Rodrigo) | Cubre cambios de salario, posición, traslado, terminación. Tipos seleccionables dentro del form. |
- 86: | `PRESTAMO` | Préstamo a Empleados | `IC-RH-F-05-02 Prestamo a Empleados.pdf` + `IC-RH-D-02 Condiciones especiales...` | Supervisor → Milagros (Planillas) → Samantha | **Validación dura: monto ≤ $250** (regla del IC-RH-D-02). |
- 87: | `ACTUALIZACION_DATOS` | Actualización de Datos Personales | `IC-RH-F-00-07 Actualización de Datos.pdf` | Rocío → Samantha | Form con secciones: contacto, dirección, contacto de emergencia, estado civil, dependientes, educación. Al aprobarse, HR aplica los cambios al perfil del empleado. |
- 88: | `RECLAMO_PAGO` | Reclamo sobre Pago | `IC-RH-F-05-05 Reclamo sobre pago.pdf` | Milagros → Samantha | Periodo, descripción del problema, monto esperado vs cobrado, evidencia (upload). |
- 89: 
- 90: ### P2 — Si hay tiempo, sino quedan listados pero el form no genera flujo todavía
- 91: 
- 92: | Code | Nombre | SOP / PDF |
- 93: |------|--------|-----------|
- 94: | `PERMISO` | Solicitud de Permiso (horas / días) | `IC-RH-F-00-08 Solicitud de Permiso (HORAS).doc` |
- 95: | `CONSTANCIA_TRABAJO` | Carta de Trabajo | (no hay form, se genera) |
- 96: | `REFERENCIA_LABORAL` | Solicitud de Referencias Laborales | `IC-RH-F-00-06 Solicitud de Referencias Laborales.pdf` |
- 97: | `ENTREVISTA_SALIDA` | Entrevista de Salida | `IC-RH-F-00-05 Entrevista Salida.pdf` |
- 98: | `CAPACITACION` | Solicitud de Entrenamiento | `IC-RH-F-02-09 Solicitud y Evaluación de Entrenamiento por Supervisores.pdf` |
- 99: | `LIQUIDACION` | Liquidación | (proceso interno, sin form físico) |
-100: | `HORAS_EXTRAS` | Reporte de Horas Extras | (Excel actualmente) |
-101: 
-102: ### Patrón común para todos los formularios
-103: 1. Render dinámico desde la definición de campos (puede vivir en `request_types.form_schema` JSONB o en una tabla aparte).
-104: 2. Auto-fill: nombre, code, cédula, departamento, oficina vienen de `humanos.people` del solicitante.
-105: 3. Validaciones del form ANTES de submit (zod recomendado).
-106: 4. Al `Enviar`: INSERT en `requests` (status='Enviada'), crear filas en `request_approvals` según `approval_chain`, enviar email al primer aprobador.
-107: 5. Al aprobar/rechazar: UPDATE `request_approvals`, si era el último → UPDATE `requests.status`, email al solicitante.
-108: 
-109: ## Email (Resend)
-110: 
-111: Variables ya en `.env.local`:
-112: - `RESEND_API_KEY=...`
-113: - Dominio: `rein-eisenwerk.com` (verificado, mismo de MovimientOS)
-114: - Sender: `HumanOS <noreply@rein-eisenwerk.com>`
-115: 
-116: Templates a implementar (3 mínimos):
-117: 1. **Solicitud enviada → primer aprobador**: "Tienes una solicitud nueva por aprobar". Botón "Ver Solicitud".
-118: 2. **Aprobación parcial → siguiente aprobador**: igual al anterior.
-119: 3. **Decisión final → solicitante**: "Tu solicitud fue Aprobada/Rechazada". Botón "Ver Detalle".
-120: 
-121: Diseño: copiar el template de MovimientOS — header navy `#1B3A5C` con "ICONSA" gold + "HumanOS" white. Card blanca con título, badge de estado, key-value de IDs, botón navy. Footer "Este es un mensaje automático del sistema HumanOS de ICONSA. No responda a este correo."
-122: 
-123: ## Out of scope para el MVP (P3)
-124: 
-125: - WhatsApp / Twilio
-126: - PWA service worker / offline (responsivo sí, instalable no)
-127: - Cualquier cálculo de Payday (ISR, días disponibles de vacaciones, liquidaciones)
-128: - Generación de PDFs de cartas (si sale tiempo, solo Carta de Trabajo básica)
-129: - Onboarding wizard de empleados nuevos
-130: - Módulo de Eventos / Magazine que pidió Samantha (Module 2)
-131: 
-132: ## Aceptación del MVP — checklist
-133: 
-134: - [ ] `/login` funcional con Supabase Auth
-135: - [ ] `/inicio` carga, muestra cards y saludo
-136: - [ ] `/directorio` lista 52 activos, búsqueda funciona
-137: - [ ] `/perfil` muestra datos del empleado autenticado
-138: - [ ] `/ayuda` muestra los 12 tipos con descripción + SOP reference
-139: - [ ] `/solicitudes/nueva` muestra los 12 tipos
-140: - [ ] Los **5 forms P1** crean `requests` correctamente con `form_data` válido
-141: - [ ] El motor de aprobación crea `request_approvals` y los avanza
-142: - [ ] `/solicitudes` muestra mis solicitudes con estado
-143: - [ ] `/solicitudes/[id]` muestra detalle + timeline
-144: - [ ] `/admin` muestra dashboard con KPIs reales
-145: - [ ] HR puede aprobar/rechazar desde la UI y el estado avanza
-146: - [ ] Resend manda los 3 emails (al menos uno, idealmente los 3)
-147: - [ ] Deploy preview en Vercel funciona
-</file>
-
 <file path="next.config.ts">
 1: import type { NextConfig } from 'next';
 2: 
@@ -10674,6 +11203,66 @@ This section contains the contents of the repository's files.
 7: };
 8: 
 9: export default config;
+</file>
+
+<file path="repomix.config.json">
+ 1: {
+ 2:   "output": {
+ 3:     "filePath": "repomix-HumanOS.xml",
+ 4:     "style": "xml",
+ 5:     "fileSummary": true,
+ 6:     "directoryStructure": true,
+ 7:     "removeComments": false,
+ 8:     "removeEmptyLines": false,
+ 9:     "showLineNumbers": true,
+10:     "topFilesLength": 5
+11:   },
+12:   "include": [
+13:     "src/**",
+14:     "Docs/**",
+15:     ".claude/**",
+16:     "CLAUDE.md",
+17:     "humanos-mvp-spec.md",
+18:     "package.json",
+19:     "tsconfig.json",
+20:     "next.config.*",
+21:     "repomix.config.json",
+22:     "Target_docs/**",
+23:     "tailwind.config.*",
+24:     "supabase/**",
+25:     "README_APPLY.md",
+26:     "middleware.ts"
+27:   ],
+28:   "ignore": {
+29:     "useGitignore": true,
+30:     "useDefaultPatterns": true,
+31:     "customPatterns": [
+32:       "node_modules/**",
+33:       ".next/**",
+34:       "dist/**",
+35:       "build/**",
+36:       "*.log",
+37:       ".env*",
+38:       "package-lock.json",
+39:       "yarn.lock",
+40:       "pnpm-lock.yaml",
+41:       "*.test.*.snap",
+42:       "playwright-report/**",
+43:       "test-results/**",
+44:       "public/**",
+45:       "*.ico",
+46:       "*.png",
+47:       "*.jpg",
+48:       "*.jpeg",
+49:       "*.svg",
+50:       "*.woff*",
+51:       "repomix-output.xml"
+52:     ]
+53:   },
+54:   "security": {
+55:     "enableSecurityCheck": true
+56:   }
+57: }
 </file>
 
 <file path="src/app/globals.css">
@@ -10832,6 +11421,30 @@ This section contains the contents of the repository's files.
 153:     @apply font-sans;
 154:   }
 155: }
+</file>
+
+<file path="src/app/layout.tsx">
+ 1: import './globals.css';
+ 2: import type { Metadata } from 'next';
+ 3: import { Geist } from "next/font/google";
+ 4: import { cn } from "@/lib/utils";
+ 5: 
+ 6: const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+ 7: 
+ 8: export const metadata: Metadata = {
+ 9:   title: 'HumanOS — ICONSA',
+10:   description: 'Plataforma de RRHH de ICONSA',
+11: };
+12: 
+13: export function RootLayout({ children }: { children: React.ReactNode }) {
+14:   return (
+15:     <html lang="es" className={cn("font-sans", geist.variable)}>
+16:       <body>{children}</body>
+17:     </html>
+18:   );
+19: }
+20: 
+21: export default RootLayout;
 </file>
 
 <file path="src/app/page.tsx">

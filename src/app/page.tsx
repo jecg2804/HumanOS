@@ -1,5 +1,3 @@
-import { redirect } from 'next/navigation';
-
-export default function Root() {
-  redirect('/inicio');
+export default function HomePage() {
+  return <main>HumanOS — foundation listo para Paso 9.</main>;
 }
