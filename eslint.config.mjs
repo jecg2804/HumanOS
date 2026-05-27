@@ -1,5 +1,6 @@
 import nextCoreWebVitals from 'eslint-config-next/core-web-vitals';
 import nextTypescript from 'eslint-config-next/typescript';
+import noAdminClientInClient from './eslint-rules/no-admin-client-in-client.js';
 
 const config = [
   ...nextCoreWebVitals,
@@ -22,6 +23,14 @@ const config = [
     rules: {
       'react-hooks/purity': 'off',
       'react-hooks/set-state-in-effect': 'off',
+    },
+  },
+  {
+    plugins: {
+      iconsa: { rules: { 'no-admin-client-in-client': noAdminClientInClient } },
+    },
+    rules: {
+      'iconsa/no-admin-client-in-client': 'error',
     },
   },
 ];
