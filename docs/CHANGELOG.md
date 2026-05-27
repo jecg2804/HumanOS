@@ -24,6 +24,7 @@ Plan committed (`28e5103`). Implementación arrancó. Inline execution.
 - [x] Task 11: `src/lib/notifications/realtime.ts` useNotificationsRealtime hook (initial load + Supabase Realtime postgres_changes filter on recipient_id) + markAsRead + markAllAsRead.
 - [x] Task 12: `src/lib/onboarding/actions.ts` server actions: validateInviteCodeAction (R14 triple validation + multi-app detection ADR-0006) + reportOnboardingErrorAction (Q5 needs_review + outbox to all hr_admins) + completeOnboardingAction (capture-restore I3 rollback + RPC 037) + uploadOnboardingAvatarAction (B1 fix admin-client gated by invite validity). Migration 037 applied (idempotent + sop_version_id JOIN B3 fix). database.types.ts manually augmented with hr.complete_onboarding_writes + hr.find_auth_user_by_identifier + notifications.enqueue function signatures.
 - [x] Task 13: `src/components/onboarding/WizardReducer.ts` (useReducer state + actions VALIDATED/NEXT/PREV/GO_TO/SET_PHOTO/ACK/PAUSE_CRITICAL_ERROR/RESET, step 4 skip when multi-app) + `WizardLayout.tsx` (navy header + gold progress bar + beforeunload guard + cancel confirm modal).
+- [x] Task 14: Step1Code (8-char invite, mono-font centered uppercase) + Step2Identity (cedula + employee_code opcional) + Step3Identifier (delivery_target email-or-phone) entry gate. Step 3 useActionState calls validateInviteCodeAction, dispatch VALIDATED on success with multi-app routing.
 
 ### [bd]
 
