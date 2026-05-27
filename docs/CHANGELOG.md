@@ -27,6 +27,7 @@ Plan committed (`28e5103`). Implementación arrancó. Inline execution.
 - [x] Task 14: Step1Code (8-char invite, mono-font centered uppercase) + Step2Identity (cedula + employee_code opcional) + Step3Identifier (delivery_target email-or-phone) entry gate. Step 3 useActionState calls validateInviteCodeAction, dispatch VALIDATED on success with multi-app routing.
 - [x] Task 15: Step4Password (10-char min + HIBP) + Step5Confirm (profile preview from validateInviteCodeAction JOIN positions/org_units/locations/employment_types/supervisor + multi-app banner if existing_email_masked) + HayErrorModal (Q5 severity leve/critica). WizardReducer ValidatedContext extended with ProfilePreview.
 - [x] Task 16: Step6Emergency (contacto emergencia required name+relationship+phone) + Step7Medical (R13 SENSITIVE, all optional, blood_type enum) + Step8Address (13 provincias Panama including comarcas) + Step9Acknowledgments (M-01 + D-07 checkboxes pointing /sops/IC-RH-*-*.pdf).
+- [x] Task 17: Step10PhotoConfirm (Q3 β-prima upload via uploadOnboardingAvatarAction admin-client gated, fallback continuar sin foto si fail). Final submit calls completeOnboardingAction with all wizard state, redirects to /perfil on success. Next.js Image (unoptimized) for object URL preview.
 
 ### [bd]
 
