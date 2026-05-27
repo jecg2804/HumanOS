@@ -16,6 +16,7 @@ Plan committed (`28e5103`). Implementación arrancó. Inline execution.
 - [x] Task 3: Migration 035 avatars bucket + RLS policies (Q3 grill)
 - [x] Task 4: Migration 036 outbox indexes + enqueue helper + notification_type column (I1)
 - [x] Task 5: `src/lib/supabase/admin.ts` service role client (ADR-0006) + ESLint guard smoke test
+- [x] Task 6: `src/lib/auth/errors.ts` translateAuthError + `src/lib/onboarding/normalize.ts` normalizeNationalId/normalizePhone (TDD, 18 tests)
 
 ### [bd]
 
