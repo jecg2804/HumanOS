@@ -1,5 +1,175 @@
 @import "tailwindcss";
 
+/**
+ * HumanOS — ICONSA design tokens for Tailwind 4.
+ *
+ * In Tailwind 4 the theme lives in CSS via @theme, not in tailwind.config.ts.
+ * Reference: https://tailwindcss.com/blog/tailwindcss-v4
+ *
+ * Token naming: --color-{name}-{step}, --font-{name}.
+ * Tailwind generates utility classes automatically:
+ *   bg-navy-500, text-gold-500, font-sans, etc.
+ *
+ * Semantic colors map directly to ticket states (docs/05-BUSINESS-RULES.md R16).
+ */
+
+@theme {
+  /* ICONSA brand - Navy (primary) */
+  --color-navy-50:  #E8EDF2;
+  --color-navy-100: #C2D0DD;
+  --color-navy-200: #9CB3C8;
+  --color-navy-300: #7596B3;
+  --color-navy-400: #4F799E;
+  --color-navy-500: #1B3A5C;
+  --color-navy-600: #16304B;
+  --color-navy-700: #11253A;
+  --color-navy-800: #0B1B29;
+  --color-navy-900: #061018;
+
+  /* ICONSA brand - Gold (accent) */
+  --color-gold-50:  #FFF5DB;
+  --color-gold-100: #FFE5A8;
+  --color-gold-200: #FFD475;
+  --color-gold-300: #FFC242;
+  --color-gold-400: #FFB10F;
+  --color-gold-500: #F0A500;
+  --color-gold-600: #C28600;
+  --color-gold-700: #946700;
+  --color-gold-800: #664800;
+  --color-gold-900: #382800;
+
+  /* Semantic - info (Enviada, En_Revision) */
+  --color-info-50:  #E0EEF8;
+  --color-info-100: #B3D2EB;
+  --color-info-200: #80B6DE;
+  --color-info-300: #4D99D1;
+  --color-info-400: #267DC4;
+  --color-info-500: #0A6EBD;
+  --color-info-600: #085996;
+  --color-info-700: #06436E;
+  --color-info-800: #042D47;
+  --color-info-900: #02161F;
+
+  /* Semantic - success (Aprobada, Completada) */
+  --color-success-50:  #E0F4ED;
+  --color-success-100: #B3E0CE;
+  --color-success-200: #80CCAE;
+  --color-success-300: #4DB88E;
+  --color-success-400: #26A776;
+  --color-success-500: #1A7F5A;
+  --color-success-600: #156648;
+  --color-success-700: #0F4D37;
+  --color-success-800: #0A3325;
+  --color-success-900: #051A12;
+
+  /* Semantic - warning (Devuelta_Modificacion, urgente) */
+  --color-warning-50:  #FAEDDF;
+  --color-warning-100: #F3D2B0;
+  --color-warning-200: #EAB57F;
+  --color-warning-300: #E1984E;
+  --color-warning-400: #D87E2A;
+  --color-warning-500: #B45309;
+  --color-warning-600: #904207;
+  --color-warning-700: #6C3105;
+  --color-warning-800: #482103;
+  --color-warning-900: #241001;
+
+  /* Semantic - danger (Rechazada, Cancelada) */
+  --color-danger-50:  #F8E5E3;
+  --color-danger-100: #ECBBB6;
+  --color-danger-200: #E08F87;
+  --color-danger-300: #D46258;
+  --color-danger-400: #CA4538;
+  --color-danger-500: #C0392B;
+  --color-danger-600: #9A2D22;
+  --color-danger-700: #732119;
+  --color-danger-800: #4D1611;
+  --color-danger-900: #260B08;
+
+  /* Semantic - special (Programada, asignacion) */
+  --color-special-50:  #ECE4F5;
+  --color-special-100: #CFC0E5;
+  --color-special-200: #B19BD5;
+  --color-special-300: #9276C4;
+  --color-special-400: #7459B7;
+  --color-special-500: #553C9A;
+  --color-special-600: #44307C;
+  --color-special-700: #33245D;
+  --color-special-800: #22183E;
+  --color-special-900: #110C1F;
+
+  /* Neutral */
+  --color-neutral-50:  #F0F1F3;
+  --color-neutral-100: #D6D9DE;
+  --color-neutral-200: #BBC0C8;
+  --color-neutral-300: #A0A6B3;
+  --color-neutral-400: #858D9D;
+  --color-neutral-500: #5A6272;
+  --color-neutral-600: #484F5C;
+  --color-neutral-700: #363B45;
+  --color-neutral-800: #24282E;
+  --color-neutral-900: #121417;
+
+  /* shadcn semantic tokens mapped to ICONSA palette */
+  --color-background: #FFFFFF;
+  --color-foreground: var(--color-navy-900);
+  --color-card: #FFFFFF;
+  --color-card-foreground: var(--color-navy-900);
+  --color-popover: #FFFFFF;
+  --color-popover-foreground: var(--color-navy-900);
+  --color-primary: var(--color-navy-500);
+  --color-primary-foreground: #FFFFFF;
+  --color-secondary: var(--color-navy-50);
+  --color-secondary-foreground: var(--color-navy-700);
+  --color-muted: var(--color-neutral-50);
+  --color-muted-foreground: var(--color-neutral-500);
+  --color-accent: var(--color-gold-500);
+  --color-accent-foreground: var(--color-navy-900);
+  --color-destructive: var(--color-danger-500);
+  --color-destructive-foreground: #FFFFFF;
+  --color-border: var(--color-neutral-200);
+  --color-input: var(--color-neutral-200);
+  --color-ring: var(--color-navy-500);
+
+  /* shadcn sidebar tokens */
+  --color-sidebar: var(--color-navy-900);
+  --color-sidebar-foreground: #FFFFFF;
+  --color-sidebar-primary: var(--color-gold-500);
+  --color-sidebar-primary-foreground: var(--color-navy-900);
+  --color-sidebar-accent: var(--color-navy-700);
+  --color-sidebar-accent-foreground: #FFFFFF;
+  --color-sidebar-border: var(--color-navy-700);
+  --color-sidebar-ring: var(--color-gold-500);
+
+  /* Status badges (used by tickets - R16) */
+  --color-status-borrador: var(--color-neutral-400);
+  --color-status-enviada: var(--color-info-500);
+  --color-status-revision: var(--color-warning-500);
+  --color-status-devuelta: var(--color-warning-500);
+  --color-status-aprobada: var(--color-success-500);
+  --color-status-rechazada: var(--color-danger-500);
+  --color-status-completada: var(--color-success-500);
+  --color-status-cancelada: var(--color-neutral-500);
+
+  /* Radius */
+  --radius: 0.5rem;
+
+  /* Fonts - set via next/font/google in src/app/layout.tsx */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, monospace;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+  }
+}
+
 html,
 body {
   height: 100%;
