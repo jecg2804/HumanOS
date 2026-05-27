@@ -15,6 +15,7 @@ Plan committed (`28e5103`). Implementación arrancó. Inline execution.
 - [x] Task 2: Migration 034 SECURITY DEFINER find_auth_user_by_identifier (ADR-0006)
 - [x] Task 3: Migration 035 avatars bucket + RLS policies (Q3 grill)
 - [x] Task 4: Migration 036 outbox indexes + enqueue helper + notification_type column (I1)
+- [x] Task 5: `src/lib/supabase/admin.ts` service role client (ADR-0006) + ESLint guard smoke test
 
 ### [bd]
 
