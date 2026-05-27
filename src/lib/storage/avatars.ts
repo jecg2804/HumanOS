@@ -1,4 +1,9 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
+import type { Database } from '@/lib/supabase/database.types';
+
+type AnySchemaClient =
+  | SupabaseClient
+  | SupabaseClient<Database, keyof Omit<Database, '__InternalSupabase'>>;
 
 export const ALLOWED_MIME = ['image/jpeg', 'image/png', 'image/webp'] as const;
 export const MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024;
@@ -52,7 +57,7 @@ function loadImage(file: File): Promise<HTMLImageElement> {
 // Use for F5 admin edit + F33 self-service. Wizard step 10 must use
 // uploadOnboardingAvatarAction (server action) because user is not yet authenticated.
 export async function uploadAvatar(
-  client: SupabaseClient,
+  client: AnySchemaClient,
   personId: string,
   blob: Blob
 ): Promise<string> {
@@ -65,7 +70,7 @@ export async function uploadAvatar(
 }
 
 export async function getAvatarSignedUrl(
-  client: SupabaseClient,
+  client: AnySchemaClient,
   path: string,
   ttlSeconds = 3600
 ): Promise<string> {
