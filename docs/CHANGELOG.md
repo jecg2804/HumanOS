@@ -2,6 +2,113 @@
 
 Cambios por feature/grupo. Formato: conventional commits + entries `[bd]` para migrations o `[seed]`.
 
+## [Unreleased] — Group 2 Onboarding (implementación en curso)
+
+### Status
+
+Plan committed (`28e5103`). Implementación arrancó. Inline execution.
+
+### Implementation progress
+
+- [x] Task 1 (`e2d196c`): Group 2 deps (@react-email/components, react-markdown, dompurify) + .env.local.example + ESLint custom rule `iconsa/no-admin-client-in-client` (ADR-0006 enforcement)
+- [x] Task 2A: Migration 033 seed SOPs IC-RH-M-01 + IC-RH-D-07 + VV01 versions (B2 fix)
+
+### [bd]
+
+- `033_seed_onboarding_sops_m01_d07`: Manual de Etica IC-RH-M-01 (category=manual) + Politica Trabajo Infantil IC-RH-D-07 (category=documento) + VV01 versions con is_current=true + current_version_id linked (Blocker B2 fix prereq para Task 12 RPC)
+
+### Decisiones absorbidas grill cross-cutting Q1-Q5
+
+- **Q1 F4 campos**: 11 campos críticos. Catalog fallback link "No veo el mío" para position/department/office. NO fallback para employment_type (dominio cerrado SOP).
+- **Q2 Wizard navigation**: useReducer client state, atomic step 10, lock invite_code post-validation, cero localStorage por R13 medical SENSITIVE, redirect `/perfil`, beforeunload guard.
+- **Q3 Photo upload**: optional, single source `hr.people.photo_url`, bucket `avatars` RLS via subquery `auth_id`, resize 800x800 q0.85, pattern β-prima (pre-submit non-blocking).
+- **Q4 Password policy**: 10 chars min, HIBP activo (Pro), copy-paste OK, no rotación, no forced complexity, switch sobre error.code (no i18n framework). 2FA defer v1.1.
+- **Q5 Step 5 error escalation**: hr.people.needs_review=true + review_notes markdown structured + notifications.outbox con severidad híbrida (leve continúa / crítica pausa wizard).
+
+### ADRs commiteados Code-level
+
+- **ADR-0006** (`2593f39`): Service role admin client onboarding exception. Email/phone lookup SECURITY DEFINER, NO national_id, NO public.people cross-schema. Capture-then-restore rollback pattern para RPC failure (Issue I3 absorbed).
+- **ADR-0007** (`2593f39`): Employment type reference table con metadata operacional IC-RH-D-05.
+- **ADR-0008 initial** (`2593f39`): Notifications in-app + email PRIMARY MVP, pattern INSERT same-tx. *Superseded by revision below*.
+- **ADR-0008 revised** (`49a978a`): Worker pattern cambiado a **Vercel Cron + Next.js route handler** (no Edge Function). Templates single-source `src/emails/`. Domain `rein-eisenwerk.com` corregido. `RESEND_FROM_EMAIL` standardized. Reply-To pattern añadido. Reusar `preferences` jsonb namespace `notifications` (Issue I1 absorbed).
+
+### Audit findings — RESUELTOS
+
+**🔴 Blockers resueltos**:
+
+- **B1 — Avatar upload step 10 RLS rejection**: nuevo server action `uploadOnboardingAvatarAction` en `src/lib/onboarding/actions.ts` (Task 12). Admin client gated por validez de invite_code (no consumed, no expirado) como auth proxy. Step 17.1 (`Step10PhotoConfirm.tsx`) llama el server action en lugar de `createSupabaseBrowserClient + uploadAvatar`. Helper `uploadAvatar` en `src/lib/storage/avatars.ts` preservado con comment indicando "use for F5 admin edit + F33 self-service, not wizard step 10". Path canonical `avatars/{person_id}/current.{ext}` consistente. β-prima preservado (pre-submit non-blocking + UX "continuar sin foto o reintentar").
+
+- **B2 — `docs.sops` vacío FK violation**: nueva Task 2A + migration 033 `seed_onboarding_sops_m01_d07`. Inserta `IC-RH-M-01` (Manual de Ética, category=manual) + `IC-RH-D-07` (Política Trabajo Infantil, category=documento). Inserta `docs.sop_versions` con `version_number='VV01'`, `is_current=true`, `file_url='/sops/{code}.pdf'`. Backfill `docs.sops.current_version_id`. PDF serving via existing `copy-sops-to-public.ts` prebuild script.
+
+- **B3 — RPC schema mismatch `docs.acknowledgments`**: migration 037 `complete_onboarding_writes` RPC actualizado. Resuelve `sop_version_id` via JOIN `docs.sops → docs.sop_versions WHERE is_current=true` (NO `document_code` que no existe). `signature_method='click'` (matches CHECK constraint). `ip_address` + `user_agent` añadidos como params del server action. Guard: raises exception si SOPs no seedeados ("Aplicar migration 033 primero").
+
+**🟡 Issues resueltos**:
+
+- **I1 — `notification_preferences` dual source**: grep `src/` confirmó 0 usos de los 4 booleanos legacy (excepto types.ts auto-gen). NO migration nueva. Reutilizamos `hr.user_settings.preferences` jsonb existente con namespace `notifications`. Shape: `{ notifications: { email: { <type>: bool }, sms: {}, whatsapp: {} } }`. Helper `notifications.enqueue` lee `preferences->'notifications'->'email'->>$type`, fallback TRUE si namespace absent (opt-in implícito hasta F33 settings UI). Los 4 booleanos legacy quedan como master switch futuro F33.
+
+- **I2 — Email worker strategy**: Task 21 reescrito completamente. Vercel Cron + Next.js route handler `/api/cron/process-notifications` reemplaza Supabase Edge Function. `vercel.ts` (knowledge update 2026) con `crons: [{ path, schedule: '*/5 * * * *' }]`. Templates single-source en `src/emails/` (barrel export `src/emails/index.ts` para lookup dinámico por `template_code`). Auth: `x-vercel-cron` header + `Authorization: Bearer ${CRON_SECRET}`. Reply-To pattern: `RESEND_REPLY_TO=samantha.kosmas@iconsanet.com`, skip si `template_code === 'password_reset'`.
+
+- **I3 — Rollback gap**: `completeOnboardingAction` (Task 12.1) captura `originalAppMetadata` antes del merge `updateUserById`. Si RPC `complete_onboarding_writes` falla: NEW user → `deleteUser`, EXISTING user → `updateUserById` restaurando `originalAppMetadata` (preserva provider/providers/etc). RPC 037 es idempotente: UPDATE `auth_id` solo si NULL or matches; child inserts usan `WHERE NOT EXISTS` clauses; `medical_info` usa `ON CONFLICT DO UPDATE`.
+
+**🔵 Correcciones globales aplicadas**:
+
+| Cambio | Estado |
+|---|---|
+| `iconsa.com.pa` → `rein-eisenwerk.com` (replace_all en plan + ADR-0008 rewrite) | ✅ |
+| `RESEND_FROM_ADDRESS` → `RESEND_FROM_EMAIL` (replace_all en plan + ADR-0008) | ✅ |
+| `RESEND_FROM_EMAIL=HumanOS <notificaciones@rein-eisenwerk.com>` confirmado | ✅ |
+| `RESEND_REPLY_TO=samantha.kosmas@iconsanet.com` añadido | ✅ |
+| `NEXT_PUBLIC_APP_URL=https://humanos.rein-eisenwerk.com` añadido | ✅ |
+| `CRON_SECRET=` añadido | ✅ |
+| Migrations renumeradas 029-034 → **033-038** + nueva 033 SOPs seed | ✅ |
+| Reply-To header pattern documentado en ADR + Task 21 | ✅ |
+
+### Migration numbering final Group 2
+
+| # | Name | Purpose |
+|---|---|---|
+| 033 | `seed_onboarding_sops_m01_d07` | B2 fix (seed IC-RH-M-01 + IC-RH-D-07) |
+| 034 | `create_find_auth_user_by_identifier` | ADR-0006 (SECURITY DEFINER multi-app lookup) |
+| 035 | `create_avatars_bucket_and_policies` | Q3 grill (RLS subquery auth_id) |
+| 036 | `add_outbox_indexes_and_enqueue_helper` | I1 resolved (preferences jsonb namespace, sin column nueva) |
+| 037 | `create_complete_onboarding_writes_rpc` | B3 + I3 (idempotent, JOIN docs.sops→sop_versions) |
+| 038 | `create_apply_employment_scd2_change` | F5 SCD-2 helper |
+
+### Infraestructura confirmada
+
+- **Hosting HumanOS**: `humanos.rein-eisenwerk.com` (subdomain domain personal James). DNS+HTTPS validados via probe HTTP.
+- **Sender Resend**: `HumanOS <notificaciones@rein-eisenwerk.com>` (env var `RESEND_FROM_EMAIL`).
+- **Reply-To Resend**: `samantha.kosmas@iconsanet.com` (env var `RESEND_REPLY_TO`).
+- **Domain Resend verificado**: `rein-eisenwerk.com`.
+- **Cron secret**: `CRON_SECRET` env var (Vercel + .env.local), `openssl rand -base64 32`.
+- **NOTIFICATION_TEST_EMAIL pattern**: dev override, NO setear producción.
+
+### Lo que NO cambió desde primer audit (sigue válido)
+
+- 23 tasks structure
+- Pattern A/B/C/D cross-cutting (server action signature, ADR-0006 header, wizard step shape, enqueueNotification)
+- ESLint rule `no-admin-client-in-client`
+- Wizard reducer + beforeunload + atomic step 10
+- E2E SQL-only encrypted_password invariant pattern
+- F4 11 campos críticos
+- Step 5 needs_review híbrido + HayErrorModal
+- Pre-execution checklist (expandido a 10 items con detalles)
+
+### Git state pre-Task-1
+
+```
+2593f39 docs(adr): add 0006 + 0007 + 0008 (initial)
+49a978a docs(adr): revise 0008 — Vercel Cron + rein-eisenwerk + Reply-To
+```
+
+Working tree:
+```
+M  docs/CONTEXT.md                                                          (untracked changes, no committeado)
+?? docs/superpowers/plans/2026-05-27-group-2-onboarding.md                  (untracked, espera audit final Chat)
+```
+
+---
+
 ## v0.0.1 - 2026-05-27 - Group 1 Foundation
 
 ### Added
