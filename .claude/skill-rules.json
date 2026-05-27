@@ -207,6 +207,29 @@
         "(cerrar|finalizar|close).*?(branch|overnight)",
         "(ready|listo).*?(merge|prod)"
       ]
+    },
+    {
+      "name": "iconsa-library-docs-check",
+      "enforcement": "high",
+      "priority": "high",
+      "description": "Verify external library APIs are current via Context7 before implementation. Avoids deprecated APIs from LLM training cutoff (Next.js 16 middleware->proxy, React 19, Tailwind 4, Supabase SSR, Zod 4, etc).",
+      "keywords": [
+        "next.js", "nextjs", "next 16", "next 15",
+        "react", "react 19", "react hooks",
+        "tailwind", "tailwind 4", "tailwind css",
+        "supabase", "supabase ssr", "supabase auth", "supabase client",
+        "resend", "twilio", "documenso", "zod",
+        "import", "npm install", "package.json", "library", "framework", "dependency",
+        "middleware", "proxy", "hook", "server action", "route handler",
+        "server component", "client component", "app router", "layout", "page",
+        "useState", "useEffect", "useRouter", "useFormState", "useTransition"
+      ],
+      "intent_patterns": [
+        "(usar|implementar|importar|integrar|instalar).*?(next|react|tailwind|supabase|resend|twilio|documenso|zod|library|framework|package)",
+        "(server|client)\\s+(component|action)",
+        "(middleware|proxy|hook|api\\s+route|route\\s+handler)",
+        "(npm|pnpm|yarn)\\s+(install|add)"
+      ]
     }
   ]
 }
