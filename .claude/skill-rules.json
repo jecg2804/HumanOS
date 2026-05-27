@@ -1,0 +1,212 @@
+{
+  "$schema": "https://example.com/skill-rules.schema.json",
+  "_comment": "Skill router config for HumanOS. Hook user-prompt-submit.ps1 matches prompt against these rules and appends recommendations. Format: array de skills. Cada skill: name, enforcement (critical/high/medium/suggest), priority (critical/high/medium/low), description, keywords (array string), intent_patterns (array regex), filePatterns (array glob, opcional).",
+  "version": "2.0",
+  "skills": [
+    {
+      "name": "iconsa-business-rules",
+      "enforcement": "critical",
+      "priority": "critical",
+      "description": "26 reglas R1-R26 críticas: schemas prohibidos, no self-approval, sello, supervisor NULL fallback, request_number HUM-YYYY-NNNN, estados ticket, auth.users filter, encoding, SOP-driven chains.",
+      "keywords": [
+        "aprobacion", "aprobación", "approval", "aprobar", "rechazar", "modificar",
+        "supervisor", "hr_admin", "president", "self-approval",
+        "sello", "stamp", "prestamo", "préstamo",
+        "request_number", "HUM-", "estado", "status",
+        "back-and-forth", "modificacion pendiente", "devuelta_modificacion",
+        "allowed_apps", "auth.users", "schema", "prohibido",
+        "SOP", "sop", "chain", "approval_chain_template",
+        "manual_entry", "encoding", "BOM", "ASCII"
+      ],
+      "intent_patterns": [
+        "(implementar|validar|crear).*?(approval|aprobacion|chain)",
+        "(regla|business rule|R[0-9]+)",
+        "(modificar|cambiar).*?(auth\\.users|schema)"
+      ]
+    },
+    {
+      "name": "iconsa-supabase-migration",
+      "enforcement": "critical",
+      "priority": "critical",
+      "description": "Workflow migrations: nombre snake_case NNN_action_target, COMMENT obligatorio, RLS habilitada, helpers existentes, CHANGELOG entry [bd], external_ids tables si golden record.",
+      "keywords": [
+        "migration", "CREATE TABLE", "ALTER TABLE", "DROP TABLE", "schema",
+        "apply_migration", "DDL", "CREATE FUNCTION", "CREATE TRIGGER",
+        "COMMENT ON", "ENABLE ROW LEVEL SECURITY", "CREATE INDEX",
+        "external_ids", "golden record"
+      ],
+      "intent_patterns": [
+        "(crear|añadir|modificar|agregar).*?(tabla|column|policy|trigger|function|schema|migration)",
+        "(agregar|add).*?(table|column)"
+      ],
+      "filePatterns": [
+        "supabase/migrations/*.sql"
+      ]
+    },
+    {
+      "name": "iconsa-rls-validation",
+      "enforcement": "high",
+      "priority": "high",
+      "description": "Validacion RLS post-cambio: queries Q1-Q5 (pg_policies + pg_class), verifica tablas HumanOS con RLS habilitada + policy count + sensitive tables R13.",
+      "keywords": [
+        "RLS", "row level security", "policy", "policies",
+        "FOR SELECT", "FOR INSERT", "FOR UPDATE", "FOR DELETE",
+        "USING", "WITH CHECK", "ENABLE ROW LEVEL SECURITY",
+        "pg_policies", "pg_class"
+      ],
+      "intent_patterns": [
+        "(verificar|validar|crear|añadir).*?(RLS|policy|policies)",
+        "(seguridad|security).*?(tabla|table)"
+      ]
+    },
+    {
+      "name": "iconsa-form-implementation",
+      "enforcement": "high",
+      "priority": "high",
+      "description": "Implementacion de formularios HumanOS end-to-end. Patron: leer SOP -> form_schema -> approval_chain -> server action -> tests E2E. 24 form variants en 2 categorias.",
+      "keywords": [
+        "form", "formulario", "solicitud", "ticket", "FormEngine", "ApprovalEngine",
+        "F-05-01", "F-05-02", "F-05-03", "F-05-04", "F-05-05",
+        "F-00-05", "F-00-06", "F-00-07", "F-00-08", "F-02-09", "F-04-01",
+        "VACACIONES", "PRESTAMO", "ACCION_PERSONAL", "ACCION_AUMENTO_SALARIO",
+        "ACTUALIZACION_DATOS", "RECLAMO_PAGO", "PERMISO",
+        "CONSTANCIA_TRABAJO", "CERTIFICACION_LABORAL", "CONSTANCIA_NO_ADEUDO",
+        "COPIA_CONTRATO", "COPIA_COLILLA", "CAMBIO_CUENTA_BANCO",
+        "CAMBIO_DEPENDIENTES", "SOLICITUD_EPP", "REPORTE_INCIDENTE",
+        "REFERENCIA_LABORAL", "ENTREVISTA_SALIDA", "CAPACITACION",
+        "form_schema", "requests.types", "requests.tickets"
+      ],
+      "intent_patterns": [
+        "(implementar|construir|crear).*?(formulario|tipo|ticket|solicitud)",
+        "(nuevo|nueva).*?(form|solicitud)"
+      ],
+      "filePatterns": [
+        "src/app/**/solicitudes/**",
+        "src/components/solicitudes/**",
+        "src/lib/forms/**"
+      ]
+    },
+    {
+      "name": "test-driven-development",
+      "enforcement": "high",
+      "priority": "high",
+      "description": "Red-green-refactor: escribir test failing primero, minimo implementar para pass, refactor manteniendo green. Superpowers tdd skill.",
+      "keywords": [
+        "TDD", "test-driven", "red-green-refactor",
+        "vitest", "playwright", "spec", "tests"
+      ],
+      "intent_patterns": [
+        "(escribir|añadir|crear).*?(test|tests|spec|specs)",
+        "(implementar|fix).*?(con tests|with tests|tdd)"
+      ]
+    },
+    {
+      "name": "writing-plans",
+      "enforcement": "high",
+      "priority": "high",
+      "description": "Superpowers writing-plans: spec -> plan con tasks atomicas, codigo completo en steps, self-review (spec coverage, placeholder scan, type consistency).",
+      "keywords": [
+        "plan", "writing-plans", "task list", "implementation plan"
+      ],
+      "intent_patterns": [
+        "(crear|escribir|generar).*?(plan|tasks)",
+        "(planificar|planning).*?(feature|implementacion)"
+      ]
+    },
+    {
+      "name": "grill-with-docs",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "description": "Matt Pocock grill-with-docs: interview riguroso para alinearse. Actualiza CONTEXT.md y crea ADRs inline en docs/adr/.",
+      "keywords": [
+        "grill", "interview", "ADR", "decision record",
+        "context.md", "shared language", "vocabulary"
+      ],
+      "intent_patterns": [
+        "(tomar|capturar).*?(decision|adr)",
+        "(actualizar|escribir).*?(context|ADR)"
+      ]
+    },
+    {
+      "name": "diagnose",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Matt Pocock diagnose: loop disciplinado para bugs duros. Reproduce -> minimise -> hypothesise -> instrument -> fix -> regression-test.",
+      "keywords": [
+        "bug", "error", "issue", "debug", "diagnose",
+        "regression", "flaky", "no funciona", "broken"
+      ],
+      "intent_patterns": [
+        "(resolver|fix|debug).*?(bug|error|issue)",
+        "(no funciona|broken|breaking)"
+      ]
+    },
+    {
+      "name": "handoff",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "description": "Matt Pocock handoff: compactar conversacion actual a documento para que otra sesion Code continue. Usado con hook PreCompact.",
+      "keywords": [
+        "handoff", "compact", "summarize session", "continuar despues"
+      ],
+      "intent_patterns": [
+        "(cerrar|cierra|terminar).*?(sesion|chat|conversation)",
+        "(handoff|pasar a otra sesion)"
+      ]
+    },
+    {
+      "name": "frontend-design",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "description": "Anthropic frontend-design: combate AI slop. Bold aesthetic choices, design tokens ICONSA (Navy #1B3A5C, etc), no fonts default.",
+      "keywords": [
+        "design", "ui", "ux", "tailwind", "color", "typography",
+        "frontend", "component", "page layout"
+      ],
+      "intent_patterns": [
+        "(diseñar|design|estilizar).*?(ui|componente|pagina)",
+        "(styling|aesthetic|look and feel)"
+      ]
+    },
+    {
+      "name": "requesting-code-review",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "description": "Superpowers code review: pre-commit checklist, identifica issues antes de submit (tsc, lint, RLS, COMMENT, business rules).",
+      "keywords": [
+        "code review", "review", "pre-commit", "ready to commit"
+      ],
+      "intent_patterns": [
+        "(revisar|review).*?(codigo|code|PR)",
+        "(antes de commit|pre-commit)"
+      ]
+    },
+    {
+      "name": "verification-before-completion",
+      "enforcement": "high",
+      "priority": "high",
+      "description": "Superpowers verification: gate por feature antes de marcar done. Tests + lint + tsc + build + RLS validation + business rules check.",
+      "keywords": [
+        "verification", "done", "completion", "complete", "verify"
+      ],
+      "intent_patterns": [
+        "(marcar|mark).*?(done|completo|finished)",
+        "(verificar|verify).*?(feature|implementacion)"
+      ]
+    },
+    {
+      "name": "finishing-a-development-branch",
+      "enforcement": "high",
+      "priority": "high",
+      "description": "Superpowers finishing: cierre overnight. Asegura tests verde, docs actualizados, CHANGELOG, tag version, ready to merge.",
+      "keywords": [
+        "overnight", "branch close", "merge", "finishing", "MVP_COMPLETE",
+        "PARTIAL_MVP"
+      ],
+      "intent_patterns": [
+        "(cerrar|finalizar|close).*?(branch|overnight)",
+        "(ready|listo).*?(merge|prod)"
+      ]
+    }
+  ]
+}
