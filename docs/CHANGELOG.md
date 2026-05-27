@@ -22,6 +22,7 @@ Plan committed (`28e5103`). Implementación arrancó. Inline execution.
 - [x] Task 9: `src/emails/` BaseLayout + OnboardingErrorReported + InviteCodeDelivered + InviteCodeRegenerated + WelcomeEmployee (@react-email/components 1.0.12 + Tailwind + pixelBasedPreset re-exported via tailwind subpkg) + barrel `index.ts` for cron worker dynamic lookup.
 - [x] Task 10: `src/lib/storage/avatars.ts` validateMime + resizeImage canvas 800x800 q0.85 + uploadAvatar + getAvatarSignedUrl (Q3 β-prima, post-resize 1MB hard cap). 4 TDD tests.
 - [x] Task 11: `src/lib/notifications/realtime.ts` useNotificationsRealtime hook (initial load + Supabase Realtime postgres_changes filter on recipient_id) + markAsRead + markAllAsRead.
+- [x] Task 12: `src/lib/onboarding/actions.ts` server actions: validateInviteCodeAction (R14 triple validation + multi-app detection ADR-0006) + reportOnboardingErrorAction (Q5 needs_review + outbox to all hr_admins) + completeOnboardingAction (capture-restore I3 rollback + RPC 037) + uploadOnboardingAvatarAction (B1 fix admin-client gated by invite validity). Migration 037 applied (idempotent + sop_version_id JOIN B3 fix). database.types.ts manually augmented with hr.complete_onboarding_writes + hr.find_auth_user_by_identifier + notifications.enqueue function signatures.
 
 ### [bd]
 

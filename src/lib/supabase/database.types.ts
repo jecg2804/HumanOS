@@ -1467,8 +1467,34 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      complete_onboarding_writes: {
+        Args: {
+          p_invite_id: string
+          p_person_id: string
+          p_auth_id: string
+          p_photo_path: string | null
+          p_emergency: Json
+          p_medical: Json
+          p_address: Json
+          p_ack_ethics_at: string
+          p_ack_child_labor_at: string
+          p_ip_address: string | null
+          p_user_agent: string | null
+        }
+        Returns: undefined
+      }
       current_app_role: { Args: never; Returns: string }
       current_person_id: { Args: never; Returns: string }
+      find_auth_user_by_identifier: {
+        Args: { p_field: string; p_value: string }
+        Returns: {
+          id: string
+          email: string | null
+          phone: string | null
+          raw_app_meta_data: Json
+          encrypted_password: string | null
+        }[]
+      }
       has_direct_reports: { Args: never; Returns: boolean }
       is_hr_admin: { Args: never; Returns: boolean }
       is_president_or_admin: { Args: never; Returns: boolean }
@@ -2245,7 +2271,18 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      enqueue: {
+        Args: {
+          p_recipient_id: string
+          p_notification_type: string
+          p_subject: string
+          p_body: string
+          p_template_code: string
+          p_template_variables: Json
+          p_metadata: Json
+        }
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never
