@@ -914,6 +914,7 @@ export type Database = {
           created_from: string
           department_id: string | null
           department_text: string | null
+          employment_type_id: string | null
           hire_date: string | null
           hiring_source: string | null
           id: string
@@ -938,6 +939,7 @@ export type Database = {
           created_from?: string
           department_id?: string | null
           department_text?: string | null
+          employment_type_id?: string | null
           hire_date?: string | null
           hiring_source?: string | null
           id?: string
@@ -962,6 +964,7 @@ export type Database = {
           created_from?: string
           department_id?: string | null
           department_text?: string | null
+          employment_type_id?: string | null
           hire_date?: string | null
           hiring_source?: string | null
           id?: string
@@ -1016,6 +1019,33 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      employment_types: {
+        Row: {
+          id: string
+          code: string
+          name: string
+          short_name: string
+          is_active: boolean
+          display_order: number | null
+        }
+        Insert: {
+          id?: string
+          code: string
+          name: string
+          short_name: string
+          is_active?: boolean
+          display_order?: number | null
+        }
+        Update: {
+          id?: string
+          code?: string
+          name?: string
+          short_name?: string
+          is_active?: boolean
+          display_order?: number | null
+        }
+        Relationships: []
       }
       invite_codes: {
         Row: {
@@ -1467,6 +1497,23 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      apply_employment_scd2_change: {
+        Args: {
+          p_person_id: string
+          p_position_id: string | null
+          p_position_text: string | null
+          p_department_id: string | null
+          p_department_text: string | null
+          p_office_id: string | null
+          p_office_text: string | null
+          p_supervisor_id: string | null
+          p_hire_date: string
+          p_app_role: string
+          p_employment_type_id: string
+          p_actor_id: string
+        }
+        Returns: undefined
+      }
       complete_onboarding_writes: {
         Args: {
           p_invite_id: string
