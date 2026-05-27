@@ -14,12 +14,14 @@ Plan committed (`28e5103`). Implementación arrancó. Inline execution.
 - [x] Task 2A: Migration 033 seed SOPs IC-RH-M-01 + IC-RH-D-07 + VV01 versions (B2 fix)
 - [x] Task 2: Migration 034 SECURITY DEFINER find_auth_user_by_identifier (ADR-0006)
 - [x] Task 3: Migration 035 avatars bucket + RLS policies (Q3 grill)
+- [x] Task 4: Migration 036 outbox indexes + enqueue helper + notification_type column (I1)
 
 ### [bd]
 
 - `033_seed_onboarding_sops_m01_d07`: Manual de Etica IC-RH-M-01 (category=manual) + Politica Trabajo Infantil IC-RH-D-07 (category=documento) + VV01 versions con is_current=true + current_version_id linked (Blocker B2 fix prereq para Task 12 RPC)
 - `034_create_find_auth_user_by_identifier`: SECURITY DEFINER function returning id/email/phone/raw_app_meta_data/encrypted_password matching email OR phone. GRANT EXECUTE solo service_role (ADR-0006 multi-app gating).
 - `035_create_avatars_bucket_and_policies`: Supabase Storage bucket `avatars` (5MB file_size_limit, jpeg/png/webp) + 2 RLS policies sobre `storage.objects`: SELECT authenticated all + ALL gated por subquery `hr.people.auth_id = auth.uid()` OR `hr.is_hr_admin()` (Q3 grill).
+- `036_add_outbox_indexes_and_enqueue_helper`: 2 partial indexes (idx_outbox_worker_pending + idx_outbox_recipient_unread) + ADD COLUMN notifications.outbox.notification_type + SECURITY DEFINER function `notifications.enqueue` que siempre inserta in_app y conditionally email leyendo `preferences->'notifications'->'email'->>$type` con default TRUE (Issue I1 resolved: reusa `preferences` jsonb namespace, NO columna nueva).
 
 ### Decisiones absorbidas grill cross-cutting Q1-Q5
 
