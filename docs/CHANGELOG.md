@@ -12,10 +12,12 @@ Plan committed (`28e5103`). Implementación arrancó. Inline execution.
 
 - [x] Task 1 (`e2d196c`): Group 2 deps (@react-email/components, react-markdown, dompurify) + .env.local.example + ESLint custom rule `iconsa/no-admin-client-in-client` (ADR-0006 enforcement)
 - [x] Task 2A: Migration 033 seed SOPs IC-RH-M-01 + IC-RH-D-07 + VV01 versions (B2 fix)
+- [x] Task 2: Migration 034 SECURITY DEFINER find_auth_user_by_identifier (ADR-0006)
 
 ### [bd]
 
 - `033_seed_onboarding_sops_m01_d07`: Manual de Etica IC-RH-M-01 (category=manual) + Politica Trabajo Infantil IC-RH-D-07 (category=documento) + VV01 versions con is_current=true + current_version_id linked (Blocker B2 fix prereq para Task 12 RPC)
+- `034_create_find_auth_user_by_identifier`: SECURITY DEFINER function returning id/email/phone/raw_app_meta_data/encrypted_password matching email OR phone. GRANT EXECUTE solo service_role (ADR-0006 multi-app gating).
 
 ### Decisiones absorbidas grill cross-cutting Q1-Q5
 
