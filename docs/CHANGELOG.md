@@ -21,6 +21,7 @@ Plan committed (`28e5103`). Implementación arrancó. Inline execution.
 - [x] Task 8: `src/lib/notifications/types.ts` NotificationType enum + TEMPLATE_CODE_MAP + `insert.ts` enqueueNotification helper (wraps schema('notifications').rpc('enqueue')). 2 TDD tests (success path + RPC error).
 - [x] Task 9: `src/emails/` BaseLayout + OnboardingErrorReported + InviteCodeDelivered + InviteCodeRegenerated + WelcomeEmployee (@react-email/components 1.0.12 + Tailwind + pixelBasedPreset re-exported via tailwind subpkg) + barrel `index.ts` for cron worker dynamic lookup.
 - [x] Task 10: `src/lib/storage/avatars.ts` validateMime + resizeImage canvas 800x800 q0.85 + uploadAvatar + getAvatarSignedUrl (Q3 β-prima, post-resize 1MB hard cap). 4 TDD tests.
+- [x] Task 11: `src/lib/notifications/realtime.ts` useNotificationsRealtime hook (initial load + Supabase Realtime postgres_changes filter on recipient_id) + markAsRead + markAllAsRead.
 
 ### [bd]
 
