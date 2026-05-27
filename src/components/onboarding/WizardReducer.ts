@@ -1,5 +1,15 @@
 'use client';
 
+export interface ProfilePreview {
+  full_name: string;
+  position: string;
+  department: string;
+  supervisor_name: string | null;
+  office: string;
+  hire_date: string;
+  employment_type: string;
+}
+
 export interface ValidatedContext {
   person_id: string;
   display_name: string;
@@ -8,6 +18,7 @@ export interface ValidatedContext {
   existing_email_masked: string | null;
   normalized_target: string;
   target_field: 'email' | 'phone';
+  preview: ProfilePreview;
 }
 
 export interface WizardState {

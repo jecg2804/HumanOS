@@ -101,6 +101,46 @@ export async function validateInviteCodeAction(
     email: string | null;
   }> | null)?.[0];
 
+  const { data: employmentRaw } = await admin
+    .schema('hr')
+    .from('employments')
+    .select(
+      `hire_date,
+       position_text,
+       department_text,
+       office_text,
+       position:positions(title),
+       department:org_units(name),
+       office:locations(name),
+       supervisor:people!supervisor_id(full_name),
+       employment_type:employment_types(short_name)`
+    )
+    .eq('person_id', invite.person_id)
+    .eq('is_current', true)
+    .maybeSingle();
+
+  const employment = employmentRaw as unknown as {
+    hire_date: string | null;
+    position_text: string | null;
+    department_text: string | null;
+    office_text: string | null;
+    position: { title: string } | null;
+    department: { name: string } | null;
+    office: { name: string } | null;
+    supervisor: { full_name: string } | null;
+    employment_type: { short_name: string } | null;
+  } | null;
+
+  const preview = {
+    full_name: person.full_name,
+    position: employment?.position?.title ?? employment?.position_text ?? 'Sin asignar',
+    department: employment?.department?.name ?? employment?.department_text ?? 'Sin asignar',
+    supervisor_name: employment?.supervisor?.full_name ?? null,
+    office: employment?.office?.name ?? employment?.office_text ?? 'Sin asignar',
+    hire_date: employment?.hire_date ?? 'Sin asignar',
+    employment_type: employment?.employment_type?.short_name ?? 'Sin asignar',
+  };
+
   return {
     ok: true,
     data: {
@@ -111,6 +151,7 @@ export async function validateInviteCodeAction(
       existing_email_masked: existing?.email ? maskEmail(existing.email) : null,
       normalized_target: normalizedTarget,
       target_field: field,
+      preview,
     },
   };
 }
