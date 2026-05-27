@@ -1,3 +1,8 @@
-export default function HomePage() {
-  return <main>HumanOS — foundation listo para Paso 9.</main>;
+import { redirect } from 'next/navigation';
+import { createSupabaseServerClient } from '@/lib/supabase/server';
+
+export default async function RootPage() {
+  const supabase = await createSupabaseServerClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  redirect(user ? '/dashboard' : '/login');
 }
