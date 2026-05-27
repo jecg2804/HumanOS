@@ -17,6 +17,7 @@ Plan committed (`28e5103`). Implementación arrancó. Inline execution.
 - [x] Task 4: Migration 036 outbox indexes + enqueue helper + notification_type column (I1)
 - [x] Task 5: `src/lib/supabase/admin.ts` service role client (ADR-0006) + ESLint guard smoke test
 - [x] Task 6: `src/lib/auth/errors.ts` translateAuthError + `src/lib/onboarding/normalize.ts` normalizeNationalId/normalizePhone (TDD, 18 tests)
+- [x] Task 7: `src/lib/onboarding/validation.ts` Zod 4 schemas (Step1-9 + ErrorReport) + inferred types. v4 `{ error }` option (replaces v3 errorMap). 11 TDD tests.
 
 ### [bd]
 
