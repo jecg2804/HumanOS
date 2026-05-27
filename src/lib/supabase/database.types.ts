@@ -2241,6 +2241,7 @@ export type Database = {
           id: string
           last_attempt_at: string | null
           max_attempts: number
+          metadata: Json | null
           notification_type: string
           priority: string
           provider_message_id: string | null
@@ -2268,6 +2269,7 @@ export type Database = {
           id?: string
           last_attempt_at?: string | null
           max_attempts?: number
+          metadata?: Json | null
           notification_type: string
           priority?: string
           provider_message_id?: string | null
@@ -2295,6 +2297,7 @@ export type Database = {
           id?: string
           last_attempt_at?: string | null
           max_attempts?: number
+          metadata?: Json | null
           notification_type?: string
           priority?: string
           provider_message_id?: string | null
