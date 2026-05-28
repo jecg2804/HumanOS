@@ -253,11 +253,13 @@ Cambios:
 
 ---
 
-### Task 5 — `completeOnboardingAction` silent multi-app
+### Task 5 — `completeOnboardingAction` silent multi-app + commitment enforcement
 
 **Archivo**: [src/lib/onboarding/actions.ts](../../src/lib/onboarding/actions.ts)
 
-Sin cambios estructurales — la lógica multi-app merge ya estaba ahí (líneas 279-295 read invite_codes + auth.users + updateUserById). Solo cambia que esta info ya NO se expuso al cliente vía validateInviteCodeAction. La merge sigue funcionando dentro de completeOnboardingAction.
+La lógica multi-app merge ya estaba (read auth.users + updateUserById); solo cambia que esa info ya NO se expone al cliente vía validateInviteCodeAction.
+
+**Codex review fix (2026-05-28)**: el commitment de delivery_target (NEW.A) vivía solo en `validateInviteCodeAction`. Pero `completeOnboardingAction` es un POST separado alcanzable que recibe `normalized_target` crudo y nunca re-validaba contra el invite — **bypass**: un atacante con UN invite válido propio podía completar con el email de una víctima (merge humanOS en cuenta ajena + link de su person_id al auth de la víctima + reintroducción del oracle de enumeración). Fix: al inicio de `completeOnboardingAction`, fetch del invite por `invite_id` y verificar (1) existe, (2) `person_id` match, (3) no consumido, (4) no expirado, (5) `validated_at` no null Y `SHA256(normalized_target) === validated_delivery_target_hash`. Cierra el bypass: completion solo procede con el delivery_target exacto comprometido durante la validación.
 
 ---
 

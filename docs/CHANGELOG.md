@@ -13,6 +13,7 @@ Batches 1-4 del audit consolidado. Commits `3e82240` (harness), `6cbd643` (docs 
 #### Code security (Batch 3, commit `c97e0c3`)
 
 - NEW.A (P1): cross-app enumeration oracle eliminado de `validateInviteCodeAction` (removidos `existing_multi_app_user` + `existing_email_masked`); HMAC token `src/lib/onboarding/token.ts`; rate-limit; typo-poisoning commitment; merge multi-app silencioso en `completeOnboardingAction`; password step ahora visible a todos.
+- NEW.A follow-up (Codex review): `completeOnboardingAction` ahora re-valida el commitment (fetch invite + person_id match + no consumido/expirado + `SHA256(normalized_target)` === `validated_delivery_target_hash`). Cierra bypass donde el POST de completion aceptaba un `normalized_target` arbitrario, evadiendo el commitment de validateInviteCodeAction (riesgo: merge humanOS en cuenta de víctima + link de person_id + oracle reintroducido).
 - NEW.B (P2): `reportOnboardingErrorAction` valida HMAC token (mata person_id spoofing).
 - P1.6: `requireHrAdmin` (`src/lib/auth/require-hr-admin.ts`) aplicado a 3 server actions admin.
 - P2.14: allow-list en login next-redirect. P3.43->P2: cron falla closed sin CRON_SECRET.

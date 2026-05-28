@@ -350,6 +350,40 @@ export async function completeOnboardingAction(
 ): Promise<FormState> {
   const admin = createSupabaseAdminClient();
 
+  // NEW.A Batch 3 (Codex review fix): enforce the delivery_target commitment at
+  // completion too. validateInviteCodeAction commits validated_delivery_target_hash
+  // on the invite; completeOnboardingAction is a separate reachable POST that
+  // receives normalized_target raw. Without re-checking here, an attacker holding
+  // ONE valid invite could call this with a victim's email — merging humanOS onto
+  // the victim's auth account and linking their own person_id to it, plus
+  // reintroducing the cross-app enumeration oracle. Re-validate against the invite.
+  const { data: invite } = await admin
+    .schema('hr')
+    .from('invite_codes')
+    .select('id, person_id, consumed_at, expires_at, validated_at, validated_delivery_target_hash')
+    .eq('id', input.invite_id)
+    .maybeSingle();
+
+  if (!invite) {
+    return { ok: false, message: 'Invitación no encontrada.' };
+  }
+  if (invite.person_id !== input.person_id) {
+    return { ok: false, message: 'Invitación no corresponde al empleado.' };
+  }
+  if (invite.consumed_at) {
+    return { ok: false, message: 'Este código ya fue usado.' };
+  }
+  if (new Date(invite.expires_at) < new Date()) {
+    return { ok: false, message: 'Código expirado. Solicita uno nuevo a RRHH.' };
+  }
+  const targetHash = createHash('sha256').update(input.normalized_target).digest('hex');
+  if (!invite.validated_at || invite.validated_delivery_target_hash !== targetHash) {
+    return {
+      ok: false,
+      message: 'Sesión de onboarding inválida. Reinicia el proceso desde el inicio.',
+    };
+  }
+
   let authId: string;
   let originalAppMetadata: Record<string, unknown> | null = null;
   const { data: existingRows } = await admin.schema('hr').rpc('find_auth_user_by_identifier', {
