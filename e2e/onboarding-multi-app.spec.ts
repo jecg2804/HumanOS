@@ -64,6 +64,11 @@ test('multi-app merge preserves encrypted_password (no MovimientOS break)', asyn
   await page.locator('button:has-text("Continuar")').click();
   await page.fill('input[name="delivery_target"]', RODRIGO_EMAIL);
   await page.locator('button:has-text("Continuar")').click();
+  // Batch 3 NEW.A: password step now shown to ALL users (no skip-for-multi-app).
+  // For existing users completeOnboardingAction ignores this password — the
+  // encrypted_password immutability assert below still holds.
+  await page.fill('input[type="password"]', 'TestPassword12345');
+  await page.locator('button:has-text("Continuar")').click();
   await expect(page.locator('text=Confirma tus datos')).toBeVisible();
   await page.locator('button:has-text("Todo correcto")').click();
   await page.fill('input[placeholder="madre, esposa, hermano…"]', 'Esposa');

@@ -79,7 +79,10 @@ export function Step10PhotoConfirm({ state, dispatch }: Props) {
       person_id: state.validated.person_id,
       target_field: state.validated.target_field,
       normalized_target: state.validated.normalized_target,
-      password: state.validated.existing_multi_app_user ? null : state.password,
+      // Batch 3 NEW.A: send password always. completeOnboardingAction ignores
+      // it when user already exists (multi-app silent merge). Tradeoff: user
+      // types a password even if existing; we no longer reveal which they are.
+      password: state.password,
       emergency: state.emergency,
       medical: state.medical,
       address: state.address,

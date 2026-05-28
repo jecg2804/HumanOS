@@ -28,13 +28,6 @@ export function Step5Confirm({ state, dispatch, preview }: Props) {
         <Row label="Fecha de ingreso" value={preview.hire_date} />
         <Row label="Tipo de contrato" value={preview.employment_type} />
       </dl>
-      {state.validated?.existing_multi_app_user && (
-        <div className="bg-blue-50 border border-blue-200 rounded p-4 text-sm">
-          Detectamos que ya tienes cuenta de ICONSA registrada con{' '}
-          <strong>{state.validated.existing_email_masked}</strong>. Tu contraseña actual sigue
-          válida y la usarás también para HumanOS.
-        </div>
-      )}
       <div className="flex gap-2">
         <button
           onClick={() => dispatch({ type: 'PREV_STEP' })}

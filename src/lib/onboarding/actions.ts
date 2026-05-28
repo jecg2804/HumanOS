@@ -2,8 +2,10 @@
 // ADR-0006 exception: this module uses service_role admin client for multi-app
 // provisioning during onboarding. See docs/adr/0006-service-role-admin-client-onboarding-exception.md
 
-import { createSupabaseAdminClient } from '@/lib/supabase/admin';
+import { createHash } from 'node:crypto';
+import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { createSupabaseAdminClient } from '@/lib/supabase/admin';
 import {
   Step1Schema,
   Step2Schema,
@@ -11,6 +13,7 @@ import {
   ErrorReportSchema,
 } from './validation';
 import { normalizeNationalId, normalizePhone } from './normalize';
+import { signOnboardingToken, verifyOnboardingToken } from './token';
 import { translateAuthError } from '@/lib/auth/errors';
 import { NotificationType } from '@/lib/notifications/types';
 import { enqueueNotification } from '@/lib/notifications/insert';
@@ -43,10 +46,16 @@ export async function validateInviteCodeAction(
 
   const admin = createSupabaseAdminClient();
 
+  // Extract requester IP for rate-limit (NEW.A Batch 3)
+  const headersList = await headers();
+  const forwardedFor = headersList.get('x-forwarded-for');
+  const realIp = headersList.get('x-real-ip');
+  const ipAddress = (forwardedFor?.split(',')[0]?.trim() || realIp || '0.0.0.0').slice(0, 45);
+
   const { data: invite } = await admin
     .schema('hr')
     .from('invite_codes')
-    .select('id, code, person_id, expires_at, consumed_at')
+    .select('id, code, person_id, expires_at, consumed_at, validated_at, validated_delivery_target_hash')
     .eq('code', codeR.data.code)
     .maybeSingle();
 
@@ -58,6 +67,27 @@ export async function validateInviteCodeAction(
   }
   if (new Date(invite.expires_at) < new Date()) {
     return { ok: false, message: 'Código expirado. Solicita uno nuevo a RRHH.' };
+  }
+
+  // NEW.A Batch 3: rate-limit AFTER invite found (real invite_code_id) but BEFORE
+  // person/cedula reveal. Attribute attempts to the real invite.
+  const { data: rateLimitJson, error: rateErr } = await admin
+    .schema('hr')
+    .rpc('check_invite_code_rate_limit', {
+      p_invite_code_id: invite.id,
+      p_ip_address: ipAddress,
+    });
+
+  if (rateErr) {
+    // Fail closed
+    return { ok: false, message: 'Error de validación. Intenta de nuevo.' };
+  }
+  const rateLimit = rateLimitJson as { blocked: boolean; attempts_remaining: number } | null;
+  if (rateLimit?.blocked) {
+    return {
+      ok: false,
+      message: 'Demasiados intentos. Espera unos minutos antes de reintentar.',
+    };
   }
 
   const { data: person } = await admin
@@ -90,16 +120,56 @@ export async function validateInviteCodeAction(
     : normalizePhone(delR.data.delivery_target);
   const field = isEmail ? 'email' : 'phone';
 
-  const { data: existingUsers } = await admin.schema('hr').rpc('find_auth_user_by_identifier', {
-    p_field: field,
-    p_value: normalizedTarget,
-  });
+  // NEW.A Batch 3: commitment hash. SHA256 hex del normalized delivery_target.
+  // First successful (code+cedula gates passed) attempt commits the hash; subsequent
+  // attempts with different hash are rejected (kills cross-app enumeration oracle).
+  const deliveryTargetHash = createHash('sha256').update(normalizedTarget).digest('hex');
 
-  const existing = (existingUsers as unknown as Array<{
-    id: string;
-    raw_app_meta_data: Record<string, unknown>;
-    email: string | null;
-  }> | null)?.[0];
+  let committedValidatedAt = invite.validated_at;
+
+  if (invite.validated_at) {
+    if (invite.validated_delivery_target_hash !== deliveryTargetHash) {
+      return {
+        ok: false,
+        message:
+          'Esta invitación ya fue iniciada con otro correo o teléfono. Si te equivocaste, contacta a RRHH para regenerar la invitación.',
+      };
+    }
+    // Same hash: user retrying with same delivery_target. Allow continue.
+  } else {
+    // Atomic compare-and-swap via WHERE validated_at IS NULL guard.
+    const { data: updateResult } = await admin
+      .schema('hr')
+      .from('invite_codes')
+      .update({
+        validated_at: new Date().toISOString(),
+        validated_delivery_target_hash: deliveryTargetHash,
+      })
+      .eq('id', invite.id)
+      .is('validated_at', null)
+      .select('validated_at, validated_delivery_target_hash')
+      .maybeSingle();
+
+    if (updateResult) {
+      committedValidatedAt = updateResult.validated_at;
+    } else {
+      // Lost the race: someone else committed first. Re-read and check hash.
+      const { data: fresh } = await admin
+        .schema('hr')
+        .from('invite_codes')
+        .select('validated_at, validated_delivery_target_hash')
+        .eq('id', invite.id)
+        .maybeSingle();
+      if (fresh?.validated_delivery_target_hash !== deliveryTargetHash) {
+        return {
+          ok: false,
+          message:
+            'Esta invitación ya fue iniciada con otro correo o teléfono. Si te equivocaste, contacta a RRHH para regenerar la invitación.',
+        };
+      }
+      committedValidatedAt = fresh?.validated_at ?? committedValidatedAt;
+    }
+  }
 
   const { data: employmentRaw } = await admin
     .schema('hr')
@@ -141,25 +211,28 @@ export async function validateInviteCodeAction(
     employment_type: employment?.employment_type?.short_name ?? 'Sin asignar',
   };
 
+  // NEW.A Batch 3: HMAC token bound to (invite, person, validated_at) for
+  // reportOnboardingErrorAction validation (kills person_id spoofing NEW.B).
+  const token = signOnboardingToken({
+    invite_id: invite.id,
+    person_id: person.id,
+    validated_at: committedValidatedAt ?? new Date().toISOString(),
+  });
+
   return {
     ok: true,
     data: {
       person_id: person.id,
       display_name: person.full_name,
       invite_id: invite.id,
-      existing_multi_app_user: !!existing,
-      existing_email_masked: existing?.email ? maskEmail(existing.email) : null,
+      // NEW.A: existing_multi_app_user + existing_email_masked REMOVED. Multi-app
+      // detection moves silently into completeOnboardingAction (no client leak).
       normalized_target: normalizedTarget,
       target_field: field,
       preview,
+      token,
     },
   };
-}
-
-function maskEmail(email: string): string {
-  const [local, domain] = email.split('@');
-  if (!domain) return email;
-  return `${local[0]}***@${domain}`;
 }
 
 export async function reportOnboardingErrorAction(
@@ -171,11 +244,23 @@ export async function reportOnboardingErrorAction(
     description: formData.get('description'),
   });
   const personId = formData.get('person_id') as string;
+  const token = formData.get('token') as string | null;
   if (!parsed.success || !personId) {
     return {
       ok: false,
       errors: parsed.success ? {} : parsed.error.flatten().fieldErrors,
     };
+  }
+
+  // NEW.B Batch 3: validate HMAC token from wizard session. Kills person_id
+  // spoofing vandalism vector (anyone with valid invite+cedula could
+  // pollute another person's review_notes + spam hr_admin).
+  if (!token) {
+    return { ok: false, message: 'Sesión inválida. Reinicia el onboarding.' };
+  }
+  const payload = verifyOnboardingToken(token);
+  if (!payload || payload.person_id !== personId) {
+    return { ok: false, message: 'Sesión inválida. Reinicia el onboarding.' };
   }
 
   const admin = createSupabaseAdminClient();

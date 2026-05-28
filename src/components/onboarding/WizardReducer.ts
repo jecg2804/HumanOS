@@ -14,11 +14,14 @@ export interface ValidatedContext {
   person_id: string;
   display_name: string;
   invite_id: string;
-  existing_multi_app_user: boolean;
-  existing_email_masked: string | null;
   normalized_target: string;
   target_field: 'email' | 'phone';
   preview: ProfilePreview;
+  // Batch 3 NEW.A: HMAC token for reportOnboardingErrorAction validation.
+  // Multi-app detection (existing_multi_app_user/existing_email_masked) was
+  // removed — those leaked a cross-app enumeration oracle. Detection now
+  // happens silently inside completeOnboardingAction.
+  token: string;
 }
 
 export interface WizardState {
@@ -95,6 +98,10 @@ export function wizardReducer(state: WizardState, action: WizardAction): WizardS
         [action.section]: { ...state[action.section], [action.key]: action.value },
       };
     case 'VALIDATED':
+      // Batch 3 NEW.A: always advance to step 4 (password). Previous skip-to-5
+      // shortcut for multi-app users leaked existence info; tradeoff accepted
+      // per audit. Password step now shown to all; multi-app merge silent
+      // in completeOnboardingAction.
       return {
         ...state,
         validated: action.payload,
@@ -102,18 +109,12 @@ export function wizardReducer(state: WizardState, action: WizardAction): WizardS
         cedula: action.cedula,
         employee_code: action.employee_code,
         delivery_target: action.delivery_target,
-        step: action.payload.existing_multi_app_user ? 5 : 4,
+        step: 4,
       };
-    case 'NEXT_STEP': {
-      let next = state.step + 1;
-      if (next === 4 && state.validated?.existing_multi_app_user) next = 5;
-      return { ...state, step: Math.min(next, 10) };
-    }
-    case 'PREV_STEP': {
-      let prev = state.step - 1;
-      if (prev === 4 && state.validated?.existing_multi_app_user) prev = 3;
-      return { ...state, step: Math.max(prev, 1) };
-    }
+    case 'NEXT_STEP':
+      return { ...state, step: Math.min(state.step + 1, 10) };
+    case 'PREV_STEP':
+      return { ...state, step: Math.max(state.step - 1, 1) };
     case 'GO_TO':
       return { ...state, step: action.step };
     case 'SET_PHOTO':

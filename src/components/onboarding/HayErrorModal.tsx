@@ -45,6 +45,7 @@ export function HayErrorModal({ state, dispatch, onClose }: Props) {
         <h2 className="text-lg font-bold">Reportar error en tus datos</h2>
         <form action={formAction} className="space-y-4 mt-4">
           <input type="hidden" name="person_id" value={state.validated?.person_id ?? ''} />
+          <input type="hidden" name="token" value={state.validated?.token ?? ''} />
           <div>
             <label className="block text-sm font-medium mb-1">Severidad</label>
             <select name="severity" className="w-full p-3 border rounded" defaultValue="">

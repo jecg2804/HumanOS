@@ -2,7 +2,7 @@
 // ADR-0006 exception: invite code generation uses admin client for hr.invite_codes insert
 // (RLS would require hr_admin context; service role bypasses for atomic creation with audit).
 import { createSupabaseAdminClient } from '@/lib/supabase/admin';
-import { createSupabaseServerClient } from '@/lib/supabase/server';
+import { AuthorizationError, requireHrAdmin } from '@/lib/auth/require-hr-admin';
 import { z } from 'zod';
 
 type FormState = {
@@ -53,11 +53,16 @@ export async function createEmployeeAction(
     return { ok: false, message: 'Ubicación requerida' };
   }
 
-  const userClient = await createSupabaseServerClient();
-  const {
-    data: { user },
-  } = await userClient.auth.getUser();
-  if (!user) return { ok: false, message: 'No autenticado' };
+  // P1.6 Batch 3: require hr_admin role (was only checking auth.getUser before).
+  let user;
+  try {
+    ({ user } = await requireHrAdmin());
+  } catch (e) {
+    if (e instanceof AuthorizationError) {
+      return { ok: false, message: e.message };
+    }
+    throw e;
+  }
 
   const admin = createSupabaseAdminClient();
 
@@ -134,11 +139,16 @@ export async function regenerateInviteCodeAction(
   const deliveryTarget = formData.get('delivery_target') as string | null;
   if (!personId || !deliveryTarget) return { ok: false, message: 'Datos faltantes' };
 
-  const userClient = await createSupabaseServerClient();
-  const {
-    data: { user },
-  } = await userClient.auth.getUser();
-  if (!user) return { ok: false, message: 'No autenticado' };
+  // P1.6 Batch 3: require hr_admin role.
+  let user;
+  try {
+    ({ user } = await requireHrAdmin());
+  } catch (e) {
+    if (e instanceof AuthorizationError) {
+      return { ok: false, message: e.message };
+    }
+    throw e;
+  }
 
   const admin = createSupabaseAdminClient();
 
@@ -187,11 +197,16 @@ export async function updateEmployeeAction(
   const parsed = UpdateEmployeeSchema.safeParse(Object.fromEntries(formData));
   if (!parsed.success) return { ok: false, errors: parsed.error.flatten().fieldErrors };
 
-  const userClient = await createSupabaseServerClient();
-  const {
-    data: { user },
-  } = await userClient.auth.getUser();
-  if (!user) return { ok: false, message: 'No autenticado' };
+  // P1.6 Batch 3: require hr_admin role.
+  let user;
+  try {
+    ({ user } = await requireHrAdmin());
+  } catch (e) {
+    if (e instanceof AuthorizationError) {
+      return { ok: false, message: e.message };
+    }
+    throw e;
+  }
 
   const admin = createSupabaseAdminClient();
 

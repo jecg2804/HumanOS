@@ -1061,6 +1061,9 @@ export type Database = {
           invite_method: string | null
           notes: string | null
           person_id: string
+          // Batch 3 NEW.A manual augmentation (migration 039 hr.invite_codes commitment columns)
+          validated_at: string | null
+          validated_delivery_target_hash: string | null
         }
         Insert: {
           code: string
@@ -1075,6 +1078,8 @@ export type Database = {
           invite_method?: string | null
           notes?: string | null
           person_id: string
+          validated_at?: string | null
+          validated_delivery_target_hash?: string | null
         }
         Update: {
           code?: string
@@ -1089,6 +1094,8 @@ export type Database = {
           invite_method?: string | null
           notes?: string | null
           person_id?: string
+          validated_at?: string | null
+          validated_delivery_target_hash?: string | null
         }
         Relationships: [
           {
@@ -1546,6 +1553,17 @@ export type Database = {
       is_hr_admin: { Args: never; Returns: boolean }
       is_president_or_admin: { Args: never; Returns: boolean }
       is_supervisor_of: { Args: { target_person_id: string }; Returns: boolean }
+      // Batch 3 NEW.A manual augmentation (migration 039)
+      check_invite_code_rate_limit: {
+        Args: {
+          p_invite_code_id: string
+          p_ip_address: string
+          p_max_attempts?: number
+          p_window_minutes?: number
+          p_block_minutes?: number
+        }
+        Returns: Json
+      }
     }
     Enums: {
       [_ in never]: never

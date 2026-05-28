@@ -18,6 +18,14 @@ const MAX_PER_TICK = 50;
 type AdminClient = ReturnType<typeof createSupabaseAdminClient>;
 
 export async function GET(request: Request) {
+  // P3.43->P2 Batch 3: validar CRON_SECRET no undefined antes de comparison.
+  // Si env var no seteada, comparison seria `Bearer undefined` que cliente
+  // puede replicar trivialmente. Fail closed.
+  if (!process.env.CRON_SECRET) {
+    console.error('[cron] CRON_SECRET env var no esta seteada — abort');
+    return NextResponse.json({ error: 'Server misconfigured' }, { status: 500 });
+  }
+
   const isVercelCron = request.headers.get('x-vercel-cron') === '1';
   const authHeader = request.headers.get('authorization');
   const expected = `Bearer ${process.env.CRON_SECRET}`;

@@ -46,7 +46,16 @@ export async function loginAction(formData: FormData): Promise<LoginResult> {
     };
   }
 
-  redirect(parsed.data.next ?? '/dashboard');
+  const safeNext = isSafeNextPath(parsed.data.next) ? parsed.data.next! : '/dashboard';
+  redirect(safeNext);
+}
+
+function isSafeNextPath(next: string | undefined): boolean {
+  if (!next) return false;
+  if (!next.startsWith('/')) return false;
+  if (next.startsWith('//')) return false; // protocol-relative URL
+  if (next.startsWith('/\\')) return false; // edge case browsers normalize
+  return true;
 }
 
 export async function logoutAction(): Promise<void> {
