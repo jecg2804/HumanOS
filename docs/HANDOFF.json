@@ -1,0 +1,39 @@
+{
+    "compact_trigger":  "auto",
+    "git":  {
+                "branch":  "main",
+                "last_commit":  "e2d196c chore(deps): Group 2 deps + admin client lint guard",
+                "uncommitted_changes":  [
+                                            " D .agents/skills/diagnose/SKILL.md",
+                                            " D .agents/skills/diagnose/scripts/hitl-loop.template.sh",
+                                            " D .agents/skills/grill-with-docs/ADR-FORMAT.md",
+                                            " D .agents/skills/grill-with-docs/CONTEXT-FORMAT.md",
+                                            " D .agents/skills/grill-with-docs/SKILL.md",
+                                            " D .agents/skills/handoff/SKILL.md",
+                                            " D .agents/skills/setup-matt-pocock-skills/SKILL.md",
+                                            " D .agents/skills/setup-matt-pocock-skills/domain.md",
+                                            " D .agents/skills/setup-matt-pocock-skills/issue-tracker-github.md",
+                                            " D .agents/skills/setup-matt-pocock-skills/issue-tracker-gitlab.md",
+                                            " D .agents/skills/setup-matt-pocock-skills/issue-tracker-local.md",
+                                            " D .agents/skills/setup-matt-pocock-skills/triage-labels.md",
+                                            " M .claude/settings.json",
+                                            " M .mcp.json",
+                                            " M docs/08-ADRs.md",
+                                            " M docs/09-ESTADO-ACTUAL.md",
+                                            " M docs/13-INTEGRATIONS-INDEX.md",
+                                            " M docs/CHANGELOG.md",
+                                            " M repomix-HumanOS.xml",
+                                            " M repomix.config.json"
+                                        ]
+            },
+    "timestamp":  "2026-05-27T14:44:13Z",
+    "cwd":  "C:\\Users\\Jaime Cucalon\\Documents\\iconsa_apps\\HumanOS",
+    "recent_files":  [
+                         "docs\\CHANGELOG.md",
+                         "docs\\08-ADRs.md",
+                         "docs\\13-INTEGRATIONS-INDEX.md",
+                         "docs\\09-ESTADO-ACTUAL.md",
+                         "docs\\superpowers\\plans\\2026-05-27-group-2-onboarding.md",
+                         "docs\\adr\\0008-notifications-in-app-email-primary-mvp.md"
+                     ]
+}

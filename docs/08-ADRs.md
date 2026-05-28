@@ -1,8 +1,10 @@
 # 08-ADRs.md — Architectural Decision Records (Chat-level)
 
-**Última actualización**: 2026-05-27 (ADR-0011 reescrito, ADR-0012 ajustado, ADR-0013 nuevo)
+**Última actualización**: 2026-05-27 nocturna post-audit-2 (cross-reference Code-level ADRs 0006/0007/0008 + revisión ADR-0008 commit 49a978a absorbida)
 
 ADRs aquí son decisiones de nivel Chat (estratégicas). Code genera ADRs técnicos en `docs/adr/` del repo durante implementación.
+
+**Numeración independiente**: este doc (08-ADRs.md) tiene su propia secuencia 0001-0014 para decisiones Chat-level. El repo HumanOS tiene `docs/adr/` con su propia secuencia 0001-0008 para decisiones Code-level (implementación específica). Ver sección "Cross-referencia Code-level" al final para mapping.
 
 ---
 
@@ -32,14 +34,14 @@ Risk: cross-schema RLS más complejo. Mitigación: helpers `hr.current_*()` + R1
 
 ## ADR-0003 — Auth multi-app via allowed_apps
 
-**Status**: Accepted
+**Status**: Accepted (refinado 2026-05-27)
 **Date**: 2026-05-22
 
 `auth.users.raw_app_meta_data.allowed_apps` JSONB array (e.g. `["movimientOS", "humanOS"]`) determina qué apps puede usar el user.
 
 Misma persona = mismo auth.user. NO duplicar users per app.
 
-Sign-up HumanOS detecta `auth.users` con `national_id` match Y `allowed_apps` no contiene 'humanOS' → append.
+**Refinamiento 2026-05-27**: sign-up HumanOS detecta `auth.users` con `email` O `phone` match (NO `national_id` que NO existe en `raw_app_meta_data` — verificado vacío en BD). Si existe Y `allowed_apps` no contiene 'humanOS' → append via `auth.admin.updateUserById` con spread merge. Sino crea nuevo auth.user via `auth.admin.createUser`. Ver Code-level **ADR-0006** (`docs/adr/0006-service-role-admin-client-onboarding-exception.md`) para algoritmo detallado, incluyendo capture-then-restore pattern para rollback gap si RPC falla post-merge.
 
 ---
 
@@ -58,12 +60,14 @@ Alternativa descartada: self-signup abierto (security risk).
 
 ## ADR-0005 — MDM gradual (no big-bang)
 
-**Status**: Accepted
+**Status**: Accepted (reafirmado post-rollback 2026-05-27)
 **Date**: 2026-05-23
 
 Person canonical eventual en `mdm.persons`. MVP usa `hr.people` como source HumanOS. Duplicación temporal hr.people ↔ public.people aceptada hasta otra app pida MDM.
 
 Cuando aplique: `mdm.persons` + sync triggers + deprecar `public.people` y `hr.people` lentamente.
+
+**Lección 2026-05-27**: intento prematuro de crear `core.identities` schema (migrations 029-031) fue rollbackeado en migration 032. Violaba este ADR al anticipar MDM antes de que otra app lo demandara. Reafirmación: MDM se hace cuando hay PULL (segunda app necesita identity unificada), no PUSH (Chat anticipando).
 
 ---
 
@@ -258,8 +262,37 @@ Implementar Nivel C en MVP. Sobre-engineering. Samantha primero necesita USAR el
 
 ---
 
+## Cross-referencia Code-level ADRs (docs/adr/)
+
+Code genera ADRs técnicos en `docs/adr/` del repo con numeración propia 0001-0008+. Estos cubren decisiones de implementación específica (algoritmos, patterns, schemas) más granulares que las Chat-level. Tabla de mapping:
+
+| Code-level ADR (docs/adr/) | Chat-level ADR relacionado | Tema | Commit |
+|---|---|---|---|
+| 0001-rls-driven-db-access | ADR-0002 (este doc) | RLS como mecanismo primario de access control | pre-grill |
+| 0002-codegen-snake-case-types-zod-boundaries | — | Tipos snake_case + Zod en boundaries (técnico) | pre-grill |
+| 0003-snapshot-profile-fields-at-submit | ADR-0006 (Engines) | Snapshot pattern FormEngine | pre-grill |
+| 0004-parallel-modify-reset-non-terminal | ADR-0011 (este doc, modes) | Reset non-terminal en parallel mode | pre-grill |
+| 0005-manual-entry-bypass-chain | ADR-0012 (este doc) | Manual entry F32 bypass approval chain | pre-grill |
+| **0006-service-role-admin-client-onboarding-exception** | ADR-0003 (este doc, multi-app) | Service role para onboarding lookup + multi-app gating (email/phone NO national_id) + capture-then-restore rollback pattern (Issue I3) | `2593f39` |
+| **0007-employment-type-reference-table** | — | hr.employment_types con metadata operacional IC-RH-D-05 | `2593f39` |
+| **0008-notifications-in-app-email-primary-mvp** (revised) | — | Notifications in-app + email PRIMARY MVP, **Vercel Cron worker** (no Edge Function), pattern INSERT same-tx, Reply-To pattern, domain `rein-eisenwerk.com`, reusar `preferences` jsonb namespace (Issue I1) | `2593f39` initial, `49a978a` revised |
+
+**Códigos bold** = ADRs nuevos commiteados sesión 2026-05-27 nocturna.
+
+**Decisiones absorbidas por ADR-0008 revisión (49a978a)**:
+- Worker pattern: Supabase Edge Function → Vercel Cron + Next.js route handler (`/api/cron/process-notifications`)
+- Templates single-source en `src/emails/` (sin sync script dual-runtime)
+- Auth: `x-vercel-cron` header + `CRON_SECRET`
+- Per-user opt-in: reusar `hr.user_settings.preferences` jsonb con namespace `notifications` (NO column nueva — Issue I1)
+- Domain: `iconsa.com.pa` (incorrect) → `rein-eisenwerk.com` (Resend verified)
+- Env var: `RESEND_FROM_ADDRESS` → `RESEND_FROM_EMAIL` (standardize con .env.local real)
+- Reply-To: `RESEND_REPLY_TO=samantha.kosmas@iconsanet.com` excepto `password_reset`
+
+---
+
 ## Cómo se usan estos ADRs
 
 - **Chat al inicio sesión**: lee este doc para refresh decisiones grandes
-- **Si surge una decisión que contradice un ADR**: documenta el SUPERSEDES con razón
+- **S i surge una decisión que contradice un ADR**: documenta el SUPERSEDES con razón
 - **Code en `docs/adr/`**: ADRs técnicos de implementación específica (ej: "uso Zod vs Yup", "pattern de error handling en API routes"). Diferentes nivel de detalle
+- **Cross-reference**: mantener tabla arriba sincronizada cuando Code crea nuevo ADR técnico que refiere/extiende una decisión Chat-level, o cuando un ADR Code-level se revisa (capturar commit hash)

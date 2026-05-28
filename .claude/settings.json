@@ -1,10 +1,70 @@
-﻿{
+{
   "hooks": {
-    "SessionStart": [{ "matcher": "", "hooks": [{ "type": "command", "command": "powershell.exe -ExecutionPolicy Bypass -NoProfile -File .claude/hooks/session-start.ps1", "timeout": 15 }] }],
-    "UserPromptSubmit": [{ "matcher": "", "hooks": [{ "type": "command", "command": "powershell.exe -ExecutionPolicy Bypass -NoProfile -File .claude/hooks/user-prompt-submit.ps1", "timeout": 10 }] }],
-    "PreToolUse": [{ "matcher": "mcp__plugin_supabase_supabase__(apply_migration|execute_sql|deploy_edge_function)|mcp__supabase__(apply_migration|execute_sql|deploy_edge_function)|Bash|Edit|Write", "hooks": [{ "type": "command", "command": "powershell.exe -ExecutionPolicy Bypass -NoProfile -File .claude/hooks/pre-tool-use.ps1", "timeout": 10 }] }],
-    "PostToolUse": [{ "matcher": "Edit|Write|mcp__plugin_supabase_supabase__apply_migration|mcp__supabase__apply_migration", "hooks": [{ "type": "command", "command": "powershell.exe -ExecutionPolicy Bypass -NoProfile -File .claude/hooks/post-tool-use.ps1", "timeout": 60 }] }],
-    "PreCompact": [{ "matcher": "", "hooks": [{ "type": "command", "command": "powershell.exe -ExecutionPolicy Bypass -NoProfile -File .claude/hooks/pre-compact.ps1", "timeout": 15 }] }]
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell.exe -ExecutionPolicy Bypass -NoProfile -File .claude/hooks/session-start.ps1",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell.exe -ExecutionPolicy Bypass -NoProfile -File .claude/hooks/user-prompt-submit.ps1",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "mcp__plugin_supabase_supabase__(apply_migration|execute_sql|deploy_edge_function)|mcp__supabase__(apply_migration|execute_sql|deploy_edge_function)|Bash|Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell.exe -ExecutionPolicy Bypass -NoProfile -File .claude/hooks/pre-tool-use.ps1",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|mcp__plugin_supabase_supabase__apply_migration|mcp__supabase__apply_migration",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell.exe -ExecutionPolicy Bypass -NoProfile -File .claude/hooks/post-tool-use.ps1",
+            "timeout": 60
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell.exe -ExecutionPolicy Bypass -NoProfile -File .claude/hooks/pre-compact.ps1",
+            "timeout": 15
+          }
+        ]
+      }
+    ]
   },
-  "permissions": { "defaultMode": "auto" }
+  "permissions": {
+    "defaultMode": "auto"
+  },
+  "enabledPlugins": {
+    "claude-code-setup@claude-plugins-official": true
+  }
 }

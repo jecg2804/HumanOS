@@ -2,9 +2,9 @@
 
 **⚠️ Foundational ICONSA, no específico de HumanOS.** Migra a `iconsa-knowledge` wiki cuando se cree.
 
-**Última actualización**: sesión 2026-05-25 (creación)
+**Última actualización**: sesión 2026-05-27 nocturna post-audit-2 (Vercel Cron decisión absorbida ADR-0008, CRON_SECRET, sender confirmed)
 
-**Propósito**: Inventario de cada sistema externo que sincroniza con la BD ICONSA. Por cada uno: status integration, API capabilities, auth, frecuencia ETL, entidades cubiertas. Sirve como source-of-truth operacional.
+**Propósito**: Inventario de cada sistema externo que sincroniza con la BD ICONSA o sirve infraestructura crítica. Por cada uno: status integration, API capabilities, auth, frecuencia ETL, entidades cubiertas. Sirve como source-of-truth operacional.
 
 ---
 
@@ -19,7 +19,77 @@
 
 ---
 
-## Sistemas externos
+## Infraestructura operacional (no ETL, no master data)
+
+### Resend (transactional email)
+
+| Item | Valor |
+|---|---|
+| **Status** | Live para MovimientOS, Implementing para HumanOS (Group 2 in-progress) |
+| **Tipo** | Transactional email service |
+| **API** | REST + SDK Node (resend v6.12) |
+| **Auth** | API key `RESEND_API_KEY` en .env.local + Vercel env vars |
+| **Domain verificado** | `rein-eisenwerk.com` (domain personal de James, NOT `iconsanet.com` — ICONSA TI controla ese DNS y no se pudo verificar Resend ahí) |
+| **Sender HumanOS** | `RESEND_FROM_EMAIL=HumanOS <notificaciones@rein-eisenwerk.com>` |
+| **Sender MovimientOS** | Configurado en Vercel env override (llegan como `MovimientOS <noreply@resend.dev>` actualmente, pendiente migración a `*@rein-eisenwerk.com` post-MVP HumanOS) |
+| **Reply-To HumanOS** | `RESEND_REPLY_TO=samantha.kosmas@iconsanet.com`. Aplica todos los emails EXCEPTO `password_reset` (self-service) |
+| **Test override** | `NOTIFICATION_TEST_EMAIL` env var redirige todos los emails a esa dirección (uso dev only, NO setear en producción) |
+| **Worker pattern HumanOS** | **Vercel Cron + Next.js route handler** (`/api/cron/process-notifications`) declarado en `vercel.ts` con schedule `*/5 * * * *`. ADR-0008 commit 49a978a. Auth: `x-vercel-cron` header + `Authorization: Bearer ${CRON_SECRET}` |
+| **Templates** | Single source `src/emails/*.tsx` con `@react-email/components` + Tailwind `pixelBasedPreset`. Barrel export `src/emails/index.ts` para lookup dinámico por `template_code`. Sin sync script (mismo Node runtime) |
+| **Per-user opt-in** | Reuso `hr.user_settings.preferences` jsonb con namespace `notifications`. Shape: `{ notifications: { email: { <type>: bool } } }`. Helper `notifications.enqueue` con fallback TRUE si namespace absent |
+| **Owner ICONSA** | James (Resend account holder) |
+| **Implicación arquitectónica** | Sender domain ≠ recipient domain estándar transactional email. Empleados `@iconsanet.com` reciben del `*@rein-eisenwerk.com`. Display name "HumanOS" + branding visual aseguran identidad ICONSA pese al sender domain externo |
+
+### Sentry (error tracking + APM)
+
+| Item | Valor |
+|---|---|
+| **Status** | Live (MovimientOS configurado, HumanOS ya activo per James) |
+| **Tipo** | Error tracking + performance monitoring |
+| **API** | REST + SDK Next.js (@sentry/nextjs) |
+| **Auth** | `SENTRY_DSN` + auth token para sourcemaps en build |
+| **Direction** | Outbound only (apps → Sentry SaaS) |
+| **Frecuencia** | Realtime (errors), sampled (performance) |
+| **Owner ICONSA** | James |
+| **Notas** | MCP disponible para Chat. Queries via `Sentry:find_issues`, `Sentry:search_events`, etc. |
+
+### Vercel (hosting + cron)
+
+| Item | Valor |
+|---|---|
+| **Status** | Live |
+| **Team principal** | `team_eF8Xr3TDs6yd5Q6nAhics6s3` (great-mann's projects) |
+| **Team secundario** | `team_yGAYhYjLvxBn2Ar4LjDkKxtJ` (jecg2804's projects) — legacy `movilizaciones-iconsa` candidato a archivar |
+| **MovimientOS** | `prj_o28h5tYDskqF3AjBg1w5W3F3fYu4` → `rein-eisenwerk.com` + `www.rein-eisenwerk.com` |
+| **HumanOS** | `prj_DqJQEL9LJ5qcwkw8Et6WYUpUxiLQ` → `humanos.rein-eisenwerk.com` (validado DNS+HTTP) |
+| **Node** | 24.x |
+| **Framework** | Next.js 16 |
+| **Cron jobs (HumanOS Group 2+)** | Declarados en `vercel.ts` (knowledge update 2026 reemplaza `vercel.json`). Schedule `*/5 * * * *` para `/api/cron/process-notifications` email worker |
+| **Cron auth** | `CRON_SECRET` env var (openssl rand -base64 32). Route handlers validan `x-vercel-cron` header (Vercel-signed) + `Authorization: Bearer ${CRON_SECRET}` |
+| **Env vars** | Gestionados en Vercel Dashboard (override .env.local). MCP Chat NO lee env vars — solo lista projects, deployments, logs |
+| **Owner ICONSA** | James |
+
+### MCPs activos
+
+**Chat (Anthropic API directo)**:
+- Supabase ✓ (29 tools — execute_sql, apply_migration, list_branches, etc.)
+- Vercel ✓ (list_projects, get_project, list_deployments, build_logs)
+- Sentry ✓
+- Google Drive ✓
+- Resend — configurado disabled status (no crítico MVP)
+
+**Code (Claude Code en VS Code)**:
+- Supabase ✓ (built-in plugin)
+- Vercel ✓ (built-in plugin)
+- Context7 ✓ (docs Next.js/React/Tailwind/Resend/Supabase actualizadas)
+- Playwright ✓
+- chrome-devtools-mcp ✓
+- Filesystem ✓
+- Notion ✓
+
+---
+
+## Sistemas externos (ETL / master data)
 
 ### 1. PayDay (nómina Panamá)
 
@@ -100,11 +170,11 @@
 | **Rate limits** | TBD |
 | **Direction** | Inbound only (Skydata → BD) — GPS pings + telemetry |
 | **Entidades cubiertas** | Equipment (current_location, telemetry), Driver tracking (asociación driver → equipment vía Skydata Driver ID) |
-| **Frecuencia ETL recomendada** | Polling cada 1-5 min o webhook si Skydata lo soporta. Posiblemente Edge Function en Supabase con cron schedule |
+| **Frecuencia ETL recomendada** | Polling cada 1-5 min o webhook si Skydata lo soporta. Posiblemente Vercel Cron en HumanOS (pattern consolidado per ADR-0008) o Supabase Edge Function (TBD post-MVP) |
 | **SOR Matrix** | Skydata es SOR de current_location en realtime y telemetry (velocidad, idle time, route history) |
 | **Owner ICONSA** | Operaciones (logística MovimientOS) |
 | **Implicación arquitectónica** | Volumen alto: cada equipo con GPS ping cada N segundos. Schema staging `etl.skydata_pings_staging` debe tener TTL/partitioning para no crecer indefinidamente. Considerar TimescaleDB extension o particionado nativo Postgres por tiempo. |
-| **Próximo paso** | **Primera integration MDM-compliant a implementar.** Crear `etl.skydata_pings_staging` + Edge Function pull cada N minutos + tabla canónica `mdm.equipment_locations` (o equivalente) con partition por tiempo |
+| **Próximo paso** | **Primera integration MDM-compliant a implementar.** Crear `etl.skydata_pings_staging` + worker pull cada N minutos + tabla canónica `mdm.equipment_locations` (o equivalente) con partition por tiempo |
 | **Workarounds actuales** | Ninguno — clean slate para primera implementation MDM-compliant |
 
 ### 6. Google Workspace ICONSA (futuro SSO destino)
@@ -134,6 +204,8 @@
 | **Status** | Live (producción en `rein-eisenwerk.com`) |
 | **Tipo** | App interna Next.js — logística movilizaciones |
 | **Repo** | ICONSA-Solutions/movimientOS |
+| **Vercel project** | `prj_o28h5tYDskqF3AjBg1w5W3F3fYu4` |
+| **Domains** | `rein-eisenwerk.com`, `www.rein-eisenwerk.com` |
 | **Schemas usados** | `public.*` (38 tablas) — datos transaccionales propios + golden records temporales (people, equipment, projects) |
 | **Auth** | Supabase auth — `auth.users` con `app_metadata.allowed_apps` incluyendo `'movimientOS'` |
 | **Daily users** | 17 |
@@ -143,13 +215,18 @@
 
 | Item | Valor |
 |---|---|
-| **Status** | En construcción (Paso 9-11 framework setup) |
+| **Status** | En construcción (Group 2 onboarding plan corregido post-audit-2, pre-Task 1) |
 | **Tipo** | App interna Next.js — RRHH self-service |
-| **Repo** | jecg2804/HumanOS (`human-os`) |
-| **Schemas usados** | `hr.*`, `requests.*`, `docs.*`, `workflows.*`, `audit.*`, `notifications.*`, `files.*`, `performance.*`, `learning.*` (52 tablas total) |
+| **Repo** | ICONSA-Solutions/HumanOS |
+| **Vercel project** | `prj_DqJQEL9LJ5qcwkw8Et6WYUpUxiLQ` |
+| **Domain** | `humanos.rein-eisenwerk.com` (subdomain del domain personal James, validado DNS+HTTP) |
+| **Schemas usados** | `hr.*`, `requests.*`, `docs.*`, `workflows.*`, `audit.*`, `notifications.*`, `files.*`, `performance.*`, `learning.*` (52+ tablas total) |
 | **Auth** | Supabase auth — `auth.users` con `allowed_apps` incluyendo `'humanOS'` |
+| **Email sender** | `HumanOS <notificaciones@rein-eisenwerk.com>` (verificado en Resend) |
+| **Email worker** | Vercel Cron `/api/cron/process-notifications` schedule `*/5 * * * *` (ADR-0008 revisado 49a978a) |
 | **Owner** | James Cucalón |
 | **Stakeholder** | Samantha Kosmas (Gerente RRHH) |
+| **Tag actual** | v0.0.1 (Group 1 foundation deployed) |
 
 ### Apps futuras
 
@@ -183,6 +260,24 @@ Cuando se planifique cada nueva app:
 
 ---
 
+## Integrations evaluadas y NO MVP
+
+Investigación 2026-05-27 — opciones que aportan valor a la visión final pero NO crítico MVP:
+
+| Tool | Categoría | Status | Decisión MVP |
+|---|---|---|---|
+| Upstash Redis | Rate limiting + session cache | Considerado | NO MVP (sin volumen suficiente) |
+| CodeRabbit | AI code reviews PRs | Considerado | NO MVP (Code single dev) |
+| PostHog | Product analytics | Considerado | NO MVP (instrumentar post-funnel onboarding completo) |
+| Sanity | Headless CMS (KB editing por Samantha) | Considerado | NO MVP (Notion ya wireado para esto) |
+| Linear / GitHub Projects | Backlog tracker | Considerado | NO MVP (BACKLOG.md manual funciona) |
+| Terraform | Infrastructure-as-Code | Considerado | NO MVP (2 Vercel projects + 1 Supabase = overkill) |
+| Supabase Edge Functions | Worker compute cerca de BD | Considerado para email worker | **NO** — ver ADR-0008 alternativa rechazada (b revisited). Vercel Cron preferido para HumanOS por templates single-source + same Node runtime |
+
+Reevaluar post-MVP cuando volumen/complejidad justifiquen.
+
+---
+
 ## Cuándo este doc se actualiza
 
 - Nueva integration arrancada: entry completa
@@ -190,6 +285,7 @@ Cuando se planifique cada nueva app:
 - Cambio en SOR matrix relacionado
 - Issue operacional documentable (rate limit hit, schema change, etc.)
 - Nueva mini-app planificada
+- Cambio en infraestructura operacional (Resend domain, Sentry config, hosting domain, MCP additions, Cron schedules)
 
 ## Cuándo migrar a `iconsa-knowledge` wiki
 

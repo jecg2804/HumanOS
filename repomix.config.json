@@ -11,18 +11,15 @@
   },
   "include": [
     "src/**",
-    "Docs/**",
+    "e2e/**",
     ".claude/**",
+    "docs/**",
     "CLAUDE.md",
-    "humanos-mvp-spec.md",
+    "PROJECT_CONSTITUTION.md",
     "package.json",
     "tsconfig.json",
     "next.config.*",
     "repomix.config.json",
-    "Target_docs/**",
-    "tailwind.config.*",
-    "supabase/**",
-    "README_APPLY.md",
     "middleware.ts"
   ],
   "ignore": {
@@ -48,7 +45,12 @@
       "*.jpeg",
       "*.svg",
       "*.woff*",
-      "repomix-output.xml"
+      "repomix-output.xml",
+      "repomix-HumanOS.xml",
+      "*.backup-*",
+      ".claude/hooks/errors.log",
+      ".claude/hooks/compact.log",
+      "docs/HANDOFF.json"
     ]
   },
   "security": {
