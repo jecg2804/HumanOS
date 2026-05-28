@@ -1,90 +1,82 @@
-# 00-INDEX.md — Índice de Project Files HumanOS v2
+# 00-INDEX.md — Indice de Project Files HumanOS v2
 
-**Última actualización**: sesión 2026-05-27 (post-migrations BD + decisiones finales scope + 39 features + R26 SOP-driven)
+**Ultima actualizacion**: 2026-05-28 (post v0.0.2 Group 2 onboarding shipped — Batch 2 audit sync)
 
 ---
 
-## Filosofía triple stack
+## Filosofia triple stack
 
-| Stack | Audiencia | Propósito | Tamaño |
+| Stack | Audiencia | Proposito | Tamano |
 |---|---|---|---|
-| **Project Files (Chat)** | Claude Chat memory | Strategy, decisiones, roadmap, dominio extenso | 14 archivos |
-| **`docs/` repo** | Claude Code operativo | Lo que Code necesita para implementar | 5 archivos core |
+| **Project Files (Chat)** | Claude Chat memory | Strategy, decisiones, roadmap, dominio extenso | 14 docs numerados + CONTEXT + CHANGELOG + HANDOFF |
+| **`docs/` repo (numerado)** | Claude Code operativo + Chat audit | Single source de verdad. Code lee al implementar | Mismos archivos vivos en repo |
 | **`iconsa-knowledge` wiki** (futuro) | Humano + ambos Claudes | Knowledge base operacional reusable cross-app | v1.1 |
 
+**Nota**: Originalmente se planeo separar Project Files (Chat) de repo docs (Code) con nombres distintos (`business-rules.md`, `schemas-permisos.md`, etc.). La realidad converge: un solo set de docs numerados vive en `docs/` y sirve a ambas audiencias. Esta convergencia es intencional — un solo sitio que actualizar.
+
 ---
 
-## Project Files (este folder, 10 docs)
+## Indice de docs (14 numerados + 3 auxiliares)
 
 | # | Archivo | Resumen |
 |---|---|---|
-| 00 | 00-INDEX.md | Este índice |
-| 01 | 01-VISION.md | Misión HumanOS, north star, decisiones grandes, anti-decisiones |
-| 02 | 02-MVP-SCOPE.md | 39 features F1-F39 con engines, modes, mapping per SOP |
-| 03 | 03-ROADMAP-POST-MVP.md | Qué viene post-overnight #1: v1.1, v2 |
-| 04 | 04-DOMAIN-RRHH.md | Dominio RRHH ICONSA: SOPs, formularios, equipo, modes |
-| 06 | 06-FRAMEWORK-CLAUDE-CODE.md | Setup Code + workflow grill-with-docs + harness |
-| 08 | 08-ADRs.md | Decisiones técnicas archivadas (ADR-0001 a ADR-0013) |
-| 09 | 09-ESTADO-ACTUAL.md | Snapshot live BD + sesión actual (volátil) |
-| 10 | 10-HANDOFF-PROTOCOL.md | Cómo Chat-Code-James intercambian estado |
+| 00 | [00-INDEX.md](00-INDEX.md) | Este indice |
+| 01 | [01-VISION.md](01-VISION.md) | Mision HumanOS, north star, anti-decisiones |
+| 02 | [02-MVP-SCOPE.md](02-MVP-SCOPE.md) | 39 features F1-F39 con engines, modes, mapping per SOP |
+| 03 | [03-ROADMAP-POST-MVP.md](03-ROADMAP-POST-MVP.md) | Que viene post-overnight #1: v1.1, v2 |
+| 04 | [04-DOMAIN-RRHH.md](04-DOMAIN-RRHH.md) | Dominio RRHH ICONSA: SOPs, formularios, equipo, modes |
+| 05 | [05-BUSINESS-RULES.md](05-BUSINESS-RULES.md) | R1-R26 reglas criticas. Code DEBE seguir |
+| 06 | [06-FRAMEWORK-CLAUDE-CODE.md](06-FRAMEWORK-CLAUDE-CODE.md) | Setup Code + workflow grill-with-docs + harness |
+| 07 | [07-SCHEMAS-PERMISOS.md](07-SCHEMAS-PERMISOS.md) | Que schemas tocar, RLS conventions, helpers |
+| 08 | [08-ADRs.md](08-ADRs.md) | Decisiones tecnicas Chat-level (ADR-0001 a ADR-0014) |
+| 09 | [09-ESTADO-ACTUAL.md](09-ESTADO-ACTUAL.md) | Snapshot live BD + sesion actual (volatil) |
+| 10 | [10-HANDOFF-PROTOCOL.md](10-HANDOFF-PROTOCOL.md) | Como Chat-Code-James intercambian estado |
+| 11 | [11-MDM-PRINCIPLES.md](11-MDM-PRINCIPLES.md) | Master Data Management — golden records, lineage |
+| 12 | [12-SOR-MATRIX.md](12-SOR-MATRIX.md) | System-of-Record por entidad cross-app |
+| 13 | [13-INTEGRATIONS-INDEX.md](13-INTEGRATIONS-INDEX.md) | Catalogo integraciones ICONSA (infraestructura + ETL) |
+
+**Auxiliares en `docs/`**:
+
+- [CONTEXT.md](CONTEXT.md) — vocabulario vivo, mantenido por Code via grill-with-docs
+- [CHANGELOG.md](CHANGELOG.md) — entries por feature implementada (semver tags)
+- `HANDOFF.json` — generado por hook `PreCompact` (gitignored desde 2026-05-28, ephemeral)
+
+**Sub-folders en `docs/`**:
+
+- [adr/](adr/) — ADRs Code-level (0001-0008 hasta hoy) generados durante implementacion
+- [sops/](sops/) — SOPs descargados de GDrive en PDF + markdown extraido cuando aplica
+- `superpowers/plans/` — planes Code-generated durante writing-plans skill (untracked en algunos casos)
 
 ---
 
-## Repo docs (`docs/` folder en HumanOS repo, 5 archivos core)
-
-| Archivo | Resumen |
-|---|---|
-| `CLAUDE.md` (raíz) | ≤4.3KB minimal entry point. @imports condicionales |
-| `docs/business-rules.md` | R1-R26 reglas críticas. Code DEBE seguir |
-| `docs/schemas-permisos.md` | Qué schemas tocar, RLS conventions, helpers |
-| `docs/iconsa-knowledge.md` | Dominio ICONSA condensado para Code |
-| `docs/form-catalog.md` | Catálogo 24 form variants con form_schema + chain |
-
-Additionally en repo:
-- `docs/CONTEXT.md` — vocabulary vivo, mantenido por Code via grill-with-docs
-- `docs/CHANGELOG.md` — entries por feature implementada
-- `docs/ROADMAP.md` — pendiente reflejado por Code
-- `docs/adr/` — ADRs técnicos generados por Code durante implementación
-- `docs/sops/*.pdf` + `*.md` — SOPs descargados de GDrive + markdown extraído
-
----
-
-## Cómo se usa este stack
+## Como se usa este stack
 
 ### Para Chat (Claude memory)
-1. Lee 00-INDEX → 09-ESTADO-ACTUAL para snapshot rápido
-2. Lee 02-MVP-SCOPE + 04-DOMAIN para contexto producto
-3. Lee 06-FRAMEWORK + 10-HANDOFF para workflow Code
 
-### Para Code (sesión grill-with-docs y overnight)
-1. Lee `CLAUDE.md` raíz (entry)
-2. Sigue @imports condicionales según tarea
-3. Para decisiones técnicas durante implementación: consulta `docs/business-rules.md` + `docs/schemas-permisos.md`
-4. Para implementar una feature: consulta `docs/form-catalog.md` + `docs/iconsa-knowledge.md`
-5. Si necesita SOP: lee `docs/sops/*.md`
+1. Lee [00-INDEX.md](00-INDEX.md) -> [09-ESTADO-ACTUAL.md](09-ESTADO-ACTUAL.md) para snapshot rapido
+2. Lee [02-MVP-SCOPE.md](02-MVP-SCOPE.md) + [04-DOMAIN-RRHH.md](04-DOMAIN-RRHH.md) para contexto producto
+3. Lee [06-FRAMEWORK-CLAUDE-CODE.md](06-FRAMEWORK-CLAUDE-CODE.md) + [10-HANDOFF-PROTOCOL.md](10-HANDOFF-PROTOCOL.md) para workflow Code
+
+### Para Code (sesion grill-with-docs y overnight)
+
+1. Lee `CLAUDE.md` raiz (entry)
+2. Sigue @imports condicionales segun tarea
+3. Para decisiones tecnicas durante implementacion: consulta [05-BUSINESS-RULES.md](05-BUSINESS-RULES.md) + [07-SCHEMAS-PERMISOS.md](07-SCHEMAS-PERMISOS.md)
+4. Para implementar una feature: consulta [04-DOMAIN-RRHH.md](04-DOMAIN-RRHH.md) + skill `iconsa-form-implementation` para field matrix
+5. Si necesita SOP: lee `docs/sops/*.pdf` directamente (Filesystem MCP, NO Google Drive)
 6. Documenta decisiones nuevas en `docs/adr/`
-7. Mantiene `docs/CONTEXT.md` con vocabulario vivo
+7. Mantiene [CONTEXT.md](CONTEXT.md) con vocabulario vivo
 
 ### Para James
-- Project Files (este folder): paste a Chat al inicio de cada sesión Chat
-- Repo docs: commit al repo, Code los lee automáticamente
-- Invite codes bootstrap: entregar personalmente a Samantha, Rocío, Milagros, Jerelyn, Rodrigo, Javier Ferrer
 
----
-
-## Triple stack decisión consciente
-
-**Por qué tres lugares?**
-- **Chat memory** necesita strategy/decisiones que Chat referencia en cada sesión
-- **Repo docs** necesita reglas operativas que Code lee al programar
-- **Wiki futuro** será single source of truth cross-app cuando dos+ apps converjan
-
-Mantener sync: Chat actualiza Project Files cuando decide cosas grandes. Code actualiza repo docs cuando implementa. James pega Project Files al Chat de sesiones nuevas y commit repo docs.
+- Project Files (estos numerados): vivien en repo + Chat los lee paste al inicio de cada sesion
+- Repo commits: Code los toca cuando implementa; Chat los toca cuando decide
+- Invite codes bootstrap: entregar personalmente a Samantha, Rocio, Milagros, Jerelyn, Rodrigo, Javier Ferrer
 
 ---
 
 ## Versionado
 
-Project Files NO usan semver. Cada doc tiene "Última actualización" en header. Cambios mayores se notan en commit message Chat → James.
+Docs NO usan semver propio. Cada doc tiene "Ultima actualizacion" en header. Cambios mayores se reflejan en [CHANGELOG.md](CHANGELOG.md) con la version del repo en la que se commitearon.
 
-Repo docs siguen el versionado del repo (commits + tags).
+Repo sigue semver tags: v0.0.1 (Group 1 Foundation), v0.0.2 (Group 2 Onboarding), v0.0.3+ proximos.

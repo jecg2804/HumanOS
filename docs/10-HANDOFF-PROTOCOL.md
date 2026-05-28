@@ -16,17 +16,15 @@
 
 ### Chat → Code (al arrancar sesión Code nueva)
 
-1. Chat actualiza Project Files (especialmente `09-ESTADO-ACTUAL.md`)
-2. Chat actualiza repo docs (`business-rules.md`, `schemas-permisos.md`, `iconsa-knowledge.md`, `form-catalog.md`)
-3. Chat genera **prompt inicial Code** con:
+1. Chat actualiza docs numerados (especialmente `09-ESTADO-ACTUAL.md`) — viven en repo `docs/`, son single source para ambas audiencias
+2. Chat genera **prompt inicial Code** con:
    - Resumen contexto actual
-   - Trigger sesión `grill-with-docs` (mattpocock)
+   - Trigger sesión `grill-with-docs` (mattpocock, ya instalada en `.claude/skills/`)
    - Lista de tareas concretas
-   - Referencia a Project Files vía MCP Filesystem (si Code los necesita)
-4. James pega Project Files al Chat (en cada sesión Chat nueva)
-5. James commit repo docs al repo HumanOS
-6. James abre Code en repo + pega prompt inicial
-7. Code lee `CLAUDE.md` raíz + @imports + arranca grill-with-docs
+   - Referencia a docs via Filesystem MCP (si Code los necesita explícitamente — Code igual los lee via @imports CLAUDE.md)
+3. James commit docs actualizados al repo HumanOS
+4. James abre Code en repo + pega prompt inicial
+5. Code lee `CLAUDE.md` raíz + @imports condicionales + arranca grill-with-docs si aplica
 
 ### Code → Chat (al completar overnight o cuando James reporta)
 
@@ -46,47 +44,52 @@
 
 ---
 
-## Formato Project Files paste
+## Formato docs paste (Chat)
 
-Cuando James pega Project Files al Chat:
+Cuando James pega docs al Chat:
 
 ```
-[Pasted from /home/claude/humanos-docs-v9/project-files/]
+[Pasted from repo HumanOS docs/]
 
 00-INDEX.md
 01-VISION.md
 02-MVP-SCOPE.md
 03-ROADMAP-POST-MVP.md
 04-DOMAIN-RRHH.md
+05-BUSINESS-RULES.md
 06-FRAMEWORK-CLAUDE-CODE.md
+07-SCHEMAS-PERMISOS.md
 08-ADRs.md
 09-ESTADO-ACTUAL.md
 10-HANDOFF-PROTOCOL.md
+11-MDM-PRINCIPLES.md
+12-SOR-MATRIX.md
+13-INTEGRATIONS-INDEX.md
+CONTEXT.md
 ```
 
-Total ~8-10 files concatenados o pasted individualmente.
+Total 14 numerados + CONTEXT.md (`CHANGELOG.md` y `HANDOFF.json` son operacionales — Chat raramente los necesita).
 
 ---
 
-## Formato repo docs commit
+## Layout repo docs
 
-Cuando James commit al repo:
+Estructura real bajo `docs/`:
 
 ```
 docs/
-├── CLAUDE.md (raíz repo, no /docs/)
-├── business-rules.md
-├── schemas-permisos.md
-├── iconsa-knowledge.md
-├── form-catalog.md (skeleton — Code completará leyendo SOPs durante grill-with-docs)
-├── CONTEXT.md (vacío inicial — Code llena durante implementación)
-├── CHANGELOG.md (vacío inicial)
-├── ROADMAP.md (vacío inicial — Code refleja pendiente per feature)
-└── adr/
-    └── (vacío inicial — Code genera durante implementación)
-```
+├── 00-INDEX.md         (índice + filosofía triple stack)
+├── 01-VISION.md a 13-INTEGRATIONS-INDEX.md
+├── CONTEXT.md          (vocabulario vivo, Code mantiene via grill-with-docs)
+├── CHANGELOG.md        (entries por feature/version, Code mantiene)
+├── adr/                (ADR Code-level 0001-0008+, Code genera durante implementación)
+├── sops/               (PDFs originales GDrive + markdown extraído)
+└── superpowers/plans/  (planes Code-generated, algunos untracked)
 
-Commit message: `docs: setup HumanOS v2 documentation foundation (R1-R26, 39 features, modes finales)`
+CLAUDE.md (raíz repo) — entry point con @imports condicionales a docs/
+PROJECT_CONSTITUTION.md (raíz repo) — principios non-negotiable
+HANDOFF.json (docs/) — generado por hook PreCompact, gitignored
+```
 
 ---
 
@@ -94,7 +97,7 @@ Commit message: `docs: setup HumanOS v2 documentation foundation (R1-R26, 39 fea
 
 | Code | Persona | Acción esperada |
 |---|---|---|
-| `F1F3D92A` | Samantha Kosmas | Usar al abrir https://human-os-nine.vercel.app/onboarding/F1F3D92A |
+| `F1F3D92A` | Samantha Kosmas | Usar al abrir https://humanos.rein-eisenwerk.com/onboarding/F1F3D92A |
 | `F1F738DF` | Rocío Olmedo | Idem |
 | `A4046851` | Milagros Manyoma | Idem |
 | `A65376E1` | Jerelyn Mendoza | Idem |

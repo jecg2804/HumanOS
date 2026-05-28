@@ -1,6 +1,6 @@
 # 08-ADRs.md — Architectural Decision Records (Chat-level)
 
-**Última actualización**: 2026-05-27 nocturna post-audit-2 (cross-reference Code-level ADRs 0006/0007/0008 + revisión ADR-0008 commit 49a978a absorbida)
+**Última actualización**: 2026-05-28 (audit Batch 1+2 — fix typo + cross-reference Code-level ADRs 0006/0007/0008 verificados post v0.0.2)
 
 ADRs aquí son decisiones de nivel Chat (estratégicas). Code genera ADRs técnicos en `docs/adr/` del repo durante implementación.
 
@@ -293,6 +293,6 @@ Code genera ADRs técnicos en `docs/adr/` del repo con numeración propia 0001-0
 ## Cómo se usan estos ADRs
 
 - **Chat al inicio sesión**: lee este doc para refresh decisiones grandes
-- **S i surge una decisión que contradice un ADR**: documenta el SUPERSEDES con razón
+- **Si surge una decisión que contradice un ADR**: documenta el SUPERSEDES con razón
 - **Code en `docs/adr/`**: ADRs técnicos de implementación específica (ej: "uso Zod vs Yup", "pattern de error handling en API routes"). Diferentes nivel de detalle
 - **Cross-reference**: mantener tabla arriba sincronizada cuando Code crea nuevo ADR técnico que refiere/extiende una decisión Chat-level, o cuando un ADR Code-level se revisa (capturar commit hash)

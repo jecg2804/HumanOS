@@ -196,6 +196,25 @@ Cada uno usa los engines E1-E6. Construido como instancia de FormEngine + Approv
 
 ---
 
+## Status overall por feature (2026-05-28)
+
+| Group | Range | Status | Tag |
+|---|---|---|---|
+| Group 1 — Foundation | F2 (login), F3 (AppShell) | ✅ shipped | v0.0.1 |
+| Group 2 — Onboarding | F1 (wizard), F4 (admin nuevo), F5 (admin editar) + F-04-01 emergency/medical + F-01-09 acks + /forgot-password + /perfil + notifications + Vercel Cron | ✅ shipped | v0.0.2 |
+| Group 3 — Profile + KB | F6 (perfil base), F7 (perfil editar SCD-2), F8 (directorio), F9 (KB completa GDrive) | 🟡 planning | (próximo) |
+| Group 4 — Engines | E1 FormEngine, E2 ApprovalEngine, E3 ChainResolver, E4 StampEngine, E5 PdfEngine, E6 NotificationEngine (parcial — Vercel Cron worker ya shipped en Group 2) | ⏳ pending | — |
+| Group 5 — Forms Cat A | F10-F18 (9 top + 6 sub F-05-01 ACCION_PERSONAL): VACACIONES, PRESTAMO, ACCION_PERSONAL+6, ACTUALIZACION_DATOS, RECLAMO_PAGO, PERMISO, REFERENCIA_LABORAL, ENTREVISTA_SALIDA, CAPACITACION | ⏳ pending | — |
+| Group 6 — Forms Cat B | F19-F27 (9 adiciones mercado): CARTA_TRABAJO, CERTIFICACION_LABORAL, CONSTANCIA_NO_ADEUDO, COPIA_CONTRATO, COPIA_COLILLA, CAMBIO_CUENTA_BANCO, CAMBIO_DEPENDIENTES, SOLICITUD_EPP, REPORTE_INCIDENTE | ⏳ pending | — |
+| Group 7 — Admin/UI | F28 /solicitudes, F29 /solicitudes/nueva, F30 /solicitudes/[id], F31 /admin dashboard, F32 manual entry, F33 /settings, F34 /perfil completo, F35 search global, F36 /notificaciones, F37 /admin/auditoría, F38 imprimir PDF, F39 /admin/tipos viewer | ⏳ pending | — |
+
+**Pre-requisitos cross-Group**:
+
+- Form schemas JSONB para 15 tipos sin `form_schema` (verificado BD audit 2026-05-28): VACACIONES, PRESTAMO, ACCION_PERSONAL+6 subtipos, PERMISO, CARTA_TRABAJO, RECLAMO_PAGO, ACTUALIZACION_DATOS, ENTREVISTA_SALIDA, REFERENCIA_LABORAL, CAPACITACION. Workflow propio con skill `iconsa-form-implementation` (SOP por SOP) antes de Group 5+.
+- `requests.next_sequence() SECURITY DEFINER` bumper para `requests.sequences` antes de Group 4 — actual policy_count=0 va a fallar primer ticket si no se crea el definer (per audit 2026-05-28 P1.4 → reclasificado checklist Group 3).
+
+---
+
 ## Lo que NO entra en overnight #1 (diferido)
 
 - Documenso firma legal — v1.1 (schema preparado)

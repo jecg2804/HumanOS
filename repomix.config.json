@@ -20,7 +20,14 @@
     "tsconfig.json",
     "next.config.*",
     "repomix.config.json",
-    "middleware.ts"
+    ".mcp.json",              
+    "vercel.ts",              
+    "eslint.config.mjs",     
+    "eslint-rules/**",       
+    "vitest.config.*",       
+    "playwright.config.*",   
+    ".gitignore",          
+    ".env.local.example"
   ],
   "ignore": {
     "useGitignore": true,

@@ -1,7 +1,5 @@
 # 06-FRAMEWORK-CLAUDE-CODE.md — Setup Claude Code + workflow
 
-**Última actualización**: 2026-05-27 (grill-with-docs como refinement workflow, no Superpowers brainstorming)
-
 ---
 
 ## Setup Claude Code
@@ -27,13 +25,13 @@
 - **playwright** (E2E tests)
 - **frontend-design** (UI patterns)
 - **context7** (docs library)
-- mattpocock skills (project scope, ya instaladas en `.claude/skills/`): **grill-with-docs**, **handoff**, **diagnose**, **setup-matt-pocock-skills**
-- ICONSA custom skills (project scope, en `.claude/skills/`): **iconsa-business-rules**, **iconsa-supabase-migration**, **iconsa-rls-validation**, **iconsa-form-implementation**
+- mattpocock skills (project scope, instaladas en `.claude/skills/`): **grill-with-docs**, **handoff**, **diagnose**, **setup-matt-pocock-skills**
+- ICONSA custom skills (project scope, instaladas en `.claude/skills/`): **iconsa-business-rules**, **iconsa-supabase-migration**, **iconsa-rls-validation**, **iconsa-form-implementation**, **iconsa-library-docs-check**
 
 ### MCPs activos
 
-- A nivel proyecto (`.claude/settings.local.json`): Context7, Filesystem, GitHub, Resend, Sentry
-- A nivel global (settings.json usuario): Supabase, Google Drive, Notion, Vercel, otros
+- A nivel proyecto (`.mcp.json` + `.claude/settings.local.json` `enabledMcpjsonServers`): Context7, Filesystem, GitHub, Resend, Sentry, next-devtools, Puppeteer. **Todos pinned a versión específica desde audit 2026-05-28 Batch 1** (supply-chain hardening — no más `@latest`).
+- A nivel global (settings.json usuario): Supabase plugin (`mcp__plugin_supabase_supabase__*`), Vercel plugin, Playwright plugin, chrome-devtools-mcp plugin, otros via marketplace plugins
 
 ---
 
@@ -61,38 +59,45 @@
 
 ---
 
-## ICONSA custom skills (4 pendientes crear)
+## ICONSA custom skills (5 instaladas)
 
-1. **`iconsa-form-implementation`** — template + best practices para crear forms HumanOS desde `requests.types.form_schema`. Incluye: FormEngine usage, validation patterns Zod, accessibility checklist
-2. **`iconsa-rls-validation`** — queries SQL de validación RLS por feature. Ej: "user X no debe ver ticket de user Y" con query test específica
-3. **`iconsa-business-rules`** — recordatorio + enforcement de R1-R26 antes de cada feature. Auto-check ej: si touching `auth.users`, validar filtro `allowed_apps`
-4. **`iconsa-supabase-migration`** — template para crear migrations con RLS + COMMENT + helpers requeridos
+Verificadas en sesión 2026-05-28 audit Batch 1 — `.claude/skills/iconsa-*/SKILL.md`:
 
-Ubicación: `.claude/skills/iconsa-*/SKILL.md`
+1. **`iconsa-form-implementation`** — patrón end-to-end por form HumanOS desde `requests.types.form_schema`. Incluye: FormEngine usage, validation patterns Zod, field source matrix (profile/user_input/computed)
+2. **`iconsa-rls-validation`** — queries Q1-Q5 (pg_policies + pg_class) post-cambio RLS para verificar tablas HumanOS con RLS habilitada + policy count + sensitive tables R13
+3. **`iconsa-business-rules`** — checklist R1-R26 antes de migrations, RLS policies, approval logic, ticket state, auth.users ops. Triggered por keywords: approval, ticket, prestamo, vacaciones, hr_admin, allowed_apps, schema, RLS
+4. **`iconsa-supabase-migration`** — workflow migrations: nombre snake_case `NNN_action_target`, COMMENT obligatorio, RLS habilitada, helpers existentes, CHANGELOG entry `[bd]`
+5. **`iconsa-library-docs-check`** — verifica APIs externas via Context7 antes de implementar (Next.js 16 middleware->proxy, React 19, Tailwind 4, Supabase SSR, Zod 4). Evita deprecated APIs de training cutoff
+
+Router en `.claude/skill-rules.json` — hook `user-prompt-submit.ps1` los suggest según keywords.
 
 ---
 
-## ICONSA subagents (4 pendientes crear)
+## ICONSA subagents (concepto diferido)
 
-1. **`security-reviewer`** — invoca skill iconsa-business-rules + revisa cada PR para violaciones R1, R5, R13, R22
-2. **`rls-validator`** — invoca skill iconsa-rls-validation, corre suite contra BD branch test
-3. **`pdf-template-tester`** — genera PDF de cada tipo y compara visual contra SOP original (Playwright screenshot + diff)
-4. **`form-schema-builder`** — asistente para diseñar `form_schema` JSONB consistente, consulta SOP relevante, valida tipos campos
+Originalmente planeados 4 subagents bajo `.claude/agents/`. **Estado 2026-05-28**: NO existen aún. La carpeta `.claude/agents/` no se ha creado. Los responsabilidades de cada uno se cubren actualmente por skills + checks manuales:
 
-Ubicación: `.claude/agents/*.md`
+1. **`security-reviewer`** → cubierto por skill `iconsa-business-rules` + hook `pre-tool-use.ps1` (block schemas/auth.users sin filter)
+2. **`rls-validator`** → cubierto por skill `iconsa-rls-validation`
+3. **`pdf-template-tester`** → diferido hasta E5 PdfEngine en Group 4+
+4. **`form-schema-builder`** → cubierto parcial por skill `iconsa-form-implementation` (workflow SOP-by-SOP, no asistente interactivo)
+
+Decisión: crear subagents solo si las skills+hooks no bastan a partir de Group 5+ (Forms Cat A masivo).
 
 ---
 
 ## Hooks (custom ICONSA + R22 + R23)
 
-| Hook | Función |
+| Hook | Función real (verificada 2026-05-28) |
 |---|---|
-| `PreToolUse` | Bloquea: 1) `DELETE FROM auth.users` sin WHERE filtro `allowed_apps` (R22), 2) modificación schemas prohibidos `public.*`, `payroll.*`, `humanos.*` (R1) |
-| `PostToolUse` | Valida: 1) archivos `.ps1` ASCII puro (R23), 2) JSON files sin BOM (R23) |
-| `PreCompact` | Genera `HANDOFF.json` automático antes de compactación contexto (para continuidad entre sesiones Code) |
-| `Stop` | Verificación final: tests pasan + lint clean + tsc clean |
+| `SessionStart` | Emite `<EXTREMELY_IMPORTANT>` framing con schemas prohibidos + R22 + R23 + idioma neutro |
+| `UserPromptSubmit` | Skill router — lee `.claude/skill-rules.json`, ordena por priority, emite `<skill_router>` block con skills relevantes al prompt |
+| `PreToolUse` | Bloquea: (1) writes a schemas prohibidos `public/payroll/humanos`, (2) DELETE/UPDATE en `auth.users` sin WHERE + filtro `allowed_apps` (R22), (3) destructive ops en golden records (`hr.people`, `requests.tickets`, etc.) sin WHERE, (4) bash dangerous (`rm -rf /`, force push), (5) Edit/Write a `.env.local` |
+| `PostToolUse` | (1) Edit/Write `.ts/.tsx` → `npx tsc --noEmit` debounced 30s (artifact `.claude/hooks/last-tsc-check.txt` gitignored). (2) Migration applied → reminder RLS + COMMENT + external_ids + advisors |
+| `PreCompact` | Genera `docs/HANDOFF.json` antes de context compaction para continuidad cross-session |
+| ~~`Stop`~~ | **No implementado**. Originalmente planeado para final verification (tests + lint + tsc). Hoy se ejecuta manual via `npm run verify`. Considerar agregar si el manual gate falla repetido |
 
-Ubicación: `.claude/hooks/*.ps1` ASCII puro.
+Diagnóstico (no auto-fired): `.claude/hooks/audit-claude-code.ps1` — script manual de inspección. Ubicación general: `.claude/hooks/*.ps1` ASCII puro (R23 verificado).
 
 ---
 
@@ -108,34 +113,36 @@ Ubicación: `.claude/hooks/*.ps1` ASCII puro.
 
 ## CLAUDE.md raíz (≤4.3KB)
 
-Minimal entry point con @imports condicionales:
+Minimal entry point con @imports condicionales. Pattern real (numerado):
 
 ```markdown
 # CLAUDE.md HumanOS v2
 
-@docs/business-rules.md
-@docs/schemas-permisos.md
-
-## Conditional imports
-- Working on form/feature: @docs/form-catalog.md
-- Need ICONSA dominio: @docs/iconsa-knowledge.md
-- Implementing approval: @docs/sops/*.md (read relevant SOP)
+## Conditional imports (load when relevant)
+- Implementando form/feature: @docs/04-DOMAIN-RRHH.md (catalogo + dominio)
+- Implementing approval chain: leer SOP en docs/sops/ (Filesystem MCP)
+- Past decisions: @docs/08-ADRs.md + @docs/adr/*.md (Code-generated)
+- Vocabulario en duda: @docs/CONTEXT.md (vivo)
+- MDM foundational: @docs/11-MDM-PRINCIPLES.md + @docs/12-SOR-MATRIX.md
+- Integraciones externas: @docs/13-INTEGRATIONS-INDEX.md
+- Estado operacional: @docs/09-ESTADO-ACTUAL.md + BD vía MCP
 ```
+
+Ver `CLAUDE.md` raíz real para el set completo de reglas YOU MUST follow + anti-patterns.
 
 ---
 
 ## Smoke tests bedrock (pre-overnight)
 
 Antes de arrancar overnight ejecutar:
-1. `npx tsc --noEmit` → 0 errors
-2. `npm run lint` → 0 errors
-3. `npm run build` → success
-4. Conexión Supabase MCP → OK
-5. Helper functions BD existen: `hr.is_hr_admin()`, `hr.current_app_role()`, etc.
-6. CHECK constraints aplicados: `app_role` 4 valores, `files.uploads.category` 13 valores
-7. Hook PreToolUse cargado (test: intentar `DELETE FROM auth.users` debe bloquear)
-8. ICONSA skills cargadas
-9. 4 subagents responde a invocación
+
+1. `npm run verify` (encadena tsc + lint + vitest + playwright + build) → 0 errors
+2. Conexión Supabase MCP → OK (e.g., `list_projects`)
+3. Helper functions BD existen: `hr.current_person_id()`, `hr.current_app_role()`, `hr.is_hr_admin()`, `hr.is_president_or_admin()`, `hr.is_supervisor_of()`, `hr.has_direct_reports()`, `requests.can_view_ticket()`, `hr.touch_updated_at()`
+4. CHECK constraints aplicados: `app_role` 4 valores, `files.uploads.category` 13 valores, `requests.tickets.status` 8 valores
+5. Hook PreToolUse cargado (test: intentar `DELETE FROM auth.users;` sin WHERE debe ser blocked por hook)
+6. ICONSA skills (5) cargadas via `.claude/skill-rules.json` router
+7. mattpocock skills (4) cargadas en `.claude/skills/`
 
 ---
 

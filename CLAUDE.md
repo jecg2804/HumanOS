@@ -2,7 +2,7 @@
 
 App HR de ICONSA (construcción Panamá). Stack: Next.js 16 + TS strict + Tailwind 4 + Supabase + Vercel. Replaces Humand ($4/user/mes). Coexiste con MovimientOS en misma BD Supabase.
 
-**Estado actual del repo:** scaffold temprano. `src/app/` solo tiene `page.tsx` + `layout.tsx`. La complejidad real vive en `docs/` (15 archivos de diseño) y `.claude/` (skills + hooks). El código de features F1-F39 aún no existe — se construye sobre este scaffold.
+**Estado actual del repo:** Group 2 (Onboarding) shipped en tag v0.0.2 (commit `32ef28b`). Group 1 (auth foundation) shipped v0.0.1. Features F1 (wizard 10 steps), F2 (login), F3 (AppShell), F4 (admin nuevo empleado), F5 (admin editar + SCD-2) + F-04-01 + F-01-09 acks + /forgot-password + /perfil + NotificationBell + Vercel Cron worker + 7 email templates Resend ya en producción. F6-F39 pendientes (Groups 3-7). Docs strategy vivos en `docs/` (14 numerados + CONTEXT + CHANGELOG + HANDOFF), harness en `.claude/` (5 ICONSA skills + 4 mattpocock + 5 hooks firing).
 
 **Para el estado actual** (counts, tablas, helpers, migrations aplicadas, invite codes): consulta la BD directamente vía Supabase MCP. No duplicamos eso aquí — la BD es la fuente de verdad.
 
@@ -14,9 +14,12 @@ npm run build      # next build
 npm run start      # next start -p 3001
 npm run lint       # eslint .
 npm run typecheck  # tsc --noEmit
+npm test           # vitest unit tests (8 archivos, 58 tests al cierre v0.0.2)
+npm run test:e2e   # Playwright E2E specs (6 al cierre v0.0.2)
+npm run verify     # gate completo: typecheck + lint + vitest + e2e + build
 ```
 
-No test framework instalado todavía. El gate "tests E2E" en Workflow es aspiracional hasta que se agregue vitest/playwright.
+Tests: vitest (jsdom env, 70% coverage thresholds) + Playwright (chromium, baseURL :3001). `npm run verify` es el gate de pre-merge — Group 2 v0.0.2 lo pasó limpio.
 
 ## The mental model
 

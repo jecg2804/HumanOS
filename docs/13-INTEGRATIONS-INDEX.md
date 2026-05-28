@@ -2,7 +2,7 @@
 
 **⚠️ Foundational ICONSA, no específico de HumanOS.** Migra a `iconsa-knowledge` wiki cuando se cree.
 
-**Última actualización**: sesión 2026-05-27 nocturna post-audit-2 (Vercel Cron decisión absorbida ADR-0008, CRON_SECRET, sender confirmed)
+**Última actualización**: 2026-05-28 (post v0.0.2 Group 2 shipped — sync con realidad código durante audit Batch 2)
 
 **Propósito**: Inventario de cada sistema externo que sincroniza con la BD ICONSA o sirve infraestructura crítica. Por cada uno: status integration, API capabilities, auth, frecuencia ETL, entidades cubiertas. Sirve como source-of-truth operacional.
 
@@ -215,7 +215,7 @@
 
 | Item | Valor |
 |---|---|
-| **Status** | En construcción (Group 2 onboarding plan corregido post-audit-2, pre-Task 1) |
+| **Status** | Live (Group 2 Onboarding shipped tag v0.0.2 commit `32ef28b` 2026-05-27 noche). Group 3 (Profile + KB) en preparación |
 | **Tipo** | App interna Next.js — RRHH self-service |
 | **Repo** | ICONSA-Solutions/HumanOS |
 | **Vercel project** | `prj_DqJQEL9LJ5qcwkw8Et6WYUpUxiLQ` |
@@ -226,7 +226,7 @@
 | **Email worker** | Vercel Cron `/api/cron/process-notifications` schedule `*/5 * * * *` (ADR-0008 revisado 49a978a) |
 | **Owner** | James Cucalón |
 | **Stakeholder** | Samantha Kosmas (Gerente RRHH) |
-| **Tag actual** | v0.0.1 (Group 1 foundation deployed) |
+| **Tag actual** | v0.0.2 (Group 2 onboarding shipped, commit `32ef28b`) |
 
 ### Apps futuras
 

@@ -1,6 +1,6 @@
 # 09-ESTADO-ACTUAL.md — Snapshot live del proyecto
 
-**Última actualización**: sesión 2026-05-27 nocturna post-audit-2 (Code aplicó correcciones plan Group 2, ADR-0008 revisión commiteada 49a978a, pre-Task 1)
+**Última actualización**: 2026-05-28 (post v0.0.2 Group 2 shipped — sync con realidad código durante audit Batch 2)
 
 **Owner update**: Claude Chat. Este es el doc más volátil — actualizar cada sesión con "qué se hizo, qué sigue, qué bloqueo existe".
 
@@ -8,11 +8,11 @@
 
 ## Estado high-level
 
-**Fase actual**: Group 1 (foundation auth) en producción tag v0.0.1. Group 2 (onboarding) plan corregido tras audit Chat (5,832 líneas, untracked). Pre-implementation Task 1.
+**Fase actual**: Group 2 (Onboarding F1 + F4 + F5 + auth flows + notifications + Vercel Cron) **shipped en tag v0.0.2** (commit `32ef28b`, 2026-05-27 noche). Group 3 (Profile + KB) en planning pendiente arranque.
 
-**Decisión grande pendiente**: NINGUNA. Audit 2 absorbió 3 blockers + 3 issues + correcciones globales. Plan listo para audit final.
+**Decisión grande pendiente**: Group 3 scope freeze. Ver `02-MVP-SCOPE.md` F6-F9 — F6 (perfil base), F7 (perfil editar con SCD-2 admin-only), F8 (directorio), F9 (KB completa GDrive).
 
-**Próxima acción**: Audit final Chat → Task 1 starts.
+**Próxima acción**: cerrar hallazgos audit 2026-05-28 (Batch 3 code security + Batch 4 BD hardening) ANTES de arrancar Group 3 plan via writing-plans skill.
 
 ---
 
@@ -42,18 +42,29 @@
 | 031 | link_hr_people_to_core_identities | ⚠️ Aplicada → revertida 032 |
 | 032 | rollback_core_identities_schema | ✅ DROP SCHEMA core CASCADE. Decisión: MDM gradual per ADR-0005, no anticipar |
 
-### Próximas migrations Group 2 (post-audit numbering final)
+### Migrations Group 2 aplicadas (v0.0.2)
 
-Pendientes de aplicar via Code durante implementation:
-
-| # | Name | Purpose |
+| # | Name | Resultado |
 |---|---|---|
-| **033** | `seed_onboarding_sops_m01_d07` | **Blocker B2**: seed IC-RH-M-01 (Manual Ética) + IC-RH-D-07 (Política Trabajo Infantil) + VV01 versions |
-| **034** | `create_find_auth_user_by_identifier` | ADR-0006: SECURITY DEFINER lookup multi-app |
-| **035** | `create_avatars_bucket_and_policies` | Q3 grill: bucket + RLS subquery `auth_id` |
-| **036** | `add_outbox_indexes_and_enqueue_helper` | Issue I1 resolved (sin nueva column — reuse `preferences` jsonb namespace `notifications`) |
-| **037** | `create_complete_onboarding_writes_rpc` | Blocker B3 + Issue I3: RPC con JOIN docs.sops→sop_versions WHERE is_current, idempotente |
-| **038** | `create_apply_employment_scd2_change` | F5 SCD-2 helper |
+| 033 | `seed_onboarding_sops_m01_d07` | ✅ Seed IC-RH-M-01 + IC-RH-D-07 + VV01 versions (Blocker B2) |
+| 034 | `create_find_auth_user_by_identifier` | ✅ SECURITY DEFINER lookup multi-app (ADR-0006). **Audit 2026-05-28 NEW.C**: return TABLE incluye `encrypted_password` innecesario — fix pendiente Batch 4 |
+| 035 | `create_avatars_bucket_and_policies` | ✅ Bucket avatars + RLS subquery `auth_id` (Q3) |
+| 036 | `add_outbox_indexes_and_enqueue_helper` | ✅ Indexes + helper enqueue + namespace `preferences->'notifications'` (I1) |
+| 036b | `add_outbox_metadata_column` | ✅ ADD COLUMN metadata jsonb (patch 036) |
+| 037 | `create_complete_onboarding_writes_rpc` | ✅ Idempotente + JOIN docs.sops→sop_versions (B3 + I3) |
+| 038 | `create_apply_employment_scd2_change` | ✅ F5 SCD-2 helper |
+
+### Próximas migrations Group 3 + Batch 4 BD hardening
+
+Pendiente plan Group 3. Inputs anticipados del audit 2026-05-28:
+
+| # | Name (propuesta) | Purpose |
+|---|---|---|
+| 039 | `column_comments_backfill` | Audit Batch 4: 38 tablas con `COMMENT ON COLUMN` faltantes (hr.user_settings 10/13, hr.employment_types 6/18, hr.medical_info 3/15) |
+| 040 | `index_foreign_keys` | Audit Batch 4: 63 unindexed FKs HumanOS — concentrados requests.tickets supervisor/received/processed + hr.employments position/office antes que Group 4 tickets martillen |
+| 041 | `harden_touch_updated_at_search_path` | Audit Batch 4: ALTER FUNCTION SET search_path (advisor `function_search_path_mutable`) |
+| 042 | `redefine_find_auth_user_drop_encrypted_password` | Audit Batch 4 NEW.C: quitar `encrypted_password` del TABLE return |
+| 043+ | `requests_next_sequence_security_definer` | Audit Batch 4 P1.4: feature-pending Group 4 — sequence bumper definer + policy bypass para `requests.sequences` |
 
 ### Schemas (verificado vía Supabase MCP)
 
@@ -165,33 +176,36 @@ const replyTo = template_code === 'password_reset' ? undefined : process.env.RES
 
 ---
 
-## Group 2 plan status — POST AUDIT 2
+## Group 2 — shipped v0.0.2
 
-**Plan**: `docs/superpowers/plans/2026-05-27-group-2-onboarding.md` (5,832 líneas, untracked).
+**Plan ejecutado**: `docs/superpowers/plans/2026-05-27-group-2-onboarding.md` (5,832 líneas, untracked). Tasks 1-22 completos. Detalle granular vivo en `docs/CHANGELOG.md` sección v0.0.2.
 
-**Audit Chat 2 → Code Plan Mode → corrected plan**:
+**Resumen entregado**:
+- F1 onboarding wizard 10 pasos (`/onboarding/[code]`) con multi-app merge ADR-0006
+- F4 admin nuevo empleado + invite code auto
+- F5 admin editar empleado + regenerate invite + SCD-2 helper
+- F-04-01 emergency + medical (R13 sensible)
+- F-01-09 acknowledgments M-01 + D-07
+- `/forgot-password` + `/reset-password` anti-enumeration
+- `/perfil` post-onboarding landing
+- NotificationBell + dropdown + Realtime subscription
+- Email worker Vercel Cron `/api/cron/process-notifications` schedule `*/5 * * * *`
+- 7 email templates Resend con Reply-To pattern
+- 8 archivos vitest (58 tests), 6 specs Playwright
 
-🔴 Blockers resueltos:
-- **B1**: server action `uploadOnboardingAvatarAction` (admin client gated por invite_code validity). β-prima preservado. Helper cliente `uploadAvatar` mantenido scope F5 admin edit + F33 self-service.
-- **B2**: nueva Task 2A + migration 033 seedea `IC-RH-M-01` (Manual Ética) + `IC-RH-D-07` (Política Trabajo Infantil) + `VV01` versions con `file_url='/sops/{code}.pdf'`. PDF serving via existing `copy-sops-to-public.ts` prebuild script.
-- **B3**: RPC `complete_onboarding_writes` (migration 037) resuelve `sop_version_id` via JOIN `docs.sops → docs.sop_versions WHERE is_current=true`. `signature_method='click'` (matches CHECK constraint). `ip_address`+`user_agent` passed como params del server action.
+**Verification gate v0.0.2** (per CHANGELOG):
+- `npx tsc --noEmit`: 0 errors
+- `npm run lint`: 0 errors
+- `npx vitest run`: 8 files / 58 tests green
+- `npm run build`: production OK, 12 routes generated
 
-🟡 Issues resueltos:
-- **I1**: NO migration nueva. Reutilizamos `hr.user_settings.preferences` jsonb existing con namespace `notifications`. Helper `notifications.enqueue` lee `preferences->'notifications'->'email'->>type`, fallback TRUE.
-- **I2**: Task 21 reescrito completamente — Vercel Cron + Next.js route handler `/api/cron/process-notifications`. `vercel.ts` declara crons declarativamente. Templates single-source `src/emails/`. Auth via `x-vercel-cron` header + `CRON_SECRET`.
-- **I3**: `completeOnboardingAction` captura `originalAppMetadata` antes de updateUserById merge. Si RPC falla: NEW user → deleteUser, EXISTING user → updateUserById restaura. RPC 037 idempotente (UPDATE auth_id solo si NULL or matches, WHERE NOT EXISTS para child inserts, ON CONFLICT DO UPDATE para medical_info).
+**E2E branch temporal (Task 22)**: la suite Playwright corrió contra un Supabase branch temporal `group-2-e2e` creado para aislar el `count_auth_users` SECURITY DEFINER RPC + `e2e/.auth/hr_admin.json` storage state. Branch borrado por Chat 2026-05-28 post-tag v0.0.2 (cleanup discipline). Patrón branch-temporal-con-cleanup confirmado por James; constitution 5.7 wording pendiente aclaración via ADR-0016 (framework audit post-batches) para distinguir explícitamente daily-dev (prohibido) vs E2E-suite-temporal (permitido con cleanup).
 
-🔵 Correcciones globales aplicadas:
-- `iconsa.com.pa` → `rein-eisenwerk.com` (replace_all plan + ADR-0008 rewrite commit 49a978a)
-- `RESEND_FROM_ADDRESS` → `RESEND_FROM_EMAIL` (replace_all)
-- `RESEND_FROM_EMAIL=HumanOS <notificaciones@rein-eisenwerk.com>` confirmado
-- Nuevas env vars: `RESEND_REPLY_TO`, `NEXT_PUBLIC_APP_URL`, `CRON_SECRET`
-- Migrations renumeradas 029-034 → **033-038** + nueva 033 SOPs seed pre-Task 16
-- Reply-To header pattern documentado en ADR-0008 + Task 21
-
-**Pre-execution checklist expandido a 10 items** (Code documentó detalles operacionales).
-
-**Estado**: Audit final Chat → Task 1 starts.
+**Audit 2026-05-28 detectó deuda en Group 2 shipped (no bloqueo, fix en Batch 3)**:
+- **NEW.A** (P1): `validateInviteCodeAction` retorna `existing_multi_app_user` + `existing_email_masked` + preview PII sin OTP proof, sin rate limit, sin consumir invite — cross-app enumeration oracle. Fix Opción B quirúrgico planificado.
+- **NEW.B** (P2): `reportOnboardingErrorAction` toma `person_id` client-controlled sin token de sesión.
+- **P1.6**: server actions `/admin/empleados` (`createEmployeeAction`, `updateEmployeeAction`, `regenerateInviteCodeAction`) sin verificar `hr_admin` role — solo chequean `auth.getUser()`.
+- **P2.14**: open redirect en `login/actions.ts:49` (`?next=https://evil` pasa Zod).
 
 ---
 
@@ -204,9 +218,15 @@ const replyTo = template_code === 'password_reset' ? undefined : process.env.RES
 **Tag actual**: `v0.0.1` (Group 1 foundation)
 **Próximo tag**: `v0.0.2` (Group 2 onboarding) — post-implementation + audit final
 
-**Commits sesión 2026-05-27 nocturna**:
+**Commits Group 2 (2026-05-27 noche → tag v0.0.2 en `32ef28b`)**:
 - `2593f39` docs(adr): add 0006 + 0007 + 0008 (initial)
 - `49a978a` docs(adr): revise 0008 — Vercel Cron + rein-eisenwerk + Reply-To
+- `e2d196c` chore(deps): Group 2 deps + admin client lint guard
+- `371319b` feat(admin): F4 nuevo empleado + F5 editar + regenerate invite + SCD-2 helper
+- `5a42b62` feat(notifications): NotificationBell + dropdown + Realtime in topbar
+- `c960156` feat(notifications): Vercel Cron worker process-notifications (I2 resolved)
+- `bc009f0` test(e2e): onboarding happy + multi-app + error-report + admin + forgot-password
+- `32ef28b` docs(changelog): v0.0.2 Group 2 onboarding complete
 
 ---
 
@@ -220,32 +240,45 @@ const replyTo = template_code === 'password_reset' ? undefined : process.env.RES
 - `.claude/settings.json` strict-schema sin BOM
 - MCPs activos: Supabase, GDrive, Notion, Vercel, Filesystem, Resend (configurado disabled — no crítico)
 
-**Pendiente Claude Code** (no crítico para arrancar):
-- mattpocock plugins install (grill-with-docs, handoff, diagnose, git-guardrails)
+**Pendiente Claude Code** (no crítico):
+- mattpocock skills ya instaladas en `.claude/skills/{grill-with-docs,handoff,diagnose,setup-matt-pocock-skills}/` — verificado audit 2026-05-28
 - Smoke tests bedrock
+- Audit 2026-05-28 Batch 3 (code security) + Batch 4 (BD hardening) pendientes — ver `Lo que sigue` abajo
 
 ---
 
 ## Lo que sigue
 
-### Sesión actual (cierre)
+### Group 2 — cerrado v0.0.2
 
-1. ✅ Migrations BD 015-032 aplicadas (incluyendo rollback 032)
-2. ✅ Grill cross-cutting Q1-Q5 resuelto
-3. ✅ ADRs 0006/0007/0008 commiteados (incluye 49a978a revisión)
-4. ✅ Group 2 plan inicial Code (5,578 líneas)
-5. ✅ Audit Chat 1: 3 blockers + 3 issues + correcciones globales
-6. ✅ Code Plan Mode → plan corregido (5,832 líneas)
-7. ✅ Code aplicó B1+B2+B3+I1+I2+I3 + globales
-8. 🟡 Audit final Chat in-progress
-9. 🟡 Task 1 Group 2 starts post-approval
+✅ Migrations 033-038 aplicadas. ✅ ADRs 0006/0007/0008 commiteados. ✅ Tasks 1-22 ejecutados. ✅ Vercel Cron deploy validado. ✅ E2E 6 specs green. ✅ Tag v0.0.2 cortado en commit `32ef28b`.
 
-### Sesión siguiente (Code implementation)
+### Audit 2026-05-28 (post Group 2 ship)
 
-1. Tasks 1-23 ejecución con migrations 033-038
-2. Vercel Cron deploy + verificación schedule
-3. E2E tests (happy + multi-app + error report + admin + forgot-password)
-4. Tag v0.0.2
+Hallazgos consolidados (50 items, mayoría reclasificados/diferidos a grupos futuros) generaron 4 batches de fixes:
+
+- **Batch 1 — Quick wins safe** (gitignore HANDOFF.json + repomix XML + *.backup-* + hook debounce artifact, MCP pin 6 servers, deny list mínimo settings.json, hook hygiene "17→47" + matcher bypass, settings.local.json cleanup 12 quarantine entries, throttle post-tool-use 30s debounce): ✅ aplicado este commit
+- **Batch 2 — Docs sync** (00-INDEX rewrite + paths reales, CHANGELOG [Unreleased] cleanup, este 09-ESTADO header + Group 2 status + migrations applied, 10-HANDOFF URL stale, 13-INTEGRATIONS HumanOS status, 02-MVP-SCOPE status section): ✅ aplicado este commit
+- **Batch 3 — Code security** (NEW.A hardening Opción B quirúrgico: quitar `existing_*` del response + rate limit + invite single-use validation + token opaco para reportError, NEW.B reportOnboardingError token validation, P1.6 `requireHrAdmin` helper applied a 3 server actions admin, P2.14 open redirect allow-list, P2.16 matcher bypass — ya parcial en Batch 1, P3.43-now-P2 CRON_SECRET undefined check): pendiente
+- **Batch 4 — BD hardening** (P1.3 backup.* DROP CASCADE aprobado James 2026-05-28, P2.22 hr.touch_updated_at search_path pin, P2.26 duplicate index hr.people drop, NEW.C redefinir hr.find_auth_user_by_identifier sin `encrypted_password`): plan SQL preparado por Code; Chat ejecuta via Supabase MCP. **P2.23 FK indexes 63 + P2.24 COMMENT ON COLUMN 38 tablas DIFERIDOS a checklist pre-Group-4** (Group 3 es Profile/KB, no toca tickets — registrar en memory de Code).
+
+**Drifts diferidos a ADR-0016 (framework audit Chat-level post-batches)**:
+- Constitution 5.7 wording: distinción daily-dev (prohibido) vs E2E-suite-temporal (permitido con cleanup) — pendiente amend con ejemplo `group-2-e2e`.
+- Constitution 6.1 `docs/superpowers/specs/` folder claim — superpowers actual workflow no genera specs, solo plans. Resolución: amend 6.1 o instalar brainstorming skill que genere specs.
+- Constitution R13 wording loose: omite DELETE special case `hr_admin`-only documentado en 05-BUSINESS-RULES.md R13.
+- Constitution edits requieren ADR per sección 9 — por eso Chat redacta ADR-0016 (Chat-level), no Code unilateralmente.
+
+### Group 3 — preparación
+
+Pre-requisito: Batch 3 + Batch 4 cerrados antes de arrancar writing-plans Group 3.
+
+Scope (per `02-MVP-SCOPE.md`):
+- F6 `/perfil` base con secciones Datos personales / Empleo / Contacto / Emergencia / Datos médicos / Foto (versión básica)
+- F7 `/perfil/editar` con SCD-2 admin-only fields (empleo, salario)
+- F8 `/directorio` con búsqueda + filtros (departamento, supervisor, ubicación)
+- F9 `/ayuda` KB **completa de carpeta RRHH GDrive** (manuales M, políticas D, IT, PO, formularios F) con full-text search
+
+Pre-Group-3 también: form_schema backfill para 15 tipos sin schema (VACACIONES, PRESTAMO, ACCION_PERSONAL+6 subtipos, PERMISO, CARTA_TRABAJO, RECLAMO_PAGO, ACTUALIZACION_DATOS, ENTREVISTA_SALIDA, REFERENCIA_LABORAL, CAPACITACION) — workflow propio con skill `iconsa-form-implementation`.
 
 ---
 

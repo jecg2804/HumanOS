@@ -35,8 +35,8 @@ Incident 2026-05-25 documented in docs/05-BUSINESS-RULES.md R22.
 [HELPER FUNCTIONS - NO redefinir]
 - hr.current_person_id(), hr.current_app_role()
 - hr.is_hr_admin(), hr.is_president_or_admin()
-- hr.is_supervisor_of(uuid), requests.can_view_ticket(uuid)
-- hr.touch_updated_at()
+- hr.is_supervisor_of(uuid), hr.has_direct_reports()
+- requests.can_view_ticket(uuid), hr.touch_updated_at()
 
 [IDIOMA UI]
 Espanol neutro Panama. NUNCA voseo (vos, tenes, podes, registra-tilde).
