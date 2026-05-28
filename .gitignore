@@ -16,3 +16,12 @@ coverage/
 playwright-report/
 test-results/
 .last-run.json
+
+# Ephemeral / generated artifacts (per audit Batch 1, 2026-05-28)
+docs/HANDOFF.json
+repomix-HumanOS.xml
+*.backup-*
+
+# Hook runtime artifacts (debounce timestamps, tmp files)
+.claude/hooks/last-*.txt
+.claude/hooks/*.tmp

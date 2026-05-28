@@ -71,7 +71,7 @@ try {
         # ----------------------------------------------------------
         # CHECK 1b: Destructive ops on auth.users without filter (R22)
         # Incident 2026-05-25: DELETE FROM auth.users without WHERE
-        # erased 17 daily MovimientOS users.
+        # erased 47 MovimientOS users (95 to 48).
         # ----------------------------------------------------------
         $authDestructivePatterns = @(
             "delete\s+from\s+auth\.users",
@@ -92,7 +92,7 @@ try {
                     $msg += "Matched: '$pattern'`n"
                     $msg += "Tool: $toolName`n`n"
                     $msg += "This is the exact pattern that caused incident 2026-05-25:`n"
-                    $msg += "DELETE FROM auth.users; erased 17 daily MovimientOS users.`n`n"
+                    $msg += "DELETE FROM auth.users; erased 47 MovimientOS users (95 to 48).`n`n"
                     $msg += "Required (R22 in docs/05-BUSINESS-RULES.md):`n"
                     $msg += "1. Snapshot first: CREATE TABLE backup.auth_users_YYYYMMDD AS SELECT * FROM auth.users WHERE <filter>;`n"
                     $msg += "2. SELECT preview shown to human BEFORE destructive op`n"

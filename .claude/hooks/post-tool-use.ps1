@@ -2,8 +2,12 @@
 # Fires AFTER tool execution. Outputs to stdout flow back as additional context.
 #
 # Validates:
-# - .ts/.tsx files modified -> run `npx tsc --noEmit` and report status
+# - .ts/.tsx files modified -> run `npx tsc --noEmit` and report (debounced 30s)
 # - .sql migrations applied -> remind about COMMENT and RLS checks
+#
+# Batch 1 audit fix 2026-05-28:
+# - tsc check debounced 30s (last-tsc-check.txt timestamp)
+# - matcher accepts both mcp__supabase__apply_migration and plugin-namespaced
 
 $ErrorActionPreference = "Continue"
 
@@ -17,38 +21,62 @@ try {
 
     if (-not $toolName) { exit 0 }
 
-    # TypeScript validation after Edit/Write
+    # TypeScript validation after Edit/Write (debounced 30s)
     if ($toolName -eq "Edit" -or $toolName -eq "Write") {
         $filePath = ""
         if ($toolInput.file_path) { $filePath = $toolInput.file_path.ToString() }
 
         if ($filePath -match "\.(ts|tsx)$") {
-            # Run tsc --noEmit in background-style check
-            $tscOutput = ""
-            try {
-                $tscOutput = (& npx tsc --noEmit 2>&1 | Out-String).Trim()
-            } catch {
-                $tscOutput = "tsc check failed to run: $($_.Exception.Message)"
+            $debounceFile = Join-Path $PSScriptRoot "last-tsc-check.txt"
+            $debounceMs = 30000
+            $now = [DateTimeOffset]::Now.ToUnixTimeMilliseconds()
+            $shouldRun = $true
+
+            if (Test-Path $debounceFile) {
+                try {
+                    $raw = (Get-Content $debounceFile -Raw -ErrorAction SilentlyContinue)
+                    if ($raw) {
+                        $lastRun = [int64]($raw.Trim())
+                        if (($now - $lastRun) -lt $debounceMs) {
+                            $shouldRun = $false
+                        }
+                    }
+                } catch {
+                    $shouldRun = $true
+                }
             }
 
-            if ($tscOutput -match "error TS") {
-                $errCount = ([regex]::Matches($tscOutput, "error TS")).Count
-                Write-Output ""
-                Write-Output "<typescript_check>"
-                Write-Output "After editing $($filePath -replace '.*[\\/]','')  tsc --noEmit reports $errCount error(s):"
-                Write-Output ""
-                $tscOutput.Split("`n") | Where-Object { $_ -match "error TS" } | Select-Object -First 10 | ForEach-Object {
-                    Write-Output "  $_"
+            if ($shouldRun) {
+                # Stamp BEFORE running so concurrent edits skip
+                [System.IO.File]::WriteAllText($debounceFile, $now.ToString(), [System.Text.UTF8Encoding]::new($false))
+
+                $tscOutput = ""
+                try {
+                    $tscOutput = (& npx tsc --noEmit 2>&1 | Out-String).Trim()
+                } catch {
+                    $tscOutput = "tsc check failed to run: $($_.Exception.Message)"
                 }
-                Write-Output ""
-                Write-Output "Fix these before continuing."
-                Write-Output "</typescript_check>"
+
+                if ($tscOutput -match "error TS") {
+                    $errCount = ([regex]::Matches($tscOutput, "error TS")).Count
+                    Write-Output ""
+                    Write-Output "<typescript_check>"
+                    Write-Output "After editing $($filePath -replace '.*[\\/]','')  tsc --noEmit reports $errCount error(s):"
+                    Write-Output ""
+                    $tscOutput.Split("`n") | Where-Object { $_ -match "error TS" } | Select-Object -First 10 | ForEach-Object {
+                        Write-Output "  $_"
+                    }
+                    Write-Output ""
+                    Write-Output "Fix these before continuing."
+                    Write-Output "</typescript_check>"
+                }
             }
         }
     }
 
-    # SQL migration reminders
-    if ($toolName -eq "mcp__supabase__apply_migration") {
+    # SQL migration reminders (always fire, cheap)
+    # P2.16 fix: handle both bare and plugin-namespaced apply_migration tool names
+    if ($toolName -eq "mcp__supabase__apply_migration" -or $toolName -eq "mcp__plugin_supabase_supabase__apply_migration") {
         Write-Output ""
         Write-Output "<post_migration_reminders>"
         Write-Output "After applying migration, verify:"
