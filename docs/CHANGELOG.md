@@ -4,7 +4,35 @@ Cambios por feature/grupo. Formato: conventional commits + entries `[bd]` para m
 
 ## [Unreleased]
 
-Sin trabajo en curso. Group 3 (Profile + KB) en planning. Ver `02-MVP-SCOPE.md` F6-F9.
+Group 3 (Profile + KB) en planning. Ver `02-MVP-SCOPE.md` F6-F9.
+
+### Audit 2026-05-28 remediation (post-v0.0.2)
+
+Batches 1-4 del audit consolidado. Commits `3e82240` (harness), `6cbd643` (docs sync), `c97e0c3` (code security), `db4d1f5` (BD plan).
+
+#### Code security (Batch 3, commit `c97e0c3`)
+
+- NEW.A (P1): cross-app enumeration oracle eliminado de `validateInviteCodeAction` (removidos `existing_multi_app_user` + `existing_email_masked`); HMAC token `src/lib/onboarding/token.ts`; rate-limit; typo-poisoning commitment; merge multi-app silencioso en `completeOnboardingAction`; password step ahora visible a todos.
+- NEW.B (P2): `reportOnboardingErrorAction` valida HMAC token (mata person_id spoofing).
+- P1.6: `requireHrAdmin` (`src/lib/auth/require-hr-admin.ts`) aplicado a 3 server actions admin.
+- P2.14: allow-list en login next-redirect. P3.43->P2: cron falla closed sin CRON_SECRET.
+- Env nueva: `ONBOARDING_TOKEN_SECRET` (>=32 chars, Vercel + .env.local).
+
+#### [bd] Migrations 039-043 (audit BD hardening, applied via MCP 2026-05-28)
+
+- `[bd] 039_create_invite_code_attempts_and_commitment` — NEW.A: tabla `hr.invite_code_attempts` (RLS, SELECT hr_admin, FK ON DELETE CASCADE, compound idx invite+ip) + función `hr.check_invite_code_rate_limit` SECURITY DEFINER search_path='' (5 attempts / 15 min sliding / 15 min block) + columnas `hr.invite_codes.validated_at` + `validated_delivery_target_hash` (typo-poisoning commitment).
+- `[bd] 040_drop_backup_schema` — P1.3: `DROP SCHEMA backup CASCADE` (63 snapshot tables del consolidation core.identities 029-032 rolled back). Resuelve advisor `rls_disabled` critical (exponian snapshot auth.users a anon). Pre-flight FK/view/function dep check = 0. Aprobado James.
+- `[bd] 041_pin_touch_updated_at_search_path` — P2.22: `ALTER FUNCTION hr.touch_updated_at() SET search_path = pg_catalog, public`. Resuelve advisor `function_search_path_mutable`.
+- `[bd] 042_drop_duplicate_people_code_constraint` — P2.26: `DROP CONSTRAINT people_code_unique` (2 UNIQUE constraints redundantes en `hr.people(employee_code)` desde migration 002b; conserva `people_code_key`). Resuelve advisor `duplicate_index`.
+- `[bd] 043_find_auth_user_drop_encrypted_password` — NEW.C: redefine `hr.find_auth_user_by_identifier` sin `encrypted_password` en RETURNS TABLE (defense-in-depth; ningun caller lo lee). Grants service_role only.
+
+Post-apply advisors: `rls_disabled` critical resuelto; `hr.touch_updated_at` mutable search_path resuelto; `hr.invite_code_attempts` con policy. Findings restantes son de `public.*` (MovimientOS) / `humanos.*` (legacy v1) — no HumanOS (R1). `requests.sequences` sin policy diferido a Group 3 (sequencer de tickets).
+
+Diferido pre-Group-4: P2.23 FK indexes (63), P2.24 COMMENT ON COLUMN backfill (38 tablas).
+
+Verification gate: tsc/lint/vitest 9 files 65 tests/build OK.
+
+Plans: `docs/superpowers/plans/2026-05-28-batch-3-code-security.md` + `2026-05-28-batch-4-bd-hardening.md`.
 
 ---
 

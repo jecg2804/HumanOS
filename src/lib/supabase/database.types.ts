@@ -1047,6 +1047,52 @@ export type Database = {
         }
         Relationships: []
       }
+      // Batch 3 NEW.A manual augmentation (migration 039). Written only via
+      // hr.check_invite_code_rate_limit SECURITY DEFINER; no direct TS query.
+      invite_code_attempts: {
+        Row: {
+          attempts: number
+          blocked_until: string | null
+          created_at: string
+          first_attempt_at: string
+          id: string
+          invite_code_id: string
+          ip_address: unknown
+          last_attempt_at: string
+          updated_at: string
+        }
+        Insert: {
+          attempts?: number
+          blocked_until?: string | null
+          created_at?: string
+          first_attempt_at?: string
+          id?: string
+          invite_code_id: string
+          ip_address: unknown
+          last_attempt_at?: string
+          updated_at?: string
+        }
+        Update: {
+          attempts?: number
+          blocked_until?: string | null
+          created_at?: string
+          first_attempt_at?: string
+          id?: string
+          invite_code_id?: string
+          ip_address?: unknown
+          last_attempt_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invite_code_attempts_invite_code_id_fkey"
+            columns: ["invite_code_id"]
+            isOneToOne: false
+            referencedRelation: "invite_codes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       invite_codes: {
         Row: {
           code: string
@@ -1546,7 +1592,6 @@ export type Database = {
           email: string | null
           phone: string | null
           raw_app_meta_data: Json
-          encrypted_password: string | null
         }[]
       }
       has_direct_reports: { Args: never; Returns: boolean }
