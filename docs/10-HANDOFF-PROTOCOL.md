@@ -29,7 +29,7 @@
 ### Code → Chat (al completar overnight o cuando James reporta)
 
 1. Code mantiene `docs/CHANGELOG.md` con entries per feature
-2. Code mantiene `docs/ROADMAP.md` con pendientes
+2. Code mantiene el status por grupo en `02-MVP-SCOPE.md` + `09-ESTADO-ACTUAL.md`
 3. Code genera `docs/adr/*` con decisiones técnicas
 4. Code mantiene `docs/CONTEXT.md` con vocabulary vivo
 5. Al final overnight, Code emite `<promise>MVP_COMPLETE</promise>` o `<promise>PARTIAL_MVP</promise>`

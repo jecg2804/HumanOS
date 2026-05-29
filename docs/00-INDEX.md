@@ -1,6 +1,6 @@
 # 00-INDEX.md — Indice de Project Files HumanOS v2
 
-**Ultima actualizacion**: 2026-05-29 (post-auditoria 2026-05-29 + pivot a estrategia forms-first — ver ROADMAP.md)
+**Ultima actualizacion**: 2026-05-29 (post-auditoria 2026-05-29 + pivot a estrategia forms-first — ver 02-MVP-SCOPE.md status)
 
 ---
 
@@ -37,7 +37,6 @@
 
 **Auxiliares en `docs/`**:
 
-- [ROADMAP.md](ROADMAP.md) — **fuente unica** del roadmap macro: escalera de grupos + oleadas W1/W2/W3 forms-first + tag plan + status. Mantenido por Code.
 - [CONTEXT.md](CONTEXT.md) — vocabulario vivo, mantenido por Code via grill-with-docs
 - [CHANGELOG.md](CHANGELOG.md) — entries por feature implementada (semver tags)
 - `HANDOFF.json` — generado por hook `PreCompact` (gitignored desde 2026-05-28, ephemeral)

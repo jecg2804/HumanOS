@@ -171,7 +171,7 @@ Y la "redime" cuando:
 - 39 features F1-F39 implementadas
 - Tests E2E suite full pass
 - tsc + lint + build clean
-- Docs vivos actualizados (CHANGELOG, ROADMAP, ADRs)
+- Docs vivos actualizados (CHANGELOG, 02-MVP-SCOPE status, ADRs)
 
 Si no completa: `<promise>PARTIAL_MVP</promise>` con lista exacta de qué quedó.
 

@@ -279,4 +279,4 @@ Output `<promise>MVP_COMPLETE</promise>` cuando:
 - KB completa RRHH migrada (PDFs + markdown extraídos)
 - Smoke tests bedrock pre-overnight pasaron
 
-Si overnight no completa todo: `docs/ROADMAP.md` refleja qué quedó hecho vs pendiente. Iteración humano-en-loop continúa desde donde quedó.
+Si overnight no completa todo: la tabla "Status overall por feature" de este doc + `09-ESTADO-ACTUAL.md` reflejan qué quedó hecho vs pendiente. Iteración humano-en-loop continúa desde donde quedó.
