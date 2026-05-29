@@ -23,13 +23,16 @@
 
 ## 1. PENDIENTE — Acciones de James (infra/legal, Code no puede)
 
-| # | Item | Origen | Notas |
+| # | Item | Estado | Notas |
 |---|------|--------|-------|
-| J1 | Setear `ONBOARDING_TOKEN_SECRET` (>=32 chars) en Vercel + .env.local | Audit 2026-05-28 Batch 3 | Sin esto el wizard de onboarding falla en runtime |
-| J2 | Crear proyecto Sentry → setear `NEXT_PUBLIC_SENTRY_DSN` (+ org/project/token) | Audit 2026-05-29 BE-3 | El SDK ya está cableado; es no-op sin DSN |
-| J3 | Reconciliar config MCP (`~/.claude.json` disabled vs `settings.local.json` enabled) | Audit framework v2 | 4 MCPs que crees activos están inertes. Code puede ayudar con los archivos del repo; `~/.claude.json` es user-level |
-| J4 | Revisión legal Ley 81/2019 con abogado panameño antes de go-live | Audit framework v2 (P1) | Datos médicos/CSS/salario/cédula |
-| J5 | Decidir BL-2 (presidente self-approval) + BL-3..7 | Audit 2026-05-28 / ADR-0011 | Bloquea ACCION_PERSONAL (Group 6) |
+| J1 | `ONBOARDING_TOKEN_SECRET` en Vercel | ✅ HECHO | James lo agregó 2026-05-29 |
+| J2 | Proyecto Sentry + DSN | ✅ HECHO | Wizard creó el proyecto; DSN como fallback env-overridable. Code reconcilió a R13-safe (commit cce3f06) |
+| J3 | Reconciliar config MCP (`~/.claude.json` disabled vs `settings.local.json` enabled) | PENDIENTE | 4 MCPs inertes. Code edita los del repo; `~/.claude.json` es user-level (James, o confirmar que Code lo edite) |
+| J4 | Revisión legal Ley 81/2019 | PENDIENTE | Code redacta compliance doc + R27; el sign-off legal es humano (abogado Panamá) |
+| J5 | BL-2 (presidente self-approval) | ✅ DECIDIDO | (a) omitir el paso + flag de auditoría (no hay autoridad sobre el presidente). Falta capturar en ADR-0011 |
+| J6 | GitHub Actions secrets para el job `build` de CI | PENDIENTE (James) | `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `ONBOARDING_TOKEN_SECRET` (+ opcional `SENTRY_ORG/PROJECT/AUTH_TOKEN`) |
+| J7 | Branch protection en `main` | Code puede (post-CI) | Code lo activa vía `gh` tras CI verde + git-flow decidido |
+| — | BL-3..7 (ADR-0011) | PENDIENTE | Decisión James/Samantha |
 
 ---
 
