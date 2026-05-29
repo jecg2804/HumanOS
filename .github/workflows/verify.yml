@@ -1,0 +1,70 @@
+# CI verify gate (audit 2026-05-29 P1-CI). Converts `npm run verify` from a manual habit
+# into an enforced gate — the core fix for the "autonomous loop with no gate" contradiction.
+#
+# Two jobs:
+#  - checks: typecheck + lint + unit tests + secret scan + dependency audit. Needs NO app env,
+#            so it runs green immediately.
+#  - build:  next build. Needs Supabase env. James must add these GitHub Actions secrets
+#            (Settings > Secrets and variables > Actions) for this job to pass:
+#              NEXT_PUBLIC_SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY, ONBOARDING_TOKEN_SECRET
+#            (NEXT_PUBLIC_SUPABASE_URL is public and inlined below.)
+#            For Sentry source-map upload in CI, also add SENTRY_ORG / SENTRY_PROJECT / SENTRY_AUTH_TOKEN.
+#
+# E2E (Playwright) is intentionally NOT run here yet — it needs a running server + DB and is a
+# separate job to design once test data/secrets are settled. Tracked in the consolidated audit report.
+
+name: verify
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    name: typecheck / lint / test / scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # gitleaks needs full history
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Lint
+        run: npm run lint
+      - name: Unit tests
+        run: npm run test
+      - name: Secret scan (gitleaks)
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Dependency audit
+        run: npm audit --audit-level=high
+        continue-on-error: true # visibility, not a hard block (upstream transitive advisories)
+
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Build
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://bzeoszympkkicwlfdtcn.supabase.co
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          ONBOARDING_TOKEN_SECRET: ${{ secrets.ONBOARDING_TOKEN_SECRET }}
