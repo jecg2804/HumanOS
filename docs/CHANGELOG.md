@@ -6,6 +6,26 @@ Cambios por feature/grupo. Formato: conventional commits + entries `[bd]` para m
 
 Group 3 (Profile + KB) en planning. Ver `02-MVP-SCOPE.md` F6-F9.
 
+### Audit 2026-05-29 (full multi-agent audit + adversarial verification)
+
+Auditoria integral (DB, backend, frontend/diseño, docs, lógica/engines, seguridad) + gap de mercado vs Workday/BambooHR/Rippling/Personio/Deel. 38 agentes con verificación adversarial de hallazgos.
+
+#### [bd] Migration 044 (applied via MCP 2026-05-29)
+
+- `[bd] 044_revoke_security_definer_grants_from_authenticated` — SEC-1/2/3: `hr.apply_employment_scd2_change`, `hr.complete_onboarding_writes`, `hr.find_auth_user_by_identifier` estaban EXECUTE-granted a authenticated/anon/PUBLIC (RLS-bypassing SECURITY DEFINER). REVOKE de PUBLIC/anon/authenticated; ahora service_role-only. `find_auth_user` recuperó el grant PUBLIC por la migración 043 (recreó la función re-granando solo service_role → revirtió al default PUBLIC); 044 re-aplica el revoke de 034. NO se añadió guard interno `is_hr_admin()` porque el caller legítimo es service_role (sin identidad de persona).
+
+#### Hallazgos críticos de CONFIG (no en repo — Supabase Data API dashboard)
+
+- **P1 launch-blocker**: schemas `hr`/`requests`/`notifications`/etc. NO están en exposed-schemas de la Data API (solo `public`, `humanos`, `graphql_public`). La app lee/escribe `hr.*` vía supabase-js `.schema('hr')` (PostgREST), que falla con PGRST106 para TODAS las keys (service_role incluido — la exposición de schema no la bypassa service_role). Confirmado empíricamente (curl → HTTP 406). 0 usuarios onboarded / 0 auth_id / 370 people `created_from='consolidation'` → los flujos hr de la app nunca corrieron en prod. **Acción (James, dashboard)**: exponer `hr` + `notifications` (RLS-gated) DESPUÉS de migración 044, NO antes (exponer hr con los grants viejos habría activado SEC-1 escalada de privilegios).
+- **P2**: `humanos` (schema PROHIBIDO R1, legacy v1) está expuesto con RLS permisiva (`WITH CHECK true`). Confirmado reachable (curl → HTTP 200). Quitar de exposed-schemas.
+- **P2**: "Automatically expose new tables" está ON — apagar (control manual).
+
+#### Otros P1/P2 verificados (pendientes, no aplicados aún)
+
+- BE-1 (P1 código): retry del Cron notification worker está muerto — un fallo transitorio de Resend marca `failed` permanente; `max_attempts`/`attempts<3`/backoff inertes. `route.ts:50-54,137-148`.
+- Audit-log write bug (P2): `regenerateInviteCodeAction` inserta `action:'invite_code_regenerated'` que viola el CHECK `log_action_check` (solo insert/update/delete/restore/custom/login/logout/export/view_sensitive) y el error no se chequea → row descartado en silencio. `employees-actions.ts:177`.
+- P2 cluster: audit.log sin triggers (DB-1), requests.audit_log grants UPDATE/DELETE (DB-2), admin pages sin requireHrAdmin a nivel ruta (BE-4/SEC-5), sin idempotencia notif (BE-2), sin observabilidad/Sentry (BE-3), hex hardcodeado x47 (FE-1), sin loading/error/404 + 5 nav links rotos (FE-2), a11y (FE-3), mobile/PWA (FE-4), docs drift (DOC-2/3/4), decisiones pre-engine (BL-2..BL-7).
+
 ### Audit 2026-05-28 remediation (post-v0.0.2)
 
 Batches 1-4 del audit consolidado. Commits `3e82240` (harness), `6cbd643` (docs sync), `c97e0c3` (code security), `db4d1f5` (BD plan).
