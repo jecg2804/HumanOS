@@ -87,7 +87,7 @@
       ]
     },
     {
-      "name": "test-driven-development",
+      "name": "superpowers:test-driven-development",
       "enforcement": "high",
       "priority": "high",
       "description": "Red-green-refactor: escribir test failing primero, minimo implementar para pass, refactor manteniendo green. Superpowers tdd skill.",
@@ -101,7 +101,7 @@
       ]
     },
     {
-      "name": "writing-plans",
+      "name": "superpowers:writing-plans",
       "enforcement": "high",
       "priority": "high",
       "description": "Superpowers writing-plans: spec -> plan con tasks atomicas, codigo completo en steps, self-review (spec coverage, placeholder scan, type consistency).",
@@ -155,7 +155,7 @@
       ]
     },
     {
-      "name": "frontend-design",
+      "name": "frontend-design:frontend-design",
       "enforcement": "suggest",
       "priority": "medium",
       "description": "Anthropic frontend-design: combate AI slop. Bold aesthetic choices, design tokens ICONSA (Navy #1B3A5C, etc), no fonts default.",
@@ -169,9 +169,9 @@
       ]
     },
     {
-      "name": "requesting-code-review",
-      "enforcement": "suggest",
-      "priority": "medium",
+      "name": "superpowers:requesting-code-review",
+      "enforcement": "high",
+      "priority": "high",
       "description": "Superpowers code review: pre-commit checklist, identifica issues antes de submit (tsc, lint, RLS, COMMENT, business rules).",
       "keywords": [
         "code review", "review", "pre-commit", "ready to commit"
@@ -182,7 +182,7 @@
       ]
     },
     {
-      "name": "verification-before-completion",
+      "name": "superpowers:verification-before-completion",
       "enforcement": "high",
       "priority": "high",
       "description": "Superpowers verification: gate por feature antes de marcar done. Tests + lint + tsc + build + RLS validation + business rules check.",
@@ -195,7 +195,7 @@
       ]
     },
     {
-      "name": "finishing-a-development-branch",
+      "name": "superpowers:finishing-a-development-branch",
       "enforcement": "high",
       "priority": "high",
       "description": "Superpowers finishing: cierre overnight. Asegura tests verde, docs actualizados, CHANGELOG, tag version, ready to merge.",
