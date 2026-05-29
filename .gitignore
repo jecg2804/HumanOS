@@ -28,3 +28,7 @@ repomix-HumanOS.xml
 
 # Sentry Config File
 .env.sentry-build-plugin
+
+# Supabase CLI local state (link metadata, branches)
+supabase/.temp/
+supabase/.branches/
