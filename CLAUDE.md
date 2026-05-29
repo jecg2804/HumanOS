@@ -63,9 +63,9 @@ Estas reglas son non-negotiable. Hooks PowerShell en `.claude/hooks/` (`pre-tool
 
 10. **Library docs check via Context7**: antes de escribir código que use Next.js, React, Tailwind, Supabase SDK, Resend, Twilio, Documenso, Zod, o cualquier librería externa, invoca Context7 (`resolve-library-id` + `get-library-docs`) para verificar APIs actuales. Tu training puede tener APIs deprecated. Caso real: Next.js 16 renombró `middleware.ts` → `proxy.ts` — sin consultar Context7, este breaking change pasa desapercibido. Ver skill `iconsa-library-docs-check`.
 
-## Business rules R1-R26
+## Business rules R1-R27
 
-Vivien en `@docs/05-BUSINESS-RULES.md`. Las invocadas + reforzadas por skill `iconsa-business-rules`. Lee la doc o invoca el skill cuando el prompt mencione: aprobación, ticket, préstamo, vacaciones, sello, supervisor, hr_admin, schemas, allowed_apps, manual entry.
+Vivien en `@docs/05-BUSINESS-RULES.md`. Las invocadas + reforzadas por skill `iconsa-business-rules`. Lee la doc o invoca el skill cuando el prompt mencione: aprobación, ticket, préstamo, vacaciones, sello, supervisor, hr_admin, schemas, allowed_apps, manual entry, datos personales/médicos, Ley 81, consentimiento. R27 = compliance Ley 81 (`@docs/14-COMPLIANCE-LEY81.md`).
 
 ## Schemas y permisos
 
@@ -118,7 +118,7 @@ Si partial: `<promise>PARTIAL_MVP</promise>` con lista explícita.
 
 ## Project constitution
 
-`@PROJECT_CONSTITUTION.md` — principios non-negotiable + R1-R26.
+`@PROJECT_CONSTITUTION.md` — principios non-negotiable + R1-R27.
 
 ## Anti-patterns Code
 

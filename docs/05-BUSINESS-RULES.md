@@ -568,6 +568,26 @@ Cuando Code o Chat propone modificar `approval_chain_template`:
 
 ---
 
+## R27 — Compliance Ley 81/2019 (Protección de Datos Personales, Panamá)
+
+**Source**: Audit 2026-05-29. Detalle completo + checklist para abogado en `docs/14-COMPLIANCE-LEY81.md`. DRAFT para revisión legal.
+
+### Regla
+
+Todo flujo que capture datos personales debe cumplir la Ley 81/2019 (vigente 2021, ANTAI sanciona $1k-$10k). Aunque la app sea interna, los empleados son titulares de datos.
+
+1. **Consentimiento registrado** antes de capturar datos sensibles (médicos en `hr.medical_info`, emergencia en `hr.contacts`). Para datos de salud el consentimiento es **previo, expreso e irrefutable**. Registrar `consent_at`/`consent_version`/`consent_scope`.
+2. **Retención**: límite de 7 años tras extinguirse la obligación legal de conservar. Definir purga/anonimización de ex-empleados.
+3. **Derechos del titular** (acceso, rectificación, cancelación, oposición): flujo expuesto vía `/perfil`.
+4. **Confidencialidad**: acuse firmado por cada hr_admin que trata datos.
+5. **Brechas**: seguir el breach-notification runbook (notificar afectados + ANTAI).
+
+### Enforcement
+
+Code no recolecta datos sensibles sin paso de consentimiento, **aunque RLS los proteja** (R13 es la capa técnica; R27 es la capa legal). Validación legal con abogado panameño antes de go-live (no es Code quien la da). NO recolectar sin consentimiento.
+
+---
+
 ## Resumen rules table
 
 | R# | Tema | Critical? |
@@ -598,3 +618,4 @@ Cuando Code o Chat propone modificar `approval_chain_template`:
 | R24 | Approval modes JSONB | ✅ Critical |
 | R25 | Manual entry F32 | Important |
 | R26 | SOP-driven chains | ✅ Critical |
+| R27 | Compliance Ley 81 (consentimiento/retención/brechas/derechos) | ✅ Critical |
