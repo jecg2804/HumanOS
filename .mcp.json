@@ -11,53 +11,12 @@
         "CONTEXT7_API_KEY": ""
       }
     },
-    "Filesystem": {
-      "type": "stdio",
-      "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-filesystem@2026.1.14"
-      ]
-    },
-    "GitHub": {
-      "type": "http",
-      "url": "https://api.githubcopilot.com/mcp/"
-    },
-    "Resend": {
-      "type": "stdio",
-      "command": "npx",
-      "args": [
-        "-y",
-        "resend-mcp@2.6.1"
-      ],
-      "env": {
-        "RESEND_API_KEY": ""
-      }
-    },
-    "Sentry": {
-      "type": "stdio",
-      "command": "npx",
-      "args": [
-        "-y",
-        "@sentry/mcp-server@0.35.0"
-      ],
-      "env": {
-        "SENTRY_ACCESS_TOKEN": ""
-      }
-    },
     "next-devtools": {
+      "type": "stdio",
       "command": "npx",
       "args": [
         "-y",
         "next-devtools-mcp@0.3.10"
-      ]
-    },
-    "Puppeteer": {
-      "type": "stdio",
-      "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-puppeteer@2025.5.12"
       ]
     }
   }

@@ -27,8 +27,7 @@
 |---|------|--------|-------|
 | J1 | `ONBOARDING_TOKEN_SECRET` en Vercel | ✅ HECHO | James lo agregó 2026-05-29 |
 | J2 | Proyecto Sentry + DSN | ✅ HECHO | Wizard creó el proyecto; DSN como fallback env-overridable. Code reconcilió a R13-safe (commit cce3f06) |
-| J3 | Reconciliar config MCP (`~/.claude.json` disabled vs `settings.local.json` enabled) | PENDIENTE | 4 MCPs inertes. Code edita los del repo; `~/.claude.json` es user-level (James, o confirmar que Code lo edite) |
-| J4 | Revisión legal Ley 81/2019 | PENDIENTE | Code redacta compliance doc + R27; el sign-off legal es humano (abogado Panamá) |
+| J3 | Reconciliar config MCP | ✅ HECHO (project-level, commit) | `.mcp.json` + `settings.local.json` reducidos a Context7 + next-devtools; dropped GitHub/Filesystem/Puppeteer/Resend/Sentry. `~/.claude.json` global NO tocado (afecta MovimientOS). Aplica al reiniciar sesión |
 | J5 | BL-2 (presidente self-approval) | ✅ DECIDIDO | (a) omitir el paso + flag de auditoría (no hay autoridad sobre el presidente). Falta capturar en ADR-0011 |
 | J6 | GitHub Actions secrets para el job `build` de CI | PENDIENTE (James) | `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `ONBOARDING_TOKEN_SECRET` (+ opcional `SENTRY_ORG/PROJECT/AUTH_TOKEN`) |
 | J7 | Branch protection en `main` | Code puede (post-CI) | Code lo activa vía `gh` tras CI verde + git-flow decidido |
