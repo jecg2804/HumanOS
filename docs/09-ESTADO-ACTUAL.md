@@ -1,6 +1,6 @@
 # 09-ESTADO-ACTUAL.md — Snapshot live del proyecto
 
-**Última actualización**: 2026-05-28 (post v0.0.2 Group 2 shipped — sync con realidad código durante audit Batch 2)
+**Última actualización**: 2026-05-29 (full multi-agent audit + remediación parcial — ver CHANGELOG [Unreleased] Audit 2026-05-29)
 
 **Owner update**: Claude Chat. Este es el doc más volátil — actualizar cada sesión con "qué se hizo, qué sigue, qué bloqueo existe".
 
@@ -8,11 +8,19 @@
 
 ## Estado high-level
 
-**Fase actual**: Group 2 (Onboarding F1 + F4 + F5 + auth flows + notifications + Vercel Cron) **shipped en tag v0.0.2** (commit `32ef28b`, 2026-05-27 noche). Group 3 (Profile + KB) en planning pendiente arranque.
+**Fase actual**: Group 2 shipped en tag v0.0.2 (commit `32ef28b`). Group 3 (Profile + KB) en planning. Dos auditorías integrales corridas (2026-05-28 + 2026-05-29 full multi-agent con verificación adversarial).
 
-**Decisión grande pendiente**: Group 3 scope freeze. Ver `02-MVP-SCOPE.md` F6-F9 — F6 (perfil base), F7 (perfil editar con SCD-2 admin-only), F8 (directorio), F9 (KB completa GDrive).
+**Migraciones aplicadas a la fecha**: hasta **046**. 039 (invite rate-limit + commitment), 040 (DROP backup), 041 (touch_updated_at search_path), 042 (drop dup constraint), 043 (find_auth sin encrypted_password), 044 (REVOKE SECURITY DEFINER grants → service_role-only), 045 (fix scd2 fn: audit action='custom' + actor people-id), 046 (revoke requests.audit_log UPDATE/DELETE).
 
-**Próxima acción**: cerrar hallazgos audit 2026-05-28 (Batch 3 code security + Batch 4 BD hardening) ANTES de arrancar Group 3 plan via writing-plans skill.
+**Config Data API (RESUELTO 2026-05-29)**: exposed-schemas ahora incluye `hr`, `notifications`, `audit` (antes solo public/humanos/graphql_public → la app fallaba con PGRST106; nadie lo había notado, 0 onboarded). Quitado `humanos` (prohibido R1). Apagado "auto-expose new tables". **Orden crítico respetado**: migración 044 (revoke grants) ANTES de exponer hr, para no activar escalada de privilegios.
+
+**Remediación audit 2026-05-29 — DONE**: cluster seguridad (SEC-1/2/3 grants), BE-1 Cron retry, audit-log/actor cluster (DB-5), scd2 fn, admin route guard (BE-4/SEC-5), requests.audit_log revoke (DB-2). Commits `8b95fdd` `4f64ba5` `5ad21c4`.
+
+**PENDIENTE P2 (próxima sesión, budget fresco)**: BE-2 idempotencia notif, BE-3 Sentry + rollback checks (también elimina el audit-write app-level de regenerate vía DB-1 triggers), FE-1 ~47 hex→tokens (26 files), FE-2 loading/error/not-found + 5 nav links rotos, FE-3 a11y, FE-4 mobile/PWA, DOC-2/3/4 docs drift, DB-1 audit triggers.
+
+**Decisión grande pendiente (James/Samantha) pre-Group-4 engines**: ADR-0011 — BL-2 presidente self-approval, BL-3 form_schema source en 8 seeds, BL-4 requests.next_ticket_number + reset anual, BL-5 enum Devuelta_Info huérfano, BL-6 SLA escalación, BL-7 reglas delegación. + Group 3 scope freeze (F6-F9).
+
+**Data layer paridad de mercado (pre-Group-5)**: leave_balances/accrual ledger (gap #1), hr.people_external_ids (citado en docs MDM, no existe), columnas réplica comp.
 
 ---
 
