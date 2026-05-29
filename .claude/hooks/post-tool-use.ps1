@@ -83,7 +83,7 @@ try {
         Write-Output "1. RLS habilitada en cada tabla nueva (ALTER TABLE ... ENABLE ROW LEVEL SECURITY)"
         Write-Output "2. COMMENT ON TABLE + COMMENT ON COLUMN poblados"
         Write-Output "3. Golden record: external_ids table + _source column si aplica"
-        Write-Output "4. Run mcp__supabase__get_advisors to catch policy issues"
+        Write-Output "4. Run the Supabase advisors tool (mcp__plugin_supabase_supabase__get_advisors) to catch policy/security issues"
         Write-Output "</post_migration_reminders>"
     }
 

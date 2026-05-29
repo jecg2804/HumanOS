@@ -1,6 +1,7 @@
 import nextCoreWebVitals from 'eslint-config-next/core-web-vitals';
 import nextTypescript from 'eslint-config-next/typescript';
 import noAdminClientInClient from './eslint-rules/no-admin-client-in-client.js';
+import noVoseo from './eslint-rules/no-voseo.js';
 
 const config = [
   ...nextCoreWebVitals,
@@ -27,10 +28,18 @@ const config = [
   },
   {
     plugins: {
-      iconsa: { rules: { 'no-admin-client-in-client': noAdminClientInClient } },
+      iconsa: {
+        rules: {
+          'no-admin-client-in-client': noAdminClientInClient,
+          'no-voseo': noVoseo,
+        },
+      },
     },
     rules: {
       'iconsa/no-admin-client-in-client': 'error',
+      // R6/R15 anti-voseo guard (audit 2026-05-29 H9). 'warn' first to surface any pre-existing
+      // voseo without breaking the gate; escalate to 'error' once the count is zero.
+      'iconsa/no-voseo': 'warn',
     },
   },
   {
