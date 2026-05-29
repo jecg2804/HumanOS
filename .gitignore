@@ -25,3 +25,6 @@ repomix-HumanOS.xml
 # Hook runtime artifacts (debounce timestamps, tmp files)
 .claude/hooks/last-*.txt
 .claude/hooks/*.tmp
+
+# Sentry Config File
+.env.sentry-build-plugin
