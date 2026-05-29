@@ -10,6 +10,13 @@ Group 3 (Profile + KB) en planning. Ver `02-MVP-SCOPE.md` F6-F9.
 
 Auditoria integral (DB, backend, frontend/diseño, docs, lógica/engines, seguridad) + gap de mercado vs Workday/BambooHR/Rippling/Personio/Deel. 38 agentes con verificación adversarial de hallazgos.
 
+#### P1/P2 code + BD fixes (batch 2026-05-29)
+
+- BE-1 (P1): Cron notification worker retry rewritten in `src/app/api/cron/process-notifications/route.ts`. Transient Resend errors now keep `status='pending'` + increment `attempts` + write `last_attempt_at` (retried next tick) until `attempts >= max_attempts` -> terminal `failed`; permanent failures (no recipient/template) -> `failed` immediately. Previously ANY error set terminal `failed` on first try (max_attempts/attempts<3/backoff inert; one transient hiccup dropped an email forever).
+- Audit-log + actor-reference cluster (DB-5) in `src/lib/admin/employees-actions.ts`: `invite_codes.generated_by` and `audit.log.actor_id` both FK -> `hr.people(id)`, but the code passed `user.id` (auth.users id) -> latent FK violations. Now use `requireHrAdmin().personId`. `regenerateInviteCodeAction` audit insert also used `action='invite_code_regenerated'` (violates `log_action_check`) with the error unchecked -> silently dropped; now `action='custom'` + semantic name in reason/metadata + error logged. `updateEmployeeAction` keeps `user.id` (correct: `employments.created_by` FK -> auth.users).
+- `[bd] 045_fix_scd2_audit_action_and_actor`: `hr.apply_employment_scd2_change` critical-change branch was broken — audit insert used `action='employment_scd2_transition'` (violates CHECK) and `p_actor_id` (auth id) as `audit.log.actor_id` (FK -> hr.people). Fixed: `action='custom'` + reason/metadata; resolve person id via `hr.people.auth_id = p_actor_id` for the audit actor; `created_by` keeps `p_actor_id`. These were never hit in prod (hr schema not API-exposed + 0 onboarded users).
+- Gate: tsc/lint/vitest 9 files 65 tests/build OK.
+
 #### [bd] Migration 044 (applied via MCP 2026-05-29)
 
 - `[bd] 044_revoke_security_definer_grants_from_authenticated` — SEC-1/2/3: `hr.apply_employment_scd2_change`, `hr.complete_onboarding_writes`, `hr.find_auth_user_by_identifier` estaban EXECUTE-granted a authenticated/anon/PUBLIC (RLS-bypassing SECURITY DEFINER). REVOKE de PUBLIC/anon/authenticated; ahora service_role-only. `find_auth_user` recuperó el grant PUBLIC por la migración 043 (recreó la función re-granando solo service_role → revirtió al default PUBLIC); 044 re-aplica el revoke de 034. NO se añadió guard interno `is_hr_admin()` porque el caller legítimo es service_role (sin identidad de persona).

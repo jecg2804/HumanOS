@@ -54,9 +54,11 @@ export async function createEmployeeAction(
   }
 
   // P1.6 Batch 3: require hr_admin role (was only checking auth.getUser before).
-  let user;
+  // DB-5/audit 2026-05-29: invite_codes.generated_by FK -> hr.people(id), so use the actor's
+  // person id (not the auth.users id) or the insert violates the FK.
+  let actorPersonId: string;
   try {
-    ({ user } = await requireHrAdmin());
+    ({ personId: actorPersonId } = await requireHrAdmin());
   } catch (e) {
     if (e instanceof AuthorizationError) {
       return { ok: false, message: e.message };
@@ -110,7 +112,7 @@ export async function createEmployeeAction(
     .insert({
       code,
       person_id: person.id,
-      generated_by: user.id,
+      generated_by: actorPersonId,
       invite_method: parsed.data.delivery_target.includes('@') ? 'email' : 'whatsapp',
       delivery_target: parsed.data.delivery_target,
     })
@@ -140,9 +142,10 @@ export async function regenerateInviteCodeAction(
   if (!personId || !deliveryTarget) return { ok: false, message: 'Datos faltantes' };
 
   // P1.6 Batch 3: require hr_admin role.
-  let user;
+  // DB-5/audit 2026-05-29: generated_by + audit.log.actor_id FK -> hr.people(id); use person id.
+  let actorPersonId: string;
   try {
-    ({ user } = await requireHrAdmin());
+    ({ personId: actorPersonId } = await requireHrAdmin());
   } catch (e) {
     if (e instanceof AuthorizationError) {
       return { ok: false, message: e.message };
@@ -166,7 +169,7 @@ export async function regenerateInviteCodeAction(
     .insert({
       code,
       person_id: personId,
-      generated_by: user.id,
+      generated_by: actorPersonId,
       invite_method: deliveryTarget.includes('@') ? 'email' : 'whatsapp',
       delivery_target: deliveryTarget,
     })
@@ -174,14 +177,22 @@ export async function regenerateInviteCodeAction(
     .single();
   if (error || !invite) return { ok: false, message: error?.message };
 
-  await admin.schema('audit').from('log').insert({
-    actor_id: user.id,
-    action: 'invite_code_regenerated',
+  // Audit 2026-05-29: 'action' must be in the audit.log CHECK set (insert/update/delete/restore/
+  // custom/login/logout/export/view_sensitive); the semantic name goes in reason + metadata.
+  // actor_id FK -> hr.people(id) so use actorPersonId (not the auth user id). Check the error so
+  // a failed audit write is surfaced, not silently swallowed (it was the only audit write path).
+  const { error: auditErr } = await admin.schema('audit').from('log').insert({
+    actor_id: actorPersonId,
+    action: 'custom',
     record_id: personId,
     schema_name: 'hr',
     table_name: 'invite_codes',
-    metadata: { new_code: invite.code },
+    reason: 'invite_code_regenerated',
+    metadata: { semantic_action: 'invite_code_regenerated', new_code: invite.code },
   });
+  if (auditErr) {
+    console.error('[regenerateInvite] audit.log insert failed:', auditErr.message);
+  }
 
   return { ok: true, data: { code: invite.code, expires_at: invite.expires_at } };
 }
