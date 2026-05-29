@@ -7,6 +7,19 @@ description: Grilling session that challenges your plan against the existing dom
 
 Interview me relentlessly about every aspect of this plan until we reach a shared understanding. Walk down each branch of the design tree, resolving dependencies between decisions one-by-one. For each question, provide your recommended answer.
 
+## Plan under review (Superpowers handoff)
+
+Before interviewing, check `docs/superpowers/specs/` for the most recently modified file.
+If one exists, read it and treat it as the design under review — do NOT re-elicit
+requirements it already states. Open the session by summarising the design you found,
+then grill only the gaps:
+- terminology that conflicts with `CONTEXT.md`
+- decisions that contradict an existing ADR in `docs/adr/`
+- hard-to-reverse choices the spec made silently
+Prefer grilling a SPEC (cheap to revise) over a finished PLAN (expensive, code-laden).
+If both a spec and a plan exist for the same work, grill the spec. You READ Superpowers
+artifacts; you never edit them — your only writes remain `CONTEXT.md` and `docs/adr/`.
+
 Ask the questions one at a time, waiting for feedback on each question before continuing.
 
 If a question can be answered by exploring the codebase, explore the codebase instead.

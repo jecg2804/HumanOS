@@ -73,16 +73,18 @@ Ver `@docs/07-SCHEMAS-PERMISOS.md` para tabla writable vs read-only vs prohibite
 
 ## Workflow Claude Code
 
-Setup framework completo en `@docs/06-FRAMEWORK-CLAUDE-CODE.md`.
+Setup completo en `@docs/06-FRAMEWORK-CLAUDE-CODE.md` + integracion de skills en `@docs/superpowers/specs/2026-05-29-skill-integration-design.md`.
 
-Resumen overnight:
-1. **grill-with-docs** (mattpocock) — interview riguroso con James antes de specs. Mantiene `docs/CONTEXT.md` + `docs/adr/*` vivos.
-2. **writing-plans** (Superpowers) — specs JTBD por feature/grupo, código completo en steps, self-review (coverage, placeholders, type consistency).
-3. **executing-plans** o **subagent-driven-development** — implementación con TDD red-green-refactor.
-4. **verification-before-completion** — gate por feature: tests + lint + tsc + build + RLS check.
-5. **finishing-a-development-branch** — cierre overnight.
+### Pipeline canonico (costura de 3 paradas entre Superpowers y grill)
 
-Per feature: tests E2E happy path + 1+ edge case + RLS validation + tsc + lint + build clean.
+1. `superpowers:brainstorming` -> escribe spec en `docs/superpowers/specs/`. **PARA** — no dejes que auto-encadene a writing-plans.
+2. `grill-with-docs` -> grilla ESE spec contra `CONTEXT.md` + `docs/adr/`; captura ADRs antes de congelar el plan. Solo escribe `CONTEXT.md` + ADRs.
+3. `superpowers:writing-plans` (mismo spec) -> plan en `docs/superpowers/plans/` con header `**Decisions in scope:** ADR-NNNN`.
+4. dev: `superpowers:executing-plans`/`subagent-driven-development` + `test-driven-development`. Lee **plan=que sigue · ADR=permitido? · CONTEXT=que significa**. `typescript-lsp` en el loop.
+5. `verification-before-completion` -> `npm run verify` (+ CI).
+6. review (`requesting-code-review` + `iconsa-rls-validation` + plugins `code-review`/`security-guidance`) -> `finishing-a-development-branch` + `commit-commands`.
+
+Bugs duros: `diagnose` / `systematic-debugging`. Per feature: E2E happy path + edge case + RLS validation + tsc/lint/build clean. No apilar GSD/gstack/ECC/Ralph (caos de skills compitiendo — ver design doc).
 
 ## Conditional imports (load when relevant)
 
