@@ -3,6 +3,7 @@
 // (RLS would require hr_admin context; service role bypasses for atomic creation with audit).
 import { createSupabaseAdminClient } from '@/lib/supabase/admin';
 import { AuthorizationError, requireHrAdmin } from '@/lib/auth/require-hr-admin';
+import { reportError } from '@/lib/observability/report';
 import { z } from 'zod';
 
 type FormState = {
@@ -191,7 +192,12 @@ export async function regenerateInviteCodeAction(
     metadata: { semantic_action: 'invite_code_regenerated', new_code: invite.code },
   });
   if (auditErr) {
-    console.error('[regenerateInvite] audit.log insert failed:', auditErr.message);
+    // Don't fail the operation — the invite was already regenerated (primary effect). Surface the
+    // swallowed audit-write failure to Sentry/stderr. The durable fix is DB-1 (audit triggers).
+    reportError(new Error(`audit.log insert failed: ${auditErr.message}`), {
+      where: 'regenerateInviteCodeAction',
+      person_id: personId,
+    });
   }
 
   return { ok: true, data: { code: invite.code, expires_at: invite.expires_at } };
