@@ -15,6 +15,7 @@
     ".claude/**",
     "docs/**",
     "CLAUDE.md",
+    "supabase/**",
     "PROJECT_CONSTITUTION.md",
     "package.json",
     "tsconfig.json",

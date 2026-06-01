@@ -14,8 +14,8 @@ npm run build      # next build
 npm run start      # next start -p 3001
 npm run lint       # eslint .
 npm run typecheck  # tsc --noEmit
-npm test           # vitest unit tests (8 archivos, 58 tests al cierre v0.0.2)
-npm run test:e2e   # Playwright E2E specs (6 al cierre v0.0.2)
+npm test           # vitest unit tests (9 archivos, 67 tests al 2026-06-01; cuenta viva en CI, no aqui)
+npm run test:e2e   # Playwright E2E specs
 npm run verify     # gate completo: typecheck + lint + vitest + e2e + build
 ```
 

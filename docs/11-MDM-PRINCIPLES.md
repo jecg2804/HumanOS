@@ -59,8 +59,8 @@ ICONSA tiene **1 dev (Jaime)** haciendo full-stack + data engineering. Adopt MDM
 
 Este reconocimiento NO es excusa para hacer trabajo sloppy en HumanOS. HumanOS schema sí cumple MDM principles internamente:
 - `hr.people` es golden record DE HUMANOS exclusivamente
-- `hr.people_external_ids` table existe ya preparada para Spectrum/PayDay/B2W cross-reference
-- `_source` column en `hr.people` con CHECK constraint
+- `hr.person_sources` (EXISTE, ~453 filas) cumple el rol de cross-reference por sistema externo (Spectrum/PayDay/B2W). NOTA: el nombre `people_external_ids` que se usaba en este doc nunca se creó; la implementación real es `person_sources`.
+- `created_from` / `source_record_id` en `hr.people` registran provenance
 - `audit.changes` robusto con triggers
 - COMMENT ON obligatorio en cada tabla
 - RLS en cada tabla
@@ -93,24 +93,22 @@ Para cada **entidad empresarial real** (Person, Equipment, Project, Vendor, Cust
 Cada entidad canónica tiene:
 
 - **`id` (uuid)** — identificador interno, generado por la BD, inmutable, único universalmente
-- **`{entity}_external_ids` (tabla relacionada)** — mapping de IDs por sistema externo
+- **tabla de cross-reference relacionada** — mapping de IDs por sistema externo
 
-Esquema canónico:
+Esquema **implementado** (`hr.person_sources`, EXISTE con ~453 filas). El nombre `people_external_ids` usado en versiones previas de este doc nunca se creó; la tabla real es:
 
 ```sql
-CREATE TABLE hr.people_external_ids (
+CREATE TABLE hr.person_sources (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  person_id uuid NOT NULL REFERENCES hr.people(id) ON DELETE CASCADE,
-  system text NOT NULL CHECK (system IN ('payday', 'b2w', 'spectrum', 'projectsight', 'skydata', 'manual')),
+  person_id uuid NOT NULL REFERENCES hr.people(id),
+  source_system text NOT NULL,        -- p.ej. movimientos, payday, spectrum, manual
   external_id text NOT NULL,
-  last_synced_at timestamptz,
-  created_at timestamptz NOT NULL DEFAULT now(),
-  UNIQUE (system, external_id),
-  UNIQUE (person_id, system)
+  external_data jsonb,                -- payload crudo del sistema origen (para ETL/debug)
+  last_synced_at timestamptz NOT NULL DEFAULT now(),
+  created_at timestamptz NOT NULL DEFAULT now()
 );
-
-COMMENT ON TABLE hr.people_external_ids IS
-  'Cross-reference de IDs externos por persona. Permite ETL bidireccional con PayDay, Trimble B2W/Spectrum/ProjectSight, Skydata. Una persona NO puede tener dos IDs en el mismo sistema (UNIQUE person_id, system). Un external_id NO puede asociarse a dos personas (UNIQUE system, external_id).';
+-- Cumple el rol de cross-reference: una persona puede tener IDs en varios sistemas;
+-- external_data preserva el registro origen para ETL bidireccional.
 ```
 
 Patrón replicable para `equipment_external_ids`, `projects_external_ids`, etc.

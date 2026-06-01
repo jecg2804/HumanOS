@@ -43,7 +43,7 @@ Sistemas listados:
 
 **Status golden record**: **DEUDA TÉCNICA documentada** — hoy hay `public.people` (MovimientOS, 182 rows) + `hr.people` (HumanOS, 370 rows) como dos golden records de la misma entidad. Refactor a `mdm.people` postergado hasta Spectrum SDK integration (ver ADR sobre duplicación temporal Person en `docs/08-ADRs.md`).
 
-Por ahora (Paso 11+ HumanOS MVP): Code trabaja con `hr.people` como golden record DE HUMANOS. Agrega `hr.people_external_ids` que ya prepara cross-reference futuro.
+Por ahora (Paso 11+ HumanOS MVP): Code trabaja con `hr.people` como golden record DE HUMANOS. El cross-reference por sistema externo ya existe en `hr.person_sources` (~453 filas; el nombre `people_external_ids` de versiones previas de los docs nunca se creó).
 
 | Campo | SOR | Replicas / Consumers | Strategy | Sync method | Notas |
 |---|---|---|---|---|---|
@@ -69,13 +69,13 @@ Por ahora (Paso 11+ HumanOS MVP): Code trabaja con `hr.people` como golden recor
 | `medical_info` | manual (HumanOS sensible) | — | `sor_wins` | — | Solo `hr.medical_info`, NUNCA exportado |
 | `notification_preferences` | manual (self-service HumanOS) | — | `sor_wins` | — | HumanOS only |
 
-External IDs preservados en `hr.people_external_ids`:
+External IDs preservados en `hr.person_sources` (columna `source_system`):
 
-- `system='payday'` → ID empleado en PayDay Data Warehouse
-- `system='b2w'` → User ID en B2W (fase 2)
-- `system='spectrum'` → Employee ID en Spectrum (vía SDK master data fase 1)
-- `system='projectsight'` → User ID en ProjectSight (fase 2)
-- `system='skydata'` → Driver ID en Skydata (solo conductores)
+- `source_system='payday'` → ID empleado en PayDay Data Warehouse
+- `source_system='b2w'` → User ID en B2W (fase 2)
+- `source_system='spectrum'` → Employee ID en Spectrum (vía SDK master data fase 1)
+- `source_system='projectsight'` → User ID en ProjectSight (fase 2)
+- `source_system='skydata'` → Driver ID en Skydata (solo conductores)
 - `system='movimientos'` → `public.people.id` (provisional hasta resolución Person duplication ADR)
 
 **Conflict resolution prioridad cuando PayDay batch vs HumanOS manual difieren**:
