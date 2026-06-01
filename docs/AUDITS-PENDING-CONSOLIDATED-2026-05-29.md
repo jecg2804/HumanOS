@@ -21,6 +21,31 @@
 
 ---
 
+## 0.5 COMPLETADO en sesión 2026-06-01 (Code) — 8 commits, gate verde
+
+**Infra:** CI verde (fix secrets build job) · schema baseline sin Docker (`supabase/schemas/humanos_baseline.sql`, introspección MCP) · branch protection en `main` (J7: no force-push/borrado, checks requeridos, enforce_admins:false).
+
+**Harness (Batch A):** H3 Stop hook · H4 brainstorming + H5 receiving-code-review en router · H8 banner helpers canónico · H10 4 subagents (`.claude/agents/`) · H11 CLI-first doc. (H1/H2/H6/H7/H9 ya estaban.)
+
+**Backend (Batch B):** BE-2 idempotencia (`[bd] 048` dedupe_key + `enqueue` p_dedupe_key + callers) · BE-3b rollback returns chequeados.
+
+**BD (Batch D):** P2.23 `[bd] 049` 68 FK indexes · seq `[bd] 050` `requests.next_sequence` · P2.24 `[bd] 051` comments (subset live; resto diferido a su grupo) · DB-1 diferido a Group 4.
+
+**Frontend (Batch C):** FE-1b 49 hex→tokens + guard a error · FE-2 boundaries + 5 nav links · FE-3 a11y (modal + role=alert) · FE-4 viewport + manifest.
+
+**Docs (Batch E parcial + F):** D6 conteo tests CLAUDE.md · D7/D10 `person_sources` (11/12) · D9 repomix `supabase/**` · D2 índice canónico `docs/adr/README.md` + 08-ADRs FROZEN · Batch F ADR-0009 (scope S1-S4).
+
+**Cancelado por James (2026-06-01):** rotación DB password.
+
+**PENDIENTE tras esta sesión (no-blocking, recomendado pasada dedicada):**
+
+- Docs restructure **D1/D3/D4/D5/D8** (re-key por rol/cadencia, merge 03→02 / 10→06 / 04→CONTEXT, headers 3-líneas, slim 09-ESTADO, split 13). Subjetivo + coordinado; no afecta runtime.
+- D2 **renumber físico** de los 14 ADR legacy a una sola secuencia (one-way door; el índice canónico ya resuelve la ambigüedad).
+- DB-1 audit triggers + P2.24 bulk (learning/performance/workflows) → con sus features (Group 4+).
+- Decisiones humanas: BL-2..7 (ADR-0011).
+
+---
+
 ## 1. PENDIENTE — Acciones de James (infra/legal, Code no puede)
 
 | # | Item | Estado | Notas |
