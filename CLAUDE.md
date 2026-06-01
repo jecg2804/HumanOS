@@ -23,17 +23,13 @@ Tests: vitest (jsdom env, 70% coverage thresholds) + Playwright (chromium, baseU
 
 ## The mental model
 
-HumanOS digitaliza formularios papel ICONSA. **Cada campo del SOP papel cae en UNA de 3 categorías**:
+HumanOS digitaliza formularios papel ICONSA. **Cada campo del SOP papel cae en UNA de 3 categorías**, y el mapping vive en `requests.types.form_schema` JSONB con `source`:
 
-1. **Identidad** (`source: 'profile'`) — ya existe en BD (`hr.people`, `hr.employments`, `hr.org_units`, `hr.positions`, `hr.locations`). NUNCA pedir al usuario: nombre, cédula, employee_code, cargo, departamento, ubicación, supervisor, foto, fecha contratación, tipo contrato.
+- `'profile'` — ya existe en BD (`hr.*`): nombre, cédula, cargo, supervisor, etc. **NUNCA se le pide al usuario** (prerrellenado read-only).
+- `'user_input'` — lo aporta el solicitante en cada submission (motivo, fechas, montos, attachments, firmas).
+- `'computed'` — derivado por sistema (antigüedad, balance vacaciones, salario con RLS) — read-only con badge "Calculado".
 
-2. **Input nuevo** (`source: 'user_input'`) — lo da el solicitante en cada submission: motivo, fechas específicas, montos, descripciones, attachments, firmas.
-
-3. **Computed** (`source: 'computed'`) — derivado por sistema: antigüedad, días vacaciones disponibles, salario (con RLS), status, chain preview.
-
-Code lee cada SOP papel (PDF en `docs/sops/` versionados en repo), identifica cada campo, y lo mapea a una de las 3 categorías. El mapping vive en `requests.types.form_schema` JSONB con `source: 'profile' | 'user_input' | 'computed'`. FormEngine renderiza: profile prerrellenados read-only opacidad reducida, user_input editables, computed read-only con badge "Calculado".
-
-**Si te descubres pidiendo al usuario un campo que ya existe en BD, estás implementando mal.** La BD es source of truth. Prerrellenar es el default. Ver skill `iconsa-form-implementation` para field source matrix completa.
+**Si te descubres pidiendo al usuario un campo que ya existe en BD, estás implementando mal.** La BD es source of truth; prerrellenar es el default. Field source matrix completa + pattern end-to-end: skill `iconsa-form-implementation`.
 
 ## YOU MUST follow
 
@@ -92,8 +88,8 @@ Bugs duros: `diagnose` / `systematic-debugging`. Per feature: E2E happy path + e
 - Implementing approval chain: leer SOP relevante en `docs/sops/` (Filesystem MCP, NO Google Drive)
 - Past decisions: `@docs/adr/README.md` (canonical index) + `@docs/adr/*.md`
 - Vocabulario en duda: `@docs/CONTEXT.md` (vivo, mantén con grill-with-docs)
-- MDM foundational: `@docs/11-MDM-PRINCIPLES.md` + `@docs/12-SOR-MATRIX.md`
-- Integraciones externas: `@docs/13-INTEGRATIONS-INDEX.md`
+- MDM foundational (aspiracional): `@docs/future/11-MDM-PRINCIPLES.md` + `@docs/future/12-SOR-MATRIX.md`
+- Integraciones LIVE (email/cron/hosting/monitoring): `@docs/13-INTEGRATIONS-INDEX.md` · planned/ETL: `@docs/future/13-INTEGRATIONS-PLANNED.md`
 - Estado actual operacional: `@docs/09-ESTADO-ACTUAL.md` + estado vivo en BD
 
 ## ICONSA custom skills
@@ -135,13 +131,4 @@ Si partial: `<promise>PARTIAL_MVP</promise>` con lista explícita.
 
 ## Design Tokens
 
-```text
-Navy:   #1B3A5C  (primary — headers, nav, branding)
-Gold:   #F0A500  (accent — ICONSA brand)
-Blue:   #0A6EBD  (info, links, estado Enviada)
-Green:  #1A7F5A  (success, Completada)
-Orange: #B45309  (warning, Urgente, En Proceso)
-Red:    #C0392B  (error, Vencida, Cancelada)
-Purple: #553C9A  (Programada, asignaciones)
-Gray:   #5A6272  (secondary text)
-```
+Single source of truth: `src/app/globals.css` (`--color-navy-*`, `--color-gold-*`, semantic tokens para status). NO hardcodear hex en componentes — usar los tokens. Brand: Navy `#1B3A5C` + Gold `#F0A500`.

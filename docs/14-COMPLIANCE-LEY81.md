@@ -1,5 +1,7 @@
 # 14-COMPLIANCE-LEY81.md — Cumplimiento Ley 81/2019 (Protección de Datos Personales, Panamá)
 
+**Role:** marco técnico/de proceso de compliance con la Ley 81/2019 panameña (datos personales/sensibles) — base de R27. · **Read-when:** al manejar datos personales/médicos, consentimiento, retención, o derechos ARCO. · **Maintain-when:** cambia la ley, el marco de compliance, o un control técnico asociado.
+
 **Status:** DRAFT para revisión legal — NO es asesoría legal. Code redactó el marco técnico/de proceso; un abogado panameño debe validarlo antes de go-live.
 **Fecha:** 2026-05-29
 **Origen:** Audit 2026-05-29 (gap P1 — la app guarda datos sensibles sin marco de compliance documentado).

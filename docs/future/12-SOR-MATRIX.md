@@ -1,6 +1,8 @@
 # 12-SOR-MATRIX.md — System of Record matrix
 
-**⚠️ Foundational ICONSA, no específico de HumanOS.** Migra a `iconsa-knowledge` wiki cuando se cree.
+**Role:** matriz System-of-Record (foundational/aspiracional) — qué sistema es la autoridad por entidad/campo cross-app. · **Read-when:** al diseñar conflict resolution de un ETL o decidir quién owna un campo. · **Maintain-when:** un nuevo sistema externo se integra o cambia el owner de una entidad/campo.
+
+**⚠️ Foundational ICONSA, no específico de HumanOS.** Migra a `iconsa-knowledge` wiki cuando se cree. Vive en `docs/future/` (aspiracional — se completa por integration a medida que cada API se conecte).
 
 **Última actualización**: sesión 2026-05-25 (creación)
 
@@ -161,7 +163,7 @@ Status: **placeholder**. Detalle por completar.
    - Agregar a esta matriz columnas/notas relevantes
    - Agregar a CHECK constraint de `{entity}_external_ids.system`
    - Agregar a CHECK constraint de `_source` en tablas canónicas
-   - Documentar en `13-INTEGRATIONS-INDEX.md`
+   - Documentar en `../13-INTEGRATIONS-INDEX.md` (LIVE) o `future/13-INTEGRATIONS-PLANNED.md`
 
 3. **Cuando se agrega nueva entidad canónica**:
    - Sección nueva en este doc

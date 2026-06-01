@@ -1,6 +1,8 @@
 # 11-MDM-PRINCIPLES.md — Master Data Management foundational principles
 
-**⚠️ Foundational ICONSA, no específico de HumanOS.** Al crearse el repo `iconsa-knowledge` (wiki empresarial), este doc migra allá. Mientras tanto vive aquí como referencia operativa para Code.
+**Role:** principios MDM ICONSA (foundational/aspiracional) — golden records, lineage, source tracking cross-app. · **Read-when:** al diseñar una integration externa o decidir el golden record de una entidad cross-app. · **Maintain-when:** nuevo pilar MDM, nueva entidad canónica, o nuevo sistema externo integrado.
+
+**⚠️ Foundational ICONSA, no específico de HumanOS.** Al crearse el repo `iconsa-knowledge` (wiki empresarial), este doc migra allá. Mientras tanto vive aquí (`docs/future/`) como referencia aspiracional — los schemas `mdm.*`/`etl.*` aún no existen.
 
 **Última actualización**: sesión 2026-05-25 (ADR de adopción MDM)
 
@@ -298,7 +300,7 @@ Ver `docs/adr/0012-auth-multi-app-allowed-apps.md` (multi-app via allowed_apps).
 
 1. **Toda integration de sistema externo nuevo requiere**:
    - ADR en `docs/adr/` documentando decisión
-   - Entry en `13-INTEGRATIONS-INDEX.md`
+   - Entry en `../13-INTEGRATIONS-INDEX.md` (LIVE) o sección planned de `future/13-INTEGRATIONS-PLANNED.md`
    - Actualización de `12-SOR-MATRIX.md` con campos owned por ese sistema
    - Schema `etl.{system}_*` con staging tables
    - Tabla `{entity}_external_ids` actualizada con nuevo `system` value en CHECK constraint
@@ -331,7 +333,7 @@ Ver `docs/adr/0012-auth-multi-app-allowed-apps.md` (multi-app via allowed_apps).
 
 - Nuevos pilares descubiertos (no inventarlos sin razón — adoptar de estándar industrial)
 - Nueva entidad canónica agregada (update tabla de Pilar 1)
-- Nuevo sistema externo integrado (update Pilar 2 + 3, agregar a `13-INTEGRATIONS-INDEX.md`)
+- Nuevo sistema externo integrado (update Pilar 2 + 3, agregar a `../13-INTEGRATIONS-INDEX.md` o `future/13-INTEGRATIONS-PLANNED.md`)
 - Lección operativa documentable
 
 ## Cuándo migrar a `iconsa-knowledge` wiki

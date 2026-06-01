@@ -1,5 +1,7 @@
 # 05-BUSINESS-RULES.md — Reglas de negocio críticas (R1-R26)
 
+**Role:** las reglas de negocio críticas R1-R27 — non-negotiable, Code DEBE seguirlas. · **Read-when:** antes de migrations, RLS, approval logic, ticket state, auth.users ops, o cuando el prompt menciona aprobación/préstamo/vacaciones/sello/allowed_apps/Ley 81. · **Maintain-when:** cambia una regla de negocio (requiere ADR + approval James).
+
 **Última actualización**: sesión 2026-05-27 (R4 corregida $250 NO bloqueante + R11 modes finales + R16 status correctos + R22 nota raw_app_meta_data + R23 encoding + R24 modes JSONB + R25 manual entry sin attach column + **R26 SOP-driven chains**)
 
 **Owner update**: Claude Chat. Estas reglas son CRÍTICAS — Code las debe seguir o sistema produce data incorrecta con consecuencias legales/regulatorias.

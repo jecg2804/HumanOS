@@ -124,11 +124,9 @@ Las 26 reglas R1-R26 viven en `docs/05-BUSINESS-RULES.md`. Highlights non-negoti
 
 **7.2 Jaime Cucalón** es product owner / architect. Decisión técnica final. NO escribe código de producción.
 
-**7.3 Claude Chat (architect)** propone, audita, mantiene docs. NO ejecuta implementación.
+**7.3 Un solo set de docs** en `docs/` (numerados + CONTEXT + ADRs), NO separado por audiencia. Cualquier agente (implementer o reviewer) lee el mismo set; el implementer ejecuta vía `apply_migration` / `execute_sql` sobre schemas permitidos (hook valida).
 
-**7.4 Claude Code (implementer)** ejecuta implementación. Tiene `apply_migration` y `execute_sql` para schemas permitidos. Hook valida.
-
-**7.5 HumanOS NO es producto comercial**. App interna ICONSA. NO es SaaS multi-tenant. Arquitectura optimiza para 1 tenant.
+**7.4 HumanOS NO es producto comercial**. App interna ICONSA. NO es SaaS multi-tenant. Arquitectura optimiza para 1 tenant.
 
 ## 8. Anti-scope (NO se construye en MVP)
 

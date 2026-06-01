@@ -1,5 +1,7 @@
 # 04-DOMAIN-RRHH.md — Dominio RRHH ICONSA
 
+**Role:** catálogo de dominio RRHH ICONSA — SOPs, formularios, equipo, type→mode mapping, departamentos/cargos/ubicaciones. · **Read-when:** JIT al construir un formulario o entender un SOP/tipo de solicitud. · **Maintain-when:** nuevo SOP, nuevo request type, o cambio en el mapping tipo→chain.
+
 **Última actualización**: 2026-05-27 (mapping definitivo + equipo gerencia ampliado + 370/184/186)
 
 ---
@@ -183,6 +185,8 @@ Oficinas principales + proyectos activos. Personal de campo asignado a `location
 ---
 
 ## Vocabulary core
+
+> Glosario canónico vivo: `CONTEXT.md` (mantenido por grill-with-docs). Esta tabla es un quick-reference subset del dominio RRHH; las definiciones completas + términos a evitar viven en CONTEXT.
 
 | Término | Significado |
 |---|---|

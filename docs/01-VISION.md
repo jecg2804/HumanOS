@@ -1,5 +1,7 @@
 # 01-VISION.md — Misión, north star, decisiones grandes
 
+**Role:** misión HumanOS, north star, anti-decisiones de producto. · **Read-when:** al orientarte sobre el "por qué" o evaluar si algo está en scope estratégico. · **Maintain-when:** cambia la visión de producto o una decisión estratégica grande.
+
 **Última actualización**: 2026-05-27 (counts actualizados, decisiones finales sesión)
 
 ---

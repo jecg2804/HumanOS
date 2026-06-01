@@ -1,29 +1,33 @@
 # 07-SCHEMAS-PERMISOS.md — Schemas, RLS, permisos
 
-**Última actualización**: 2026-05-27 (post-migrations 015-025, counts updated)
+**Role:** modelo de permisos — qué schemas tocar (writable/read-only/prohibido), RLS conventions, helper functions, CHECK constraints, SCD-2. · **Read-when:** antes de tocar la BD (migration, RLS policy, query) o al validar acceso. · **Maintain-when:** cambia el modelo de permisos, se agrega un helper/constraint, o un patrón RLS nuevo.
+
+**Última actualización**: 2026-06-01 (D10-DOC4 staleness fix — counts derivan de BD, no se hardcodean)
+
+> Los **counts** (número de tablas por schema, total de RLS policies, rows backfilled, auth.users) NO se duplican aquí — **consultar la BD vía Supabase MCP** (`list_tables`, `execute_sql` sobre `pg_policies`/`pg_class`) es la fuente de verdad. Este doc documenta el **modelo de permisos** (qué tocar, RLS conventions, helpers), no el inventario vivo.
 
 ---
 
-## Schemas state (post-migrations)
+## Schemas state
 
-| Schema | Tablas | Writable HumanOS? |
-|---|---|---|
-| `public.*` | 44 | ❌ PROHIBIDO (R1) — MovimientOS prod |
-| `payroll.*` | 9 | ❌ PROHIBIDO (R1) — sistema planillas |
-| `humanos.*` | 5 | ❌ PROHIBIDO (R1) — demo legacy v1 |
-| `hr.*` | 12 (incl invite_codes + user_settings nuevas) | ✅ |
-| `requests.*` | 9 | ✅ |
-| `docs.*` | 11 | ✅ |
-| `workflows.*` | 4 | ✅ (v2 module) |
-| `performance.*` | 7 | ✅ (v2 module) |
-| `learning.*` | 8 | ✅ (v2 module) |
-| `audit.*` | 1 | ✅ append-only |
-| `notifications.*` | 1 | ✅ |
-| `files.*` | 1 (`uploads` polimórfica) | ✅ |
-| `auth.*` | (Supabase managed) | ⚠️ con cuidado (R22) |
-| Futuro: `mdm.*`, `etl.*`, `backup.*` | - | ✅ cuando integration justifique |
+| Schema | Writable HumanOS? |
+|---|---|
+| `public.*` | ❌ PROHIBIDO (R1) — MovimientOS prod |
+| `payroll.*` | ❌ PROHIBIDO (R1) — sistema planillas |
+| `humanos.*` | ❌ PROHIBIDO (R1) — demo legacy v1 |
+| `hr.*` | ✅ master data cross-app (incl invite_codes + user_settings) |
+| `requests.*` | ✅ core tickets |
+| `docs.*` | ✅ KB / SOPs / signatures |
+| `workflows.*` | ✅ (v2 module) |
+| `performance.*` | ✅ (v2 module) |
+| `learning.*` | ✅ (v2 module) |
+| `audit.*` | ✅ append-only |
+| `notifications.*` | ✅ outbox |
+| `files.*` | ✅ (`uploads` polimórfica) |
+| `auth.*` | ⚠️ con cuidado (R22) — Supabase managed, compartido cross-app |
+| `mdm.*`, `etl.*`, `backup.*` | ✅ cuando integration lo justifique |
 
-**Total HumanOS v2: 54 tablas con ~94 RLS policies activas**.
+Conteo de tablas y policies por schema: consultar BD (fuente de verdad).
 
 ---
 
@@ -91,7 +95,9 @@ VALUES (..., CURRENT_DATE, '<contexto_cambio>', '<razón_humana>');
 
 ---
 
-## Tablas nuevas migration 015-025
+## Tablas/columnas clave HumanOS (estructura)
+
+> Documentación estructural de referencia. La lista completa de migraciones aplicadas + counts viven en BD (`list_migrations`) / `CHANGELOG.md`.
 
 ### `hr.invite_codes` (migration 015)
 
@@ -122,7 +128,7 @@ VALUES (..., CURRENT_DATE, '<contexto_cambio>', '<razón_humana>');
 - two_factor_enabled boolean DEFAULT false
 - created_at, updated_at timestamptz
 + RLS + 3 policies (own or hr_admin)
-+ 370 rows backfilled
++ backfilled 1 row por persona (count vivo: consultar BD)
 ```
 
 ### `requests.tickets` columnas agregadas
@@ -175,11 +181,9 @@ Same data, distinto access pattern.
 
 ---
 
-## Estado allowed_apps actual
+## Estado allowed_apps
 
-- 48 auth.users totales
-- 48 con `allowed_apps = ["movimientOS"]` (todos los actuales)
-- 0 con `humanOS` (se incrementará al usar invite codes bootstrap)
+Patrón: cada `auth.users` lleva `raw_app_meta_data->'allowed_apps'` (array). Los users HumanOS se incrementan al consumir invite codes (append `"humanOS"` al array existente). **Counts vivos** (totales, con `movimientOS`, con `humanOS`): consultar BD (`execute_sql` sobre `auth.users`).
 
 ---
 

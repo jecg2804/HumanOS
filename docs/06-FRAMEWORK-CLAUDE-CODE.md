@@ -1,5 +1,7 @@
 # 06-FRAMEWORK-CLAUDE-CODE.md — Setup Claude Code + workflow
 
+**Role:** setup del harness Code (marketplaces, skills, subagents, hooks) + pipeline de desarrollo + protocolo de handoff Chat/Code/James. · **Read-when:** al configurar el entorno, decidir qué skill usar en cada fase, o coordinar un handoff. · **Maintain-when:** cambia el harness, el pipeline, los hooks, o el protocolo de handoff.
+
 ---
 
 ## Setup Claude Code
@@ -43,27 +45,25 @@
 
 ---
 
-## Workflow correcto (cherry-pick, NO Superpowers brainstorming standalone)
+## Pipeline canónico v2 (la fuente es CLAUDE.md §Workflow + skill-integration-design)
 
-| Fase | Skill correcto | Plugin |
+El pipeline operativo es el de 8 etapas (costura de 3 paradas entre Superpowers y grill). Esta es la referencia; el detalle de diseño está en `@docs/superpowers/specs/2026-05-29-skill-integration-design.md`.
+
+```
+BRAINSTORM ─► SPEC ─► GRILL(spec) ─► PLAN ─► DEV(plan+ADRs+CONTEXT) ─► VERIFY ─► REVIEW ─► CLOSE
+```
+
+| Etapa | Skill primario | Plugin dormido que se despierta |
 |---|---|---|
-| **Brainstorming high-level** (qué construir, decisiones arquitectónicas) | Ya hecho en Chat (Project Files son output) | Chat (no skill) |
-| **Refinement con Code** (iron out detalles, vocabulary, decisiones técnicas) | **`grill-with-docs`** | mattpocock |
-| **Specs por feature** | `writing-plans` | Superpowers |
-| **Implementation** | `executing-plans` o `subagent-driven-development` | Superpowers |
-| **Mantener docs vivos** (CONTEXT.md, docs/adr/*) durante execution | `grill-with-docs` continuo | mattpocock |
-| **Verification final** | `verification-before-completion` | Superpowers |
-| **Cierre overnight** | `finishing-a-development-branch` | Superpowers |
-| **Handoff entre sesiones Code** | `handoff` + hook PreCompact | mattpocock + custom |
-| **Diagnose problemas** | `diagnose` | mattpocock |
-| **Git safety** | `git-guardrails` | mattpocock |
+| Brainstorm | `superpowers:brainstorming` (escribe spec, **PARA**) | — |
+| Grill | `grill-with-docs` (grilla el spec vs CONTEXT/ADRs; **gate de `DEFERRED-ITEMS.md`**) | `claude-md-management` (solo en doc-drift) |
+| Plan | `superpowers:writing-plans` (header `Decisions in scope: ADR-NNNN`) | — |
+| Dev | `executing-plans`/`subagent-driven-development` + `test-driven-development` | `typescript-lsp` |
+| Verify | `verification-before-completion` (`npm run verify` + CI) | `typescript-lsp` |
+| Review | `requesting-code-review` + `iconsa-rls-validation` | `code-review`, `security-guidance` |
+| Close | `finishing-a-development-branch` | `commit-commands` |
 
-### Por qué grill-with-docs (no Superpowers brainstorming)
-
-- Chat ya hizo brainstorming HIGH-LEVEL (los Project Files son el resultado)
-- Code necesita REFINEMENT con James para iron out detalles antes de specs
-- `grill-with-docs` está diseñado exactamente para esto: Code interroga "grilling" sobre vocabulary, decisions, edge cases y mantiene docs vivos (CONTEXT.md, docs/adr/*)
-- Superpowers brainstorming es discovery de problema general — ya pasado en Chat
+**Por qué grill ENTRE spec y plan, no en vez de brainstorming:** Superpowers escribe el *qué/cómo* (spec+plan+tests); grill escribe el *por qué/vocabulario* (CONTEXT.md + ADRs). Son complementarios, no redundantes. Grill se inserta sobre el spec (barato de revisar), nunca sobre el plan (cargado de código). Diagnose/systematic-debugging para bugs duros. NO apilar GSD/gstack/ECC/Ralph.
 
 ---
 
@@ -131,8 +131,8 @@ Minimal entry point con @imports condicionales. Pattern real (numerado):
 - Implementing approval chain: leer SOP en docs/sops/ (Filesystem MCP)
 - Past decisions: @docs/adr/README.md (canonical index) + @docs/adr/*.md
 - Vocabulario en duda: @docs/CONTEXT.md (vivo)
-- MDM foundational: @docs/11-MDM-PRINCIPLES.md + @docs/12-SOR-MATRIX.md
-- Integraciones externas: @docs/13-INTEGRATIONS-INDEX.md
+- MDM foundational (aspiracional): @docs/future/11-MDM-PRINCIPLES.md + @docs/future/12-SOR-MATRIX.md
+- Integraciones LIVE: @docs/13-INTEGRATIONS-INDEX.md · planned/ETL: @docs/future/13-INTEGRATIONS-PLANNED.md
 - Estado operacional: @docs/09-ESTADO-ACTUAL.md + BD vía MCP
 ```
 
@@ -194,3 +194,97 @@ Si no completa: `<promise>PARTIAL_MVP</promise>` con lista exacta de qué quedó
 - ❌ NO modificar archivos `public.*`, `payroll.*`, `humanos.*` legacy
 - ❌ NO confiar en mi memoria de SOPs — leer `docs/sops/*.md` o GDrive vía MCP
 - ❌ NO desviarse de R26 (SOP-driven chains) sin documentar + validar con James
+
+---
+
+## Handoff protocol — Chat / Code / James
+
+> Esta sección absorbe el antiguo `10-HANDOFF-PROTOCOL.md` (D3 merge 2026-06-01). Cómo las tres entidades que colaboran intercambian estado.
+
+### Tres entidades que colaboran
+
+1. **Chat (Claude.ai conversational)** — strategy, decisiones grandes, dominio extenso, BD migrations bloqueantes, mantiene los docs estratégicos
+2. **Code (Claude Code CLI agent)** — implementación, repo, tests, deploy, mantiene `docs/` operativos
+3. **James (humano)** — owner final, valida decisiones, paste docs Chat→Code, commit repo
+
+## Direcciones de handoff
+
+### Chat → Code (al arrancar sesión Code nueva)
+
+1. Chat actualiza docs numerados (especialmente `09-ESTADO-ACTUAL.md`) — viven en repo `docs/`, son single source
+2. Chat genera **prompt inicial Code** con:
+   - Resumen contexto actual
+   - Trigger sesión `grill-with-docs` (mattpocock, ya instalada en `.claude/skills/`)
+   - Lista de tareas concretas
+   - Referencia a docs via Filesystem MCP (si Code los necesita explícitamente — Code igual los lee via @imports CLAUDE.md)
+3. James commit docs actualizados al repo HumanOS
+4. James abre Code en repo + pega prompt inicial
+5. Code lee `CLAUDE.md` raíz + @imports condicionales + arranca grill-with-docs si aplica
+
+### Code → Chat (al completar overnight o cuando James reporta)
+
+1. Code mantiene `docs/CHANGELOG.md` con entries per feature
+2. Code mantiene el status por grupo en `02-MVP-SCOPE.md` + `09-ESTADO-ACTUAL.md`
+3. Code genera `docs/adr/*` con decisiones técnicas
+4. Code mantiene `docs/CONTEXT.md` con vocabulary vivo
+5. Al final overnight, Code emite `<promise>MVP_COMPLETE</promise>` o `<promise>PARTIAL_MVP</promise>`
+6. James reporta a Chat: copia summary final Code → Chat
+7. Chat actualiza `09-ESTADO-ACTUAL.md` reflejando nuevo state
+
+### Code ↔ Code (entre sesiones overnight con context compactation)
+
+1. Hook `PreCompact` genera `HANDOFF.json` automático antes de compactación
+2. Próxima sesión Code lee `HANDOFF.json` al arrancar
+3. `mattpocock handoff` skill estructura el HANDOFF.json
+
+### Layout repo docs
+
+Estructura real bajo `docs/`:
+
+```
+docs/
+├── 00-INDEX.md         (índice + read-cadence map)
+├── 01-VISION.md a 14-COMPLIANCE-LEY81.md (numerados; 03/10 son stubs de redirect, 11/12 movidos a future/)
+├── CONTEXT.md          (vocabulario vivo, Code mantiene via grill-with-docs)
+├── CHANGELOG.md        (entries por feature/version, Code mantiene)
+├── adr/                (ledger canónico ADRs 0001+, Code genera durante implementación)
+├── future/            (docs foundational/aspiracional: 11-MDM, 12-SOR, 13-INTEGRATIONS-PLANNED)
+├── sops/               (PDFs originales GDrive + markdown extraído)
+└── superpowers/        (specs/ + plans/ Code-generated)
+
+CLAUDE.md (raíz repo) — entry point con @imports condicionales a docs/
+PROJECT_CONSTITUTION.md (raíz repo) — principios non-negotiable
+HANDOFF.json (docs/) — generado por hook PreCompact, gitignored
+```
+
+### Bootstrap invite codes (entregar personalmente)
+
+| Code | Persona | Acción esperada |
+|---|---|---|
+| `F1F3D92A` | Samantha Kosmas | Usar al abrir `https://humanos.rein-eisenwerk.com/onboarding/F1F3D92A` |
+| `F1F738DF` | Rocío Olmedo | Idem |
+| `A4046851` | Milagros Manyoma | Idem |
+| `A65376E1` | Jerelyn Mendoza | Idem |
+| `8917F9DB` | Rodrigo Eisenmann | Idem |
+| `A16E6D56` | Octavio Javier Ferrer | Idem |
+
+Expiran 2026-08-25 (90 días). Si expiran sin uso, hr_admin regenera vía `/admin/empleados/[id]/invitar`.
+
+### Quick handoff cheat sheet
+
+| Situación | Acción |
+|---|---|
+| Nueva sesión Chat | Sincroniza con repo docs + BD vía MCP al inicio |
+| Nueva sesión Code | Abrir Code en repo, pegar prompt inicial Chat-generado |
+| Code completó overnight | James reporta summary a Chat, Chat actualiza 09-ESTADO-ACTUAL |
+| Cambio decisión grande | Chat actualiza docs + crea/actualiza ADR + notifica James |
+| Bug en producción | Code corre `diagnose` skill, genera report, James reporta a Chat |
+| Migration BD necesaria | Chat ejecuta vía Supabase MCP con approval per bloque James |
+
+### Anti-patterns handoff
+
+- ❌ Chat ejecutando código en repo HumanOS (no es su rol — Code lo hace)
+- ❌ Code tomando decisiones grandes sin consultar (cuando aplica, escala vía grill-with-docs)
+- ❌ James perdiendo invite codes (entregar personalmente Y mantener registro)
+- ❌ Sessions Code sin handoff (siempre genera HANDOFF.json antes de compact)
+- ❌ Docs quedando obsoletos (actualizar per sesión)

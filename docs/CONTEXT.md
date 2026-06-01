@@ -1,5 +1,7 @@
 # HumanOS
 
+**Role:** glosario canonico vivo — terminos del dominio + que evitar, mas dialogo de ejemplo. · **Read-when:** vocabulario en duda o al nombrar algo nuevo (tabla, concepto, estado). · **Maintain-when:** aparece o cambia un termino del dominio (inline durante grill-with-docs).
+
 App HR interna ICONSA (construccion Panama). Reemplaza Humand. Coexiste con MovimientOS en mismo Supabase project. Domain: digitalizar formularios papel RRHH ICONSA con engines genericos + 24 form variants seedeados en `requests.types`.
 
 Vocabulario vivo. Mantener actualizado por Code durante grill-with-docs. Solo glosario — implementacion fuera de scope (eso vive en `docs/adr/`, `docs/superpowers/specs/`).
