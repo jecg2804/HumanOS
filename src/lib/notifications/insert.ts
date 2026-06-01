@@ -14,6 +14,12 @@ interface EnqueueParams {
   body: string;
   templateVariables: Record<string, unknown>;
   metadata: Record<string, unknown>;
+  /**
+   * Optional idempotency key (BE-2). When set, the same key + channel is
+   * enqueued at most once (ON CONFLICT DO NOTHING in notifications.enqueue),
+   * so retries / double-submits do not produce duplicate notifications.
+   */
+  dedupeKey?: string;
 }
 
 export async function enqueueNotification(
@@ -28,6 +34,7 @@ export async function enqueueNotification(
     p_template_code: TEMPLATE_CODE_MAP[params.type],
     p_template_variables: params.templateVariables as Json,
     p_metadata: params.metadata as Json,
+    ...(params.dedupeKey ? { p_dedupe_key: params.dedupeKey } : {}),
   });
   if (error) {
     throw new Error(`enqueueNotification failed: ${error.message}`);

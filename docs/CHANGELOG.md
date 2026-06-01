@@ -6,6 +6,27 @@ Cambios por feature/grupo. Formato: conventional commits + entries `[bd]` para m
 
 Group 3 (Profile + KB) en planning. Ver `02-MVP-SCOPE.md` F6-F9.
 
+### Audit remediation 2026-06-01 (sesión Code — terminar cambios de auditoría)
+
+#### Infra
+
+- **CI verde:** el job `build` de `verify.yml` fallaba por `NEXT_PUBLIC_SUPABASE_ANON_KEY` vacío; con los 3 secrets ya puestos (J6) un re-run quedó verde. `typecheck/lint/test/scan` ya pasaba.
+- **Schema baseline (P1-SQL, sin Docker):** `supabase/schemas/humanos_baseline.sql` generado por introspección del catálogo vía Supabase MCP (60 tablas / 308 constraints / 143 índices / 105 policies / 15 funciones / 38 triggers / 737 comments). Artefacto de referencia/diff; live DB sigue SOR. README de supabase actualizado.
+- **Branch protection (J7):** `main` protegida vía `gh` — force-push y borrado bloqueados, checks `build` + `typecheck/lint/test/scan` requeridos en PRs, `enforce_admins:false` (push directo del admin sin fricción).
+
+#### Harness (Batch A)
+
+- H3: Stop hook advisory (`.claude/hooks/stop.ps1`, recuerda `npm run verify` con código sin commitear, debounce 10min, ASCII) + registrado en `settings.json`.
+- H4/H5: `superpowers:brainstorming` (suggest) y `superpowers:receiving-code-review` (high) agregados al router `skill-rules.json`.
+- H8: banner de fuente canónica para la lista de helper-functions en `iconsa-supabase-migration` + pointer en `session-start.ps1`.
+- H10: 4 subagents en `.claude/agents/` (rls-reviewer, migration-reviewer, sop-chain-auditor, test-runner).
+- H11: política CLI-first + set honesto de MCPs documentado en `06-FRAMEWORK`; sección de subagents sincronizada a la realidad.
+
+#### Backend (Batch B)
+
+- BE-2 (idempotencia notificaciones): `[bd] 048_notifications_outbox_dedupe` — columna `notifications.outbox.dedupe_key` + índice único parcial `(channel, dedupe_key)`; `notifications.enqueue` recreado con param `p_dedupe_key` (DEFAULT NULL, backward-compatible) + `ON CONFLICT DO NOTHING`. `enqueueNotification` acepta `dedupeKey`. Callers de onboarding: welcome usa `welcome:{personId}`, error-report usa hash de contenido (suprime reenvíos idénticos, permite reportes distintos). 2 tests nuevos. Advisors: 0 issues nuevos.
+- BE-3b (rollback returns): en `completeOnboarding`, el rollback compensatorio (`auth.admin.deleteUser` / `updateUserById`) ahora chequea su error y lo reporta vía `reportError` — antes se tragaba el fallo dejando un auth user huérfano o `allowed_apps` stale en silencio.
+
 ### DB-VISION foundational — leave accrual ledger (2026-06-01, ratificado por James)
 
 - `[bd] 047_create_leave_ledger`: ledger de acumulación de tiempo libre en `hr.*` (4 tablas nuevas + RPC). Resuelve el campo computed "días disponibles" de VACACIONES (antes sin data de respaldo). `hr.leave_policies` (reglas/SOR) + `hr.leave_assignments` (política↔empleado) + `hr.leave_ledger` (append-only, inmutable, fuente de verdad; correcciones = filas `reversal` compensatorias) + `hr.leave_balances` (proyección; el valor `available` que lee el form). RPC `hr.post_leave_ledger_entry` (SECURITY DEFINER, `search_path=''`, authZ hr_admin-only por ahora, valida balance-negativo + cap, append-ledger + refresh-balance atómico). R1-compliant (`hr.*`), RLS + policies (validado), COMMENTs, reusa `hr.touch_updated_at`/`is_hr_admin`/`current_person_id`/`is_supervisor_of`, soft-delete (`deleted_at`) + `source_system` per DB-VISION foundations. Versionado en `supabase/migrations/047_create_leave_ledger.sql`. Advisors: 0 issues nuevos. Solo tablas nuevas — cero riesgo a data existente / MovimientOS. Swap a uuidv7 diferido a PG18. Regen de types + wiring ApprovalEngine diferido a Group 4 (feature VACACIONES). Diseño: `docs/superpowers/specs/2026-05-29-db-vision-design.md`.

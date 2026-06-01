@@ -2393,6 +2393,7 @@ export type Database = {
           p_template_code: string
           p_template_variables: Json
           p_metadata: Json
+          p_dedupe_key?: string
         }
         Returns: string
       }

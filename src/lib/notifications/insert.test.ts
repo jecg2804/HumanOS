@@ -35,6 +35,39 @@ describe('enqueueNotification', () => {
     );
   });
 
+  it('passes p_dedupe_key when dedupeKey is provided (BE-2 idempotency)', async () => {
+    const client = mockClient();
+    await enqueueNotification(client, {
+      recipientPersonId: 'rec-uuid',
+      type: NotificationType.WelcomeEmployee,
+      subject: 'Bienvenido',
+      body: 'Hola',
+      templateVariables: {},
+      metadata: {},
+      dedupeKey: 'welcome:rec-uuid',
+    });
+    const c = client as unknown as { rpc: ReturnType<typeof vi.fn> };
+    expect(c.rpc).toHaveBeenCalledWith(
+      'enqueue',
+      expect.objectContaining({ p_dedupe_key: 'welcome:rec-uuid' })
+    );
+  });
+
+  it('omits p_dedupe_key when dedupeKey is absent (legacy no-dedup behavior)', async () => {
+    const client = mockClient();
+    await enqueueNotification(client, {
+      recipientPersonId: 'rec-uuid',
+      type: NotificationType.WelcomeEmployee,
+      subject: 'Bienvenido',
+      body: 'Hola',
+      templateVariables: {},
+      metadata: {},
+    });
+    const c = client as unknown as { rpc: ReturnType<typeof vi.fn> };
+    const args = c.rpc.mock.calls[0][1] as Record<string, unknown>;
+    expect(args).not.toHaveProperty('p_dedupe_key');
+  });
+
   it('throws when RPC returns error', async () => {
     const client = mockClient(async () => ({ data: null, error: { message: 'fail' } }));
     await expect(

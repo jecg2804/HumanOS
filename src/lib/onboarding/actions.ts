@@ -17,6 +17,7 @@ import { signOnboardingToken, verifyOnboardingToken } from './token';
 import { translateAuthError } from '@/lib/auth/errors';
 import { NotificationType } from '@/lib/notifications/types';
 import { enqueueNotification } from '@/lib/notifications/insert';
+import { reportError } from '@/lib/observability/report';
 
 type FormState = {
   ok: boolean;
@@ -290,6 +291,13 @@ export async function reportOnboardingErrorAction(
     .eq('app_role', 'hr_admin')
     .eq('is_current', true);
 
+  // Idempotency (BE-2): stable per-report hash so an accidental re-submit of the
+  // SAME report does not re-notify, while a genuinely different report still does.
+  const reportHash = createHash('sha256')
+    .update(`${personId}|${parsed.data.severity}|${parsed.data.description}`)
+    .digest('hex')
+    .slice(0, 16);
+
   for (const row of hrAdmins ?? []) {
     await enqueueNotification(admin, {
       recipientPersonId: row.person_id,
@@ -308,6 +316,7 @@ export async function reportOnboardingErrorAction(
         severity: parsed.data.severity,
         context: 'onboarding_step_5',
       },
+      dedupeKey: `onboarding-error:${row.person_id}:${reportHash}`,
     });
   }
 
@@ -448,12 +457,29 @@ export async function completeOnboardingAction(
   });
 
   if (rpcErr) {
+    // Compensating rollback for the auth-side change. If the rollback ITSELF
+    // fails we must surface it (BE-3b): swallowing it silently leaves an
+    // orphaned auth user (new account) or stale allowed_apps (existing account).
     if (!existing) {
-      await admin.auth.admin.deleteUser(authId);
+      const { error: rbErr } = await admin.auth.admin.deleteUser(authId);
+      if (rbErr) {
+        reportError(rbErr, {
+          where: 'completeOnboarding.rollback.deleteUser',
+          authId,
+          personId: input.person_id,
+        });
+      }
     } else if (originalAppMetadata) {
-      await admin.auth.admin.updateUserById(authId, {
+      const { error: rbErr } = await admin.auth.admin.updateUserById(authId, {
         app_metadata: originalAppMetadata,
       });
+      if (rbErr) {
+        reportError(rbErr, {
+          where: 'completeOnboarding.rollback.restoreAppMetadata',
+          authId,
+          personId: input.person_id,
+        });
+      }
     }
     return { ok: false, message: `Onboarding falló: ${rpcErr.message}` };
   }
@@ -475,6 +501,8 @@ export async function completeOnboardingAction(
       perfil_url: `${process.env.NEXT_PUBLIC_APP_URL ?? ''}/perfil`,
     },
     metadata: { person_id: input.person_id, deep_link: '/perfil' },
+    // Idempotency (BE-2): one welcome per person, even on double-submit/retry.
+    dedupeKey: `welcome:${input.person_id}`,
   });
 
   return { ok: true, data: { auth_id: authId, redirect_to: '/perfil' } };
