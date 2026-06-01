@@ -6,6 +6,10 @@ Cambios por feature/grupo. Formato: conventional commits + entries `[bd]` para m
 
 Group 3 (Profile + KB) en planning. Ver `02-MVP-SCOPE.md` F6-F9.
 
+### DB-VISION foundational — leave accrual ledger (2026-06-01, ratificado por James)
+
+- `[bd] 047_create_leave_ledger`: ledger de acumulación de tiempo libre en `hr.*` (4 tablas nuevas + RPC). Resuelve el campo computed "días disponibles" de VACACIONES (antes sin data de respaldo). `hr.leave_policies` (reglas/SOR) + `hr.leave_assignments` (política↔empleado) + `hr.leave_ledger` (append-only, inmutable, fuente de verdad; correcciones = filas `reversal` compensatorias) + `hr.leave_balances` (proyección; el valor `available` que lee el form). RPC `hr.post_leave_ledger_entry` (SECURITY DEFINER, `search_path=''`, authZ hr_admin-only por ahora, valida balance-negativo + cap, append-ledger + refresh-balance atómico). R1-compliant (`hr.*`), RLS + policies (validado), COMMENTs, reusa `hr.touch_updated_at`/`is_hr_admin`/`current_person_id`/`is_supervisor_of`, soft-delete (`deleted_at`) + `source_system` per DB-VISION foundations. Versionado en `supabase/migrations/047_create_leave_ledger.sql`. Advisors: 0 issues nuevos. Solo tablas nuevas — cero riesgo a data existente / MovimientOS. Swap a uuidv7 diferido a PG18. Regen de types + wiring ApprovalEngine diferido a Group 4 (feature VACACIONES). Diseño: `docs/superpowers/specs/2026-05-29-db-vision-design.md`.
+
 ### Audit 2026-05-29 (full multi-agent audit + adversarial verification)
 
 Auditoria integral (DB, backend, frontend/diseño, docs, lógica/engines, seguridad) + gap de mercado vs Workday/BambooHR/Rippling/Personio/Deel. 38 agentes con verificación adversarial de hallazgos.
