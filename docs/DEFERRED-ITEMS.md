@@ -25,7 +25,7 @@ se difiere uno nuevo, se agrega con trigger + gate. El CHANGELOG referencia, no 
 |----|------|--------------------|---------------------|
 | DB-1 | Audit triggers `SECURITY DEFINER` que reemplazan el write app-level de auditoría | Cambio arquitectónico acoplado al ApprovalEngine; hacerlo aislado arriesga re-trabajo | Al diseñar el ApprovalEngine, decidir trigger-based vs app-level audit y migrarlo en el mismo ADR/plan |
 | seq-reset | `requests.next_sequence` reset por año (hoy contador monotónico) | Decisión de formato/SOP no confirmada | Al cablear creación de tickets: validar con el SOP si `HUM-2027-0001` debe resetear; si sí, ajustar la función |
-| BL-2..7 | Capturar decisiones de approval-chain en ADR-0011 | Dependen de James/Samantha | Antes de construir los forms president-gated, cerrar BL-2..7 y capturarlas |
+| BL-2..7 | Capturar decisiones de approval-chain en `docs/adr/0020-approval-chain-template-jsonb-modes.md` (BL-2 ya decidido ahí; BL-3..7 pendientes) | Dependen de James/Samantha | Antes de construir los forms president-gated, cerrar BL-3..7 y capturarlas |
 
 ### Trigger: TOCAR tablas existentes `hr.*`/`requests.*` (idealmente temprano en Group 3/4)
 
@@ -45,7 +45,7 @@ se difiere uno nuevo, se agrega con trigger + gate. El CHANGELOG referencia, no 
 | ID | Ítem | Estado |
 |----|------|--------|
 | D1 | Kill el split por audiencia (00-INDEX triple-stack, headers Owner/Audiencia, Constitution §7) | Abierto |
-| D2-merge | Renumber físico de los 14 ADR legacy a una sola secuencia + borrar 08-ADRs | Parcial (índice canónico ya hecho; ambigüedad resuelta, merge físico pendiente) |
+| D2-merge | Renumber físico de los 14 ADR legacy a una sola secuencia + borrar 08-ADRs | ✅ Hecho 2026-06-01 (14 entradas → `docs/adr/0010-0023`; 08-ADRs.md borrado; cross-refs repointed; mapa legacy→canónico en `docs/adr/README.md`) |
 | D3 | Merge 03→02, 10→06, 04→CONTEXT.md | Abierto |
 | D4 | Header de 3 líneas (Role/Read-when/Maintain-when) por doc | Abierto |
 | D5 | Slim 09-ESTADO-ACTUAL a ~1 pantalla | Abierto |

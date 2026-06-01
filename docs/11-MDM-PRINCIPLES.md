@@ -48,11 +48,11 @@ ICONSA tiene **1 dev (Jaime)** haciendo full-stack + data engineering. Adopt MDM
 1. **Documentar principios desde día 1** (este doc) — sirve como spec/contract para todo trabajo subsiguiente
 2. **Aplicar gradualmente** — empezar con guard rails operativos (`docs/05-BUSINESS-RULES.md` R22, hook `PreToolUse`) que previenen el peor daño
 3. **Build canonical schemas a medida que cada integration real lo justifica** — Skydata primera, después Spectrum, después PayDay
-4. **Aceptar deuda técnica documentada en lugar de over-engineering ahora** — ver ADRs en `docs/08-ADRs.md` con triggers explícitos para reabrir
+4. **Aceptar deuda técnica documentada en lugar de over-engineering ahora** — ver ADRs en `docs/adr/` (especialmente `0014-mdm-gradual-no-big-bang.md`) con triggers explícitos para reabrir
 
 **Deuda técnica reconocida al momento de escritura** (sesión 2026-05-25):
 
-- **Person golden record duplicado** entre `public.people` (MovimientOS) y `hr.people` (HumanOS). Refactor a `mdm.people` postergado hasta Spectrum SDK integration. Ver ADR específico en `docs/08-ADRs.md`.
+- **Person golden record duplicado** entre `public.people` (MovimientOS) y `hr.people` (HumanOS). Refactor a `mdm.people` postergado hasta Spectrum SDK integration. Ver `docs/adr/0014-mdm-gradual-no-big-bang.md`.
 - **Equipment golden record** vive en `public.equipment` (MovimientOS only por ahora). Cuando Spectrum SDK master data llegue, esto migra a `mdm.equipment` o equivalente.
 - **No existe schema `mdm.*` todavía** — se crea cuando primera integration external lo justifique
 - **No existe schema `etl.*` todavía** — se crea con primera integration (Skydata GPS)
@@ -284,7 +284,7 @@ Combinado con `audit.changes.source_system`, da lineage completo.
 
 ### 10. Multi-App RLS Isolation
 
-Ver ADR sobre Opción B (`docs/08-ADRs.md`). Resumen:
+Ver `docs/adr/0012-auth-multi-app-allowed-apps.md` (multi-app via allowed_apps). Resumen:
 
 - Una sola `auth.users`, compartida
 - `auth.users.app_metadata.allowed_apps text[]` declara apps accesibles por user

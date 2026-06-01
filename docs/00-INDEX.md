@@ -28,7 +28,7 @@
 | 05 | [05-BUSINESS-RULES.md](05-BUSINESS-RULES.md) | R1-R26 reglas criticas. Code DEBE seguir |
 | 06 | [06-FRAMEWORK-CLAUDE-CODE.md](06-FRAMEWORK-CLAUDE-CODE.md) | Setup Code + workflow grill-with-docs + harness |
 | 07 | [07-SCHEMAS-PERMISOS.md](07-SCHEMAS-PERMISOS.md) | Que schemas tocar, RLS conventions, helpers |
-| 08 | [08-ADRs.md](08-ADRs.md) | Decisiones tecnicas Chat-level (ADR-0001 a ADR-0014) |
+| 08 | [adr/README.md](adr/README.md) | ADRs: ledger canonico unico en `docs/adr/` (0001-0023). 08-ADRs.md fusionado 2026-06-01 |
 | 09 | [09-ESTADO-ACTUAL.md](09-ESTADO-ACTUAL.md) | Snapshot live BD + sesion actual (volatil) |
 | 10 | [10-HANDOFF-PROTOCOL.md](10-HANDOFF-PROTOCOL.md) | Como Chat-Code-James intercambian estado |
 | 11 | [11-MDM-PRINCIPLES.md](11-MDM-PRINCIPLES.md) | Master Data Management — golden records, lineage |

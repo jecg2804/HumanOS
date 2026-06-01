@@ -18,7 +18,7 @@
 
 **PENDIENTE P2 (próxima sesión, budget fresco)**: BE-2 idempotencia notif, BE-3 Sentry + rollback checks (también elimina el audit-write app-level de regenerate vía DB-1 triggers), FE-1 ~47 hex→tokens (26 files), FE-2 loading/error/not-found + 5 nav links rotos, FE-3 a11y, FE-4 mobile/PWA, DOC-2/3/4 docs drift, DB-1 audit triggers.
 
-**Decisión grande pendiente (James/Samantha) pre-Group-4 engines**: ADR-0011 — BL-2 presidente self-approval, BL-3 form_schema source en 8 seeds, BL-4 requests.next_ticket_number + reset anual, BL-5 enum Devuelta_Info huérfano, BL-6 SLA escalación, BL-7 reglas delegación. + Group 3 scope freeze (F6-F9).
+**Decisión grande pendiente (James/Samantha) pre-Group-4 engines**: `docs/adr/0020-approval-chain-template-jsonb-modes.md` — BL-2 presidente self-approval **DECIDIDO** (omitir paso + flag auditoría); pendientes BL-3 form_schema source en 8 seeds, BL-4 requests.next_ticket_number + reset anual, BL-5 enum Devuelta_Info huérfano, BL-6 SLA escalación, BL-7 reglas delegación. + Group 3 scope freeze (F6-F9).
 
 **Data layer paridad de mercado (pre-Group-5)**: leave_balances/accrual ledger (gap #1), hr.people_external_ids (citado en docs MDM, no existe), columnas réplica comp.
 
@@ -48,7 +48,7 @@
 | 029 | create_core_identities_schema_and_table | ⚠️ Aplicada → revertida 032 |
 | 030 | seed_core_identities_from_hr_and_public | ⚠️ Aplicada → revertida 032 |
 | 031 | link_hr_people_to_core_identities | ⚠️ Aplicada → revertida 032 |
-| 032 | rollback_core_identities_schema | ✅ DROP SCHEMA core CASCADE. Decisión: MDM gradual per ADR-0005, no anticipar |
+| 032 | rollback_core_identities_schema | ✅ DROP SCHEMA core CASCADE. Decisión: MDM gradual per `docs/adr/0014`, no anticipar |
 
 ### Migrations Group 2 aplicadas (v0.0.2)
 
@@ -128,11 +128,11 @@ Pendiente plan Group 3. Inputs anticipados del audit 2026-05-28:
 
 Sesión 2026-05-27 generó/actualizó 3 ADRs commiteados:
 
-- **ADR-0006** (`2593f39`) — Service role admin client onboarding exception. Email/phone lookup via SECURITY DEFINER `hr.find_auth_user_by_identifier`. NO national_id en raw_app_meta_data (verificado vacío), NO public.people cross-schema (viola ADR-0005 Chat-level). **I3 absorbido**: capture-then-restore `originalAppMetadata` pre-updateUserById merge; rollback completo si RPC falla; RPC idempotente.
+- **ADR-0006** (`2593f39`) — Service role admin client onboarding exception. Email/phone lookup via SECURITY DEFINER `hr.find_auth_user_by_identifier`. NO national_id en raw_app_meta_data (verificado vacío), NO public.people cross-schema (viola `docs/adr/0014` MDM gradual). **I3 absorbido**: capture-then-restore `originalAppMetadata` pre-updateUserById merge; rollback completo si RPC falla; RPC idempotente.
 - **ADR-0007** (`2593f39`) — Employment type reference table. Tabla `hr.employment_types` con metadata operacional 4 valores per SOP IC-RH-D-05. NO `*_text` fallback.
 - **ADR-0008 revisado** (`49a978a`) — Notifications in-app + email PRIMARY MVP, **Vercel Cron worker** (no Edge Function). Pattern INSERT same-tx, Reply-To pattern, domain `rein-eisenwerk.com`, `RESEND_FROM_EMAIL` standardized. **I1 absorbido**: reusar `hr.user_settings.preferences` jsonb con namespace `notifications` (no column nueva).
 
-**Numeración**: Chat-level ADRs en `08-ADRs.md` (este project) y Code-level ADRs en `docs/adr/` del repo son **independientes**. Cross-reference ver `08-ADRs.md` sección "Cross-referencia Code-level".
+**Numeración**: a partir del 2026-06-01 (audit D2-merge) existe **un solo ledger canónico** en `docs/adr/` (0001-0023). Las 14 entradas Chat-level de `08-ADRs.md` se fusionaron a `docs/adr/0010-0023`; los archivos Code-level `0001-0009` conservaron su número. Ver `docs/adr/README.md` para el índice + el mapa legacy→canónico.
 
 ---
 
@@ -207,7 +207,7 @@ const replyTo = template_code === 'password_reset' ? undefined : process.env.RES
 - `npx vitest run`: 8 files / 58 tests green
 - `npm run build`: production OK, 12 routes generated
 
-**E2E branch temporal (Task 22)**: la suite Playwright corrió contra un Supabase branch temporal `group-2-e2e` creado para aislar el `count_auth_users` SECURITY DEFINER RPC + `e2e/.auth/hr_admin.json` storage state. Branch borrado por Chat 2026-05-28 post-tag v0.0.2 (cleanup discipline). Patrón branch-temporal-con-cleanup confirmado por James; constitution 5.7 wording pendiente aclaración via ADR-0016 (framework audit post-batches) para distinguir explícitamente daily-dev (prohibido) vs E2E-suite-temporal (permitido con cleanup).
+**E2E branch temporal (Task 22)**: la suite Playwright corrió contra un Supabase branch temporal `group-2-e2e` creado para aislar el `count_auth_users` SECURITY DEFINER RPC + `e2e/.auth/hr_admin.json` storage state. Branch borrado por Chat 2026-05-28 post-tag v0.0.2 (cleanup discipline). Patrón branch-temporal-con-cleanup confirmado por James; constitution 5.7 wording pendiente aclaración via un futuro ADR de framework/constitution audit (próximo número en `docs/adr/`) para distinguir explícitamente daily-dev (prohibido) vs E2E-suite-temporal (permitido con cleanup).
 
 **Audit 2026-05-28 detectó deuda en Group 2 shipped (no bloqueo, fix en Batch 3)**:
 - **NEW.A** (P1): `validateInviteCodeAction` retorna `existing_multi_app_user` + `existing_email_masked` + preview PII sin OTP proof, sin rate limit, sin consumir invite — cross-app enumeration oracle. Fix Opción B quirúrgico planificado.
@@ -270,11 +270,11 @@ Hallazgos consolidados (50 items, mayoría reclasificados/diferidos a grupos fut
 - **Batch 3 — Code security** (NEW.A hardening Opción B quirúrgico: quitar `existing_*` del response + rate limit + invite single-use validation + token opaco para reportError, NEW.B reportOnboardingError token validation, P1.6 `requireHrAdmin` helper applied a 3 server actions admin, P2.14 open redirect allow-list, P2.16 matcher bypass — ya parcial en Batch 1, P3.43-now-P2 CRON_SECRET undefined check): pendiente
 - **Batch 4 — BD hardening** (P1.3 backup.* DROP CASCADE aprobado James 2026-05-28, P2.22 hr.touch_updated_at search_path pin, P2.26 duplicate index hr.people drop, NEW.C redefinir hr.find_auth_user_by_identifier sin `encrypted_password`): plan SQL preparado por Code; Chat ejecuta via Supabase MCP. **P2.23 FK indexes 63 + P2.24 COMMENT ON COLUMN 38 tablas DIFERIDOS a checklist pre-Group-4** (Group 3 es Profile/KB, no toca tickets — registrar en memory de Code).
 
-**Drifts diferidos a ADR-0016 (framework audit Chat-level post-batches)**:
+**Drifts diferidos a un futuro ADR de framework/constitution audit (próximo número en `docs/adr/`, ~0024)**:
 - Constitution 5.7 wording: distinción daily-dev (prohibido) vs E2E-suite-temporal (permitido con cleanup) — pendiente amend con ejemplo `group-2-e2e`.
 - Constitution 6.1 `docs/superpowers/specs/` folder claim — superpowers actual workflow no genera specs, solo plans. Resolución: amend 6.1 o instalar brainstorming skill que genere specs.
 - Constitution R13 wording loose: omite DELETE special case `hr_admin`-only documentado en 05-BUSINESS-RULES.md R13.
-- Constitution edits requieren ADR per sección 9 — por eso Chat redacta ADR-0016 (Chat-level), no Code unilateralmente.
+- Constitution edits requieren ADR per sección 9 — por eso Chat redacta el ADR de framework/constitution audit (próximo número en `docs/adr/`), no Code unilateralmente.
 
 ### Group 3 — preparación
 

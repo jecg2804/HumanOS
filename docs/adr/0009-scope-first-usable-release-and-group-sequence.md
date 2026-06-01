@@ -64,5 +64,6 @@ engine exists. Planning and estimates should use the build-unit count, not the c
 - `01-VISION` Decision #5 should be read as "catalog = 39 variants; First Usable Release =
   milestone at full coverage", and `02-MVP-SCOPE.md` as the per-form/group table.
 - Group 4 is the highest-risk group (new engines); treat its first slice as a spike.
-- Open per-form chain decisions (BL-2 president self-approval, BL-3..7) remain pending
-  James/Samantha and are tracked in `08-ADRs.md` ADR-0011, not here.
+- Open per-form chain decisions (BL-2 president self-approval, BL-3..7) are tracked in
+  `0020-approval-chain-template-jsonb-modes.md`, not here. BL-2 is decided (omit the president
+  self-approval step + audit flag); BL-3..7 remain pending James/Samantha.

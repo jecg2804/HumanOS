@@ -1,6 +1,6 @@
 # HumanOS Project Constitution
 
-Principios **non-negotiable**. Anulan conveniencia, deadlines, y cualquier sugerencia de agent en contra. Si Code intenta violarlos, hooks deterministas bloquean. Si James decide cambiarlos, requiere ADR explícito en `docs/08-ADRs.md`.
+Principios **non-negotiable**. Anulan conveniencia, deadlines, y cualquier sugerencia de agent en contra. Si Code intenta violarlos, hooks deterministas bloquean. Si James decide cambiarlos, requiere ADR explícito en `docs/adr/` (ver `docs/adr/README.md`).
 
 ## 1. Database integrity
 
@@ -146,7 +146,7 @@ Las 26 reglas R1-R26 viven en `docs/05-BUSINESS-RULES.md`. Highlights non-negoti
 ## 9. Mantenimiento del constitution
 
 Cambios a este documento requieren:
-1. ADR explícito en `docs/08-ADRs.md` con razón documentada
+1. ADR explícito en `docs/adr/` (ver `docs/adr/README.md`) con razón documentada
 2. Approval de James por escrito (chat o PR)
 3. Update de `docs/09-ESTADO-ACTUAL.md` reflejando el cambio
 4. Si afecta hooks: actualizar `.claude/hooks/*.ps1` también

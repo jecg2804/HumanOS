@@ -17,7 +17,7 @@
 7. **W1-W2-W3 RECHAZADO** — re-secuenciar dentro del vocabulario de groups/tags existente.
 8. **VACACIONES** → construir `hr.leave_balances` + accrual ledger (NO descopear), consistente con #6.
 
-**Decisiones aún abiertas (James/Samantha):** BL-2 (presidente self-approval) + BL-3..7 (ADR-0011).
+**Decisiones aún abiertas (James/Samantha):** BL-3..7 (`docs/adr/0020-approval-chain-template-jsonb-modes.md`). BL-2 (presidente self-approval) ya DECIDIDO ahí.
 
 ---
 
@@ -33,13 +33,13 @@
 
 **Frontend (Batch C):** FE-1b 49 hex→tokens + guard a error · FE-2 boundaries + 5 nav links · FE-3 a11y (modal + role=alert) · FE-4 viewport + manifest.
 
-**Docs (Batch E parcial + F):** D6 conteo tests CLAUDE.md · D7/D10 `person_sources` (11/12) · D9 repomix `supabase/**` · D2 índice canónico `docs/adr/README.md` + 08-ADRs FROZEN · Batch F ADR-0009 (scope S1-S4).
+**Docs (Batch E parcial + F):** D6 conteo tests CLAUDE.md · D7/D10 `person_sources` (11/12) · D9 repomix `supabase/**` · D2 merge ADR completo (`docs/adr/`, 08-ADRs.md borrado) · Batch F ADR-0009 (scope S1-S4).
 
 **Cancelado por James (2026-06-01):** rotación DB password.
 
 **Docs: precisión honesta (varios quedaron PARCIALES, no "hechos"):**
 
-- D2 = índice canónico ✅, pero **merge físico/renumber de los 14 ADR legacy PENDIENTE** (one-way door). Hay colisión `ADR-0009` en ambos ledgers, desambiguada por el README.
+- D2 = ✅ COMPLETO (2026-06-01): merge físico/renumber de los 14 ADR legacy a `docs/adr/0010-0023`; `08-ADRs.md` borrado; colisión `ADR-0009` resuelta (Chat-level → 0018); cross-refs repointed; mapa legacy→canónico en `docs/adr/README.md`.
 - D6 = conteo de tests ✅ (CLAUDE.md ya <200 líneas: 147); **slim de tokens/prosa PENDIENTE** (polish).
 - D7 = naming `person_sources` ✅; **demote de 11/12 a `docs/future/` PENDIENTE** (el dir no existe aún).
 - D10 = DOC-3 naming ✅; **DOC-4 (07-SCHEMAS stale, fechado 2026-05-27) PENDIENTE**.
@@ -50,7 +50,7 @@
 - Docs restructure **D1/D3/D4/D5/D8 + D2-merge + D6-slim + D7-demote + D10-DOC4 + 06-stale** → pasada dedicada (plan en `docs/superpowers/specs/2026-06-01-docs-restructure-plan.md`).
 - **DB-VISION-B/C** (soft-delete `deleted_at` + `source_system` + columnas offline/sync + comp/custom-fields en tablas EXISTENTES, bake `deleted_at IS NULL` en RLS) → **el gap real de "future-vision readiness"**; solo el leave ledger (047) está hecho del sub-proyecto DB-VISION.
 - DB-1 audit triggers + seq-reset por año + P2.24 bulk → Group 4+ (con sus features).
-- Decisiones humanas: BL-2..7 (ADR-0011).
+- Decisiones humanas: BL-3..7 (`docs/adr/0020`). BL-2 ya decidido.
 
 ---
 
@@ -61,10 +61,10 @@
 | J1 | `ONBOARDING_TOKEN_SECRET` en Vercel | ✅ HECHO | James lo agregó 2026-05-29 |
 | J2 | Proyecto Sentry + DSN | ✅ HECHO | Wizard creó el proyecto; DSN como fallback env-overridable. Code reconcilió a R13-safe (commit cce3f06) |
 | J3 | Reconciliar config MCP | ✅ HECHO (project-level, commit) | `.mcp.json` + `settings.local.json` reducidos a Context7 + next-devtools; dropped GitHub/Filesystem/Puppeteer/Resend/Sentry. `~/.claude.json` global NO tocado (afecta MovimientOS). Aplica al reiniciar sesión |
-| J5 | BL-2 (presidente self-approval) | ✅ DECIDIDO | (a) omitir el paso + flag de auditoría (no hay autoridad sobre el presidente). Falta capturar en ADR-0011 |
+| J5 | BL-2 (presidente self-approval) | ✅ DECIDIDO | (a) omitir el paso + flag de auditoría (no hay autoridad sobre el presidente). Capturado en `docs/adr/0020-approval-chain-template-jsonb-modes.md` |
 | J6 | GitHub Actions secrets para el job `build` de CI | PENDIENTE (James) | `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `ONBOARDING_TOKEN_SECRET` (+ opcional `SENTRY_ORG/PROJECT/AUTH_TOKEN`) |
 | J7 | Branch protection en `main` | Code puede (post-CI) | Code lo activa vía `gh` tras CI verde + git-flow decidido |
-| — | BL-3..7 (ADR-0011) | PENDIENTE | Decisión James/Samantha |
+| — | BL-3..7 (`docs/adr/0020`) | PENDIENTE | Decisión James/Samantha |
 
 ---
 
@@ -102,8 +102,8 @@ Detalle completo en `docs/superpowers/specs/2026-05-29-operating-model-and-group
 
 | # | Item |
 |---|------|
-| D1 | Kill el split por audiencia (00-INDEX triple-stack, ADR-0007, headers Owner/Audiencia, Constitution §7) |
-| D2 | Merge 08-ADRs.md → docs/adr/ (un solo ledger, renumerar una vez, borrar tabla cross-ref); README index leído primero |
+| D1 | Kill el split por audiencia (00-INDEX triple-stack, `docs/adr/0016-triple-stack-docs.md`, headers Owner/Audiencia, Constitution §7) |
+| D2 | ✅ Merge 08-ADRs.md → docs/adr/ HECHO 2026-06-01 (un solo ledger 0001-0023, renumerado, tabla cross-ref borrada con el archivo); README index leído primero |
 | D3 | Merge 03 → 02 (deferred); merge 10 → 06 (process doc); 04 vocab → CONTEXT.md |
 | D4 | Header de 3 líneas por doc (Role / Read-when / Maintain-when) |
 | D5 | Slim 09-ESTADO-ACTUAL a ~1 pantalla (fase + in-flight + blockers + decisiones humanas) |

@@ -41,7 +41,7 @@ Sistemas listados:
 
 ## Entidad: **Person** (empleado, conductor, técnico)
 
-**Status golden record**: **DEUDA TÉCNICA documentada** — hoy hay `public.people` (MovimientOS, 182 rows) + `hr.people` (HumanOS, 370 rows) como dos golden records de la misma entidad. Refactor a `mdm.people` postergado hasta Spectrum SDK integration (ver ADR sobre duplicación temporal Person en `docs/08-ADRs.md`).
+**Status golden record**: **DEUDA TÉCNICA documentada** — hoy hay `public.people` (MovimientOS, 182 rows) + `hr.people` (HumanOS, 370 rows) como dos golden records de la misma entidad. Refactor a `mdm.people` postergado hasta Spectrum SDK integration (ver `docs/adr/0014-mdm-gradual-no-big-bang.md`).
 
 Por ahora (Paso 11+ HumanOS MVP): Code trabaja con `hr.people` como golden record DE HUMANOS. El cross-reference por sistema externo ya existe en `hr.person_sources` (~453 filas; el nombre `people_external_ids` de versiones previas de los docs nunca se creó).
 

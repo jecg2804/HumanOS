@@ -101,7 +101,7 @@ Persona que aparece como `supervisor_id` en algun `hr.employments.is_current=tru
 Override del solicitante en `requests.tickets.selected_supervisor_id`. Permite elegir supervisor distinto al de su employment (ej: jefe de proyecto vs jefe jerarquico). Activable cuando `requests.types.allow_supervisor_override=true`.
 
 **Gerencia General**:
-Termino del SOP papel ICONSA. En MVP mapea a `president_user` resolver = Rodrigo Eisenmann (unico `app_role='president'`). Validacion post-MVP con Samantha si VP/otros gerentes deben incluirse (deferred v1.1 segun ADR-0011 docs/08).
+Termino del SOP papel ICONSA. En MVP mapea a `president_user` resolver = Rodrigo Eisenmann (unico `app_role='president'`). Validacion post-MVP con Samantha si VP/otros gerentes deben incluirse (deferred v1.1 segun `docs/adr/0020-approval-chain-template-jsonb-modes.md`).
 _Avoid_: usar "Presidente" cuando el SOP dice "Gerencia General" — son potencialmente diferentes.
 
 ### Empleo + contrato
@@ -147,8 +147,8 @@ Codigo 8 chars de un solo uso para sign-up. Vive en `hr.invite_codes`. Triple va
 Array JSON en `auth.users.raw_app_meta_data.allowed_apps` declarando que apps puede acceder el user. Ej: `["movimientOS","humanOS"]`. R22.
 
 **Multi-app detection**:
-Al consumir invite code, sign-up wizard busca auth.user con `email` O `phone` match (el `delivery_target` captado por hr_admin en F4). Si existe Y allowed_apps no contiene `humanOS`, append via `auth.admin.updateUserById` con spread merge de `raw_app_meta_data`; sino crea nuevo auth.user via `auth.admin.createUser` con allowed_apps=[`humanOS`]. ADR-0006 Code-level documenta el algoritmo y por qué NO usar `national_id` (campo no existe en raw_app_meta_data) ni `public.people` cross-schema (viola ADR-0005).
-_Avoid_: "national_id match" (pseudo-plan ADR-0003 Chat-level nunca implementado).
+Al consumir invite code, sign-up wizard busca auth.user con `email` O `phone` match (el `delivery_target` captado por hr_admin en F4). Si existe Y allowed_apps no contiene `humanOS`, append via `auth.admin.updateUserById` con spread merge de `raw_app_meta_data`; sino crea nuevo auth.user via `auth.admin.createUser` con allowed_apps=[`humanOS`]. `docs/adr/0006-service-role-admin-client-onboarding-exception.md` documenta el algoritmo y por qué NO usar `national_id` (campo no existe en raw_app_meta_data) ni `public.people` cross-schema (viola `docs/adr/0014` MDM gradual).
+_Avoid_: "national_id match" (pseudo-plan de `docs/adr/0012-auth-multi-app-allowed-apps.md` nunca implementado).
 
 ### Manual entry F32
 

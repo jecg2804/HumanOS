@@ -147,7 +147,7 @@ Plans: `docs/superpowers/plans/2026-05-28-batch-3-code-security.md` + `2026-05-2
 - E2E: admin create + invite + edit + regenerate
 - E2E: forgot-password anti-enumeration + phone fallback
 - Unit: translateAuthError (9), normalize (9), Zod schemas (11), notifications insert (2), avatars helpers (4), supabase admin (2), allowed_apps (existing)
-- **E2E branch temporal**: la suite corrió contra Supabase branch `group-2-e2e` con `count_auth_users` SECURITY DEFINER RPC + `e2e/.auth/hr_admin.json` storage state seeded. Branch borrado por Chat 2026-05-28 post-tag v0.0.2 (cleanup discipline). Patrón branch-temporal-con-cleanup confirmado válido por James; constitution 5.7 wording pendiente clarificación via ADR-0016 para distinguir daily-dev (prohibido) vs E2E-suite-temporal (permitido).
+- **E2E branch temporal**: la suite corrió contra Supabase branch `group-2-e2e` con `count_auth_users` SECURITY DEFINER RPC + `e2e/.auth/hr_admin.json` storage state seeded. Branch borrado por Chat 2026-05-28 post-tag v0.0.2 (cleanup discipline). Patrón branch-temporal-con-cleanup confirmado válido por James; constitution 5.7 wording pendiente clarificación via un futuro ADR de framework/constitution audit (próximo número en `docs/adr/`) para distinguir daily-dev (prohibido) vs E2E-suite-temporal (permitido).
 
 ### [chore]
 

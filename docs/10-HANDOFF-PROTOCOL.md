@@ -59,7 +59,7 @@ Cuando James pega docs al Chat:
 05-BUSINESS-RULES.md
 06-FRAMEWORK-CLAUDE-CODE.md
 07-SCHEMAS-PERMISOS.md
-08-ADRs.md
+adr/ (ledger canonico ADRs — README.md primero)
 09-ESTADO-ACTUAL.md
 10-HANDOFF-PROTOCOL.md
 11-MDM-PRINCIPLES.md

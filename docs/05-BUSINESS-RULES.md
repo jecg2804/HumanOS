@@ -462,7 +462,7 @@ ApprovalEngine implementa los 3 modes + parent_only. Tests específicos por mode
 
 ## R25 — Manual entry para formularios papel
 
-**Source**: ADR-0012, F32 feature, R26 SOP-driven.
+**Source**: `docs/adr/0021-manual-entry-schema-files-uploads.md` + `docs/adr/0005-manual-entry-bypass-chain.md`, F32 feature, R26 SOP-driven.
 
 ### Regla
 

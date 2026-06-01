@@ -1,12 +1,14 @@
 # Service role admin client: excepción a ADR-0001 + multi-app gating via email/phone lookup
 
+> Related: implementa la estrategia multi-app de `0012-auth-multi-app-allowed-apps.md` (Chat-level ADR-0003, merged 2026-06-01).
+
 Para el flow de onboarding F1 (`/onboarding/[code]` wizard step 10) y para la regeneración manual de invite codes en F4/F5, HumanOS instancia un cliente Supabase con `SUPABASE_SERVICE_ROLE_KEY` (god mode, bypass RLS) desde una server action única `onboardEmployee()`. Esto es una excepción explícita y nombrada a la decisión técnica ADR-0001 (RLS-driven access via JWT). La excepción aplica SOLO cuando coinciden TODAS estas condiciones: (a) el caller no está autenticado todavía (`auth.users` row con sesión activa todavía no existe para esta persona), (b) la operación requiere `auth.admin.createUser` o `auth.admin.updateUserById` que son endpoints HTTP del auth service (no SQL, no invocables via RLS), y (c) la operación afecta una sola fila identificada por filtros explícitos (`auth.users.id` específico, `hr.people.id` específico via invite code). NUNCA mass-updates: R22 sigue vigente como guardrail conceptual.
 
 El cliente admin vive en `src/lib/supabase/admin.ts` y exporta `createSupabaseAdminClient()` que llama `createClient` de `@supabase/supabase-js` con `auth: { persistSession: false, autoRefreshToken: false }` (no cookies, no session). Solo importable desde server actions que llevan comment header `// ADR-0006 exception` en el call site. ESLint custom rule (added in Group 2) bloquea import desde archivos con `'use client'`. Lint + review humano + type-check guard en E2E forman las 3 capas de defensa contra abuse accidental.
 
 ## Multi-app detection: lookup por email/phone, NO por national_id
 
-La estrategia Chat-level ADR-0003 establece que `auth.users.raw_app_meta_data.allowed_apps` JSONB array gating per app es la decisión correcta. ADR-0003 menciona "national_id match" como mecanismo de detección — ese fue pseudo-plan nunca implementado: `auth.users.raw_app_meta_data` en la BD real NO contiene `national_id` (verificado via `execute_sql` durante grill 2026-05-27). El matching concreto se hace por `auth.users.email` o `auth.users.phone`, que son campos top-level (no JSONB) y existen para todos los 48 auth.users actuales (todos provider='email' con email empresarial `@iconsanet.com`).
+La estrategia de `0012-auth-multi-app-allowed-apps.md` establece que `auth.users.raw_app_meta_data.allowed_apps` JSONB array gating per app es la decisión correcta. Esa estrategia menciona "national_id match" como mecanismo de detección — ese fue pseudo-plan nunca implementado: `auth.users.raw_app_meta_data` en la BD real NO contiene `national_id` (verificado via `execute_sql` durante grill 2026-05-27). El matching concreto se hace por `auth.users.email` o `auth.users.phone`, que son campos top-level (no JSONB) y existen para todos los 48 auth.users actuales (todos provider='email' con email empresarial `@iconsanet.com`).
 
 Contexto operacional que valida este approach: ICONSA usa email empresarial canonical `@iconsanet.com` por persona. 50 empleados activos tienen email corporativo, 60 solo phone, 74 gap (no MVP-onboardables). hr_admin captura en F4 el `delivery_target` (email O phone E.164) que ya usa el empleado — si existe en MovimientOS, hr_admin usa el MISMO valor. El email empresarial no varía entre apps.
 
@@ -108,14 +110,14 @@ Mitigación operacional (NO arquitectural):
 
 ## Alternativas rechazadas
 
-**(a) Matching via `raw_app_meta_data.national_id`** (lo que ADR-0003 sugiere textual): el campo nunca fue populado en la BD real. Era pseudo-plan estratégico sin implementación concreta. Verificado en sesión 2026-05-27.
+**(a) Matching via `raw_app_meta_data.national_id`** (lo que `0012-auth-multi-app-allowed-apps.md` sugiere textual): el campo nunca fue populado en la BD real. Era pseudo-plan estratégico sin implementación concreta. Verificado en sesión 2026-05-27.
 
-**(b) Lookup cross-schema a `public.people.cedula` → `public.people.auth_id`**: acopla HumanOS al schema legacy de MovimientOS, viola ADR-0005 Chat-level (MDM gradual, no big-bang). Si MovimientOS renombra/migra `public.people`, HumanOS rompe. No es nuestra responsabilidad consumir su modelo.
+**(b) Lookup cross-schema a `public.people.cedula` → `public.people.auth_id`**: acopla HumanOS al schema legacy de MovimientOS, viola `0014-mdm-gradual-no-big-bang.md` (MDM gradual, no big-bang). Si MovimientOS renombra/migra `public.people`, HumanOS rompe. No es nuestra responsabilidad consumir su modelo.
 
-**(c) Crear schema `mdm.persons` o `core.persons` ahora**: viola ADR-0005 Chat-level explícito ("esperar a que otra app pida MDM"). MVP pre-MDM, deferred.
+**(c) Crear schema `mdm.persons` o `core.persons` ahora**: viola `0014-mdm-gradual-no-big-bang.md` explícito ("esperar a que otra app pida MDM"). MVP pre-MDM, deferred.
 
 **(d) SECURITY DEFINER SQL function via `supabase.rpc()` con anon client**: Supabase Auth admin (createUser, updateUserById) son endpoints HTTP del auth service, no SQL. La ruta SQL-only no existe.
 
 ## Cambios futuros que invalidan esta excepción
 
-Cuando llegue `mdm.persons` (ADR-0005 paso 2 post-MVP), el matching mechanism se reevalúa: `mdm.persons` se vuelve la fuente de verdad cross-app y el lookup probablemente migra a JOIN contra `mdm.persons.canonical_email` o equivalente. Este ADR se actualiza con `Supersedes` cuando suceda.
+Cuando llegue `mdm.persons` (`0014-mdm-gradual-no-big-bang.md` paso 2 post-MVP), el matching mechanism se reevalúa: `mdm.persons` se vuelve la fuente de verdad cross-app y el lookup probablemente migra a JOIN contra `mdm.persons.canonical_email` o equivalente. Este ADR se actualiza con `Supersedes` cuando suceda.

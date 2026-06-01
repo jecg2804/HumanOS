@@ -129,7 +129,7 @@ Minimal entry point con @imports condicionales. Pattern real (numerado):
 ## Conditional imports (load when relevant)
 - Implementando form/feature: @docs/04-DOMAIN-RRHH.md (catalogo + dominio)
 - Implementing approval chain: leer SOP en docs/sops/ (Filesystem MCP)
-- Past decisions: @docs/08-ADRs.md + @docs/adr/*.md (Code-generated)
+- Past decisions: @docs/adr/README.md (canonical index) + @docs/adr/*.md
 - Vocabulario en duda: @docs/CONTEXT.md (vivo)
 - MDM foundational: @docs/11-MDM-PRINCIPLES.md + @docs/12-SOR-MATRIX.md
 - Integraciones externas: @docs/13-INTEGRATIONS-INDEX.md
