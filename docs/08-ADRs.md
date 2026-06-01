@@ -1,4 +1,10 @@
-# 08-ADRs.md — Architectural Decision Records (Chat-level)
+# 08-ADRs.md — Architectural Decision Records (Chat-level) — FROZEN
+
+> **CANONICAL LEDGER MOVED (audit D2, 2026-06-01).** The single canonical ADR ledger is now
+> **`docs/adr/`** — read `docs/adr/README.md` first. This file is **frozen** (historical record);
+> no new entries go here. New ADRs continue from `0010` in `docs/adr/`. The numbering here
+> (`ADR-0001..0014`) is a *separate* sequence from `docs/adr/` files — see the README's
+> "Numbering caveat" to disambiguate references.
 
 **Última actualización**: 2026-05-28 (audit Batch 1+2 — fix typo + cross-reference Code-level ADRs 0006/0007/0008 verificados post v0.0.2)
 
