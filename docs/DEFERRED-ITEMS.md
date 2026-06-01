@@ -27,6 +27,18 @@ se difiere uno nuevo, se agrega con trigger + gate. El CHANGELOG referencia, no 
 | seq-reset | `requests.next_sequence` reset por año (hoy contador monotónico) | Decisión de formato/SOP no confirmada | Al cablear creación de tickets: validar con el SOP si `HUM-2027-0001` debe resetear; si sí, ajustar la función |
 | BL-2..7 | Capturar decisiones de approval-chain en `docs/adr/0020-approval-chain-template-jsonb-modes.md` (BL-2 ya decidido ahí; BL-3..7 pendientes) | Dependen de James/Samantha | Antes de construir los forms president-gated, cerrar BL-3..7 y capturarlas |
 
+### Trigger: GROUP 3 — diseño de signup/login (perfil + directorio)
+
+Fuente: `docs/superpowers/specs/2026-06-01-signup-advisory.md` (mini-auditoría 2026-06-01, 3/3 refutaron la versión ingenua). Brainstorm de signup DEBE consumir el advisory.
+
+| ID | Ítem | Nota |
+|----|------|------|
+| SIGNUP-premise | La fórmula "3 letras apellido + 3 dígitos cédula" **no se sostiene en la data** (~84-90%, dígitos intercambiados; solo 14% tiene cédula; no hay columna apellido) | James: validar la regla real de Spectrum. Código se ESPEJA o se GENERA local, no se computa de cédula |
+| SIGNUP-guardrails | 11 reglas de seguridad no-negociables (identificador adivinable = username, nunca credencial; factor de posesión out-of-band siempre; respuestas no-enumerantes; rate-limit (identifier,IP); reset solo por email on-record; merge cross-app gated) | En el advisory §4 |
+| SIGNUP-datamodel | Pre-requisitos: `national_id` UNIQUE + CHECK DGI; link integridad `employee_code`↔`person_sources`; índice único CI en `employee_code` | Antes de que cédula/code sean load-bearing |
+| SIGNUP-session-bug | `completeOnboardingAction` aprovisiona pero NO crea sesión → rebota a /login | Arreglar al construir signup |
+| SIGNUP-phone | Onboarding mintea `auth.users` por teléfono pero login es email-only → cuentas no-logueables | Resolver o deprecar phone-as-identifier |
+
 ### Trigger: TOCAR tablas existentes `hr.*`/`requests.*` (idealmente temprano en Group 3/4)
 
 | ID | Ítem | Por qué se difirió | Qué hacer |
@@ -38,7 +50,7 @@ se difiere uno nuevo, se agrega con trigger + gate. El CHANGELOG referencia, no 
 
 | ID | Ítem | Por qué se difirió | Qué hacer |
 |----|------|--------------------|-----------|
-| P2.24-bulk | COMMENT ON COLUMN de las tablas de Groups 5-7 (learning/performance/workflows) — el subset live ya se hizo en `051` | Comentar semántica de tablas cuya forma aún puede cambiar = documentar drift | Al construir cada feature, comentar sus columnas con semántica final en la misma migración |
+| ~~P2.24-bulk~~ | ✅ HECHO 2026-06-01 (`052`+`053`): todas las columnas de los 9 schemas tienen COMMENT (gap=0/879). Cuando una feature de Groups 5-7 refine semántica de una columna, actualiza su comment en la misma migración | — | — |
 
 ### Trigger: pasada dedicada de DOCS (ver `docs/superpowers/specs/2026-06-01-docs-restructure-plan.md`)
 

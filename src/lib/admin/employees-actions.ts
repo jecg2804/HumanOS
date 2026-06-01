@@ -1,6 +1,7 @@
 'use server';
 // ADR-0006 exception: invite code generation uses admin client for hr.invite_codes insert
 // (RLS would require hr_admin context; service role bypasses for atomic creation with audit).
+import { randomInt } from 'node:crypto';
 import { createSupabaseAdminClient } from '@/lib/supabase/admin';
 import { AuthorizationError, requireHrAdmin } from '@/lib/auth/require-hr-admin';
 import { reportError } from '@/lib/observability/report';
@@ -31,10 +32,11 @@ const EmployeeSchema = z.object({
 });
 
 function generateInviteCode(): string {
+  // Invite code is the load-bearing bootstrap secret (signup-advisory 2026-06-01):
+  // generate with a CSPRNG, NOT Math.random() (which is predictable). The 32-char
+  // alphabet maps cleanly to randomInt's unbiased range. 8 chars over 32 symbols = 40 bits.
   const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  return Array.from({ length: 8 }, () =>
-    alphabet[Math.floor(Math.random() * alphabet.length)]
-  ).join('');
+  return Array.from({ length: 8 }, () => alphabet[randomInt(alphabet.length)]).join('');
 }
 
 export async function createEmployeeAction(
