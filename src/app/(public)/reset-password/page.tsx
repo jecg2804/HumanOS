@@ -10,7 +10,7 @@ export default function ResetPasswordPage() {
   return (
     <main className="min-h-screen flex items-center justify-center bg-gray-50 p-6">
       <div className="w-full max-w-md bg-white rounded-lg shadow p-8">
-        <h1 className="text-2xl font-bold text-[#1B3A5C]">Nueva contraseña</h1>
+        <h1 className="text-2xl font-bold text-navy-500">Nueva contraseña</h1>
         <p className="text-gray-700 mt-2 text-sm">
           Mínimo 10 caracteres. No reutilices contraseñas anteriores.
         </p>
@@ -27,7 +27,7 @@ export default function ResetPasswordPage() {
           <button
             type="submit"
             disabled={pending}
-            className="w-full bg-[#1B3A5C] text-white py-3 rounded-md font-medium disabled:opacity-50"
+            className="w-full bg-navy-500 text-white py-3 rounded-md font-medium disabled:opacity-50"
           >
             {pending ? 'Guardando…' : 'Actualizar contraseña'}
           </button>

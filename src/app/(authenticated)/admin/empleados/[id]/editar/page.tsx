@@ -87,8 +87,8 @@ export default async function EditarEmpleadoPage({
     <main className="max-w-3xl mx-auto p-6">
       <h1 className="text-2xl font-bold mb-4">Editar: {person.data.full_name}</h1>
       {person.data.needs_review && (
-        <div className="bg-[#FEF3C7] border border-[#B45309] rounded p-4 mb-4">
-          <h2 className="font-bold text-[#B45309]">Necesita revisión</h2>
+        <div className="bg-warning-50 border border-warning-500 rounded p-4 mb-4">
+          <h2 className="font-bold text-warning-500">Necesita revisión</h2>
           <pre className="text-sm whitespace-pre-wrap mt-2">{person.data.review_notes}</pre>
         </div>
       )}

@@ -102,7 +102,7 @@ export function Step10PhotoConfirm({ state, dispatch }: Props) {
 
   return (
     <section className="space-y-4">
-      <h1 className="text-2xl font-bold text-[#1B3A5C]">Foto de perfil (opcional)</h1>
+      <h1 className="text-2xl font-bold text-navy-500">Foto de perfil (opcional)</h1>
       <p className="text-gray-700">
         Sube una foto para tu perfil interno (gafete, directorio). Puedes saltarte este paso y
         agregarla después desde tu perfil.
@@ -122,7 +122,7 @@ export function Step10PhotoConfirm({ state, dispatch }: Props) {
             Sin foto
           </div>
         )}
-        <label className="cursor-pointer text-sm text-[#0A6EBD] underline">
+        <label className="cursor-pointer text-sm text-info-500 underline">
           {file ? 'Cambiar foto' : 'Subir foto'}
           <input
             type="file"
@@ -150,7 +150,7 @@ export function Step10PhotoConfirm({ state, dispatch }: Props) {
         <button
           onClick={handleSubmit}
           disabled={submitting || uploading}
-          className="flex-1 bg-[#1A7F5A] text-white py-3 rounded-md font-medium disabled:opacity-50"
+          className="flex-1 bg-success-500 text-white py-3 rounded-md font-medium disabled:opacity-50"
         >
           {submitting ? 'Activando cuenta…' : 'Confirmar y activar mi cuenta'}
         </button>

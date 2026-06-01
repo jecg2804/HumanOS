@@ -46,7 +46,7 @@ export function Step3Identifier({ state, dispatch }: Props) {
 
   return (
     <section className="space-y-4">
-      <h1 className="text-2xl font-bold text-[#1B3A5C]">¿Cómo te contactamos?</h1>
+      <h1 className="text-2xl font-bold text-navy-500">¿Cómo te contactamos?</h1>
       <p className="text-gray-700">
         Ingresa tu correo empresarial o tu número de teléfono. Si ya tienes cuenta en
         MovimientOS u otra app de ICONSA, usa el mismo dato para que no se duplique.
@@ -77,7 +77,7 @@ export function Step3Identifier({ state, dispatch }: Props) {
           <button
             type="submit"
             disabled={pending}
-            className="flex-1 bg-[#1B3A5C] text-white py-3 rounded-md font-medium disabled:opacity-50"
+            className="flex-1 bg-navy-500 text-white py-3 rounded-md font-medium disabled:opacity-50"
           >
             {pending ? 'Verificando…' : 'Continuar'}
           </button>

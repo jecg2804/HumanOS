@@ -43,7 +43,7 @@ export function CatalogComboboxField({
               setUseFreeText(false);
               onFreeText('');
             }}
-            className="text-sm text-[#0A6EBD] underline mt-1"
+            className="text-sm text-info-500 underline mt-1"
           >
             ← Volver al catálogo
           </button>
@@ -68,7 +68,7 @@ export function CatalogComboboxField({
               setUseFreeText(true);
               onSelectId('');
             }}
-            className="text-sm text-[#0A6EBD] underline mt-1"
+            className="text-sm text-info-500 underline mt-1"
           >
             No veo el mío — usar texto libre
           </button>

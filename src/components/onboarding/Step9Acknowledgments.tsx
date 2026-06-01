@@ -30,7 +30,7 @@ export function Step9Acknowledgments({ state, dispatch }: Props) {
 
   return (
     <section className="space-y-4">
-      <h1 className="text-2xl font-bold text-[#1B3A5C]">Reconocimientos</h1>
+      <h1 className="text-2xl font-bold text-navy-500">Reconocimientos</h1>
       <p className="text-gray-700">
         Confirma que has leído y aceptas estas políticas de ICONSA.
       </p>
@@ -56,7 +56,7 @@ export function Step9Acknowledgments({ state, dispatch }: Props) {
             href="/sops/IC-RH-M-01.pdf"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm text-[#0A6EBD] underline"
+            className="text-sm text-info-500 underline"
           >
             Ver documento (PDF)
           </a>
@@ -84,7 +84,7 @@ export function Step9Acknowledgments({ state, dispatch }: Props) {
             href="/sops/IC-RH-D-07.pdf"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm text-[#0A6EBD] underline"
+            className="text-sm text-info-500 underline"
           >
             Ver documento (PDF)
           </a>
@@ -100,7 +100,7 @@ export function Step9Acknowledgments({ state, dispatch }: Props) {
         </button>
         <button
           onClick={handleNext}
-          className="flex-1 bg-[#1B3A5C] text-white py-3 rounded-md"
+          className="flex-1 bg-navy-500 text-white py-3 rounded-md"
         >
           Continuar
         </button>

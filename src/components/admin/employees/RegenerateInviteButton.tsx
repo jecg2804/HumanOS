@@ -25,7 +25,7 @@ export function RegenerateInviteButton({ personId, deliveryTarget }: Props) {
       <button
         type="submit"
         disabled={pending}
-        className="bg-[#F0A500] text-[#1B3A5C] px-3 py-1.5 rounded text-sm font-medium disabled:opacity-50"
+        className="bg-gold-500 text-navy-500 px-3 py-1.5 rounded text-sm font-medium disabled:opacity-50"
       >
         {pending ? 'Regenerando…' : 'Regenerar código de invitación'}
       </button>

@@ -16,7 +16,7 @@ export function NotificationDropdown({ personId, onClose }: Props) {
     <div className="absolute right-0 top-12 w-96 bg-white rounded-lg shadow-lg border z-50">
       <div className="flex items-center justify-between p-3 border-b">
         <h3 className="font-bold">Notificaciones</h3>
-        <button onClick={markAllAsRead} className="text-xs text-[#0A6EBD] underline">
+        <button onClick={markAllAsRead} className="text-xs text-info-500 underline">
           Marcar todas leídas
         </button>
       </div>
@@ -32,7 +32,7 @@ export function NotificationDropdown({ personId, onClose }: Props) {
       <Link
         href="/notificaciones"
         onClick={onClose}
-        className="block p-3 text-sm text-center border-t text-[#0A6EBD]"
+        className="block p-3 text-sm text-center border-t text-info-500"
       >
         Ver todas
       </Link>

@@ -86,7 +86,7 @@ export function HayErrorModal({ state, dispatch, onClose }: Props) {
             <button
               type="submit"
               disabled={pending}
-              className="px-4 py-2 bg-[#1B3A5C] text-white rounded disabled:opacity-50"
+              className="px-4 py-2 bg-navy-500 text-white rounded disabled:opacity-50"
             >
               {pending ? 'Enviando…' : 'Enviar reporte'}
             </button>

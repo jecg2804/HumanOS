@@ -23,7 +23,7 @@ export function Step2Identity({ state, dispatch }: Props) {
 
   return (
     <section className="space-y-4">
-      <h1 className="text-2xl font-bold text-[#1B3A5C]">Verifica tu identidad</h1>
+      <h1 className="text-2xl font-bold text-navy-500">Verifica tu identidad</h1>
       <p className="text-gray-700">
         Para confirmar que el código es tuyo, ingresa tu cédula (o pasaporte) y
         opcionalmente tu código de empleado.
@@ -66,7 +66,7 @@ export function Step2Identity({ state, dispatch }: Props) {
         </button>
         <button
           onClick={handleNext}
-          className="flex-1 bg-[#1B3A5C] text-white py-3 rounded-md font-medium"
+          className="flex-1 bg-navy-500 text-white py-3 rounded-md font-medium"
         >
           Continuar
         </button>

@@ -14,7 +14,7 @@ export function Step5Confirm({ state, dispatch, preview }: Props) {
 
   return (
     <section className="space-y-4">
-      <h1 className="text-2xl font-bold text-[#1B3A5C]">Confirma tus datos</h1>
+      <h1 className="text-2xl font-bold text-navy-500">Confirma tus datos</h1>
       <p className="text-gray-700">
         Verifica que los datos registrados en HumanOS sean correctos. Si algo está incorrecto,
         reporta el error a RRHH.
@@ -43,7 +43,7 @@ export function Step5Confirm({ state, dispatch, preview }: Props) {
         </button>
         <button
           onClick={() => dispatch({ type: 'NEXT_STEP' })}
-          className="flex-1 bg-[#1B3A5C] text-white py-3 rounded-md font-medium"
+          className="flex-1 bg-navy-500 text-white py-3 rounded-md font-medium"
         >
           Todo correcto, continuar
         </button>

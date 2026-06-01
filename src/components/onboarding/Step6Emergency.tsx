@@ -25,7 +25,7 @@ export function Step6Emergency({ state, dispatch }: Props) {
 
   return (
     <section className="space-y-4">
-      <h1 className="text-2xl font-bold text-[#1B3A5C]">Contacto de emergencia</h1>
+      <h1 className="text-2xl font-bold text-navy-500">Contacto de emergencia</h1>
       <p className="text-gray-700">
         ¿A quién debemos contactar en caso de emergencia? Esta información solo es visible para
         RRHH y para ti.
@@ -64,7 +64,7 @@ export function Step6Emergency({ state, dispatch }: Props) {
         </button>
         <button
           onClick={handleNext}
-          className="flex-1 bg-[#1B3A5C] text-white py-3 rounded-md"
+          className="flex-1 bg-navy-500 text-white py-3 rounded-md"
         >
           Continuar
         </button>

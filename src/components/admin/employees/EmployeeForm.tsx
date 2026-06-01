@@ -269,7 +269,7 @@ export function EmployeeForm({
       <button
         type="submit"
         disabled={pending}
-        className="bg-[#1B3A5C] text-white py-3 px-6 rounded-md font-medium disabled:opacity-50"
+        className="bg-navy-500 text-white py-3 px-6 rounded-md font-medium disabled:opacity-50"
       >
         {pending
           ? 'Guardando…'

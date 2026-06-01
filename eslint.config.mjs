@@ -44,19 +44,19 @@ const config = [
   },
   {
     // FE-1 guard (audit 2026-05-29): no hardcoded hex colors in app code — use the design tokens
-    // from globals.css @theme (bg-navy, text-gold, etc.). 'warn' for now because ~47 pre-existing
-    // violations are migrated in Group 3; escalate to 'error' once that migration lands.
+    // from globals.css @theme (bg-navy-500, text-gold-500, etc.). Escalated to 'error' on
+    // 2026-06-01 (FE-1b) after migrating the 22 app files (49 arbitrary-value classes) to tokens.
     files: ['src/**/*.{ts,tsx}'],
     // src/emails/**: React Email templates MUST use inline hex (email clients don't support CSS
     // vars/Tailwind tokens). src/components/ui/**: shadcn vendor primitives, migrated separately.
     ignores: ['src/components/ui/**', 'src/emails/**'],
     rules: {
       'no-restricted-syntax': [
-        'warn',
+        'error',
         {
           selector: 'Literal[value=/#[0-9a-fA-F]{3,8}/]',
           message:
-            'No hardcodear colores hex. Usa design tokens (navy, gold, blue...) de globals.css @theme. Escala a error tras migracion FE-1 (Group 3).',
+            'No hardcodear colores hex. Usa design tokens (navy-500, gold-500, info-500...) de globals.css @theme.',
         },
       ],
     },

@@ -41,7 +41,7 @@ export function Step8Address({ state, dispatch }: Props) {
 
   return (
     <section className="space-y-4">
-      <h1 className="text-2xl font-bold text-[#1B3A5C]">Tu dirección</h1>
+      <h1 className="text-2xl font-bold text-navy-500">Tu dirección</h1>
       <p className="text-gray-700">Dónde vives actualmente.</p>
       <input
         placeholder="Calle, casa, apartamento"
@@ -92,7 +92,7 @@ export function Step8Address({ state, dispatch }: Props) {
         </button>
         <button
           onClick={handleNext}
-          className="flex-1 bg-[#1B3A5C] text-white py-3 rounded-md"
+          className="flex-1 bg-navy-500 text-white py-3 rounded-md"
         >
           Continuar
         </button>

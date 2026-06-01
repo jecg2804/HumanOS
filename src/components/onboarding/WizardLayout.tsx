@@ -27,7 +27,7 @@ export function WizardLayout({ step, totalSteps, children, onCancel, showCancel 
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="bg-[#1B3A5C] text-white px-6 py-4 flex items-center justify-between">
+      <header className="bg-navy-500 text-white px-6 py-4 flex items-center justify-between">
         <div>
           <div className="font-bold">HumanOS · Configuración inicial</div>
           <div className="text-xs opacity-80">
@@ -45,7 +45,7 @@ export function WizardLayout({ step, totalSteps, children, onCancel, showCancel 
       </header>
       <div className="h-2 bg-gray-200">
         <div
-          className="h-full bg-[#F0A500] transition-all"
+          className="h-full bg-gold-500 transition-all"
           style={{ width: `${pct}%` }}
         />
       </div>

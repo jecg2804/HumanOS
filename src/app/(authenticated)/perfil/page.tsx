@@ -52,7 +52,7 @@ export default async function PerfilPage() {
 
   return (
     <main className="max-w-3xl mx-auto p-6">
-      <h1 className="text-2xl font-bold text-[#1B3A5C]">Mi perfil</h1>
+      <h1 className="text-2xl font-bold text-navy-500">Mi perfil</h1>
       <p className="text-gray-600 text-sm mt-1">
         Bienvenido a HumanOS. Si algo está incorrecto, contacta a Recursos Humanos.
       </p>

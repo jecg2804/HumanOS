@@ -23,7 +23,7 @@ export function Step4Password({ state, dispatch }: Props) {
 
   return (
     <section className="space-y-4">
-      <h1 className="text-2xl font-bold text-[#1B3A5C]">Elige una contraseña</h1>
+      <h1 className="text-2xl font-bold text-navy-500">Elige una contraseña</h1>
       <p className="text-gray-700">
         Mínimo 10 caracteres. Usamos una verificación contra bases de contraseñas filtradas — si
         eliges una comprometida, te pediremos otra.
@@ -48,7 +48,7 @@ export function Step4Password({ state, dispatch }: Props) {
         </button>
         <button
           onClick={handleNext}
-          className="flex-1 bg-[#1B3A5C] text-white py-3 rounded-md font-medium"
+          className="flex-1 bg-navy-500 text-white py-3 rounded-md font-medium"
         >
           Continuar
         </button>

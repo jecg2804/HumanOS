@@ -23,7 +23,7 @@ export function Step1Code({ state, dispatch }: Props) {
 
   return (
     <section className="space-y-4">
-      <h1 className="text-2xl font-bold text-[#1B3A5C]">Bienvenido</h1>
+      <h1 className="text-2xl font-bold text-navy-500">Bienvenido</h1>
       <p className="text-gray-700">
         Ingresa el código de 8 caracteres que recibiste de Recursos Humanos.
       </p>
@@ -42,7 +42,7 @@ export function Step1Code({ state, dispatch }: Props) {
       <button
         onClick={handleNext}
         disabled={state.code.length !== 8}
-        className="w-full bg-[#1B3A5C] text-white py-3 rounded-md font-medium disabled:opacity-50"
+        className="w-full bg-navy-500 text-white py-3 rounded-md font-medium disabled:opacity-50"
       >
         Continuar
       </button>

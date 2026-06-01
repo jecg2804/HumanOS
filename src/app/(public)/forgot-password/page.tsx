@@ -10,7 +10,7 @@ export default function ForgotPasswordPage() {
   return (
     <main className="min-h-screen flex items-center justify-center bg-gray-50 p-6">
       <div className="w-full max-w-md bg-white rounded-lg shadow p-8">
-        <h1 className="text-2xl font-bold text-[#1B3A5C]">Recuperar contraseña</h1>
+        <h1 className="text-2xl font-bold text-navy-500">Recuperar contraseña</h1>
         <p className="text-gray-700 mt-2 text-sm">
           Ingresa tu correo empresarial. Si la cuenta existe, te enviamos un enlace.
         </p>
@@ -30,12 +30,12 @@ export default function ForgotPasswordPage() {
           <button
             type="submit"
             disabled={pending}
-            className="w-full bg-[#1B3A5C] text-white py-3 rounded-md font-medium disabled:opacity-50"
+            className="w-full bg-navy-500 text-white py-3 rounded-md font-medium disabled:opacity-50"
           >
             {pending ? 'Enviando…' : 'Enviar enlace'}
           </button>
         </form>
-        <a href="/login" className="text-sm text-[#0A6EBD] underline mt-4 inline-block">
+        <a href="/login" className="text-sm text-info-500 underline mt-4 inline-block">
           Volver a iniciar sesión
         </a>
       </div>
