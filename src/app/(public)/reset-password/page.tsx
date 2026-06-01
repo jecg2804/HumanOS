@@ -23,7 +23,7 @@ export default function ResetPasswordPage() {
             required
             className="w-full p-3 border rounded"
           />
-          {state.message && <p className="text-sm text-red-600">{state.message}</p>}
+          {state.message && <p role="alert" className="text-sm text-red-600">{state.message}</p>}
           <button
             type="submit"
             disabled={pending}

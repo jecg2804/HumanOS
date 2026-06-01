@@ -37,7 +37,7 @@ export function RegenerateInviteButton({ personId, deliveryTarget }: Props) {
           </span>
         </div>
       )}
-      {state.message && <p className="text-sm text-red-600 mt-2">{state.message}</p>}
+      {state.message && <p role="alert" className="text-sm text-red-600 mt-2">{state.message}</p>}
     </form>
   );
 }

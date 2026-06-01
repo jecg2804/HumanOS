@@ -246,15 +246,17 @@ export function EmployeeForm({
       )}
 
       {state.errors && (
-        <ul className="text-sm text-red-600">
-          {Object.entries(state.errors).map(([k, v]) => (
-            <li key={k}>
-              {k}: {v?.[0]}
-            </li>
-          ))}
-        </ul>
+        <div role="alert" className="text-sm text-red-600">
+          <ul>
+            {Object.entries(state.errors).map(([k, v]) => (
+              <li key={k}>
+                {k}: {v?.[0]}
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
-      {state.message && <p className="text-sm text-red-600">{state.message}</p>}
+      {state.message && <p role="alert" className="text-sm text-red-600">{state.message}</p>}
       {state.ok && !!state.data && mode === 'create' && (
         <div className="bg-green-50 border border-green-200 rounded p-4 text-sm">
           Empleado creado. Código de invitación:{' '}

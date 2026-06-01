@@ -38,7 +38,7 @@ export function Step1Code({ state, dispatch }: Props) {
         autoFocus
         className="w-full text-center text-2xl font-mono tracking-widest p-4 border-2 rounded-md uppercase"
       />
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && <p role="alert" className="text-sm text-red-600">{error}</p>}
       <button
         onClick={handleNext}
         disabled={state.code.length !== 8}

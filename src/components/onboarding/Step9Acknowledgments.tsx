@@ -90,7 +90,7 @@ export function Step9Acknowledgments({ state, dispatch }: Props) {
           </a>
         </div>
       </label>
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && <p role="alert" className="text-sm text-red-600">{error}</p>}
       <div className="flex gap-2">
         <button
           onClick={() => dispatch({ type: 'PREV_STEP' })}

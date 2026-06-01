@@ -97,7 +97,7 @@ export function Step7Medical({ state, dispatch }: Props) {
         onChange={(e) => update('css_number', e.target.value)}
         className="w-full p-3 border rounded"
       />
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && <p role="alert" className="text-sm text-red-600">{error}</p>}
       <div className="flex gap-2">
         <button
           onClick={() => dispatch({ type: 'PREV_STEP' })}

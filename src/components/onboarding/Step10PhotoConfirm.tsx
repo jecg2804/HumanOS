@@ -132,7 +132,7 @@ export function Step10PhotoConfirm({ state, dispatch }: Props) {
             className="hidden"
           />
         </label>
-        {uploadError && <p className="text-sm text-red-600">{uploadError}</p>}
+        {uploadError && <p role="alert" className="text-sm text-red-600">{uploadError}</p>}
       </div>
       {submitError && (
         <div className="bg-red-50 border border-red-200 rounded p-3 text-sm text-red-700">

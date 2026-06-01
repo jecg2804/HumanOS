@@ -1,5 +1,5 @@
 'use client';
-import { useActionState, useEffect } from 'react';
+import { useActionState, useEffect, useRef } from 'react';
 import { reportOnboardingErrorAction } from '@/lib/onboarding/actions';
 import type { WizardState, WizardAction } from './WizardReducer';
 
@@ -24,6 +24,9 @@ export function HayErrorModal({ state, dispatch, onClose }: Props) {
     initialFormState
   );
 
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const selectRef = useRef<HTMLSelectElement>(null);
+
   useEffect(() => {
     if (actionState.ok && actionState.data) {
       const d = actionState.data as {
@@ -39,16 +42,42 @@ export function HayErrorModal({ state, dispatch, onClose }: Props) {
     }
   }, [actionState, dispatch, onClose]);
 
+  // a11y (FE-3): focus the first field on open + close on Escape.
+  useEffect(() => {
+    selectRef.current?.focus();
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape') onClose();
+    }
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [onClose]);
+
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg p-6 max-w-md w-full">
-        <h2 className="text-lg font-bold">Reportar error en tus datos</h2>
+      <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="hay-error-title"
+        className="bg-white rounded-lg p-6 max-w-md w-full"
+      >
+        <h2 id="hay-error-title" className="text-lg font-bold">
+          Reportar error en tus datos
+        </h2>
         <form action={formAction} className="space-y-4 mt-4">
           <input type="hidden" name="person_id" value={state.validated?.person_id ?? ''} />
           <input type="hidden" name="token" value={state.validated?.token ?? ''} />
           <div>
-            <label className="block text-sm font-medium mb-1">Severidad</label>
-            <select name="severity" className="w-full p-3 border rounded" defaultValue="">
+            <label htmlFor="hay-error-severity" className="block text-sm font-medium mb-1">
+              Severidad
+            </label>
+            <select
+              ref={selectRef}
+              id="hay-error-severity"
+              name="severity"
+              className="w-full p-3 border rounded"
+              defaultValue=""
+            >
               <option value="" disabled>
                 Selecciona…
               </option>
@@ -62,8 +91,11 @@ export function HayErrorModal({ state, dispatch, onClose }: Props) {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1">Describe el error</label>
+            <label htmlFor="hay-error-description" className="block text-sm font-medium mb-1">
+              Describe el error
+            </label>
             <textarea
+              id="hay-error-description"
               name="description"
               rows={4}
               required
@@ -73,11 +105,13 @@ export function HayErrorModal({ state, dispatch, onClose }: Props) {
             />
           </div>
           {actionState.errors && (
-            <ul className="text-sm text-red-600">
-              {Object.entries(actionState.errors).map(([k, v]) => (
-                <li key={k}>{v?.[0]}</li>
-              ))}
-            </ul>
+            <div role="alert" className="text-sm text-danger-600">
+              <ul>
+                {Object.entries(actionState.errors).map(([k, v]) => (
+                  <li key={k}>{v?.[0]}</li>
+                ))}
+              </ul>
+            </div>
           )}
           <div className="flex justify-end gap-2">
             <button type="button" onClick={onClose} className="px-4 py-2 border rounded">

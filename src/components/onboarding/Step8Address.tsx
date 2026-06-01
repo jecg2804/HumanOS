@@ -82,7 +82,7 @@ export function Step8Address({ state, dispatch }: Props) {
         onChange={(e) => update('postal_code', e.target.value)}
         className="w-full p-3 border rounded"
       />
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && <p role="alert" className="text-sm text-red-600">{error}</p>}
       <div className="flex gap-2">
         <button
           onClick={() => dispatch({ type: 'PREV_STEP' })}

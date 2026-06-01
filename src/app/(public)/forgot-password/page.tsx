@@ -23,7 +23,10 @@ export default function ForgotPasswordPage() {
             className="w-full p-3 border rounded"
           />
           {state.message && (
-            <p className={`text-sm ${state.ok ? 'text-gray-700' : 'text-red-600'}`}>
+            <p
+              aria-live="polite"
+              className={`text-sm ${state.ok ? 'text-gray-700' : 'text-red-600'}`}
+            >
               {state.message}
             </p>
           )}

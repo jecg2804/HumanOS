@@ -65,7 +65,7 @@ export function Step3Identifier({ state, dispatch }: Props) {
           placeholder="ejemplo@iconsanet.com o +50761234567"
           className="w-full p-3 border rounded-md"
         />
-        {actionState.message && <p className="text-sm text-red-600">{actionState.message}</p>}
+        {actionState.message && <p role="alert" className="text-sm text-red-600">{actionState.message}</p>}
         <div className="flex gap-2">
           <button
             type="button"

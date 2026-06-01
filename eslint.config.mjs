@@ -49,7 +49,8 @@ const config = [
     files: ['src/**/*.{ts,tsx}'],
     // src/emails/**: React Email templates MUST use inline hex (email clients don't support CSS
     // vars/Tailwind tokens). src/components/ui/**: shadcn vendor primitives, migrated separately.
-    ignores: ['src/components/ui/**', 'src/emails/**'],
+    // src/app/manifest.ts: the PWA manifest spec requires real color values, not Tailwind tokens.
+    ignores: ['src/components/ui/**', 'src/emails/**', 'src/app/manifest.ts'],
     rules: {
       'no-restricted-syntax': [
         'error',

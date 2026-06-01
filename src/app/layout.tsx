@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Inter, JetBrains_Mono } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
 import './globals.css';
@@ -18,6 +18,15 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: 'HumanOS - ICONSA',
   description: 'Portal interno de Recursos Humanos ICONSA',
+};
+
+// FE-4: mobile rendering + theme color. (app/manifest.ts is auto-linked by Next.)
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  // themeColor must be a real color value (meta theme-color), not a Tailwind token.
+  // eslint-disable-next-line no-restricted-syntax
+  themeColor: '#1B3A5C',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

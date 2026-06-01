@@ -56,7 +56,7 @@ export function Step2Identity({ state, dispatch }: Props) {
           className="w-full p-3 border rounded-md uppercase"
         />
       </div>
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && <p role="alert" className="text-sm text-red-600">{error}</p>}
       <div className="flex gap-2">
         <button
           onClick={() => dispatch({ type: 'PREV_STEP' })}
