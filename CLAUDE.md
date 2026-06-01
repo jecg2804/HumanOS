@@ -78,7 +78,7 @@ Setup completo en `@docs/06-FRAMEWORK-CLAUDE-CODE.md` + integracion de skills en
 ### Pipeline canonico (costura de 3 paradas entre Superpowers y grill)
 
 1. `superpowers:brainstorming` -> escribe spec en `docs/superpowers/specs/`. **PARA** — no dejes que auto-encadene a writing-plans.
-2. `grill-with-docs` -> grilla ESE spec contra `CONTEXT.md` + `docs/adr/`; captura ADRs antes de congelar el plan. Solo escribe `CONTEXT.md` + ADRs.
+2. `grill-with-docs` -> grilla ESE spec contra `CONTEXT.md` + `docs/adr/`; captura ADRs antes de congelar el plan. Solo escribe `CONTEXT.md` + ADRs. **GATE: lee `@docs/DEFERRED-ITEMS.md`, filtra por el grupo + las tablas/schemas que el plan tocará, y para cada match: incluirlo en el plan o re-diferirlo con razon. No arranques el plan con matches sin resolver.**
 3. `superpowers:writing-plans` (mismo spec) -> plan en `docs/superpowers/plans/` con header `**Decisions in scope:** ADR-NNNN`.
 4. dev: `superpowers:executing-plans`/`subagent-driven-development` + `test-driven-development`. Lee **plan=que sigue · ADR=permitido? · CONTEXT=que significa**. `typescript-lsp` en el loop.
 5. `verification-before-completion` -> `npm run verify` (+ CI).

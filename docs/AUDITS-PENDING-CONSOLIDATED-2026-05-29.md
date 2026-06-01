@@ -37,11 +37,19 @@
 
 **Cancelado por James (2026-06-01):** rotación DB password.
 
-**PENDIENTE tras esta sesión (no-blocking, recomendado pasada dedicada):**
+**Docs: precisión honesta (varios quedaron PARCIALES, no "hechos"):**
 
-- Docs restructure **D1/D3/D4/D5/D8** (re-key por rol/cadencia, merge 03→02 / 10→06 / 04→CONTEXT, headers 3-líneas, slim 09-ESTADO, split 13). Subjetivo + coordinado; no afecta runtime.
-- D2 **renumber físico** de los 14 ADR legacy a una sola secuencia (one-way door; el índice canónico ya resuelve la ambigüedad).
-- DB-1 audit triggers + P2.24 bulk (learning/performance/workflows) → con sus features (Group 4+).
+- D2 = índice canónico ✅, pero **merge físico/renumber de los 14 ADR legacy PENDIENTE** (one-way door). Hay colisión `ADR-0009` en ambos ledgers, desambiguada por el README.
+- D6 = conteo de tests ✅ (CLAUDE.md ya <200 líneas: 147); **slim de tokens/prosa PENDIENTE** (polish).
+- D7 = naming `person_sources` ✅; **demote de 11/12 a `docs/future/` PENDIENTE** (el dir no existe aún).
+- D10 = DOC-3 naming ✅; **DOC-4 (07-SCHEMAS stale, fechado 2026-05-27) PENDIENTE**.
+- FE-3 = baseline (modal + role=alert); **a11y comprehensivo PENDIENTE**. FE-4 = baseline (manifest+viewport); **íconos+offline PENDIENTE**.
+
+**PENDIENTE tras esta sesión — registro autoritativo con triggers/gate en `@docs/DEFERRED-ITEMS.md`:**
+
+- Docs restructure **D1/D3/D4/D5/D8 + D2-merge + D6-slim + D7-demote + D10-DOC4 + 06-stale** → pasada dedicada (plan en `docs/superpowers/specs/2026-06-01-docs-restructure-plan.md`).
+- **DB-VISION-B/C** (soft-delete `deleted_at` + `source_system` + columnas offline/sync + comp/custom-fields en tablas EXISTENTES, bake `deleted_at IS NULL` en RLS) → **el gap real de "future-vision readiness"**; solo el leave ledger (047) está hecho del sub-proyecto DB-VISION.
+- DB-1 audit triggers + seq-reset por año + P2.24 bulk → Group 4+ (con sus features).
 - Decisiones humanas: BL-2..7 (ADR-0011).
 
 ---
