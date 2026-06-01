@@ -33,7 +33,8 @@ Fuente: `docs/superpowers/specs/2026-06-01-signup-advisory.md` (mini-auditoría 
 
 | ID | Ítem | Nota |
 |----|------|------|
-| SIGNUP-premise | La fórmula "3 letras apellido + 3 dígitos cédula" **no se sostiene en la data** (~84-90%, dígitos intercambiados; solo 14% tiene cédula; no hay columna apellido) | James: validar la regla real de Spectrum. Código se ESPEJA o se GENERA local, no se computa de cédula |
+| SIGNUP-formula | La fórmula `employee_code` = 3 letras apellido + 3 últimos cédula **SÍ es correcta** (CUC166 = CUCalon + ...166). El reporte de "falla 84-90%" fue falso negativo por data sucia, no por la fórmula | Computable con data limpia; manejar colisiones (mismos 3+3) con índice único + secuencia local |
+| DATA-HYGIENE | **Normalización de CONTENIDO (nunca auditado — solo se auditó estructura):** split nombre/apellido (no hay columna `apellido`), formato cédula DGI, backfill cédula (solo ~14% poblada), dedup, `addresses`. Bloquea computar el código Spectrum y usar cédula como identidad | Workstream propio (pre-Group-3-signup). Migración: agregar `last_name`/`first_name` o función de parsing + CHECK formato cédula + backfill validado |
 | SIGNUP-guardrails | 11 reglas de seguridad no-negociables (identificador adivinable = username, nunca credencial; factor de posesión out-of-band siempre; respuestas no-enumerantes; rate-limit (identifier,IP); reset solo por email on-record; merge cross-app gated) | En el advisory §4 |
 | SIGNUP-datamodel | Pre-requisitos: `national_id` UNIQUE + CHECK DGI; link integridad `employee_code`↔`person_sources`; índice único CI en `employee_code` | Antes de que cédula/code sean load-bearing |
 | SIGNUP-session-bug | `completeOnboardingAction` aprovisiona pero NO crea sesión → rebota a /login | Arreglar al construir signup |

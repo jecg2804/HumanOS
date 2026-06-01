@@ -2,7 +2,7 @@
 
 **Status:** ADVISORY (output de la mini-auditoría multi-agente 2026-06-01; 9 agentes, 3/3 refutaron la versión ingenua de seguridad). Siembra el brainstorming de signup en **Group 3**. NO es spec final. Decisiones marcadas para James abajo.
 
-> **Hallazgo que corrige la premisa (importante):** la fórmula "3 letras apellido + 3 últimos dígitos de cédula" **NO se sostiene en la data**. Los 3 dígitos parecen ser una secuencia interna de Spectrum (no derivable de la cédula): solo ~84-90% coincide, y hay casos con dígitos *intercambiados* entre personas. Además solo ~14% de `hr.people` tiene cédula guardada y no existe columna `apellido` (se extrae de `full_name` con heurística ~93%). **Conclusión: no se puede *computar* el código Spectrum de forma confiable — hay que *espejar* el real desde Spectrum, o *generar* uno local distinto.** (James: validar la regla real contra Spectrum.)
+> **CORRECCIÓN (James, 2026-06-01): la fórmula SÍ es correcta** — `employee_code` = 3 letras del apellido + 3 últimos dígitos de la cédula (ej. `CUC166` = CUCalon, cédula 8-930-2**166**). El reporte original ("falla 84-90%, dígitos intercambiados") fue un **falso negativo por DATA SUCIA**: el agente comparó `employee_code` vs `national_id` y, como el CONTENIDO no está limpio/normalizado (nombres/apellidos, formato cédula, solo ~14% con cédula poblada, no hay columna `apellido`), vio mismatches. **Eso es auditoría de CONTENIDO, no de ESTRUCTURA — y el contenido nunca se ha auditado.** Implicaciones: (1) el código **se puede computar** de apellido+cédula cuando están limpios; (2) **antes** de usarlo como identificador, correr un **workstream de normalización de datos** (split nombre/apellido, formato cédula DGI, backfill, dedup) — ver `DEFERRED-ITEMS.md` "data-hygiene"; (3) la seguridad del §4 NO cambia (sigue siendo un identificador adivinable, nunca credencial).
 
 ## 1. Cómo funciona hoy
 
@@ -21,8 +21,8 @@
 ## 3. Código Spectrum: feasibility + generación
 
 - Vive en `hr.people.employee_code` (UNIQUE, nullable, 184/370 poblados); debería espejar `hr.person_sources(source_system='spectrum', external_id)`. **Nada enforza que coincidan** → trigger de mirror.
-- **Modo A = espejar** el código real de Spectrum (nunca computar). **Modo B = generar código HumanOS-local** (prefijo + secuencia local con índice único + retry/advisory-lock), marcado `source_system='humanos'` (NO Spectrum).
-- Requiere índice único case-insensitive `upper(employee_code)` para login.
+- **Modo A = espejar** el código real desde Spectrum (`person_sources`, la fuente de verdad). **Modo B = computar** `UPPER(left(apellido,3)) || right(cedula,3)` para empleados sin código — **válido SOLO con data limpia** (requiere el workstream data-hygiene primero: apellido separado + cédula formateada). **Modo C = generar local** con secuencia si computar produce colisión, marcado `source_system='humanos'`.
+- Requiere índice único case-insensitive `upper(employee_code)` para login + colisión-handling (CUC166 puede repetirse entre dos CUCalon con mismos 3 dígitos de cédula).
 
 ## 4. Seguridad — reglas no-negociables (3/3 refutaron la versión ingenua)
 
