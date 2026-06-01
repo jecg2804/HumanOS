@@ -87,6 +87,22 @@
       ]
     },
     {
+      "name": "superpowers:brainstorming",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Superpowers brainstorming: convierte una idea en spec validado via dialogo (una pregunta a la vez) y escribe docs/superpowers/specs/. Primera parada del pipeline v2; PARA en el spec hasta aprobacion (no auto-encadena a writing-plans).",
+      "keywords": [
+        "brainstorm", "brainstorming", "disenar", "diseno", "design",
+        "nueva feature", "nuevo feature", "spec", "propuesta de diseno",
+        "como implementamos", "empezar a construir", "explorar opciones"
+      ],
+      "intent_patterns": [
+        "(disenar|design|construir|build|implementar).*?(feature|funcionalidad|sistema|modulo)",
+        "(vamos a|quiero|necesito).*?(crear|construir|hacer).*?(nuevo|nueva)",
+        "(brainstorm|lluvia de ideas)"
+      ]
+    },
+    {
       "name": "superpowers:test-driven-development",
       "enforcement": "high",
       "priority": "high",
@@ -179,6 +195,20 @@
       "intent_patterns": [
         "(revisar|review).*?(codigo|code|PR)",
         "(antes de commit|pre-commit)"
+      ]
+    },
+    {
+      "name": "superpowers:receiving-code-review",
+      "enforcement": "high",
+      "priority": "high",
+      "description": "Superpowers receiving-code-review: como procesar feedback de un review. Triage por severidad, arregla o haz push-back razonado, no aceptes ciegamente. Par de requesting-code-review.",
+      "keywords": [
+        "review feedback", "review comments", "atender review", "responder review",
+        "addressing review", "review findings", "comentarios de review"
+      ],
+      "intent_patterns": [
+        "(atender|procesar|responder|address).*?(review|feedback|comentarios)",
+        "(recibi|llego|tengo).*?(review|feedback)"
       ]
     },
     {

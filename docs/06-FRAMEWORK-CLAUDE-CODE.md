@@ -28,10 +28,18 @@
 - mattpocock skills (project scope, instaladas en `.claude/skills/`): **grill-with-docs**, **handoff**, **diagnose**, **setup-matt-pocock-skills**
 - ICONSA custom skills (project scope, instaladas en `.claude/skills/`): **iconsa-business-rules**, **iconsa-supabase-migration**, **iconsa-rls-validation**, **iconsa-form-implementation**, **iconsa-library-docs-check**
 
-### MCPs activos
+### MCPs y CLI-first (reconciliado audit 2026-05-29, H6/H11)
 
-- A nivel proyecto (`.mcp.json` + `.claude/settings.local.json` `enabledMcpjsonServers`): Context7, Filesystem, GitHub, Resend, Sentry, next-devtools, Puppeteer. **Todos pinned a versión específica desde audit 2026-05-28 Batch 1** (supply-chain hardening — no más `@latest`).
-- A nivel global (settings.json usuario): Supabase plugin (`mcp__plugin_supabase_supabase__*`), Vercel plugin, Playwright plugin, chrome-devtools-mcp plugin, otros via marketplace plugins
+**Política CLI-first:** preferimos CLIs sobre MCPs cuando existe equivalente, porque son más auditables, no consumen tokens de schema y ya están autenticadas:
+
+- **`gh`** (GitHub CLI) reemplaza el GitHub MCP — PRs, issues, branch protection, secrets, CI runs.
+- **`supabase`** CLI para link/dump local; el **Supabase MCP** (`mcp__plugin_supabase_supabase__*`) sigue siendo el camino para `apply_migration`/`execute_sql`/`get_advisors` (no requiere Docker).
+- **`vercel`** CLI para env/deploy/logs (recomendado instalar: `npm i -g vercel`).
+
+**MCPs activos (set honesto):**
+
+- A nivel proyecto (`.mcp.json`): **solo Context7 + next-devtools**. Se DROPPEARON GitHub, Filesystem, Puppeteer, Resend y Sentry MCPs (duplicaban CLIs o no se usaban). Pinned a versión específica (no `@latest`).
+- A nivel global (settings.json usuario, compartido con MovimientOS — NO tocar): Supabase plugin, Vercel plugin, Playwright plugin, chrome-devtools-mcp plugin.
 
 ---
 
@@ -73,16 +81,16 @@ Router en `.claude/skill-rules.json` — hook `user-prompt-submit.ps1` los sugge
 
 ---
 
-## ICONSA subagents (concepto diferido)
+## ICONSA subagents (instalados, H10)
 
-Originalmente planeados 4 subagents bajo `.claude/agents/`. **Estado 2026-05-28**: NO existen aún. La carpeta `.claude/agents/` no se ha creado. Los responsabilidades de cada uno se cubren actualmente por skills + checks manuales:
+**Estado 2026-05-29:** existen 4 subagents en `.claude/agents/`. Se invocan vía la herramienta Agent (`subagent_type`) o desde un Workflow, y mantienen el contexto pesado (queries de catálogo, diffs grandes) FUERA del loop principal:
 
-1. **`security-reviewer`** → cubierto por skill `iconsa-business-rules` + hook `pre-tool-use.ps1` (block schemas/auth.users sin filter)
-2. **`rls-validator`** → cubierto por skill `iconsa-rls-validation`
-3. **`pdf-template-tester`** → diferido hasta E5 PdfEngine en Group 4+
-4. **`form-schema-builder`** → cubierto parcial por skill `iconsa-form-implementation` (workflow SOP-by-SOP, no asistente interactivo)
+1. **`rls-reviewer`** — revisa RLS de tablas nuevas/alteradas (read-only): RLS habilitada, >=1 policy, tablas sensibles R13 owner+hr_admin, helpers en vez de `auth.uid()`, USING/WITH CHECK. Corre `get_advisors` y reporta solo lints nuevos.
+2. **`migration-reviewer`** — revisa un `.sql` de migración contra el checklist (RLS+COMMENT, search_path en SECURITY DEFINER, FK ON DELETE, timestamptz, R1 schemas prohibidos, no UUIDs hardcoded, helper reuse, CHANGELOG).
+3. **`sop-chain-auditor`** — compara el `approval_chain_template` de un tipo de solicitud contra el SOP papel en `docs/sops/` (R26). Reporta pasos faltantes/extra/orden/condiciones.
+4. **`test-runner`** — corre el gate (typecheck/lint/test/build/verify) y reporta solo lo que falla, distinguiendo error vs warning.
 
-Decisión: crear subagents solo si las skills+hooks no bastan a partir de Group 5+ (Forms Cat A masivo).
+Cobertura complementaria: hook `pre-tool-use.ps1` (block schemas/auth.users sin filter) + skill `iconsa-business-rules`. Subagents futuros (pdf-template-tester) se crean cuando lleguen sus features.
 
 ---
 

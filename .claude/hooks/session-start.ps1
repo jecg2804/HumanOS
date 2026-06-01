@@ -1,6 +1,11 @@
 # SessionStart hook - authority framing for HumanOS
 # Fires at start of every Claude Code session.
 # Output to stdout becomes additional context for the model.
+#
+# NOTE (H8): the [HELPER FUNCTIONS] block below is a deliberate safety guardrail
+# (injected every session). The CANONICAL helper list lives in
+# .claude/skills/iconsa-supabase-migration/SKILL.md. If helpers change, update
+# the skill first, then mirror the short list here. pg_proc is the final authority.
 
 $ErrorActionPreference = "Continue"
 

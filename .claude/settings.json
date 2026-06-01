@@ -59,6 +59,18 @@
           }
         ]
       }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell.exe -ExecutionPolicy Bypass -NoProfile -File .claude/hooks/stop.ps1",
+            "timeout": 15
+          }
+        ]
+      }
     ]
   },
   "permissions": {

@@ -71,6 +71,12 @@ CREATE TABLE schema.table_external_ids (
 
 ## Helper functions to reuse (DO NOT REDEFINE)
 
+> **CANONICAL SOURCE (H8).** This block is the single source of truth for the commonly-reused
+> helper signatures. Other files (session-start hook, docs) must link here, not re-list. The LIVE
+> database (`pg_proc`) is the final authority — there are more helpers than the common ones below
+> (~15 functions across the HumanOS schemas); always confirm via a `pg_proc` query before creating
+> a new one.
+
 - `hr.current_person_id() RETURNS uuid` - person_id of current auth.uid()
 - `hr.current_app_role() RETURNS text` - employee | hr_admin | president | admin
 - `hr.is_hr_admin() RETURNS boolean`
