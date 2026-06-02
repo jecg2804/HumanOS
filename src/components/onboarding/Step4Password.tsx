@@ -28,14 +28,15 @@ export function Step4Password({ state, dispatch }: Props) {
         Mínimo 10 caracteres. Usamos una verificación contra bases de contraseñas filtradas — si
         eliges una comprometida, te pediremos otra.
       </p>
+      <label htmlFor="onb-password" className="block text-sm font-medium mb-1">Nueva contraseña</label>
       <input
+        id="onb-password"
         type="password"
         value={state.password}
         onChange={(e) =>
           dispatch({ type: 'SET_FIELD', key: 'password', value: e.target.value })
         }
         minLength={10}
-        autoFocus
         className="w-full p-3 border rounded-md"
       />
       {error && <p role="alert" className="text-sm text-red-600">{error}</p>}

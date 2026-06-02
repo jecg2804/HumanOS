@@ -171,10 +171,11 @@ export function EmployeeForm({
       <input type="hidden" name="office_text" value={values.office_text} />
 
       <div>
-        <label className="block text-sm font-medium mb-1">
+        <label htmlFor="emp-supervisor_id" className="block text-sm font-medium mb-1">
           Supervisor (NULL = Gerencia General)
         </label>
         <select
+          id="emp-supervisor_id"
           name="supervisor_id"
           value={values.supervisor_id}
           onChange={(e) => set('supervisor_id', e.target.value)}
@@ -191,8 +192,9 @@ export function EmployeeForm({
 
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium mb-1">Tipo de contrato</label>
+          <label htmlFor="emp-employment_type_id" className="block text-sm font-medium mb-1">Tipo de contrato</label>
           <select
+            id="emp-employment_type_id"
             name="employment_type_id"
             value={values.employment_type_id}
             onChange={(e) => set('employment_type_id', e.target.value)}
@@ -208,8 +210,9 @@ export function EmployeeForm({
           </select>
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1">Rol HumanOS</label>
+          <label htmlFor="emp-app_role" className="block text-sm font-medium mb-1">Rol HumanOS</label>
           <select
+            id="emp-app_role"
             name="app_role"
             value={values.app_role}
             onChange={(e) =>
@@ -227,7 +230,7 @@ export function EmployeeForm({
 
       {mode === 'create' && (
         <div>
-          <label className="block text-sm font-medium mb-1">
+          <label htmlFor="emp-delivery_target" className="block text-sm font-medium mb-1">
             Correo o teléfono para entregar el código de invitación
           </label>
           <p className="text-xs text-gray-500 mb-1">
@@ -235,6 +238,7 @@ export function EmployeeForm({
             ahí. No improvises uno nuevo.
           </p>
           <input
+            id="emp-delivery_target"
             name="delivery_target"
             value={values.delivery_target}
             onChange={(e) => set('delivery_target', e.target.value)}

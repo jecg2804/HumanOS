@@ -27,7 +27,9 @@ export function Step1Code({ state, dispatch }: Props) {
       <p className="text-gray-700">
         Ingresa el código de 8 caracteres que recibiste de Recursos Humanos.
       </p>
+      <label htmlFor="onb-code" className="block text-sm font-medium mb-1">Código de invitación</label>
       <input
+        id="onb-code"
         type="text"
         value={state.code}
         onChange={(e) =>
@@ -35,7 +37,6 @@ export function Step1Code({ state, dispatch }: Props) {
         }
         placeholder="ABCD1234"
         maxLength={8}
-        autoFocus
         className="w-full text-center text-2xl font-mono tracking-widest p-4 border-2 rounded-md uppercase"
       />
       {error && <p role="alert" className="text-sm text-red-600">{error}</p>}

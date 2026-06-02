@@ -1,11 +1,25 @@
 import nextCoreWebVitals from 'eslint-config-next/core-web-vitals';
 import nextTypescript from 'eslint-config-next/typescript';
+import jsxA11y from 'eslint-plugin-jsx-a11y';
 import noAdminClientInClient from './eslint-rules/no-admin-client-in-client.js';
 import noVoseo from './eslint-rules/no-voseo.js';
 
 const config = [
   ...nextCoreWebVitals,
   ...nextTypescript,
+  // FE-3 (W4): full jsx-a11y recommended RULES as the durable a11y floor (next ships only a subset).
+  // next already REGISTERS the jsx-a11y plugin, so we cannot re-add it ("Cannot redefine plugin") —
+  // we apply its recommended rules on top. Permanent lint gate, like the anti-voseo + no-hex guards.
+  {
+    files: ['src/**/*.{jsx,tsx}'],
+    rules: {
+      ...jsxA11y.flatConfigs.recommended.rules,
+      // Onboarding ack checkboxes wrap the control + a label whose visible text is nested ~2 levels
+      // deep (title/description divs). That is accessible (browsers compute the full label text); the
+      // default depth (2) just doesn't see it. Allow depth 3 — association is still required.
+      'jsx-a11y/label-has-associated-control': ['error', { depth: 3 }],
+    },
+  },
   {
     ignores: [
       '.next/**',

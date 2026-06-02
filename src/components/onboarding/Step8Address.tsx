@@ -62,8 +62,9 @@ export function Step8Address({ state, dispatch }: Props) {
         className="w-full p-3 border rounded"
       />
       <div>
-        <label className="block text-sm font-medium mb-1">Provincia</label>
+        <label htmlFor="onb-province" className="block text-sm font-medium mb-1">Provincia</label>
         <select
+          id="onb-province"
           value={state.address.province}
           onChange={(e) => update('province', e.target.value)}
           className="w-full p-3 border rounded"

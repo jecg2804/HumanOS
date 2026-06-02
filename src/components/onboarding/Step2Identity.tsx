@@ -29,8 +29,9 @@ export function Step2Identity({ state, dispatch }: Props) {
         opcionalmente tu código de empleado.
       </p>
       <div>
-        <label className="block text-sm font-medium mb-1">Cédula o pasaporte</label>
+        <label htmlFor="onb-cedula" className="block text-sm font-medium mb-1">Cédula o pasaporte</label>
         <input
+          id="onb-cedula"
           type="text"
           value={state.cedula}
           onChange={(e) =>
@@ -41,8 +42,9 @@ export function Step2Identity({ state, dispatch }: Props) {
         />
       </div>
       <div>
-        <label className="block text-sm font-medium mb-1">Código de empleado (opcional)</label>
+        <label htmlFor="onb-employee_code" className="block text-sm font-medium mb-1">Código de empleado (opcional)</label>
         <input
+          id="onb-employee_code"
           type="text"
           value={state.employee_code}
           onChange={(e) =>

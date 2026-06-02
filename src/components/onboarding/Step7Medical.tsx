@@ -33,8 +33,9 @@ export function Step7Medical({ state, dispatch }: Props) {
         y RRHH. Útil en caso de emergencia.
       </p>
       <div>
-        <label className="block text-sm font-medium mb-1">Tipo de sangre</label>
+        <label htmlFor="onb-blood_type" className="block text-sm font-medium mb-1">Tipo de sangre</label>
         <select
+          id="onb-blood_type"
           value={state.medical.blood_type ?? ''}
           onChange={(e) => update('blood_type', e.target.value)}
           className="w-full p-3 border rounded"
