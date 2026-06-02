@@ -1,0 +1,11 @@
+-- 067_grant_authenticated_hr_people
+-- SEC/GRANT fix: hr.people was the ONLY hr.* table missing base privileges for the authenticated
+-- role (the other 18 hr tables already had SELECT/INSERT/UPDATE/DELETE). Without the table GRANT,
+-- Postgres denies access BEFORE RLS is even evaluated -> the authenticated app got
+-- "permission denied for table people" -> every HumanOS login failed with "no perfil vinculado"
+-- (the app's authenticated query returned an error, person came back null, redirect to /login?error=no_profile).
+-- RLS policies (people_select / people_insert / people_update / people_delete) already exist and gate
+-- the rows; this only restores the base privilege to match the convention of every other hr.* table.
+-- Discovered 2026-06-02 during the first real end-to-end login test (foundation reality check).
+-- Idempotent.
+GRANT SELECT, INSERT, UPDATE, DELETE ON hr.people TO authenticated;

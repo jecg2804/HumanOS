@@ -13,7 +13,8 @@ function OK { param($t) Write-Host "  [OK] $t" -ForegroundColor Green }
 function NO { param($t) Write-Host "  [--] $t" -ForegroundColor Red }
 function INFO { param($t) Write-Host "  $t" }
 
-$repo = "C:\Users\Jaime Cucalon\Documents\iconsa_apps\HumanOS"
+# Derive repo root from this script location (.claude/hooks/ -> repo root) so it is portable.
+$repo = (Resolve-Path (Join-Path $PSScriptRoot "..\..")).Path
 
 # ============================================================
 H1 "1. CLAUDE CODE CLI"
@@ -119,10 +120,12 @@ H2 "Project files raiz"
     } else { NO "$_ falta" }
 }
 
-H2 "Project docs (14 esperados)"
-$docs = Get-ChildItem "docs/*.md" -ErrorAction SilentlyContinue | Where-Object { $_.Name -match "^\d{2}-" }
-INFO "Total numerados: $($docs.Count)"
-$docs | ForEach-Object { INFO "    - $($_.Name)" }
+H2 "Project docs (topical reference + state, ADR-0024)"
+$refDocs = Get-ChildItem "docs/reference/*.md" -ErrorAction SilentlyContinue
+INFO "docs/reference/: $($refDocs.Count) topical docs"
+@("docs/STATUS.md", "docs/CHANGELOG.md", "docs/CONTEXT.md", "docs/reference/README.md", "docs/adr/README.md") | ForEach-Object {
+    if (Test-Path $_) { OK $_ } else { NO "$_ falta" }
+}
 
 H2 ".claude/ del proyecto"
 if (Test-Path .claude) {
