@@ -13,6 +13,11 @@ source_system IN ('humanos_app', 'payday', 'b2w', 'spectrum', 'manual_entry')
 - **Token app-native = `'humanos_app'`** (NO `'humanos'`). Razón: `'humanos'` choca con el schema **prohibido** `humanos.*` (R1, demo v1 deprecado) y con el token `'humanos_v1'` que vive en `hr.person_sources`. `humanos_app` desambigua: "masterizado por la app HumanOS actual".
 - **Semántica = system-of-record** (qué sistema es dueño/autoritativo de esta fila HOY), NO el origen histórico.
 
+## Mecanismo de enforcement (DOMAIN)
+
+- **Migración 054 (W1 batch 1):** CHECK inline por tabla (13 columnas) — primer aterrizaje del vocabulario.
+- **Migración 057 (W1 batch 4):** se reemplaza el CHECK inline por un único `CREATE DOMAIN mdm.source_system AS text CHECK (...)`. Las 13 columnas pasan a `TYPE mdm.source_system` (conserva `DEFAULT 'humanos_app'` + `NOT NULL`; valores ya válidos → sin rewrite costoso). `audit.log`, `hr.consent` y `audit.access_log` declaran `source_system mdm.source_system` directamente. **Toda columna SoR futura (Groups 5-7, MDM/ETL) usa el DOMAIN** — una sola definición canónica, cero drift. El schema `mdm` (PROVISION-NOW) hospeda el domain + los crosswalks `{entity}_external_ids` futuros.
+
 ## Tres conceptos relacionados, NO intercambiables
 
 1. **`source_system`** (esta decisión) — system-of-record actual. Vocabulario SoR cerrado de arriba. En las tablas master-data de `hr.*` + `hr.leave_*`.

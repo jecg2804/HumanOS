@@ -446,14 +446,14 @@ export async function completeOnboardingAction(
     p_invite_id: input.invite_id,
     p_person_id: input.person_id,
     p_auth_id: authId,
-    p_photo_path: input.photo_path,
+    p_photo_path: input.photo_path ?? undefined,
     p_emergency: input.emergency,
     p_medical: input.medical,
     p_address: input.address,
     p_ack_ethics_at: input.ack_ethics_at,
     p_ack_child_labor_at: input.ack_child_labor_at,
-    p_ip_address: input.ip_address ?? null,
-    p_user_agent: input.user_agent ?? null,
+    p_ip_address: input.ip_address ?? undefined,
+    p_user_agent: input.user_agent ?? undefined,
   });
 
   if (rpcErr) {
