@@ -12,6 +12,7 @@ Use `mcp__supabase__apply_migration` for DDL, `mcp__supabase__execute_sql` for D
 1. **Lee el backlog en `docs/STATUS.md`** (sección backlog con triggers/gate). Si la migración toca un item diferido/bloqueado (p.ej. MIG-DRIFT, una decisión BLOCKED-on-Jaime), resuélvelo o confírmalo con Jaime — NO lo saltes silenciosamente.
 2. **Schema-first:** si la migración cambia la *forma* del esquema (tablas/columnas/policies nuevas), el diseño debe estar aprobado por Jaime antes de aplicar. Verifica el estado vivo de la BD vía Supabase MCP (no asumas) antes de escribir DDL.
 3. **No `supabase db push`** mientras MIG-DRIFT esté abierto (migraciones locales desalineadas con `supabase_migrations`).
+4. **`DROP SCHEMA` en el proyecto compartido (`bzeoszympkkicwlfdtcn`) = STOP por defecto.** PostgREST introspecciona la lista **Exposed schemas** (Dashboard → Settings → API), que **NO es legible por SQL** (`pgrst.db_schemas` da `null` en sesión / no está en el rol `authenticator`). Antes de CUALQUIER `DROP SCHEMA`: (a) confirma con Jaime que el schema NO está en Exposed schemas — un `pgrst.db_schemas` null/no-legible = **STOP, no un OK**; (b) si está expuesto, **quitarlo de Exposed schemas PRIMERO**, luego dropear. El snapshot + 0-FK NO cubre esto (PostgREST introspecciona exposed-schemas, no deps de FK). **Incidente 2026-06-02:** `DROP SCHEMA humanos CASCADE` rompió el schema-cache de PostgREST → 503 en todo `/rest/v1/*` de MovimientOS + HumanOS (auth OK).
 
 ## Definition of Done (obligatorio antes de marcar completo)
 

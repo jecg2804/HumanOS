@@ -19,6 +19,8 @@ Code SÍ modifica (DDL y DML):
 Foundational (cuando integration real lo justifique):
 - `mdm.*`, `etl.*`, `backup.*`
 
+**`DROP SCHEMA` en el proyecto compartido = STOP por defecto (incidente 2026-06-02).** `DROP SCHEMA humanos CASCADE` (W3 SEC-LEGACY) tumbó **MovimientOS**: `humanos` seguía en la lista **Exposed schemas** de PostgREST → al dropearlo, PostgREST no pudo reconstruir su schema-cache (`schema "humanos" does not exist` en loop) → **todo `/rest/v1/*` devolvió 503** (MovimientOS + HumanOS; `auth` siguió OK). El setting Exposed schemas **NO es legible por SQL** (`pgrst.db_schemas` = null en sesión, no está en el rol `authenticator`; es config de servicio/dashboard). **Antes de cualquier `DROP SCHEMA` en `bzeoszympkkicwlfdtcn`:** (1) confirmar con **Jaime** que el schema NO está en Dashboard → Settings → API → Exposed schemas — un `pgrst.db_schemas` null/no-legible = **STOP, no un OK**; (2) quitarlo de Exposed schemas **primero**, luego dropear. Snapshot + 0-FK NO cubre esto (PostgREST introspecciona exposed-schemas, no deps de FK).
+
 ---
 
 ## R2 — RLS obligatorio en toda tabla nueva
