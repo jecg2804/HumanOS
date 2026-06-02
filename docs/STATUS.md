@@ -22,7 +22,7 @@ Orden de dependencia. Detalle de diseño en `docs/work/`.
 | **W0** | Migrar doc-system (reference/ topical · STATUS único · work/_archive · borrar stubs · fix stale · @imports) | **en curso** |
 | **W0.5** | Framework hardening HARDEN-NOW (H-1..H-4 hechos; H-6 en framework.md; **H-5 resuelto:** enforce_admins OFF, ADR-0026) | código hecho |
 | **W1** | BD schema-first — `docs/work/db-final-vision-design.md`. Aprobado por Jaime batch-por-batch. | **DONE** (054-062: foundation + vistas + mdm DOMAIN + pgvector + audit lineage + SEC-CONSENT; MIG-DRIFT + TYPES-STALE; gate verde) |
-| **W2** | DATA-HYGIENE (split nombre/apellido, cédula DGI, backfill, dedup, addresses) | pendiente |
+| **W2** | DATA-HYGIENE — **forma DONE** (063 given/surnames, 064 national_id UNIQUE; audit read-only). Valores (backfill cédula, split, ubicación, dup-merge) + CHECK DGI = gated en data fresca de Samantha + signup → Group 3. Plan: `docs/work/2026-06-02-w2-data-hygiene-plan.md` | **forma DONE** |
 | **W3** | Código/seguridad (válidos de Codex): SEC-CONSENT, SEC-ENQUEUE, SEC-SEQ, CODE-ADMIN-TX, CODE-CRON, SEC-LEGACY, SEC-DEPS, ENV-SROLE, FW-PROXY | pendiente |
 | **W4** | FE-3 a11y full + FE-4 íconos PWA | pendiente |
 | **W5** | Capturar toolstack roadmap en reference/ + enlazar | pendiente |
@@ -53,6 +53,7 @@ Orden de dependencia. Detalle de diseño en `docs/work/`.
 - **Gerencia General ≠ President:** validar con **Samantha** si VP Ferrer / otros gerentes entran en modo `parallel` (diferido v1.1; MVP asume solo Rodrigo).
 - **app_role de Javier Ferrer (FER337):** hoy `admin`, a revisar con Samantha.
 - **FE-4-pwa:** íconos necesitan assets de diseño (logos colocados en raíz por Jaime).
+- **Identidad / username (Group 3 — ITEM DE DISEÑO, NO W2):** el modelo de auth NO es la cédula. username = `employee_code` (código Spectrum, p.ej. CUC166; 98% en activos) y/o correo de empresa; falta diseñar el link `user`↔`persona`. La cédula es un **campo de perfil** que el empleado llena/actualiza en onboarding (no es llave de auth). **Revisitar R14** (triple-validación con `national_id`) dado el gap de cédula (134 activos sin) — diseño de signup por el pipeline (brainstorm→grill→plan), NO se resuelve en W2. El backfill de cédula se cubre en onboarding + data de Samantha; no bloquea la puerta de entrada.
 
 ## 5. Hechos operacionales
 
@@ -89,9 +90,9 @@ Orden de dependencia. Detalle de diseño en `docs/work/`.
 | DB-VISION-C | Columnas de compensación + custom-fields (EAV/JSONB) + completar performance/learning. YAGNI hasta la feature | mine | P3 | OPEN | DB-structure | Groups 5-7 |
 | BL-3..7 | Modos de approval-chain en `docs/adr/0020`. BL-2 ya decidido | both | P2 | BLOCKED-on-Jaime | docs | Group 6 (president-gated) |
 | SIGNUP-formula | `employee_code` (3 letras apellido + 3 cédula, p.ej. CUC166) **CONFIRMADA correcta** por Jaime; el "84-90% failure" fue falso-negativo por data sucia, no por la fórmula. Manejar colisiones con índice único + secuencia local | mine | P2 | OPEN | DB-data | Group 3 (signup) |
-| DATA-HYGIENE | Normalización de CONTENIDO (nunca auditado): split nombre/apellido (no hay columna `apellido`), formato cédula DGI, backfill cédula (poblada parcialmente — % vivo en BD), dedup, addresses. Bloquea computar `employee_code` + cédula-como-identidad | mine | P2 | OPEN | DB-data | Group 3 (signup, W2) |
+| DATA-HYGIENE | Normalización de CONTENIDO. **Forma DONE (W2: 063 given/surnames, 064 national_id UNIQUE; audit read-only).** Valores DIFERIDOS/gated → Group 3: backfill cédula (data Samantha + signup), split de valores (Opción B), ubicación (Prov/Distrito/Correg, vocab Samantha), merge de 6 dup ` 2`. Plan: `docs/work/2026-06-02-w2-data-hygiene-plan.md` | mine | P2 | PARTIAL (forma done, valor gated) | DB-data | Group 3 (signup) |
 | SIGNUP-guardrails | 11 reglas de seguridad no-negociables de signup (advisory §4; 3/3 reviewers refutaron la versión naive) | mine | P2 | OPEN | security | Group 3 (signup) |
-| SIGNUP-datamodel | `national_id` UNIQUE + CHECK DGI; link `employee_code`↔`person_sources`; índice único CI | mine | P2 | OPEN | DB-structure | Group 3 (signup) |
+| SIGNUP-datamodel | **`national_id` UNIQUE DONE (W2 064).** CHECK DGI DIFERIDO (soft-flag `needs_review`; validar variantes E-/pasaporte/asiento-corto con Samantha); link `employee_code`↔`person_sources` | mine | P2 | PARTIAL | DB-structure | Group 3 (signup) |
 | SIGNUP-session-bug | `completeOnboardingAction` aprovisiona pero NO crea sesión → rebota a /login | mine | P2 | OPEN | code | Group 3 (signup) |
 | SIGNUP-phone | Onboarding mintea `auth.users` por teléfono pero login es email-only → cuentas no-logueables | mine | P2 | OPEN | code | Group 3 (signup) |
 | FE-3-full | a11y comprehensivo (keyboard nav, contraste, ARIA en todo interactivo); baseline hecho | mine | P3 | OPEN | FE | W4 |

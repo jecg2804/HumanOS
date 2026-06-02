@@ -6,6 +6,18 @@ Cambios por feature/grupo. Formato: conventional commits + entries `[bd]` para m
 
 Group 3 (Profile + KB) en planning. Ver `reference/mvp-scope.md` F6-F9.
 
+### W2 — DATA-HYGIENE (estructura; audit read-only, 2026-06-02)
+
+- **Audit read-only** (cero mutaciones) de `hr.people`/`addresses`/`contacts`: 370 personas (184 activos); cédula `national_id` 14% poblada (134 activos sin), formato DGI limpio + variantes VÁLIDAS (E-/pasaporte `AY######`/asiento corto); `full_name` campo único limpio (77% 2 tokens, sin `first_name`/`last_name`); 0 dups por cédula/nombre **pero** 6 inactivos con sufijo ` 2` = dup-person enmascarado (ej. "Hector Pino 2"); `external_data` de `person_sources` vacío → no hay fuente interna de cédula; addresses `province` 0/128 + `city` inconsistente (case/tildes/semántica); contacts `is_emergency`=0. Perfil + plan: `docs/work/2026-06-02-w2-data-hygiene-plan.md`.
+- `[bd] 063_add_given_surnames_to_people` — split estructural: `given_names`/`surnames` (nullable, COMMENT) en `hr.people`. Forma ahora; valores por revisión asistida de HR (NO auto-split, flag `needs_review`); `full_name` sigue siendo el display SoR. Aditiva, no muta data.
+- `[bd] 064_national_id_unique_index` — UNIQUE parcial normalizado (`upper(btrim(national_id))` WHERE not-null) sobre `hr.people` (SIGNUP-datamodel). 0 dups → seguro. CHECK de formato DGI **DIFERIDO** (soft-flag `needs_review`) hasta validar variantes con Samantha (las "edge" son identidades válidas).
+- **Diferido/gated** (NO se ejecuta ahora; snapshot `backup.*` antes de cualquier UPDATE de valor): backfill de cédula (data fresca de Samantha + captura en signup), split de valores (Opción B), normalización de ubicación (Provincia/Distrito/Corregimiento, vocab Samantha), merge de dup ` 2`.
+- advisors security/performance: **0 nuevos en nuestros schemas** (los lints existentes son `public.*`/`humanos.*` legacy + `requests.sequences` intencional).
+
+### Doc-hygiene + modelo de trabajo (2026-06-02, commit 71b7160)
+
+- **ADR-0026** — modelo de trabajo: diseño atendido + ejecución de plan aprobado sin interrupción (retira "overnight autónomo", aspiracional/nunca real). Reframe de `framework`/`vision`/`mvp-scope` (sin cambio de scope; promise `MVP_COMPLETE`→`PLAN_COMPLETE`). Rename owner James→Jaime en docs vivos + harness + comentarios de código. CLAUDE.md §Promise + Constitution §5.6 apuntan a ADR-0026.
+
 ### W1 — BD foundation (schema-first, 2026-06-02)
 
 - **MIG-DRIFT resuelto:** los 7 archivos locales `047..053` renombrados a `<timestamp>_NNN_*.sql` para alinear con las versiones del remote (`supabase_migrations`); `db push` ya no los re-aplica.
