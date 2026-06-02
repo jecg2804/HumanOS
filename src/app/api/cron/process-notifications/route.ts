@@ -110,17 +110,23 @@ export async function GET(request: Request) {
 
     // Transient (retryable) failures: a Resend send error keeps the row pending until exhausted.
     try {
-      const { error: sendErr } = await resend.emails.send({
-        from: process.env.RESEND_FROM_EMAIL,
-        to: [recipientEmail],
-        ...(replyTo ? { replyTo } : {}),
-        subject: row.subject ?? '',
-        react: Template((row.template_variables as Record<string, unknown>) ?? {}),
-      });
+      // CODE-CRON (true at-most-once): a stable per-row idempotency key means a re-send after a failed
+      // status-write (or crash/overlap) is deduped by Resend within its 24h window, so the email is
+      // delivered at most once even though the row may be retried. Verified via Context7 (resend v6).
+      const { error: sendErr } = await resend.emails.send(
+        {
+          from: process.env.RESEND_FROM_EMAIL,
+          to: [recipientEmail],
+          ...(replyTo ? { replyTo } : {}),
+          subject: row.subject ?? '',
+          react: Template((row.template_variables as Record<string, unknown>) ?? {}),
+        },
+        { idempotencyKey: `outbox/${row.id}` }
+      );
 
       if (sendErr) throw new Error(sendErr.message);
 
-      await supabase
+      const { error: sentErr } = await supabase
         .schema('notifications')
         .from('outbox')
         .update({
@@ -130,6 +136,15 @@ export async function GET(request: Request) {
           last_attempt_at: new Date().toISOString(),
         })
         .eq('id', row.id);
+      // Email WAS sent. If the status-write fails the row stays 'pending' and is re-selected next tick;
+      // the idempotencyKey makes that re-send a Resend no-op and the status converges to 'sent'. Log
+      // loudly so a persistent DB-write failure is visible instead of silent (CODE-CRON).
+      if (sentErr) {
+        console.error(
+          `[cron] sent-update failed for ${row.id} (email sent; converges via idempotency):`,
+          sentErr.message
+        );
+      }
       sent++;
     } catch (err) {
       const exhausted = await markRetryable(
@@ -154,7 +169,7 @@ async function markPermanent(
   message: string,
   attempts: number
 ) {
-  await supabase
+  const { error } = await supabase
     .schema('notifications')
     .from('outbox')
     .update({
@@ -164,6 +179,7 @@ async function markPermanent(
       last_attempt_at: new Date().toISOString(),
     })
     .eq('id', id);
+  if (error) console.error(`[cron] markPermanent update failed for ${id}:`, error.message);
 }
 
 // Transient failure: keep 'pending' for the next tick unless attempts exhausted max_attempts,
@@ -176,7 +192,7 @@ async function markRetryable(
   maxAttempts: number
 ): Promise<boolean> {
   const exhausted = attempts >= maxAttempts;
-  await supabase
+  const { error } = await supabase
     .schema('notifications')
     .from('outbox')
     .update({
@@ -186,5 +202,6 @@ async function markRetryable(
       last_attempt_at: new Date().toISOString(),
     })
     .eq('id', id);
+  if (error) console.error(`[cron] markRetryable update failed for ${id}:`, error.message);
   return exhausted;
 }
