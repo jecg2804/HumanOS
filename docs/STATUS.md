@@ -100,7 +100,7 @@ Orden de dependencia. Detalle de diseño en `docs/work/`.
 | SIGNUP-session-bug | `completeOnboardingAction` aprovisiona pero NO crea sesión → rebota a /login | mine | P2 | OPEN | code | Group 3 (signup) |
 | SIGNUP-phone | Onboarding mintea `auth.users` por teléfono pero login es email-only → cuentas no-logueables | mine | P2 | OPEN | code | Group 3 (signup) |
 | FE-3-full | a11y comprehensivo (keyboard nav, contraste, ARIA en todo interactivo); baseline hecho | mine | P3 | OPEN | FE | W4 |
-| FE-4-pwa | Íconos PWA + offline real (service worker); baseline (manifest+viewport) hecho; íconos necesitan assets | mine | P3 | BLOCKED-on-Jaime (assets) | FE | W4 |
+| FE-4-pwa | **DONE (W4):** iconos PWA generados (sharp, marca ICONSA navy/gold sobre **blanco** — el logo es navy/gold transp., blanco confirmado por Jaime): `public/icon-192/512/maskable-512` + `app/icon.png`/`apple-icon.png`/`favicon.ico`; manifest `icons[]` + `metadata.appleWebApp`. Build auto-linkea `/icon.png` `/apple-icon.png` `/manifest.webmanifest`. Offline/SW FUERA de scope | mine | P3 | DONE | FE | — |
 | S1-S4 | ADR de re-secuencia de groups + First Usable Release scope + conteo honesto (~33 unidades) + reframe Decisión #5 (en vision.md) | mine | P3 | OPEN | docs | pre-Group-3 (planning) |
 | D-docs-resto | Folds menores de docs aún abiertos (slim de prosa CLAUDE.md, headers de 3 líneas pendientes, demote info ya hecho) | mine | P3 | OPEN | docs | pasada docs |
 

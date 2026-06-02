@@ -18,6 +18,8 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: 'HumanOS - ICONSA',
   description: 'Portal interno de Recursos Humanos ICONSA',
+  // FE-4: iOS standalone PWA. app/icon.png + app/apple-icon.png + app/favicon.ico are auto-linked by Next.
+  appleWebApp: { capable: true, title: 'HumanOS', statusBarStyle: 'default' },
 };
 
 // FE-4: mobile rendering + theme color. (app/manifest.ts is auto-linked by Next.)

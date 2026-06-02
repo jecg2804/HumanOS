@@ -6,6 +6,10 @@ Cambios por feature/grupo. Formato: conventional commits + entries `[bd]` para m
 
 Group 3 (Profile + KB) en planning. Ver `reference/mvp-scope.md` F6-F9.
 
+### W4 — FE (PWA icons + a11y, 2026-06-02)
+
+- `[fe]` **FE-4 PWA icons:** generados con sharp desde el logo VERT ICONSA (navy+gold) sobre fondo **blanco** (el logo es navy/gold sobre transparente → invisible en navy; blanco confirmado por Jaime). `public/icon-192x192.png` + `public/icon-512x512.png` (`any`) + `public/icon-maskable-512x512.png` (`maskable`, contenido en la zona segura central); `src/app/icon.png` (512) + `src/app/apple-icon.png` (180) + `src/app/favicon.ico` (32, ICO con PNG embebido — sin ImageMagick). Wire: `manifest.ts` `icons[]` + `layout.tsx` `metadata.appleWebApp` (themeColor se queda en viewport). Build auto-linkea `/icon.png` `/apple-icon.png` `/manifest.webmanifest`. Offline/service-worker FUERA de scope (Next no trae SW). Gate verde (tsc + lint + 67 vitest + build).
+
 ### W3 — Código/seguridad (audit-closing, batch-por-batch, 2026-06-02)
 
 - `[bd] 065_revoke_enqueue_from_authenticated` — **SEC-ENQUEUE (P1):** `notifications.enqueue` (SECURITY DEFINER) era EXECUTE-able por `authenticated` → un usuario logueado podía encolar notificaciones a cualquier `recipient_id` (spoof/spam). `REVOKE EXECUTE ... FROM authenticated, anon, public` (ACL post: `postgres` + `service_role`). Verificado: todos los callers de prod usan el admin client service-role (`onboarding/actions.ts` + cron worker); REVOKE no rompe nada. **+** `import 'server-only'` en `src/lib/notifications/insert.ts` (defensa: no se bundlea client-side) + alias `server-only`→`empty.js` en `vitest.config.ts` (jsdom, su `index.js` lanza). Gate verde: tsc + lint + 67 vitest + build. Mismo patrón que 044/055.
