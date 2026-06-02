@@ -26,7 +26,7 @@
     ],
     "PreToolUse": [
       {
-        "matcher": "mcp__plugin_supabase_supabase__(apply_migration|execute_sql|deploy_edge_function)|mcp__supabase__(apply_migration|execute_sql|deploy_edge_function)|Bash|Edit|Write",
+        "matcher": "mcp__.*[Ss]upabase.*__(apply_migration|execute_sql|deploy_edge_function)|Bash|Edit|Write",
         "hooks": [
           {
             "type": "command",
@@ -38,7 +38,7 @@
     ],
     "PostToolUse": [
       {
-        "matcher": "Edit|Write|mcp__plugin_supabase_supabase__apply_migration|mcp__supabase__apply_migration",
+        "matcher": "Edit|Write|mcp__.*[Ss]upabase.*__apply_migration",
         "hooks": [
           {
             "type": "command",
