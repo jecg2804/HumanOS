@@ -1,0 +1,289 @@
+- generic [active] [ref=e1]:
+  - main [ref=e71]:
+    - generic [ref=e73]:
+      - generic [ref=e74]:
+        - button [ref=e75] [cursor=pointer]:
+          - img [ref=e76]
+        - link "COMPANY_LOGO_ALT" [ref=e77] [cursor=pointer]:
+          - /url: /
+          - img "COMPANY_LOGO_ALT" [ref=e79]
+      - generic [ref=e80]:
+        - button "Add People" [ref=e81] [cursor=pointer]:
+          - img [ref=e83]
+          - text: Add People
+        - link "Admin" [ref=e87] [cursor=pointer]:
+          - /url: https://admin.humand.co
+        - link [ref=e88] [cursor=pointer]:
+          - /url: https://help.humand.co/hc/en-us?utm_source=platform&utm_medium=humandwebEN
+          - img [ref=e89]
+        - button [ref=e92] [cursor=pointer]:
+          - img [ref=e93]
+        - button "0" [ref=e97] [cursor=pointer]:
+          - generic [ref=e98]:
+            - img [ref=e99]
+            - generic: "0"
+        - button "SK" [ref=e102] [cursor=pointer]:
+          - generic [ref=e104]: SK
+    - generic [ref=e109]:
+      - list [ref=e110]:
+        - listitem [ref=e111]:
+          - link "Feed" [ref=e112] [cursor=pointer]:
+            - /url: /feed
+            - img [ref=e114]
+            - generic [ref=e118]: Feed
+        - listitem [ref=e119]:
+          - button "Groups" [ref=e120] [cursor=pointer]:
+            - img [ref=e122]
+            - generic [ref=e130]: Groups
+        - listitem [ref=e131]:
+          - link "Magazine" [ref=e132] [cursor=pointer]:
+            - /url: /news
+            - img [ref=e134]
+            - generic [ref=e137]: Magazine
+        - listitem [ref=e138]:
+          - link "Chats" [ref=e139] [cursor=pointer]:
+            - /url: /conversations
+            - img [ref=e141]
+            - generic [ref=e145]: Chats
+        - listitem [ref=e146]:
+          - link "Knowledge libraries" [ref=e147] [cursor=pointer]:
+            - /url: /library
+            - img [ref=e149]
+            - generic [ref=e156]: Knowledge libraries
+        - listitem [ref=e157]:
+          - link "Events" [ref=e158] [cursor=pointer]:
+            - /url: /events
+            - img [ref=e160]
+            - generic [ref=e164]: Events
+        - listitem [ref=e165]:
+          - link "Service portal" [ref=e166] [cursor=pointer]:
+            - /url: /service-portal
+            - img [ref=e168]
+            - generic [ref=e172]: Service portal
+        - listitem [ref=e173]:
+          - link "Kudos" [ref=e174] [cursor=pointer]:
+            - /url: /acknowledgements
+            - img [ref=e176]
+            - generic [ref=e181]: Kudos
+        - listitem [ref=e182]:
+          - link "Forms and Tasks" [ref=e183] [cursor=pointer]:
+            - /url: /forms
+            - img [ref=e185]
+            - generic [ref=e189]: Forms and Tasks
+        - listitem [ref=e190]:
+          - link "Time off" [ref=e191] [cursor=pointer]:
+            - /url: /vacations
+            - img [ref=e193]
+            - generic [ref=e196]: Time off
+        - listitem [ref=e197]:
+          - link "Performance" [ref=e198] [cursor=pointer]:
+            - /url: /performance
+            - img [ref=e200]
+            - generic [ref=e205]: Performance
+        - listitem [ref=e206]:
+          - link "Goals" [ref=e207] [cursor=pointer]:
+            - /url: /goals
+            - img [ref=e209]
+            - generic [ref=e216]: Goals
+        - listitem [ref=e217]:
+          - link "People" [ref=e218] [cursor=pointer]:
+            - /url: /people
+            - img [ref=e220]
+            - generic [ref=e226]: People
+        - listitem [ref=e227]:
+          - link "Org chart" [ref=e228] [cursor=pointer]:
+            - /url: /org-chart
+            - img [ref=e230]
+            - generic [ref=e236]: Org chart
+        - listitem [ref=e237]:
+          - link "Files" [ref=e238] [cursor=pointer]:
+            - /url: /files
+            - img [ref=e240]
+            - generic [ref=e244]: Files
+        - listitem [ref=e245]:
+          - generic [ref=e248]:
+            - button "Learning" [ref=e249] [cursor=pointer]
+            - list [ref=e258]
+        - listitem [ref=e274]:
+          - link "Onboarding New" [ref=e275] [cursor=pointer]:
+            - /url: /employee-lifecycle/onboardings
+            - img [ref=e277]
+            - generic [ref=e280]: Onboarding
+            - generic [ref=e283]: New
+        - listitem [ref=e284]:
+          - link "Tasks New" [ref=e285] [cursor=pointer]:
+            - /url: /employee-lifecycle/tasks
+            - img [ref=e287]
+            - generic [ref=e291]: Tasks
+            - generic [ref=e294]: New
+        - listitem [ref=e295]:
+          - link "Onboarding" [ref=e296] [cursor=pointer]:
+            - /url: /onboarding
+            - img [ref=e298]
+            - generic [ref=e301]: Onboarding
+        - listitem [ref=e302]:
+          - generic [ref=e305]:
+            - button "People Experience" [ref=e306] [cursor=pointer]
+            - list [ref=e317]
+        - listitem [ref=e326]:
+          - link "Surveys 16" [ref=e327] [cursor=pointer]:
+            - /url: /surveys
+            - img [ref=e329]
+            - generic [ref=e334]: Surveys
+            - generic [ref=e335]: "16"
+        - listitem [ref=e336]:
+          - link "My documents" [ref=e337] [cursor=pointer]:
+            - /url: /documents
+            - img [ref=e339]
+            - generic [ref=e343]: My documents
+        - listitem [ref=e344]:
+          - link "Marketplace" [ref=e345] [cursor=pointer]:
+            - /url: /marketplace
+            - img [ref=e347]
+            - generic [ref=e351]: Marketplace
+        - listitem [ref=e352]:
+          - button "Quick links" [ref=e353] [cursor=pointer]:
+            - img [ref=e355]
+            - generic [ref=e360]: Quick links
+      - generic [ref=e361]:
+        - separator [ref=e362]
+        - generic [ref=e363]:
+          - img [ref=e364]
+          - generic [ref=e366]: Built with love by
+          - img "Humand logo" [ref=e367]
+    - generic [ref=e375]:
+      - button "Key updates" [ref=e378] [cursor=pointer]:
+        - generic [ref=e381]:
+          - img [ref=e383]
+          - generic [ref=e388]: Key updates
+        - img [ref=e390]
+      - generic [ref=e392]:
+        - generic [ref=e393]: Feed
+        - generic [ref=e394]:
+          - button "Search" [ref=e395] [cursor=pointer]:
+            - img [ref=e397]
+            - generic [ref=e400]: Search
+          - button [ref=e401] [cursor=pointer]:
+            - img [ref=e403]
+      - generic [ref=e406]:
+        - generic [ref=e410]:
+          - generic [ref=e411]:
+            - generic [ref=e412]
+            - generic [ref=e419]
+          - textbox [ref=e433]:
+            - paragraph [ref=e434]: Write something...
+          - generic [ref=e435]:
+            - generic [ref=e436]
+            - generic [ref=e459]
+        - button "Celebrations" [ref=e471] [cursor=pointer]:
+          - generic [ref=e473]: Celebrations
+          - img [ref=e475]
+      - generic [ref=e478]:
+        - generic [ref=e481]:
+          - generic [ref=e482]:
+            - link "Ingeniería Continental Comunicaciones" [ref=e484] [cursor=pointer]:
+              - /url: /profile/7853597
+            - generic [ref=e486]
+            - button "Post menu" [ref=e496] [cursor=pointer]
+          - generic [ref=e501]:
+            - generic [ref=e503]
+            - generic [ref=e508]
+        - generic [ref=e561]:
+          - generic [ref=e562]:
+            - link "Ingeniería Continental Comunicaciones" [ref=e564] [cursor=pointer]:
+              - /url: /profile/7853597
+            - generic [ref=e566]
+            - button "Post menu" [ref=e576] [cursor=pointer]
+          - generic [ref=e581]:
+            - generic [ref=e583]
+            - generic [ref=e586]
+        - generic [ref=e621]:
+          - generic [ref=e622]:
+            - link "Ingeniería Continental Comunicaciones" [ref=e624] [cursor=pointer]:
+              - /url: /profile/7853597
+            - generic [ref=e626]
+            - button "Post menu" [ref=e636] [cursor=pointer]
+          - generic [ref=e641]:
+            - generic [ref=e643]
+            - generic [ref=e646]
+        - generic [ref=e698]:
+          - generic [ref=e699]:
+            - link "Ingeniería Continental Comunicaciones" [ref=e701] [cursor=pointer]:
+              - /url: /profile/7853597
+            - generic [ref=e703]
+            - button "Post menu" [ref=e713] [cursor=pointer]
+          - generic [ref=e718]:
+            - generic [ref=e720]
+            - generic [ref=e723]
+        - generic [ref=e757]:
+          - generic [ref=e758]:
+            - link "Ingeniería Continental Comunicaciones" [ref=e760] [cursor=pointer]:
+              - /url: /profile/7853597
+            - generic [ref=e762]
+            - button "Post menu" [ref=e772] [cursor=pointer]
+          - generic [ref=e777]:
+            - generic [ref=e779]
+            - generic [ref=e782]
+        - generic [ref=e818]:
+          - generic [ref=e819]:
+            - link "Ingeniería Continental Comunicaciones" [ref=e821] [cursor=pointer]:
+              - /url: /profile/7853597
+            - generic [ref=e823]
+            - button "Post menu" [ref=e833] [cursor=pointer]
+          - generic [ref=e838]:
+            - generic [ref=e840]
+            - generic [ref=e843]
+        - generic [ref=e879]:
+          - generic [ref=e880]:
+            - link "Ingeniería Continental Comunicaciones" [ref=e882] [cursor=pointer]:
+              - /url: /profile/7853597
+            - generic [ref=e884]
+            - button "Post menu" [ref=e894] [cursor=pointer]
+          - generic [ref=e899]:
+            - paragraph [ref=e902]: "Nuestro año finaliza con grandes resultados de la mano de Triunfo Seguros: nos conectamos, compartimos, nos actualizamos... Esperamos un 2024 con nuevos desafíos para cumplir juntos!!"
+            - generic [ref=e903]
+        - generic [ref=e939]:
+          - generic [ref=e940]:
+            - link "Ingeniería Continental Comunicaciones" [ref=e942] [cursor=pointer]:
+              - /url: /profile/7853597
+            - generic [ref=e944]
+            - button "Post menu" [ref=e954] [cursor=pointer]
+          - generic [ref=e959]:
+            - generic [ref=e961]
+            - generic [ref=e964]
+        - generic [ref=e1000]:
+          - generic [ref=e1001]:
+            - link "Ingeniería Continental Comunicaciones" [ref=e1003] [cursor=pointer]:
+              - /url: /profile/7853597
+            - generic [ref=e1005]
+            - button "Post menu" [ref=e1015] [cursor=pointer]
+          - generic [ref=e1020]:
+            - generic [ref=e1022]
+            - generic [ref=e1025]
+        - generic [ref=e1061]:
+          - generic [ref=e1062]:
+            - link "Ingeniería Continental Comunicaciones" [ref=e1064] [cursor=pointer]:
+              - /url: /profile/7853597
+            - generic [ref=e1066]
+            - button "Post menu" [ref=e1076] [cursor=pointer]
+          - generic [ref=e1081]:
+            - generic [ref=e1083]
+            - generic [ref=e1087]
+  - generic:
+    - generic:
+      - button "open chat" [ref=e1122]:
+        - generic [ref=e1123]:
+          - img
+          - img "open chat"
+      - generic:
+        - generic:
+          - generic:
+            - generic
+            - generic
+            - generic
+            - generic
+          - generic:
+            - paragraph: Privacy notice
+            - paragraph: Before we can proceed with your conversation, we kindly ask you to review and accept our privacy policy, outlining how we handle and protect your personal information throughout our services.
+            - button "Submit"
+            - button "Privacy policy"

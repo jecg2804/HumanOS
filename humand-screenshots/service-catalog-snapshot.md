@@ -1,0 +1,128 @@
+- generic [active] [ref=e1]:
+  - main [ref=e5]:
+    - generic [ref=e306]:
+      - generic [ref=e437]:
+        - button [ref=e438] [cursor=pointer]:
+          - img [ref=e439]
+        - generic [ref=e443]: Service catalog
+      - separator [ref=e444]
+      - generic [ref=e445]:
+        - generic [ref=e448]:
+          - generic [ref=e449]: Categories
+          - generic [ref=e450]:
+            - generic [ref=e451] [cursor=pointer]:
+              - img [ref=e453]
+              - generic [ref=e458]: All
+            - generic [ref=e459] [cursor=pointer]:
+              - img [ref=e461]
+              - generic [ref=e467]: Consultas IT
+            - generic [ref=e468] [cursor=pointer]:
+              - img [ref=e470]
+              - generic [ref=e474]: Documentos
+            - generic [ref=e475] [cursor=pointer]:
+              - img [ref=e477]
+              - generic [ref=e480]: Equipo de trabajo
+            - generic [ref=e481] [cursor=pointer]:
+              - img [ref=e483]
+              - generic [ref=e488]: Finanzas
+            - generic [ref=e489] [cursor=pointer]:
+              - img [ref=e491]
+              - generic [ref=e496]: Generales
+            - generic [ref=e497] [cursor=pointer]:
+              - img [ref=e499]
+              - generic [ref=e502]: Indumentaria
+            - generic [ref=e503] [cursor=pointer]:
+              - img [ref=e505]
+              - generic [ref=e508]: Jornada laboral
+            - generic [ref=e509] [cursor=pointer]:
+              - img [ref=e511]
+              - generic [ref=e514]: Mantenimiento
+            - generic [ref=e515] [cursor=pointer]:
+              - img [ref=e517]
+              - generic [ref=e521]: Marketing
+            - generic [ref=e522] [cursor=pointer]:
+              - img [ref=e524]
+              - generic [ref=e530]: Personal
+            - generic [ref=e531] [cursor=pointer]:
+              - img [ref=e533]
+              - generic [ref=e538]: Reclutamiento
+            - generic [ref=e539] [cursor=pointer]:
+              - img [ref=e541]
+              - generic [ref=e545]: Referidos
+            - generic [ref=e546] [cursor=pointer]:
+              - img [ref=e548]
+              - generic [ref=e554]: Traslados
+        - generic [ref=e556]:
+          - generic [ref=e557]:
+            - generic [ref=e558]:
+              - generic [ref=e559]:
+                - generic [ref=e561]: Service items
+                - generic [ref=e563]: Select the service item you want to start. You can search by name or filter by one of the available categories.
+              - group [ref=e564]:
+                - button [pressed] [ref=e565] [cursor=pointer]
+                - button [ref=e571] [cursor=pointer]
+            - generic [ref=e576]:
+              - img [ref=e578]
+              - textbox "Search request" [ref=e581]
+              - group
+          - generic [ref=e582]:
+            - generic [ref=e583]: All
+            - generic [ref=e585]:
+              - button "Actualización de Datos Personales Complete este formulario para actualizar sus datos personales en los registros de la empre..." [ref=e588] [cursor=pointer]:
+                - generic [ref=e592]
+              - button "Actualización de datos personales Actualiza tus datos de contacto como dirección, teléfono o correo electrónico." [ref=e597] [cursor=pointer]:
+                - generic [ref=e599]
+              - button "Afiliación de nuevo empleado Solicita la afiliación del nuevo empleado y su registro en nuestra base de datos" [ref=e606] [cursor=pointer]:
+                - generic [ref=e608]
+              - button "Almuerzo Semanal Sistematizar el pedido de almuerzos semanales de cada empleado según las opciones disponib..." [ref=e615] [cursor=pointer]:
+                - generic [ref=e619]
+              - button "Alta de seguro de vida Solicite el alta del seguro de vida provisto por la empresa. Puede adicionar a su familia ..." [ref=e624] [cursor=pointer]:
+                - generic [ref=e626]
+              - button "Alta de software para nuevo empleado Para instalar licencias y configuraciones de aplicaciones." [ref=e633] [cursor=pointer]:
+                - generic [ref=e637]
+              - button "Cambio de turno definitivo Le solicitamos completar el siguiente formulario para llevar a cabo su solicitud de cambio..." [ref=e642] [cursor=pointer]:
+                - generic [ref=e644]
+              - button "Canal de denuncias Puedes enviar una queja o denuncia de forma segura a través de este servicio" [ref=e651] [cursor=pointer]:
+                - generic [ref=e653]
+              - button "Carta de Renuncia Complete este formulario si desea presentar su renuncia a la empresa. Indique su nombre y ..." [ref=e660] [cursor=pointer]:
+                - generic [ref=e664]
+              - button "Certificado de empleo Solicita un documento oficial que acredite tu puesto y antigüedad en la empresa." [ref=e669] [cursor=pointer]:
+                - generic [ref=e671]
+              - button "Consultas generales El servicio de consultas generales del portal ofrece a los usuarios una vía rápida para re..." [ref=e678] [cursor=pointer]:
+                - generic [ref=e680]
+              - button "Declaración Jurada de Domicilio Formulario de Declaración Jurada de Domicilio destinado a capturar la ubicación física del..." [ref=e687] [cursor=pointer]:
+                - generic [ref=e689]
+  - generic:
+    - generic:
+      - button "open chat" [ref=e430]:
+        - generic [ref=e431]:
+          - img
+          - img "open chat"
+      - generic:
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic: Sammy
+                - generic
+            - generic:
+              - generic:
+                - button "Start new chat"
+              - generic:
+                - generic
+                - generic
+            - generic:
+              - button "Start new chat Restart conversation"
+              - button "Cancel Cancel"
+            - generic:
+              - button "Restart conversation":
+                - generic
+                - generic: Restart conversation
+          - generic:
+            - paragraph: Privacy notice
+            - paragraph: Before we can proceed with your conversation, we kindly ask you to review and accept our privacy policy, outlining how we handle and protect your personal information throughout our services.
+            - button "Submit"
+            - button "Privacy policy":
+              - generic:
+                - generic
+                - generic: Privacy policy
