@@ -30,6 +30,7 @@ Arranque de sesión: **`CLAUDE.md` (raíz) → `docs/STATUS.md`**. El pipeline j
 | [integrations.md](integrations.md) | Infraestructura LIVE ICONSA (Resend/Sentry/Vercel/Supabase). Planned/ETL → `../future/13-INTEGRATIONS-PLANNED.md` |
 | [compliance-ley81.md](compliance-ley81.md) | Cumplimiento Ley 81/2019 (R27). DRAFT pendiente revisión legal |
 | [toolstack-roadmap.md](toolstack-roadmap.md) | Roadmap de herramientas/servicios por fase (paridad líderes de mercado) |
+| [security-dependency-exceptions.md](security-dependency-exceptions.md) | Excepciones de `npm audit` aceptadas (sin fix no-breaking) + triggers de retiro (W3 SEC-DEPS) |
 
 ## Estado, decisiones, vocabulario
 
