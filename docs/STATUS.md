@@ -23,8 +23,8 @@ Orden de dependencia. Detalle de diseño en `docs/work/`.
 | **W0.5** | Framework hardening HARDEN-NOW (H-1..H-4 hechos; H-6 en framework.md; **H-5 resuelto:** enforce_admins OFF, ADR-0026) | código hecho |
 | **W1** | BD schema-first — `docs/work/db-final-vision-design.md`. Aprobado por Jaime batch-por-batch. | **DONE** (054-062: foundation + vistas + mdm DOMAIN + pgvector + audit lineage + SEC-CONSENT; MIG-DRIFT + TYPES-STALE; gate verde) |
 | **W2** | DATA-HYGIENE — **forma DONE** (063 given/surnames, 064 national_id UNIQUE; audit read-only). Valores (backfill cédula, split, ubicación, dup-merge) + CHECK DGI = gated en data fresca de Samantha + signup → Group 3. Plan: `docs/work/2026-06-02-w2-data-hygiene-plan.md` | **forma DONE** |
-| **W3** | Código/seguridad (válidos de Codex): SEC-CONSENT, SEC-ENQUEUE, SEC-SEQ, CODE-ADMIN-TX, CODE-CRON, SEC-LEGACY, SEC-DEPS, ENV-SROLE, FW-PROXY | pendiente |
-| **W4** | FE-3 a11y full + FE-4 íconos PWA | pendiente |
+| **W3** | Código/seguridad (válidos de Codex): SEC-CONSENT, SEC-ENQUEUE, SEC-SEQ, CODE-ADMIN-TX, CODE-CRON, SEC-LEGACY, SEC-DEPS, ENV-SROLE, FW-PROXY | **DONE salvo CODE-ADMIN-TX** — SEC-CONSENT/SEC-SEQ ya cerrados en W1 (057-060/055); SEC-ENQUEUE (065), CODE-CRON, SEC-LEGACY (066, **con incidente prod §5**), SEC-DEPS, ENV-SROLE, FW-PROXY + HOOK-MCP-GAP esta sesión (`01a6355`..`fdbe665`+`c198b4e`). **CODE-ADMIN-TX sigue OPEN** (backlog §6, pre-Group-3) — NO se cerró esta sesión |
+| **W4** | FE-3 a11y full + FE-4 íconos PWA | **PARTIAL** — FE-4 PWA DONE (`29bdb67`) + FE-3 guard/labels DONE (`48fde02`); **FE-3 part 2 (manual ARIA) → sesión fresca** (itemizado en §6 row `FE-3-full`) |
 | **W5** | Capturar toolstack roadmap en reference/ + enlazar | pendiente |
 | **→ Group 3** | Perfil/directorio/KB + signup, ATENDIDO por el pipeline | pendiente |
 
