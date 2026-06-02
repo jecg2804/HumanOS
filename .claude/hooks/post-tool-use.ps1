@@ -104,15 +104,15 @@ try {
     }
 
     # SQL migration reminders (always fire, cheap)
-    # P2.16 fix: handle both bare and plugin-namespaced apply_migration tool names
-    if ($toolName -eq "mcp__supabase__apply_migration" -or $toolName -eq "mcp__plugin_supabase_supabase__apply_migration") {
+    # HOOK-MCP-GAP fix: match ANY supabase MCP namespace (claude_ai_Supabase, plugin, bare) via wildcard
+    if ($toolName -match "mcp__.*supabase.*__apply_migration") {
         Write-Output ""
         Write-Output "<post_migration_reminders>"
         Write-Output "After applying migration, verify:"
         Write-Output "1. RLS habilitada en cada tabla nueva (ALTER TABLE ... ENABLE ROW LEVEL SECURITY)"
         Write-Output "2. COMMENT ON TABLE + COMMENT ON COLUMN poblados"
         Write-Output "3. Golden record: external_ids table + _source column si aplica"
-        Write-Output "4. Run the Supabase advisors tool (mcp__plugin_supabase_supabase__get_advisors) to catch policy/security issues"
+        Write-Output "4. Run the Supabase advisors tool (get_advisors) to catch policy/security issues"
         Write-Output "</post_migration_reminders>"
     }
 

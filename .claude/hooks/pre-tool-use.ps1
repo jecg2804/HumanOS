@@ -19,7 +19,10 @@ try {
     # ============================================================
     # CHECK 1: Supabase MCP writes
     # ============================================================
-    if ($toolName -match "mcp__(plugin_supabase_supabase|supabase)__(apply_migration|execute_sql|deploy_edge_function)") {
+    # HOOK-MCP-GAP fix: wildcard matches ANY supabase MCP namespace (claude_ai_Supabase,
+    # plugin_supabase_supabase, bare supabase, and any future namespace). Enumerating prefixes
+    # was the root cause of the bypass. -match is case-insensitive.
+    if ($toolName -match "mcp__.*supabase.*__(apply_migration|execute_sql|deploy_edge_function)") {
         $sql = ""
         if ($toolInput.query) { $sql = $toolInput.query.ToString() }
         if ($toolInput.body) { $sql = $sql + " " + $toolInput.body.ToString() }
@@ -66,6 +69,19 @@ try {
                     exit 2
                 }
             }
+        }
+
+        # ----------------------------------------------------------
+        # CHECK 1a-bis: schema-level DROP of a prohibited schema.
+        # DROP SCHEMA public CASCADE is catastrophic (nukes MovimientOS) and is NOT
+        # caught by CHECK 1a (which keys on a trailing dot, e.g. public.foo).
+        # ----------------------------------------------------------
+        if ($sqlLower -match 'drop\s+schema\s+(if\s+exists\s+)?(public|payroll|humanos)(\s|;|$)') {
+            $msg = "BLOCKED: DROP SCHEMA of a prohibited schema detected.`n"
+            $msg += "Prohibited: public (MovimientOS), payroll (Jaime payroll), humanos (legacy v1).`n"
+            $msg += "Dropping these is catastrophic or cross-owner. Requires an explicit human-approved exception (run it manually).`n"
+            [Console]::Error.WriteLine($msg)
+            exit 2
         }
 
         # ----------------------------------------------------------
