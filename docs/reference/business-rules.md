@@ -71,17 +71,14 @@ ChainResolver NO incluye lógica de threshold para PRESTAMO. Content educativo D
 
 ## R5 — No self-approval
 
-**CRITICAL. Constraint a nivel BD + validación en ApprovalEngine.**
+**CRITICAL. Validación en CÓDIGO (ApprovalEngine), NO constraint a nivel BD.** (Alineado con Constitution §4 R5.)
 
 Aprobador NO puede aprobar su propia solicitud:
 - Si Samantha (hr_admin) hace una solicitud, otra hr_admin la procesa
 - Si Rodrigo (president) hace una solicitud que requiere president, queda pendiente con flag manual o se omite step president
 - Si supervisor hace una solicitud (es employee), su jefe (otro supervisor) aprueba
 
-Constraint propuesto en `requests.approvals`:
-```sql
-CHECK (approver_id != (SELECT requester_id FROM requests.tickets WHERE id = ticket_id))
-```
+**Por qué en código y NO en BD:** `requests.approvals` no tiene columna `requester_id` (el requester vive en `requests.tickets`), y un `CHECK` de Postgres NO admite subqueries cross-tabla. El constraint que se proponía históricamente — `CHECK (approver_id != (SELECT requester_id FROM requests.tickets WHERE id = ticket_id))` — es **SQL inválido** además de violar esta separación. El ApprovalEngine valida `approver_id != requester_id` (y `delegated_to_id != requester_id`) antes de persistir cada approval. **NO agregar ningún CHECK de auto-aprobación a `requests.approvals`.**
 
 ---
 

@@ -6,6 +6,11 @@ Cambios por feature/grupo. Formato: conventional commits + entries `[bd]` para m
 
 Group 3 (Profile + KB) en planning. Ver `reference/mvp-scope.md` F6-F9.
 
+### W1 — BD foundation (schema-first, 2026-06-02)
+
+- **MIG-DRIFT resuelto:** los 7 archivos locales `047..053` renombrados a `<timestamp>_NNN_*.sql` para alinear con las versiones del remote (`supabase_migrations`); `db push` ya no los re-aplica.
+- `[bd] 054_foundation_lifecycle_columns` — FOUNDATION-NOW: soft-delete + system-of-record lineage + higiene de `updated_at`. `deleted_at` en 22 tablas de dominio (hr/requests/docs/workflows; no logs, no v2, no `*_versions`); `deleted_by` solo en 6 tablas personales/Ley-81 (decisión James #1); `source_system` (token canónico **`humanos_app`** + CHECK `humanos_app|payday|b2w|spectrum|manual_entry`) en las 9 entidades master-data de `hr` + alineación de `hr.leave_*` (047 usaba `'humanos'`, ahora `humanos_app`); `updated_at`+trigger (reusa `hr.touch_updated_at`) en 6 tablas que faltaban + **fix de `hr.user_settings`** (tenía `updated_at` SIN trigger = columna muerta). Todas las columnas nuevas con COMMENT. Aditivo, idempotente; migration-reviewer corrido. NO toca RLS (el predicado `deleted_at IS NULL` se hornea en Group 4) ni `person_sources` (vocabulary de origen distinta). Token SoR decidido en ADR-0025.
+
 ### Foundation hardening 2026-06-01 (sesión Code — W0 doc-system + W0.5 framework)
 
 #### Doc-system (W0, ADR-0024)

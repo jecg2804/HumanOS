@@ -127,7 +127,7 @@ Las 27 reglas R1-R27 viven en `docs/reference/business-rules.md`. Highlights non
 
 **7.2 Jaime Cucalón** es product owner / architect. Decisión técnica final. NO escribe código de producción.
 
-**7.3 Un solo set de docs** en `docs/` (numerados + CONTEXT + ADRs), NO separado por audiencia. Cualquier agente (implementer o reviewer) lee el mismo set; el implementer ejecuta vía `apply_migration` / `execute_sql` sobre schemas permitidos (hook valida).
+**7.3 Un solo set de docs** en `docs/` (topicales en `reference/` + CONTEXT + ADRs, ver ADR-0024), NO separado por audiencia. Cualquier agente (implementer o reviewer) lee el mismo set; el implementer ejecuta vía `apply_migration` / `execute_sql` sobre schemas permitidos (hook valida).
 
 **7.4 HumanOS NO es producto comercial**. App interna ICONSA. NO es SaaS multi-tenant. Arquitectura optimiza para 1 tenant.
 

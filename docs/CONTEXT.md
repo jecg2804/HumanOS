@@ -22,6 +22,18 @@ _Avoid_: case, issue
 Conjunto completo de data de una persona: `hr.people` + `hr.employments` (history SCD-2) + `hr.contacts` + `hr.addresses` + `hr.medical_info` + `hr.personal_documents` + uploads. NO es ticket.
 _Avoid_: profile (es subset visible en `/perfil`), file
 
+**source_system** (system-of-record):
+Que sistema es dueno/autoritativo de una fila HOY. Vocabulario canonico cerrado: `humanos_app | payday | b2w | spectrum | manual_entry`. `humanos_app` = masterizado por la app HumanOS (NO el schema prohibido `humanos.*`). En tablas master-data de `hr.*` + `hr.leave_*`. Ver ADR-0025.
+_Avoid_: 'humanos' (choca con el schema prohibido humanos.*); confundirlo con origen o con created_from.
+
+**origen / lineage** (`hr.person_sources.source_system`):
+De DONDE vino historicamente el dato de una persona. Vocabulario PROPIO y distinto del SoR: `movimientos | excel_samantha | payday | spectrum | manual | humanos_v1 | onboarding`. Incluye `humanos_v1` (demo deprecado) porque registra procedencia. NO se le aplica el CHECK de SoR.
+_Avoid_: mezclarlo con `source_system` (dueno actual != procedencia historica).
+
+**created_from** (`hr.people`/`hr.employments`):
+Provenance app-level de COMO se creo la fila en la app (onboarding/admin/migracion). Se conserva junto a `source_system` (semanticas distintas; podria deprecarse mas adelante, no ahora).
+_Avoid_: usarlo como system-of-record.
+
 **request_number**:
 Identificador legible auto-generado formato `HUM-{YYYY}-{NNNN}` con reset anual. Generacion atomica via `requests.sequences`. R17.
 _Avoid_: ticket_id (UUID interno), case_number

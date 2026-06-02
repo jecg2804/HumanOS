@@ -34,8 +34,9 @@ context / alternatives rejected / risks).
 | 0022 | Admin viewer approval chains F39 (read-only MVP) | `0022-admin-viewer-approval-chains.md` |
 | 0023 | Eliminar app_role 'supervisor' (propiedad emergente) | `0023-eliminate-app-role-supervisor.md` |
 | 0024 | Sistema de docs: reference/ topical + STATUS único + work/_archive | `0024-doc-system-topical-living-docs.md` |
+| 0025 | Vocabulario canónico de source_system (SoR `humanos_app` vs origen) | `0025-source-system-canonical-vocabulary.md` |
 
-New ADRs continue from **0025**.
+New ADRs continue from **0026**.
 
 ## History: the legacy `docs/08-ADRs.md` ledger (merged 2026-06-01)
 

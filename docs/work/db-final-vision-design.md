@@ -3,6 +3,13 @@
 **Status: PROPUESTA — pendiente de ratificación por James. Diseño, NO migraciones por aplicar.**
 Fecha: 2026-06-01 · Proyecto `bzeoszympkkicwlfdtcn` (HumanOS) · PG 17.6 · Live DB compartida con MovimientOS.
 
+> **CORRECCIONES DE VALIDACION (2026-06-01, sesion validadora) — LEER ANTES DE ESCRIBIR LAS MIGRACIONES `requests.approvals` / `requests.sequences` / triggers `updated_at`:**
+> 1. **NO agregar un CHECK anti-self-approval a `requests.approvals`** (anula la parte CHECK de FOUNDATION #5). R5 se valida en el ApprovalEngine (codigo), NO en BD: Constitution §4 R5 + business-rules R5 lo prohiben explicitamente. Ademas es imposible como CHECK: `requests.approvals` no tiene `requester_id` (el requester vive en `requests.tickets`; un CHECK no cruza tablas). Mantener SOLO `updated_at` + trigger.
+> 2. **`requests.next_sequence()` YA EXISTE y es SECURITY DEFINER con `search_path=''`** (migracion 050; CONFIRMADO en vivo) — NO re-crearla. Como bypassa RLS, **"el primer ticket falla" es FALSO**: el bumper ya funciona. El trabajo real de #4 NO es "agregar el bumper" sino el item de backlog **SEC-SEQ**: la funcion tiene `EXECUTE` para `authenticated` (cualquiera puede quemar la numeracion) -> `REVOKE EXECUTE ... FROM authenticated` o guard interno. La policy de `sequences` es opcional (solo si algo lee la tabla directo, cosa que el bumper SECURITY DEFINER hace innecesaria).
+> 3. **Los triggers `updated_at` usan `hr.touch_updated_at()`** (ya existe; ya usado por `leave_*`), NO `extensions.moddatetime` (no instalado). Constitution §1.5 obliga a reusar helpers.
+>
+> Verificado en vivo contra `bzeoszympkkicwlfdtcn` el 2026-06-01 (views=0, pgvector ausente, mdm/etl/backup ausentes, deleted_at solo en leave_policies/leave_assignments/files.uploads, sequences RLS-on/sin-policy, next_sequence presente, touch_updated_at presente, moddatetime ausente).
+
 Insumos: `supabase/schemas/humanos_baseline.sql` (60 tablas / 9 schemas), spec `2026-05-29-db-vision-design.md`, `reference/mvp-scope.md` (Groups 3-7), `future/11-MDM-PRINCIPLES.md` + `future/12-SOR-MATRIX.md`, `reference/business-rules.md`, y verificación en vivo del catálogo (columnas, vistas, extensiones, advisors).
 
 ## 0. Estado verificado en vivo (no asumido)
@@ -14,7 +21,7 @@ Insumos: `supabase/schemas/humanos_baseline.sql` (60 tablas / 9 schemas), spec `
 - **`source_system`:** solo en la familia `hr.leave_*` (4 tablas) y `hr.person_sources`. El resto usa `created_from` ad-hoc (`hr.people`, `hr.employments`) o nada.
 - **`deleted_by`:** solo `files.uploads`.
 - **`updated_at` faltante** en tablas mutables que lo necesitarán al escalar: `hr.invite_codes`, `requests.approvals`, `requests.revisions`, `requests.watchers` (las append-heavy y los logs append-only correctamente NO lo tienen).
-- **Advisor de seguridad relevante a nuestro scope:** `requests.sequences` tiene RLS habilitada **sin policy** (rls_enabled_no_policy) — coincide con el pre-requisito de Group 4 ya anotado en MVP-SCOPE (falta el `SECURITY DEFINER` bumper + policy). Los demás security lints son de `public.*`/`humanos.*` (otras apps, fuera de R1).
+- **Advisor de seguridad relevante a nuestro scope:** `requests.sequences` tiene RLS habilitada **sin policy** (rls_enabled_no_policy) — coincide con el pre-requisito de Group 4 ya anotado en MVP-SCOPE. (CORRECCION validacion: el `SECURITY DEFINER` bumper `requests.next_sequence()` YA existe — migracion 050; falta SOLO la policy.) Los demás security lints son de `public.*`/`humanos.*` (otras apps, fuera de R1).
 - **Advisor de performance — multiple_permissive_policies: 8 ocurrencias en nuestros schemas** (lo que marcó Codex), todas por el mismo patrón (ver categoría 7).
 
 > Implicación: el spec previo `2026-05-29` ya capturó bien el ledger de vacaciones y las convenciones de fundación. Este doc lo extiende con lo que faltaba enumerar: VIEWS (categoría 3), provisiones AI/RAG (5), analytics/eventos (6) y la corrección RLS de Codex (7).
@@ -34,8 +41,8 @@ Forma: columna simple (NO el dual `is_deleted`+`deleted_at` de `files.uploads`, 
 **Clasificacion: FOUNDATION-NOW.** Razon: caro de retrofitear (predicados de borrado hay que backfillearlos en cada policy y query ya escrita); fija ahora "sin hard-deletes en tablas de dominio" (auth.users sigue siendo la excepcion R2). Aplica a `hr.*`, `requests.tickets/comments/watchers`, `docs.*`, `workflows.*`. NO a logs append-only (`audit.log`, `requests.audit_log`, `hr.leave_ledger`).
 **[James decision]** ¿`deleted_by` obligatorio en todas, o solo en tablas con datos personales/Ley 81?
 
-### 1.2 `updated_at` mantenido por trigger (`extensions.moddatetime`) en toda tabla mutable
-Forma: un `BEFORE UPDATE` trigger por tabla; reusar helper si `pg_proc` ya tiene uno (R5). Agregar la columna donde falta (1.0).
+### 1.2 `updated_at` mantenido por trigger (`hr.touch_updated_at()`) en toda tabla mutable
+Forma: un `BEFORE UPDATE` trigger por tabla usando `hr.touch_updated_at()` (YA existe en BD — verificado en vivo; ya usado por `leave_*`). **NO** usar `extensions.moddatetime` (no instalado). Reusar el helper es obligatorio (Constitution §1.5). Agregar la columna donde falta (1.0).
 **Clasificacion: FOUNDATION-NOW.** Razon: `updated_at` autoritativo server-side = comparador LWW para sync futuro; es la base de cualquier proyeccion/vista incremental; trivial ahora, tedioso de auditar tabla-por-tabla despues.
 
 ### 1.3 `source_system text NOT NULL DEFAULT 'humanos'` (CHECK `humanos|payday|b2w|spectrum|manual_entry`) en tablas de dominio nuevas/canonicas
@@ -55,10 +62,10 @@ Forma: default SQL puro `uuidv7()` (PG 17.6 no lo trae nativo; PG18 si, swap sin
 
 ### 2.1 Requests / Forms engine (Group 4-5) — `requests.*`
 Tablas centrales existen (`tickets`, `types`, `approvals`, `revisions`, `comments`, `watchers`, `sequences`). Gaps:
-- **`requests.sequences`: agregar policy + `requests.next_sequence(seq_type) SECURITY DEFINER`** (bumper atomico R17). Hoy RLS sin policy -> el primer ticket falla.
-  **FOUNDATION-NOW.** Razon: bloqueante de Group 4; ya en el checklist de MVP-SCOPE.
-- **`requests.approvals`: agregar `updated_at` + trigger; CHECK anti-self-approval (R5)** `approver_id <> requester del ticket`.
-  **FOUNDATION-NOW.** Razon: R5 es critical y a nivel BD; barato antes del primer write.
+- **`requests.sequences`: agregar policy.** (CORRECCION validacion: `requests.next_sequence()` YA EXISTE — migracion 050; NO re-crearla. Verificar si es SECURITY DEFINER: si bypassa RLS, el bumper ya funciona y "el primer ticket falla" no aplica.) Hoy RLS sin policy.
+  **FOUNDATION-NOW** (solo la policy / verificacion). Razon: bloqueante de Group 4 si algo lee `sequences` directo; ya en el checklist de MVP-SCOPE.
+- **`requests.approvals`: agregar `updated_at` + trigger.** (CORRECCION validacion: **NO** agregar CHECK anti-self-approval — R5 se valida en el ApprovalEngine/codigo, NO en BD, por Constitution §4 R5 + business-rules R5; ademas `approvals` no tiene `requester_id` asi que un CHECK cross-tabla es imposible.)
+  **FOUNDATION-NOW** (solo `updated_at`+trigger). Razon: `approvals` no tiene `updated_at` y sus filas se actualizan al decidir; R5 sigue en codigo.
 - **Estado de aprobacion paralelo:** el `approval_state` JSONB por step (R24) puede vivir en `requests.tickets` (ya hay `form_data` JSONB) — NO requiere tabla nueva.
   **PROVISION-NOW** (documentar que vive inline, no crear tabla). Razon: evitar tabla especulativa; el engine la materializa en runtime.
 - **SLA/escalation tracking** (cron que vence SLAs): `tickets.sla_deadline` ya existe; falta solo el worker.
@@ -142,7 +149,7 @@ Market-leaders tienen un event stream para audit fino, "quién vio qué", funnel
 ## 7. Correccion RLS / policies / schemas expuestos + warnings de Codex
 
 ### 7.1 `requests.sequences` — RLS habilitada SIN policy (security advisor confirmado)
-Resultado: con RLS on y cero policies, todo acceso queda denegado -> el primer `next_sequence` falla. Fix: `requests.next_sequence() SECURITY DEFINER` (bypassa RLS) + policy SELECT minima si se lee directo.
+Resultado: con RLS on y cero policies, todo acceso directo queda denegado. (CORRECCION validacion: `requests.next_sequence()` YA existe — 050. Si es `SECURITY DEFINER`, bypassa RLS y el primer ticket NO falla; el fix se reduce a agregar una policy SELECT minima si algo lee `sequences` directo. Verificar el contexto de la funcion antes de asumir bloqueo.)
 **FOUNDATION-NOW.** Razon: bloqueante de Group 4; ya en el checklist.
 
 ### 7.2 multiple_permissive_policies — 8 tablas en nuestros schemas (warning de Codex CONFIRMADO)
@@ -166,8 +173,8 @@ Verificar que `performance.*`/`learning.*`/`workflows.*` (scaffolding sin RLS-po
 1. `deleted_at` (+`deleted_by`) single-col + indice parcial + "no hard-delete" horneado en RLS/capa de datos (1.1).
 2. `updated_at` por trigger `moddatetime` en toda tabla mutable, agregando la columna donde falta (1.2).
 3. `source_system` inline en tablas de dominio que toca Group 3-4 (1.3).
-4. `requests.sequences`: policy + `next_sequence() SECURITY DEFINER` bumper (2.1 / 7.1).
-5. `requests.approvals`: `updated_at`+trigger + CHECK anti-self-approval R5 (2.1).
+4. `requests.sequences`: agregar policy (la funcion `next_sequence()` YA existe — 050; verificar su `SECURITY DEFINER`) (2.1 / 7.1).
+5. `requests.approvals`: `updated_at`+trigger. **SIN** CHECK anti-self-approval — R5 se queda en el ApprovalEngine/codigo (2.1).
 6. `hr.leave_*`: `deleted_by` + trigger `updated_at` + write-RPC del balance (2.5).
 7. Vistas `hr.v_directory` + `hr.v_org_chart` con `security_invoker` (3) — consumidas por F8/F34 de Group 3.
 8. Corregir las 8 `multiple_permissive_policies` (split `FOR ALL` -> por-accion) (7.2).
