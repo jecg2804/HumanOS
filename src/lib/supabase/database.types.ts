@@ -2310,6 +2310,33 @@ export type Database = {
         }
         Returns: undefined
       }
+      create_employee_with_invite: {
+        Args: {
+          p_actor_id?: string
+          p_app_role?: string
+          p_delivery_target?: string
+          p_department_id?: string
+          p_department_text?: string
+          p_employee_code?: string
+          p_employment_type_id?: string
+          p_full_name: string
+          p_hire_date?: string
+          p_invite_code?: string
+          p_invite_method?: string
+          p_national_id: string
+          p_office_id?: string
+          p_office_text?: string
+          p_position_id?: string
+          p_position_text?: string
+          p_supervisor_id?: string
+        }
+        Returns: {
+          new_expires_at: string
+          new_invite_code: string
+          new_invite_id: string
+          new_person_id: string
+        }[]
+      }
       current_app_role: { Args: never; Returns: string }
       current_person_id: { Args: never; Returns: string }
       find_auth_user_by_identifier: {

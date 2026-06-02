@@ -70,67 +70,49 @@ export async function createEmployeeAction(
   }
 
   const admin = createSupabaseAdminClient();
-
-  const { data: person, error: personErr } = await admin
-    .schema('hr')
-    .from('people')
-    .insert({
-      full_name: parsed.data.full_name,
-      national_id: parsed.data.national_id,
-      employee_code: parsed.data.employee_code || null,
-      status: 'Activo',
-      created_from: 'manual',
-    })
-    .select('id, full_name')
-    .single();
-  if (personErr || !person) {
-    return { ok: false, message: `Insert hr.people falló: ${personErr?.message}` };
-  }
-
-  const { error: empErr } = await admin
-    .schema('hr')
-    .from('employments')
-    .insert({
-      person_id: person.id,
-      position_id: parsed.data.position_id || null,
-      position_text: parsed.data.position_text || null,
-      department_id: parsed.data.department_id || null,
-      department_text: parsed.data.department_text || null,
-      office_id: parsed.data.office_id || null,
-      office_text: parsed.data.office_text || null,
-      supervisor_id: parsed.data.supervisor_id || null,
-      hire_date: parsed.data.hire_date,
-      app_role: parsed.data.app_role,
-      employment_type_id: parsed.data.employment_type_id,
-      created_from: 'manual',
-    });
-  if (empErr) return { ok: false, message: `Insert hr.employments falló: ${empErr.message}` };
-
-  await admin.schema('hr').from('user_settings').insert({ person_id: person.id });
-
   const code = generateInviteCode();
-  const { data: invite, error: invErr } = await admin
+
+  // CODE-ADMIN-TX: one atomic SECURITY DEFINER RPC (migration 068/070/071) instead of 4 separate
+  // non-transactional PostgREST writes. A partial failure used to leave a corrupted record (orphan
+  // person, person without invite, or a silently-failed user_settings insert); now it is
+  // all-or-nothing. hr.user_settings is created by the AFTER INSERT trigger on hr.people, so it is
+  // NOT passed here. Empty optional fields are sent as undefined (RPC param defaults to NULL).
+  const { data: created, error } = await admin
     .schema('hr')
-    .from('invite_codes')
-    .insert({
-      code,
-      person_id: person.id,
-      generated_by: actorPersonId,
-      invite_method: parsed.data.delivery_target.includes('@') ? 'email' : 'whatsapp',
-      delivery_target: parsed.data.delivery_target,
+    .rpc('create_employee_with_invite', {
+      p_full_name: parsed.data.full_name,
+      p_national_id: parsed.data.national_id,
+      p_employee_code: parsed.data.employee_code || undefined,
+      p_position_id: parsed.data.position_id || undefined,
+      p_position_text: parsed.data.position_text || undefined,
+      p_department_id: parsed.data.department_id || undefined,
+      p_department_text: parsed.data.department_text || undefined,
+      p_office_id: parsed.data.office_id || undefined,
+      p_office_text: parsed.data.office_text || undefined,
+      p_supervisor_id: parsed.data.supervisor_id || undefined,
+      p_hire_date: parsed.data.hire_date,
+      p_app_role: parsed.data.app_role,
+      p_employment_type_id: parsed.data.employment_type_id,
+      p_actor_id: actorPersonId,
+      p_invite_code: code,
+      p_invite_method: parsed.data.delivery_target.includes('@') ? 'email' : 'whatsapp',
+      p_delivery_target: parsed.data.delivery_target,
     })
-    .select('id, code, expires_at')
     .single();
-  if (invErr || !invite) {
-    return { ok: false, message: `Insert invite falló: ${invErr?.message}` };
+
+  if (error || !created) {
+    return {
+      ok: false,
+      message: `No se pudo crear el empleado: ${error?.message ?? 'error desconocido'}`,
+    };
   }
 
   return {
     ok: true,
     data: {
-      person_id: person.id,
-      invite_code: invite.code,
-      expires_at: invite.expires_at,
+      person_id: created.new_person_id,
+      invite_code: created.new_invite_code,
+      expires_at: created.new_expires_at,
       delivery_target: parsed.data.delivery_target,
     },
   };
