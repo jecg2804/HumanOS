@@ -163,7 +163,7 @@ Status: **placeholder**. Detalle por completar.
    - Agregar a esta matriz columnas/notas relevantes
    - Agregar a CHECK constraint de `{entity}_external_ids.system`
    - Agregar a CHECK constraint de `_source` en tablas canónicas
-   - Documentar en `../13-INTEGRATIONS-INDEX.md` (LIVE) o `future/13-INTEGRATIONS-PLANNED.md`
+   - Documentar en `../reference/integrations.md` (LIVE) o `future/13-INTEGRATIONS-PLANNED.md`
 
 3. **Cuando se agrega nueva entidad canónica**:
    - Sección nueva en este doc

@@ -4,7 +4,25 @@ Cambios por feature/grupo. Formato: conventional commits + entries `[bd]` para m
 
 ## [Unreleased]
 
-Group 3 (Profile + KB) en planning. Ver `02-MVP-SCOPE.md` F6-F9.
+Group 3 (Profile + KB) en planning. Ver `reference/mvp-scope.md` F6-F9.
+
+### Foundation hardening 2026-06-01 (sesión Code — W0 doc-system + W0.5 framework)
+
+#### Doc-system (W0, ADR-0024)
+
+- **reference/ topical:** renombrados (git mv, historia preservada) los numerados `01..14` → `docs/reference/{vision,mvp-scope,domain,business-rules,framework,schemas-permisos,integrations,compliance-ley81}.md`; `00-INDEX` → `reference/README.md` reescrito como índice del sistema.
+- **STATUS.md único:** colapsados los 6 docs de estado solapados (`09-ESTADO-ACTUAL`, `DEFERRED-ITEMS`, `AUDITS-PENDING-CONSOLIDATED`, `AUDIT-HANDOFF`, 2 handoffs) en `docs/STATUS.md` (fase + decisiones + blockers + backlog con triggers/gate + hechos operacionales). Preservado el gate no-saltable del pipeline + las decisiones ratificadas.
+- **work/_archive:** archivados `DOC-SYSTEM-PROPOSAL`, `NEXT-SESSION-START-HERE`, `consolidated-backlog`, el spec `docs-restructure-plan`. Borrados los stubs `03-ROADMAP`/`10-HANDOFF` + `HANDOFF.json` (gitignored ephemeral).
+- **Cross-refs + stale:** repuntados todos los `@imports`/links inbound (CLAUDE.md, PROJECT_CONSTITUTION, hooks `pre-tool-use`/`session-start`, skill `iconsa-business-rules`, `globals.css`, `docs/future/*`, `docs/sops/README`, `toolstack-roadmap`). Fix stale: GitHub URL → `jecg2804/HumanOS`; R1-R26 → R1-R27 (CLAUDE.md + Constitution + framework); Constitution §1.2 schema-list 9 → 12 (+ mdm/etl/backup) + highlight R27; purgados conteos/invite-codes hardcodeados (BD = fuente de verdad). Creado `AGENTS.md` (entry delgado para Codex).
+
+#### Framework hardening (W0.5, HARDEN-NOW)
+
+- **H-1:** pre-flight (gate del backlog + acceptance-criteria-as-tests) + Definition-of-Done en los SKILL bodies `iconsa-form-implementation` e `iconsa-supabase-migration`.
+- **H-2:** guard de encoding R23 en `post-tool-use.ps1` — advierte (exit 0) BOM en `.json/.ps1/.md/.ts/.tsx/.css` o bytes no-ASCII en `.ps1`.
+- **H-3:** `iconsa/no-voseo` escalado `warn` → `error` (lint confirmó voseo count = 0).
+- **H-4:** router (`user-prompt-submit.ps1`) con word-boundary para keywords cortas alfabéticas + denylist, en vez de `.Contains()` (elimina falsos positivos tipo `form`→"informacion").
+- **H-6:** corregido doc-vs-realidad del Stop hook en `framework.md` (decía "No implementado"; es advisory verify-reminder implementado).
+- **H-5 (acción de James):** branch protection — exigir checks en push directo / trabajar por PR para runs desatendidos + poblar secrets del job `build`. Documentado en STATUS.md §5.
 
 ### Audit remediation 2026-06-01 (sesión Code — terminar cambios de auditoría)
 

@@ -48,7 +48,7 @@ ICONSA tiene **1 dev (Jaime)** haciendo full-stack + data engineering. Adopt MDM
 **Estrategia adoptada**:
 
 1. **Documentar principios desde día 1** (este doc) — sirve como spec/contract para todo trabajo subsiguiente
-2. **Aplicar gradualmente** — empezar con guard rails operativos (`docs/05-BUSINESS-RULES.md` R22, hook `PreToolUse`) que previenen el peor daño
+2. **Aplicar gradualmente** — empezar con guard rails operativos (`../reference/business-rules.md` R22, hook `PreToolUse`) que previenen el peor daño
 3. **Build canonical schemas a medida que cada integration real lo justifica** — Skydata primera, después Spectrum, después PayDay
 4. **Aceptar deuda técnica documentada en lugar de over-engineering ahora** — ver ADRs en `docs/adr/` (especialmente `0014-mdm-gradual-no-big-bang.md`) con triggers explícitos para reabrir
 
@@ -292,7 +292,7 @@ Ver `docs/adr/0012-auth-multi-app-allowed-apps.md` (multi-app via allowed_apps).
 - `auth.users.app_metadata.allowed_apps text[]` declara apps accesibles por user
 - Middleware de cada app verifica `allowed_apps` antes de permitir login
 - RLS policies en tablas pueden referenciar `auth.jwt()->'app_metadata'->'allowed_apps'`
-- Destructive ops en `auth.users` REQUIEREN filter por `allowed_apps` (R22 en `05-BUSINESS-RULES.md`)
+- Destructive ops en `auth.users` REQUIEREN filter por `allowed_apps` (R22 en `../reference/business-rules.md`)
 
 ---
 
@@ -300,7 +300,7 @@ Ver `docs/adr/0012-auth-multi-app-allowed-apps.md` (multi-app via allowed_apps).
 
 1. **Toda integration de sistema externo nuevo requiere**:
    - ADR en `docs/adr/` documentando decisión
-   - Entry en `../13-INTEGRATIONS-INDEX.md` (LIVE) o sección planned de `future/13-INTEGRATIONS-PLANNED.md`
+   - Entry en `../reference/integrations.md` (LIVE) o sección planned de `future/13-INTEGRATIONS-PLANNED.md`
    - Actualización de `12-SOR-MATRIX.md` con campos owned por ese sistema
    - Schema `etl.{system}_*` con staging tables
    - Tabla `{entity}_external_ids` actualizada con nuevo `system` value en CHECK constraint
@@ -333,7 +333,7 @@ Ver `docs/adr/0012-auth-multi-app-allowed-apps.md` (multi-app via allowed_apps).
 
 - Nuevos pilares descubiertos (no inventarlos sin razón — adoptar de estándar industrial)
 - Nueva entidad canónica agregada (update tabla de Pilar 1)
-- Nuevo sistema externo integrado (update Pilar 2 + 3, agregar a `../13-INTEGRATIONS-INDEX.md` o `future/13-INTEGRATIONS-PLANNED.md`)
+- Nuevo sistema externo integrado (update Pilar 2 + 3, agregar a `../reference/integrations.md` o `future/13-INTEGRATIONS-PLANNED.md`)
 - Lección operativa documentable
 
 ## Cuándo migrar a `iconsa-knowledge` wiki

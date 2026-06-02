@@ -1,11 +1,11 @@
 ---
 name: iconsa-business-rules
-description: Apply the 26 critical business rules (R1-R26) of HumanOS / ICONSA before writing migrations, RLS policies, approval logic, ticket state transitions, auth.users operations, or anything touching the HumanOS database. Use whenever the prompt mentions approval, ticket, prestamo, vacaciones, accion personal, request_number, sello, supervisor, hr_admin, president, allowed_apps, auth.users, schema, RLS, policy, or any R1-R26 reference.
+description: Apply the 27 critical business rules (R1-R27) of HumanOS / ICONSA before writing migrations, RLS policies, approval logic, ticket state transitions, auth.users operations, or anything touching the HumanOS database. Use whenever the prompt mentions approval, ticket, prestamo, vacaciones, accion personal, request_number, sello, supervisor, hr_admin, president, allowed_apps, auth.users, schema, RLS, policy, Ley 81, or any R1-R27 reference.
 ---
 
 # ICONSA Business Rules enforcement
 
-Read the rules from `docs/05-BUSINESS-RULES.md` before acting. This skill is a checklist + critical reminders. The full text lives in the doc.
+Read the rules from `docs/reference/business-rules.md` before acting. This skill is a checklist + critical reminders. The full text lives in the doc.
 
 ## Critical rules (block immediately if violated)
 
@@ -19,7 +19,7 @@ Read the rules from `docs/05-BUSINESS-RULES.md` before acting. This skill is a c
 
 **R23 - Encoding**: All config files (.json, .ps1, .md, .ts, .tsx, .css) MUST be UTF-8 without BOM. Hooks `.ps1` MUST be ASCII pure (no em-dash, no accents, no smart quotes). Use `[System.IO.File]::WriteAllText($path, $content, [System.Text.UTF8Encoding]::new($false))` in PowerShell 5.1.
 
-**R26 - SOP-driven chains**: NEVER deviate from SOP-defined approval chains without consulting James. If SOP says "Gerencia General", add a `president` step. Excepciones documented in `docs/05-BUSINESS-RULES.md`.
+**R26 - SOP-driven chains**: NEVER deviate from SOP-defined approval chains without consulting James. If SOP says "Gerencia General", add a `president` step. Excepciones documented in `docs/reference/business-rules.md`.
 
 ## Important rules (check before acting)
 
@@ -35,7 +35,7 @@ Read the rules from `docs/05-BUSINESS-RULES.md` before acting. This skill is a c
 
 **R10 - Single user concept**: No separate "supervisor account type". `app_role IN (employee, hr_admin, president, admin)` — no 'supervisor' value. Being supervisor is contextual via `hr.employments.supervisor_id` or `requests.tickets.selected_supervisor_id`.
 
-**R11 - Type to mode mapping**: See `docs/05-BUSINESS-RULES.md` R11 table. 3 modes + parent_only: `parallel`, `direct_hr_admin`, `any_of_hr`, `parent_only`.
+**R11 - Type to mode mapping**: See `docs/reference/business-rules.md` R11 table. 3 modes + parent_only: `parallel`, `direct_hr_admin`, `any_of_hr`, `parent_only`.
 
 **R12 - SCD-2 employments**: `hr.employments` is SCD Type 2. Don't UPDATE position/supervisor/department/salary/app_role in place. Close old row (set `valid_to = CURRENT_DATE`) and insert new row.
 
@@ -62,7 +62,7 @@ Read the rules from `docs/05-BUSINESS-RULES.md` before acting. This skill is a c
 
 ## What to do
 
-1. Read `docs/05-BUSINESS-RULES.md` for full text of the relevant R.
+1. Read `docs/reference/business-rules.md` for full text of the relevant R.
 2. Before implementing: list which Rs apply.
 3. Before submitting code: re-check each R for the touched code paths.
 4. If unsure: ask James, do not guess.

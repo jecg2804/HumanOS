@@ -1,4 +1,4 @@
-# 02-MVP-SCOPE.md — Scope detallado overnight #1
+# MVP Scope - features, engines, modes, roadmap post-MVP
 
 **Role:** scope MVP (39 features F1-F39 + engines + modes) + roadmap post-MVP. · **Read-when:** al planificar un grupo/feature o decidir si algo entra en MVP vs diferido. · **Maintain-when:** cambia el scope de una feature, su status, o el roadmap post-MVP.
 
@@ -198,7 +198,7 @@ Cada uno usa los engines E1-E6. Construido como instancia de FormEngine + Approv
 
 ---
 
-## Status overall por feature (2026-05-28)
+## Status overall por feature
 
 | Group | Range | Status | Tag |
 |---|---|---|---|
@@ -275,19 +275,19 @@ Output `<promise>MVP_COMPLETE</promise>` cuando:
 - `npm run build` success
 - Playwright E2E suite full pass
 - RLS validation queries todas pasan
-- Docs vivos actualizados: `docs/CHANGELOG.md` con entries por feature, `docs/CONTEXT.md` con vocabulary, `docs/adr/` con decisiones técnicas
+- Docs vivos actualizados: `../CHANGELOG.md` con entries por feature, `../CONTEXT.md` con vocabulary, `../adr/` con decisiones técnicas
 - Commit log estructurado en `main` con prefijos conventional (`feat:`, `fix:`, `chore:`, `docs:`)
 - Deploy preview Vercel funcional accesible
 - KB completa RRHH migrada (PDFs + markdown extraídos)
 - Smoke tests bedrock pre-overnight pasaron
 
-Si overnight no completa todo: la tabla "Status overall por feature" de este doc + `09-ESTADO-ACTUAL.md` reflejan qué quedó hecho vs pendiente. Iteración humano-en-loop continúa desde donde quedó.
+Si overnight no completa todo: la tabla "Status overall por feature" de este doc + `../STATUS.md` reflejan qué quedó hecho vs pendiente. Iteración humano-en-loop continúa desde donde quedó.
 
 ---
 
 ## Roadmap post-MVP
 
-> Esta sección absorbe el antiguo `03-ROADMAP-POST-MVP.md` (D3 merge 2026-06-01). El MVP es la base; la iteración humano-en-loop refina con uso real. El roadmap NO promete fechas — orden de prioridad y dependencias.
+> Esta sección absorbe el antiguo roadmap post-MVP (D3 merge). El MVP es la base; la iteración humano-en-loop refina con uso real. El roadmap NO promete fechas — orden de prioridad y dependencias.
 
 ### Inmediato post-overnight (iteración humano)
 

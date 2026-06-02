@@ -66,4 +66,4 @@ Estado al 2026-06-01:
 - **BL-6 — PENDIENTE (James/Samantha)**: reglas de SLA + escalación cuando un step vence.
 - **BL-7 — PENDIENTE (James/Samantha)**: reglas de delegación de aprobaciones.
 
-BL-3..7 deben cerrarse antes de construir los forms president-gated / money (Group 6). Tracking en `DEFERRED-ITEMS.md`.
+BL-3..7 deben cerrarse antes de construir los forms president-gated / money (Group 6). Tracking en `../STATUS.md` (§Backlog).

@@ -7,7 +7,7 @@
       "name": "iconsa-business-rules",
       "enforcement": "critical",
       "priority": "critical",
-      "description": "26 reglas R1-R26 críticas: schemas prohibidos, no self-approval, sello, supervisor NULL fallback, request_number HUM-YYYY-NNNN, estados ticket, auth.users filter, encoding, SOP-driven chains.",
+      "description": "27 reglas R1-R27 críticas: schemas prohibidos, no self-approval, sello, supervisor NULL fallback, request_number HUM-YYYY-NNNN, estados ticket, auth.users filter, encoding, SOP-driven chains, Ley 81.",
       "keywords": [
         "aprobacion", "aprobación", "approval", "aprobar", "rechazar", "modificar",
         "supervisor", "hr_admin", "president", "self-approval",

@@ -1,11 +1,11 @@
-# 14-COMPLIANCE-LEY81.md — Cumplimiento Ley 81/2019 (Protección de Datos Personales, Panamá)
+# Cumplimiento Ley 81/2019 (Protección de Datos Personales, Panamá)
 
 **Role:** marco técnico/de proceso de compliance con la Ley 81/2019 panameña (datos personales/sensibles) — base de R27. · **Read-when:** al manejar datos personales/médicos, consentimiento, retención, o derechos ARCO. · **Maintain-when:** cambia la ley, el marco de compliance, o un control técnico asociado.
 
 **Status:** DRAFT para revisión legal — NO es asesoría legal. Code redactó el marco técnico/de proceso; un abogado panameño debe validarlo antes de go-live.
 **Fecha:** 2026-05-29
 **Origen:** Audit 2026-05-29 (gap P1 — la app guarda datos sensibles sin marco de compliance documentado).
-**Regla asociada:** R27 (ver `05-BUSINESS-RULES.md`).
+**Regla asociada:** R27 (ver `business-rules.md`).
 
 ---
 
@@ -42,7 +42,7 @@ R13 ya restringe `hr.medical_info` + `hr.personal_documents` a owner + hr_admin 
 | **Registro de tratamientos** | parcial (`audit.log`) | Documentar el inventario (este doc) como registro de actividades de tratamiento. |
 | **Transferencias** (a terceros / cross-border) | N/A interno hoy | Cuando se integre PayDay/B2W/etc. (visión MDM), evaluar acuerdos de transferencia. |
 
-## 3. R27 (resumen — texto completo en 05-BUSINESS-RULES.md)
+## 3. R27 (resumen — texto completo en business-rules.md)
 
 **R27 — Compliance Ley 81:** todo flujo que capture datos personales debe (a) obtener consentimiento registrado antes de capturar datos sensibles (médicos/emergencia), con consentimiento expreso e irrefutable para salud; (b) respetar el límite de retención (purga/anonimización post-relación laboral); (c) exponer un flujo de derechos del titular (acceso/rectificación/eliminación); (d) mantener confidencialidad (acuse hr_admin); (e) seguir el breach-notification runbook ante incidentes. No recolectar datos sensibles sin consentimiento, aunque RLS lo proteja.
 

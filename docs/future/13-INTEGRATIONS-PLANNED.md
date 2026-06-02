@@ -4,7 +4,7 @@
 
 **⚠️ Foundational ICONSA, no específico de HumanOS.** Migra a `iconsa-knowledge` wiki cuando se cree.
 
-**Propósito**: Inventario de cada sistema externo que **sincronizará** con la BD ICONSA vía ETL/master data, pero que aún NO está Live. La infraestructura operacional LIVE (Resend, Sentry, Vercel, MCPs) y las apps internas en producción viven en `../13-INTEGRATIONS-INDEX.md`.
+**Propósito**: Inventario de cada sistema externo que **sincronizará** con la BD ICONSA vía ETL/master data, pero que aún NO está Live. La infraestructura operacional LIVE (Resend, Sentry, Vercel, MCPs) y las apps internas en producción viven en `../reference/integrations.md`.
 
 ---
 
@@ -14,7 +14,7 @@
 - **Investigating** — research en curso (API docs, contratos, etc.)
 - **Designing** — diseño ETL en progreso
 - **Implementing** — código en construcción
-- **Live** — en producción, sincronizando (al llegar aquí, mover la entry a `../13-INTEGRATIONS-INDEX.md`)
+- **Live** — en producción, sincronizando (al llegar aquí, mover la entry a `../reference/integrations.md`)
 - **Deprecated** — fue Live, se desconectó
 
 ---
@@ -178,7 +178,7 @@ Reevaluar post-MVP cuando volumen/complejidad justifiquen.
 ## Cuándo este doc se actualiza
 
 - Nueva integration planned arrancada: entry completa
-- Status change (Not Started → Investigating → Designing → Implementing). **Al llegar a Live, mover la entry a `../13-INTEGRATIONS-INDEX.md`**
+- Status change (Not Started → Investigating → Designing → Implementing). **Al llegar a Live, mover la entry a `../reference/integrations.md`**
 - Cambio en SOR matrix relacionado
 - Nueva mini-app planificada
 

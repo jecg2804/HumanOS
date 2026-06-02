@@ -1,7 +1,7 @@
 # First Usable Release = full form catalog, built de-risk-first; groups re-sequenced; honest build count ~33 not 39
 
 **Decided 2026-05-29 (James), captured 2026-06-01 (audit S1-S4).** Supersedes the W1-W2-W3
-phasing proposal (rejected) and reframes Decision #5 of `01-VISION`.
+phasing proposal (rejected) and reframes Decision #5 of `reference/vision.md`.
 
 ## Scope: First Usable Release covers ALL forms
 
@@ -9,7 +9,7 @@ The product target ("First Usable Release") is the **complete form catalog**, no
 hand-picked subset. James' decision: HumanOS replaces the paper/Humand flow only when every
 SOP form is digitized, so partial form coverage is not a shippable milestone for the business.
 
-This is a *scope* statement, not a *build-order* statement (see below). "39" in `01-VISION`
+This is a *scope* statement, not a *build-order* statement (see below). "39" in `reference/vision.md`
 remains the **catalog size** (the full set of form variants); "First Usable Release" is the
 **milestone** where that catalog is usable end-to-end. (S4 reframe: catalog ≠ milestone — the
 two were conflated before.)
@@ -41,7 +41,7 @@ with the established group/tag scheme. Instead, re-sequence inside groups:
 - **Group 6** — president-gated / money forms (PRESTAMO, ACCION_AUMENTO_SALARIO).
 - **Group 7** — extras (EPP, incident reports, exit interviews, training).
 
-(Exact form-to-group assignment stays in `02-MVP-SCOPE.md`; this ADR fixes the *sequencing
+(Exact form-to-group assignment stays in `reference/mvp-scope.md`; this ADR fixes the *sequencing
 principle*, not the per-form table.)
 
 ## Honest build count: ~33 units, not 39
@@ -61,8 +61,8 @@ engine exists. Planning and estimates should use the build-unit count, not the c
 
 ## Consequences
 
-- `01-VISION` Decision #5 should be read as "catalog = 39 variants; First Usable Release =
-  milestone at full coverage", and `02-MVP-SCOPE.md` as the per-form/group table.
+- `reference/vision.md` Decision #5 should be read as "catalog = 39 variants; First Usable Release =
+  milestone at full coverage", and `reference/mvp-scope.md` as the per-form/group table.
 - Group 4 is the highest-risk group (new engines); treat its first slice as a spike.
 - Open per-form chain decisions (BL-2 president self-approval, BL-3..7) are tracked in
   `0020-approval-chain-template-jsonb-modes.md`, not here. BL-2 is decided (omit the president

@@ -3,7 +3,7 @@
 **Status: PROPUESTA — pendiente de ratificación por James. Diseño, NO migraciones por aplicar.**
 Fecha: 2026-06-01 · Proyecto `bzeoszympkkicwlfdtcn` (HumanOS) · PG 17.6 · Live DB compartida con MovimientOS.
 
-Insumos: `supabase/schemas/humanos_baseline.sql` (60 tablas / 9 schemas), spec `2026-05-29-db-vision-design.md`, `02-MVP-SCOPE.md` (Groups 3-7), `future/11-MDM-PRINCIPLES.md` + `future/12-SOR-MATRIX.md`, `05-BUSINESS-RULES.md`, y verificación en vivo del catálogo (columnas, vistas, extensiones, advisors).
+Insumos: `supabase/schemas/humanos_baseline.sql` (60 tablas / 9 schemas), spec `2026-05-29-db-vision-design.md`, `reference/mvp-scope.md` (Groups 3-7), `future/11-MDM-PRINCIPLES.md` + `future/12-SOR-MATRIX.md`, `reference/business-rules.md`, y verificación en vivo del catálogo (columnas, vistas, extensiones, advisors).
 
 ## 0. Estado verificado en vivo (no asumido)
 

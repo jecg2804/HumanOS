@@ -61,7 +61,7 @@ try {
                     $msg += "  payroll (compania de Jaime)`n"
                     $msg += "  humanos (legacy v1 demo)`n`n"
                     $msg += "Reads (SELECT) from prohibited schemas are allowed.`n"
-                    $msg += "See docs/07-SCHEMAS-PERMISOS.md and docs/05-BUSINESS-RULES.md R1.`n"
+                    $msg += "See docs/reference/schemas-permisos.md and docs/reference/business-rules.md R1.`n"
                     [Console]::Error.WriteLine($msg)
                     exit 2
                 }
@@ -93,7 +93,7 @@ try {
                     $msg += "Tool: $toolName`n`n"
                     $msg += "This is the exact pattern that caused incident 2026-05-25:`n"
                     $msg += "DELETE FROM auth.users; erased 47 MovimientOS users (95 to 48).`n`n"
-                    $msg += "Required (R22 in docs/05-BUSINESS-RULES.md):`n"
+                    $msg += "Required (R22 in docs/reference/business-rules.md):`n"
                     $msg += "1. Snapshot first: CREATE TABLE backup.auth_users_YYYYMMDD AS SELECT * FROM auth.users WHERE <filter>;`n"
                     $msg += "2. SELECT preview shown to human BEFORE destructive op`n"
                     $msg += "3. Explicit filter by app_metadata->'allowed_apps' or id IN (explicit_list)`n"

@@ -30,7 +30,7 @@ This codebase has hard rules. Read these BEFORE any tool call:
 [AUTH.USERS - SHARED across apps - R22 enforced]
 auth.users is SHARED between MovimientOS, HumanOS and future apps.
 NEVER DELETE/UPDATE auth.users without filter by app_metadata.allowed_apps.
-Incident 2026-05-25 documented in docs/05-BUSINESS-RULES.md R22.
+Incident 2026-05-25 documented in docs/reference/business-rules.md R22.
 
 [OBLIGATORIO en toda CREATE TABLE]
 1. ALTER TABLE ... ENABLE ROW LEVEL SECURITY + min 1 policy
@@ -55,7 +55,7 @@ NO days/weeks/months. Solo P1/P2/P3 + trivial/no-trivial/alta-complejidad.
 - ASCII only in .ps1 hook source (avoid em-dash, accents, special chars).
 - Never PowerShell Set-Content / Out-File for config without -Encoding utf8NoBOM.
 
-Read @docs/00-INDEX.md first when in doubt.
+Read @docs/reference/README.md first when in doubt.
 
 </EXTREMELY_IMPORTANT>
 

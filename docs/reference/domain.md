@@ -1,28 +1,28 @@
-# 04-DOMAIN-RRHH.md — Dominio RRHH ICONSA
+# Dominio RRHH ICONSA
 
 **Role:** catálogo de dominio RRHH ICONSA — SOPs, formularios, equipo, type→mode mapping, departamentos/cargos/ubicaciones. · **Read-when:** JIT al construir un formulario o entender un SOP/tipo de solicitud. · **Maintain-when:** nuevo SOP, nuevo request type, o cambio en el mapping tipo→chain.
 
-**Última actualización**: 2026-05-27 (mapping definitivo + equipo gerencia ampliado + 370/184/186)
+**Última actualización**: 2026-05-27 (mapping definitivo + equipo gerencia ampliado)
 
 ---
 
 ## Equipo HR + Gerencia (verificado BD)
 
-### Equipo RRHH (4 personas, app_role=`hr_admin`)
+### Equipo RRHH (app_role=`hr_admin`)
 
-| Persona | employee_code | Cargo | Invite bootstrap |
-|---|---|---|---|
-| Samantha Kosmas | KOSM01 | Gerente RRHH y ADM | `F1F3D92A` |
-| Rocío Olmedo | OLM206 | Oficial RRHH | `F1F738DF` |
-| Milagros Manyoma | MAN943 | Oficial Planillas | `A4046851` |
-| Jerelyn Mendoza | MEN943 | Asistente Adm RRHH | `A65376E1` |
+| Persona | employee_code | Cargo |
+|---|---|---|
+| Samantha Kosmas | KOSM01 | Gerente RRHH y ADM |
+| Rocío Olmedo | OLM206 | Oficial RRHH |
+| Milagros Manyoma | MAN943 | Oficial Planillas |
+| Jerelyn Mendoza | MEN943 | Asistente Adm RRHH |
 
-### Gerencia (app_role=`president` o pending validación)
+### Gerencia
 
-| Persona | employee_code | Cargo | app_role actual | Invite bootstrap |
-|---|---|---|---|---|
-| Rodrigo Eisenmann | EIS772 | Presidente | `president` | `8917F9DB` |
-| Octavio Javier Ferrer | FER337 | Vice Presidente | `admin` (a revisar con Samantha) | `A16E6D56` |
+| Persona | employee_code | Cargo |
+|---|---|---|
+| Rodrigo Eisenmann | EIS772 | Presidente |
+| Octavio Javier Ferrer | FER337 | Vice Presidente |
 
 ### Otros gerentes en BD (potencial "Gerencia General" según SOP — validar con Samantha)
 
@@ -36,12 +36,7 @@
 | Damaris Rios | RIO806 | Gerente de Finanzas y Contabilidad | Administración |
 | Andrés Solís | SOL236 | Gerente de Proyecto | Proyectos |
 
-**Conteos**:
-- 370 personas total en `hr.people`
-- 184 activos (`status='Activo'`)
-- 186 inactivos / históricos (preservados SCD-2 + Spectrum legacy)
-- 48 auth.users (todos MovimientOS users actualmente)
-- 0 HumanOS auth.users (sign-up pendiente, los 6 bootstrap activan al usar invite)
+> Conteos vivos (personas, activos, invite codes sin consumir, roles): consultar la BD via Supabase MCP - la BD es la fuente de verdad (no se duplican aqui).
 
 ---
 
@@ -186,7 +181,7 @@ Oficinas principales + proyectos activos. Personal de campo asignado a `location
 
 ## Vocabulary core
 
-> Glosario canónico vivo: `CONTEXT.md` (mantenido por grill-with-docs). Esta tabla es un quick-reference subset del dominio RRHH; las definiciones completas + términos a evitar viven en CONTEXT.
+> Glosario canónico vivo: `../CONTEXT.md` (mantenido por grill-with-docs). Esta tabla es un quick-reference subset del dominio RRHH; las definiciones completas + términos a evitar viven en CONTEXT.
 
 | Término | Significado |
 |---|---|

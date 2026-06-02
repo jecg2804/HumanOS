@@ -1,12 +1,6 @@
-# 05-BUSINESS-RULES.md — Reglas de negocio críticas (R1-R26)
+# Business rules — Reglas de negocio críticas (R1-R27)
 
 **Role:** las reglas de negocio críticas R1-R27 — non-negotiable, Code DEBE seguirlas. · **Read-when:** antes de migrations, RLS, approval logic, ticket state, auth.users ops, o cuando el prompt menciona aprobación/préstamo/vacaciones/sello/allowed_apps/Ley 81. · **Maintain-when:** cambia una regla de negocio (requiere ADR + approval James).
-
-**Última actualización**: sesión 2026-05-27 (R4 corregida $250 NO bloqueante + R11 modes finales + R16 status correctos + R22 nota raw_app_meta_data + R23 encoding + R24 modes JSONB + R25 manual entry sin attach column + **R26 SOP-driven chains**)
-
-**Owner update**: Claude Chat. Estas reglas son CRÍTICAS — Code las debe seguir o sistema produce data incorrecta con consecuencias legales/regulatorias.
-
-**Audiencia**: Claude Code primary. Referenciado desde `CLAUDE.md` raíz vía `@imports`.
 
 ---
 
@@ -464,7 +458,7 @@ ApprovalEngine implementa los 3 modes + parent_only. Tests específicos por mode
 
 ## R25 — Manual entry para formularios papel
 
-**Source**: `docs/adr/0021-manual-entry-schema-files-uploads.md` + `docs/adr/0005-manual-entry-bypass-chain.md`, F32 feature, R26 SOP-driven.
+**Source**: `../adr/0021-manual-entry-schema-files-uploads.md` + `../adr/0005-manual-entry-bypass-chain.md`, F32 feature, R26 SOP-driven.
 
 ### Regla
 
@@ -560,7 +554,7 @@ Tipos cuyo SOP NO menciona "Gerencia General" mantienen chain corto:
 ### Enforcement
 
 Cuando Code o Chat propone modificar `approval_chain_template`:
-1. Consultar SOP relevante en `docs/sops/*.md`
+1. Consultar SOP relevante en `../sops/*.md`
 2. Si propone desviarse: documentar razón en ADR + pedir approval James
 3. Si SOP no es claro: dejar configurable y pedir validación a Samantha post-MVP via F39 admin viewer
 
@@ -572,7 +566,7 @@ Cuando Code o Chat propone modificar `approval_chain_template`:
 
 ## R27 — Compliance Ley 81/2019 (Protección de Datos Personales, Panamá)
 
-**Source**: Audit 2026-05-29. Detalle completo + checklist para abogado en `docs/14-COMPLIANCE-LEY81.md`. DRAFT para revisión legal.
+**Source**: Audit 2026-05-29. Detalle completo + checklist para abogado en `compliance-ley81.md`. DRAFT para revisión legal.
 
 ### Regla
 

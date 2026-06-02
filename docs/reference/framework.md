@@ -1,6 +1,6 @@
-# 06-FRAMEWORK-CLAUDE-CODE.md — Setup Claude Code + workflow
+# Framework — Setup Claude Code + workflow
 
-**Role:** setup del harness Code (marketplaces, skills, subagents, hooks) + pipeline de desarrollo + protocolo de handoff Chat/Code/James. · **Read-when:** al configurar el entorno, decidir qué skill usar en cada fase, o coordinar un handoff. · **Maintain-when:** cambia el harness, el pipeline, los hooks, o el protocolo de handoff.
+**Role:** setup del harness Code (marketplaces, skills, subagents, hooks) + pipeline de desarrollo + sistema de documentación + protocolo de handoff Chat/Code/James. · **Read-when:** al configurar el entorno, decidir qué skill usar en cada fase, mantener docs, o coordinar un handoff. · **Maintain-when:** cambia el harness, el pipeline, los hooks, el sistema de docs, o el protocolo de handoff.
 
 ---
 
@@ -35,7 +35,7 @@
 **Política CLI-first:** preferimos CLIs sobre MCPs cuando existe equivalente, porque son más auditables, no consumen tokens de schema y ya están autenticadas:
 
 - **`gh`** (GitHub CLI) reemplaza el GitHub MCP — PRs, issues, branch protection, secrets, CI runs.
-- **`supabase`** CLI para link/dump local; el **Supabase MCP** (`mcp__plugin_supabase_supabase__*`) sigue siendo el camino para `apply_migration`/`execute_sql`/`get_advisors` (no requiere Docker).
+- **`supabase`** CLI para link/dump local; el **Supabase MCP** sigue siendo el camino para `apply_migration`/`execute_sql`/`get_advisors` (no requiere Docker).
 - **`vercel`** CLI para env/deploy/logs (recomendado instalar: `npm i -g vercel`).
 
 **MCPs activos (set honesto):**
@@ -56,7 +56,7 @@ BRAINSTORM ─► SPEC ─► GRILL(spec) ─► PLAN ─► DEV(plan+ADRs+CONTE
 | Etapa | Skill primario | Plugin dormido que se despierta |
 |---|---|---|
 | Brainstorm | `superpowers:brainstorming` (escribe spec, **PARA**) | — |
-| Grill | `grill-with-docs` (grilla el spec vs CONTEXT/ADRs; **gate de `DEFERRED-ITEMS.md`**) | `claude-md-management` (solo en doc-drift) |
+| Grill | `grill-with-docs` (grilla el spec vs CONTEXT/ADRs; **gate del backlog en `STATUS.md`**) | `claude-md-management` (solo en doc-drift) |
 | Plan | `superpowers:writing-plans` (header `Decisions in scope: ADR-NNNN`) | — |
 | Dev | `executing-plans`/`subagent-driven-development` + `test-driven-development` | `typescript-lsp` |
 | Verify | `verification-before-completion` (`npm run verify` + CI) | `typescript-lsp` |
@@ -71,13 +71,13 @@ BRAINSTORM ─► SPEC ─► GRILL(spec) ─► PLAN ─► DEV(plan+ADRs+CONTE
 
 Verificadas en sesión 2026-05-28 audit Batch 1 — `.claude/skills/iconsa-*/SKILL.md`:
 
-1. **`iconsa-form-implementation`** — patrón end-to-end por form HumanOS desde `requests.types.form_schema`. Incluye: FormEngine usage, validation patterns Zod, field source matrix (profile/user_input/computed)
+1. **`iconsa-form-implementation`** — patrón end-to-end por form HumanOS desde `requests.types.form_schema`. Incluye: FormEngine usage, validation patterns Zod, field source matrix (profile/user_input/computed). Pre-flight + DoD en el body (W0.5 H-1).
 2. **`iconsa-rls-validation`** — queries Q1-Q5 (pg_policies + pg_class) post-cambio RLS para verificar tablas HumanOS con RLS habilitada + policy count + sensitive tables R13
-3. **`iconsa-business-rules`** — checklist R1-R26 antes de migrations, RLS policies, approval logic, ticket state, auth.users ops. Triggered por keywords: approval, ticket, prestamo, vacaciones, hr_admin, allowed_apps, schema, RLS
-4. **`iconsa-supabase-migration`** — workflow migrations: nombre snake_case `NNN_action_target`, COMMENT obligatorio, RLS habilitada, helpers existentes, CHANGELOG entry `[bd]`
+3. **`iconsa-business-rules`** — checklist R1-R27 antes de migrations, RLS policies, approval logic, ticket state, auth.users ops. Triggered por keywords: approval, ticket, prestamo, vacaciones, hr_admin, allowed_apps, schema, RLS
+4. **`iconsa-supabase-migration`** — workflow migrations: nombre snake_case `NNN_action_target`, COMMENT obligatorio, RLS habilitada, helpers existentes, CHANGELOG entry `[bd]`. Pre-flight + DoD en el body (W0.5 H-1).
 5. **`iconsa-library-docs-check`** — verifica APIs externas via Context7 antes de implementar (Next.js 16 middleware->proxy, React 19, Tailwind 4, Supabase SSR, Zod 4). Evita deprecated APIs de training cutoff
 
-Router en `.claude/skill-rules.json` — hook `user-prompt-submit.ps1` los suggest según keywords.
+Router en `.claude/skill-rules.json` — hook `user-prompt-submit.ps1` los suggest según keywords (matcher con word-boundary para keywords cortas, W0.5 H-4). **El routing es consejo, no gate**: el framing `[CRITICAL]` de las 2 iconsa críticas es el refuerzo; no se enforcea la invocación.
 
 ---
 
@@ -96,14 +96,14 @@ Cobertura complementaria: hook `pre-tool-use.ps1` (block schemas/auth.users sin 
 
 ## Hooks (custom ICONSA + R22 + R23)
 
-| Hook | Función real (verificada 2026-05-28) |
+| Hook | Función real (verificada 2026-05-28, actualizada 2026-06-01) |
 |---|---|
 | `SessionStart` | Emite `<EXTREMELY_IMPORTANT>` framing con schemas prohibidos + R22 + R23 + idioma neutro |
-| `UserPromptSubmit` | Skill router — lee `.claude/skill-rules.json`, ordena por priority, emite `<skill_router>` block con skills relevantes al prompt |
+| `UserPromptSubmit` | Skill router — lee `.claude/skill-rules.json`, ordena por priority, emite `<skill_router>` block. Word-boundary match para keywords cortas (W0.5 H-4) |
 | `PreToolUse` | Bloquea: (1) writes a schemas prohibidos `public/payroll/humanos`, (2) DELETE/UPDATE en `auth.users` sin WHERE + filtro `allowed_apps` (R22), (3) destructive ops en golden records (`hr.people`, `requests.tickets`, etc.) sin WHERE, (4) bash dangerous (`rm -rf /`, force push), (5) Edit/Write a `.env.local` |
-| `PostToolUse` | (1) Edit/Write `.ts/.tsx` → `npx tsc --noEmit` debounced 30s (artifact `.claude/hooks/last-tsc-check.txt` gitignored). (2) Migration applied → reminder RLS + COMMENT + external_ids + advisors |
-| `PreCompact` | Genera `docs/HANDOFF.json` antes de context compaction para continuidad cross-session |
-| ~~`Stop`~~ | **No implementado**. Originalmente planeado para final verification (tests + lint + tsc). Hoy se ejecuta manual via `npm run verify`. Considerar agregar si el manual gate falla repetido |
+| `PostToolUse` | (1) Edit/Write `.ts/.tsx` → `npx tsc --noEmit` debounced 30s (artifact `.claude/hooks/last-tsc-check.txt` gitignored). (2) Migration applied → reminder RLS + COMMENT + external_ids + advisors. (3) Encoding guard R23: advierte (exit 0) si un `.json/.ps1/.md/.ts/.tsx/.css` se escribe con BOM, o si un `.ps1` trae bytes no-ASCII (W0.5 H-2) |
+| `PreCompact` | Genera `docs/HANDOFF.json` (gitignored, local) antes de context compaction para continuidad cross-session |
+| `Stop` | **Implementado** (`stop.ps1`, registrado en `settings.json`): advisory verify-reminder. Cuando quedan `.ts/.tsx/.sql/.css` sin commitear, recuerda correr `npm run verify` (debounced 10 min). Exit 0 — NUNCA bloquea; el gate duro de merge es CI |
 
 Diagnóstico (no auto-fired): `.claude/hooks/audit-claude-code.ps1` — script manual de inspección. Ubicación general: `.claude/hooks/*.ps1` ASCII puro (R23 verificado).
 
@@ -119,21 +119,34 @@ Diagnóstico (no auto-fired): `.claude/hooks/audit-claude-code.ps1` — script m
 
 ---
 
-## CLAUDE.md raíz (≤4.3KB)
+## Sistema de documentación (mantenimiento) — ADR-0024
 
-Minimal entry point con @imports condicionales. Pattern real (numerado):
+Cuatro ciclos de vida, cuatro hogares (decisión en `../adr/0024-doc-system-topical-living-docs.md`):
+
+- **`reference/`** — VERDAD DURABLE, nombres topicales (sin números), **edit-in-place**, nunca se archiva: `vision`, `mvp-scope`, `domain`, `business-rules`, `framework`, `schemas-permisos`, `integrations`, `compliance-ley81`, `toolstack-roadmap`; `README` = índice.
+- **`adr/`** — DECISIONES, append-only, inmutables (IDs `0001..`). Una decisión superada se marca `Superseded` + nuevo ADR, no se edita.
+- **`STATUS.md`** — EL ÚNICO doc mutable de estado (fase + in-flight + blockers + backlog con triggers/gate). **Ningún otro doc tiene estado** → mata el desync. `CHANGELOG.md` = historia append-only.
+- **`work/`** — spec/plan/diseño del trabajo en construcción; al shippear, su artefacto → `work/_archive/`. `future/` = conocimiento planeado, no operacional. `superpowers/specs+plans` = archivo histórico de specs/plans por grupo (groups 1-2 ya shipped).
+
+**Reglas:** docs cambian en el MISMO commit que el código; gate de `grill-with-docs`; NUNCA crear un 2.º doc de estado fuera de `STATUS.md`; UTF-8 sin BOM, español neutro sin voseo (R23/R6). Arranque de sesión: `CLAUDE.md → STATUS.md` (el pipeline jala `reference/` just-in-time).
+
+---
+
+## CLAUDE.md raíz
+
+Minimal entry point con @imports condicionales. Pattern real:
 
 ```markdown
-# CLAUDE.md HumanOS v2
+# CLAUDE.md HumanOS
 
 ## Conditional imports (load when relevant)
-- Implementando form/feature: @docs/04-DOMAIN-RRHH.md (catalogo + dominio)
-- Implementing approval chain: leer SOP en docs/sops/ (Filesystem MCP)
+- Implementando form/feature: @docs/reference/domain.md (catalogo + dominio)
+- Implementing approval chain: leer SOP en docs/sops/ (Filesystem MCP / Read; NO Google Drive)
 - Past decisions: @docs/adr/README.md (canonical index) + @docs/adr/*.md
 - Vocabulario en duda: @docs/CONTEXT.md (vivo)
 - MDM foundational (aspiracional): @docs/future/11-MDM-PRINCIPLES.md + @docs/future/12-SOR-MATRIX.md
-- Integraciones LIVE: @docs/13-INTEGRATIONS-INDEX.md · planned/ETL: @docs/future/13-INTEGRATIONS-PLANNED.md
-- Estado operacional: @docs/09-ESTADO-ACTUAL.md + BD vía MCP
+- Integraciones LIVE: @docs/reference/integrations.md · planned/ETL: @docs/future/13-INTEGRATIONS-PLANNED.md
+- Estado operacional: @docs/STATUS.md + BD vía MCP
 ```
 
 Ver `CLAUDE.md` raíz real para el set completo de reglas YOU MUST follow + anti-patterns.
@@ -154,17 +167,21 @@ Antes de arrancar overnight ejecutar:
 
 ---
 
-## Overnight execution phases
+## Overnight execution readiness
 
-Sigue Superpowers harness:
+Un run desatendido sigue el **pipeline canónico v2** de arriba (BRAINSTORM→...→CLOSE), NO una lista aparte. (La vieja nota "brainstorming skip — ya hecho en Chat" está superada por `@docs/superpowers/specs/2026-05-29-skill-integration-design.md`.)
 
-1. **brainstorming** (skip — ya hecho en Chat)
-2. **writing-plans** per feature/feature-group
-3. **executing-plans** o **subagent-driven-development** ejecuta
-4. **grill-with-docs** continuo mantiene docs vivos
-5. **verification-before-completion** gate por feature
-6. **finishing-a-development-branch** al final
-7. Output: `<promise>MVP_COMPLETE</promise>` cuando 39 features done + tests verde
+Antes de confiar en un run desatendido de un grupo completo, TODO esto debe ser verdad (criterios de `../work/framework-hardening-design.md` §4):
+
+1. El gate de merge **bloquea**, no solo recuerda (branch protection exige los checks de CI — H-5, acción de James).
+2. Los no-negociables son físicos (PreToolUse R1/R22/golden-record/bash/.env; R23 advertido en PostToolUse; voseo = `error`).
+3. El agente lee el gate del backlog (`STATUS.md` §6) + DoD al implementar (pre-flight en los SKILL bodies — H-1).
+4. `npm run verify` corre limpio local + CI (E2E al menos happy-path de la feature).
+5. Existe un revisor independiente del diff antes de merge (subagents de review; idealmente cross-model — PROVISION).
+6. El handoff/audit log captura lo que pasó (PreCompact + `errors.log` de hooks).
+7. El run tiene un Definition-of-Done explícito y acotado (lista de features F-NN), no "haz el MVP".
+
+Hasta que (1)+(3) estén hechos y (5) probado una vez en manual, los runs desatendidos se limitan a UNA feature de bajo riesgo con revisión humana al despertar.
 
 ---
 
@@ -176,10 +193,10 @@ Code declara promise al inicio:
 ```
 
 Y la "redime" cuando:
-- 39 features F1-F39 implementadas
+- Features F1-F39 implementadas (lista en `mvp-scope.md`)
 - Tests E2E suite full pass
 - tsc + lint + build clean
-- Docs vivos actualizados (CHANGELOG, 02-MVP-SCOPE status, ADRs)
+- Docs vivos actualizados (CHANGELOG, STATUS.md, ADRs)
 
 Si no completa: `<promise>PARTIAL_MVP</promise>` con lista exacta de qué quedó.
 
@@ -192,8 +209,8 @@ Si no completa: `<promise>PARTIAL_MVP</promise>` con lista exacta de qué quedó
 - ❌ NO crear columnas sin COMMENT
 - ❌ NO escribir SQL sin WHERE en DELETE/UPDATE de tablas críticas
 - ❌ NO modificar archivos `public.*`, `payroll.*`, `humanos.*` legacy
-- ❌ NO confiar en mi memoria de SOPs — leer `docs/sops/*.md` o GDrive vía MCP
-- ❌ NO desviarse de R26 (SOP-driven chains) sin documentar + validar con James
+- ❌ NO confiar en mi memoria de SOPs — leer `docs/sops/` (Filesystem MCP / Read; NO Google Drive)
+- ❌ NO desviarse de R26 (SOP-driven chains) sin documentar + validar con Samantha (autoridad RRHH; ver R26)
 
 ---
 
@@ -211,29 +228,29 @@ Si no completa: `<promise>PARTIAL_MVP</promise>` con lista exacta de qué quedó
 
 ### Chat → Code (al arrancar sesión Code nueva)
 
-1. Chat actualiza docs numerados (especialmente `09-ESTADO-ACTUAL.md`) — viven en repo `docs/`, son single source
+1. Chat actualiza docs (especialmente `STATUS.md`) — viven en repo `docs/`, son single source
 2. Chat genera **prompt inicial Code** con:
    - Resumen contexto actual
    - Trigger sesión `grill-with-docs` (mattpocock, ya instalada en `.claude/skills/`)
    - Lista de tareas concretas
-   - Referencia a docs via Filesystem MCP (si Code los necesita explícitamente — Code igual los lee via @imports CLAUDE.md)
+   - Referencia a docs (Code los lee via @imports CLAUDE.md + `STATUS.md`)
 3. James commit docs actualizados al repo HumanOS
 4. James abre Code en repo + pega prompt inicial
-5. Code lee `CLAUDE.md` raíz + @imports condicionales + arranca grill-with-docs si aplica
+5. Code lee `CLAUDE.md` raíz → `STATUS.md` → @imports condicionales + arranca grill-with-docs si aplica
 
 ### Code → Chat (al completar overnight o cuando James reporta)
 
 1. Code mantiene `docs/CHANGELOG.md` con entries per feature
-2. Code mantiene el status por grupo en `02-MVP-SCOPE.md` + `09-ESTADO-ACTUAL.md`
+2. Code mantiene el status en `STATUS.md` (status por-feature en `reference/mvp-scope.md`)
 3. Code genera `docs/adr/*` con decisiones técnicas
 4. Code mantiene `docs/CONTEXT.md` con vocabulary vivo
 5. Al final overnight, Code emite `<promise>MVP_COMPLETE</promise>` o `<promise>PARTIAL_MVP</promise>`
 6. James reporta a Chat: copia summary final Code → Chat
-7. Chat actualiza `09-ESTADO-ACTUAL.md` reflejando nuevo state
+7. Chat actualiza `STATUS.md` reflejando nuevo state
 
 ### Code ↔ Code (entre sesiones overnight con context compactation)
 
-1. Hook `PreCompact` genera `HANDOFF.json` automático antes de compactación
+1. Hook `PreCompact` genera `HANDOFF.json` (gitignored, local) automático antes de compactación
 2. Próxima sesión Code lee `HANDOFF.json` al arrancar
 3. `mattpocock handoff` skill estructura el HANDOFF.json
 
@@ -243,40 +260,34 @@ Estructura real bajo `docs/`:
 
 ```
 docs/
-├── 00-INDEX.md         (índice + read-cadence map)
-├── 01-VISION.md a 14-COMPLIANCE-LEY81.md (numerados; 03/10 son stubs de redirect, 11/12 movidos a future/)
+├── STATUS.md           (EL ÚNICO doc de estado: fase + backlog + blockers; Code mantiene)
+├── CHANGELOG.md        (entries por feature/version, append-only)
 ├── CONTEXT.md          (vocabulario vivo, Code mantiene via grill-with-docs)
-├── CHANGELOG.md        (entries por feature/version, Code mantiene)
-├── adr/                (ledger canónico ADRs 0001+, Code genera durante implementación)
-├── future/            (docs foundational/aspiracional: 11-MDM, 12-SOR, 13-INTEGRATIONS-PLANNED)
-├── sops/               (PDFs originales GDrive + markdown extraído)
-└── superpowers/        (specs/ + plans/ Code-generated)
+├── reference/          (VERDAD DURABLE, nombres topicales, edit-in-place: vision, mvp-scope,
+│                        domain, business-rules, framework, schemas-permisos, integrations,
+│                        compliance-ley81, toolstack-roadmap; README = índice)
+├── adr/                (ledger canónico ADRs 0001+, append-only; Code genera al implementar)
+├── work/               (spec/plan/diseño en construcción) + work/_archive/ (consumidos al shippear)
+├── future/             (foundational/aspiracional: 11-MDM, 12-SOR, 13-INTEGRATIONS-PLANNED)
+├── sops/               (PDFs originales + markdown extraído)
+└── superpowers/        (specs/ + plans/ históricos Code-generated por grupo)
 
 CLAUDE.md (raíz repo) — entry point con @imports condicionales a docs/
 PROJECT_CONSTITUTION.md (raíz repo) — principios non-negotiable
 HANDOFF.json (docs/) — generado por hook PreCompact, gitignored
 ```
 
-### Bootstrap invite codes (entregar personalmente)
+### Bootstrap invite codes
 
-| Code | Persona | Acción esperada |
-|---|---|---|
-| `F1F3D92A` | Samantha Kosmas | Usar al abrir `https://humanos.rein-eisenwerk.com/onboarding/F1F3D92A` |
-| `F1F738DF` | Rocío Olmedo | Idem |
-| `A4046851` | Milagros Manyoma | Idem |
-| `A65376E1` | Jerelyn Mendoza | Idem |
-| `8917F9DB` | Rodrigo Eisenmann | Idem |
-| `A16E6D56` | Octavio Javier Ferrer | Idem |
-
-Expiran 2026-08-25 (90 días). Si expiran sin uso, hr_admin regenera vía `/admin/empleados/[id]/invitar`.
+Los códigos de invitación vivos (sin consumir, por persona, con expiración) son **estado de la BD** — consultarlos vía Supabase MCP, no duplicarlos aquí (se desactualizan). hr_admin regenera vía `/admin/empleados/[id]/invitar`. Entregar personalmente (R14: triple validación code + national_id + employee_code).
 
 ### Quick handoff cheat sheet
 
 | Situación | Acción |
 |---|---|
 | Nueva sesión Chat | Sincroniza con repo docs + BD vía MCP al inicio |
-| Nueva sesión Code | Abrir Code en repo, pegar prompt inicial Chat-generado |
-| Code completó overnight | James reporta summary a Chat, Chat actualiza 09-ESTADO-ACTUAL |
+| Nueva sesión Code | Abrir Code en repo, leer `CLAUDE.md` → `STATUS.md`, pegar prompt inicial |
+| Code completó overnight | James reporta summary a Chat, Chat actualiza `STATUS.md` |
 | Cambio decisión grande | Chat actualiza docs + crea/actualiza ADR + notifica James |
 | Bug en producción | Code corre `diagnose` skill, genera report, James reporta a Chat |
 | Migration BD necesaria | Chat ejecuta vía Supabase MCP con approval per bloque James |
@@ -287,4 +298,4 @@ Expiran 2026-08-25 (90 días). Si expiran sin uso, hr_admin regenera vía `/admi
 - ❌ Code tomando decisiones grandes sin consultar (cuando aplica, escala vía grill-with-docs)
 - ❌ James perdiendo invite codes (entregar personalmente Y mantener registro)
 - ❌ Sessions Code sin handoff (siempre genera HANDOFF.json antes de compact)
-- ❌ Docs quedando obsoletos (actualizar per sesión)
+- ❌ Docs quedando obsoletos (actualizar per sesión, en el mismo commit que el código)

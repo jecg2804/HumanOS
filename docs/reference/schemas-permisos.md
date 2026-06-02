@@ -1,4 +1,4 @@
-# 07-SCHEMAS-PERMISOS.md — Schemas, RLS, permisos
+# Schemas, RLS, permisos
 
 **Role:** modelo de permisos — qué schemas tocar (writable/read-only/prohibido), RLS conventions, helper functions, CHECK constraints, SCD-2. · **Read-when:** antes de tocar la BD (migration, RLS policy, query) o al validar acceso. · **Maintain-when:** cambia el modelo de permisos, se agrega un helper/constraint, o un patrón RLS nuevo.
 

@@ -1,12 +1,12 @@
-# 13-INTEGRATIONS-INDEX.md — Integraciones LIVE ICONSA
+# Integraciones LIVE ICONSA
 
 **Role:** inventario de la infraestructura operacional LIVE (email, monitoring, hosting, MCPs) + apps internas en producción. · **Read-when:** al tocar email/cron/hosting/monitoring o configurar un client-side integration. · **Maintain-when:** cambia config de Resend/Sentry/Vercel/MCPs o el status de una app interna.
 
 **⚠️ Foundational ICONSA, no específico de HumanOS.** Migra a `iconsa-knowledge` wiki cuando se cree.
 
-**Última actualización**: 2026-06-01 (D8 split — planned/ETL movido a `future/13-INTEGRATIONS-PLANNED.md`)
+**Última actualización**: 2026-06-01 (D8 split — planned/ETL movido a `../future/13-INTEGRATIONS-PLANNED.md`)
 
-**Propósito**: Inventario de la infraestructura crítica **LIVE** que sirve a las apps ICONSA + las apps internas en producción. Las integraciones ETL/master data **planned** (PayDay, Trimble Spectrum/B2W/ProjectSight, Skydata, Google Workspace SSO) + las apps futuras viven en `future/13-INTEGRATIONS-PLANNED.md`.
+**Propósito**: Inventario de la infraestructura crítica **LIVE** que sirve a las apps ICONSA + las apps internas en producción. Las integraciones ETL/master data **planned** (PayDay, Trimble Spectrum/B2W/ProjectSight, Skydata, Google Workspace SSO) + las apps futuras viven en `../future/13-INTEGRATIONS-PLANNED.md`.
 
 ---
 
@@ -82,7 +82,7 @@
 
 ## Sistemas externos (ETL / master data) — planned
 
-Las 6 integraciones ETL/master data planned (PayDay, Trimble B2W, Trimble Spectrum, Trimble ProjectSight, Skydata GPS, Google Workspace SSO) viven en **`future/13-INTEGRATIONS-PLANNED.md`** con su detalle completo (status, API, auth, SOR matrix, orden de implementación). Ninguna es Live aún; al pasar a Live, su entry se mueve aquí.
+Las 6 integraciones ETL/master data planned (PayDay, Trimble B2W, Trimble Spectrum, Trimble ProjectSight, Skydata GPS, Google Workspace SSO) viven en **`../future/13-INTEGRATIONS-PLANNED.md`** con su detalle completo (status, API, auth, SOR matrix, orden de implementación). Ninguna es Live aún; al pasar a Live, su entry se mueve aquí.
 
 ---
 
@@ -94,7 +94,7 @@ Las 6 integraciones ETL/master data planned (PayDay, Trimble B2W, Trimble Spectr
 |---|---|
 | **Status** | Live (producción en `rein-eisenwerk.com`) |
 | **Tipo** | App interna Next.js — logística movilizaciones |
-| **Repo** | ICONSA-Solutions/movimientOS |
+| **Repo** | ICONSA-Solutions/movimientOS (owner/slug a confirmar) |
 | **Vercel project** | `prj_o28h5tYDskqF3AjBg1w5W3F3fYu4` |
 | **Domains** | `rein-eisenwerk.com`, `www.rein-eisenwerk.com` |
 | **Schemas usados** | `public.*` (38 tablas) — datos transaccionales propios + golden records temporales (people, equipment, projects) |
@@ -108,7 +108,7 @@ Las 6 integraciones ETL/master data planned (PayDay, Trimble B2W, Trimble Spectr
 |---|---|
 | **Status** | Live (Group 2 Onboarding shipped tag v0.0.2 commit `32ef28b` 2026-05-27 noche). Group 3 (Profile + KB) en preparación |
 | **Tipo** | App interna Next.js — RRHH self-service |
-| **Repo** | ICONSA-Solutions/HumanOS |
+| **Repo** | jecg2804/HumanOS |
 | **Vercel project** | `prj_DqJQEL9LJ5qcwkw8Et6WYUpUxiLQ` |
 | **Domain** | `humanos.rein-eisenwerk.com` (subdomain del domain personal James, validado DNS+HTTP) |
 | **Schemas usados** | `hr.*`, `requests.*`, `docs.*`, `workflows.*`, `audit.*`, `notifications.*`, `files.*`, `performance.*`, `learning.*` (52+ tablas total) |
@@ -121,13 +121,13 @@ Las 6 integraciones ETL/master data planned (PayDay, Trimble B2W, Trimble Spectr
 
 ### Apps futuras
 
-Las mini-apps futuras ICONSA + el orden de implementación de integraciones + las herramientas evaluadas NO-MVP viven en `future/13-INTEGRATIONS-PLANNED.md`.
+Las mini-apps futuras ICONSA + el orden de implementación de integraciones + las herramientas evaluadas NO-MVP viven en `../future/13-INTEGRATIONS-PLANNED.md`.
 
 ---
 
 ## Cuándo este doc se actualiza
 
-- Status change de una integration planned a **Live** (mover su entry desde `future/13-INTEGRATIONS-PLANNED.md` a este doc)
+- Status change de una integration planned a **Live** (mover su entry desde `../future/13-INTEGRATIONS-PLANNED.md` a este doc)
 - Issue operacional documentable (rate limit hit, schema change, etc.)
 - Cambio en infraestructura operacional LIVE (Resend domain, Sentry config, hosting domain, MCP additions, Cron schedules)
 

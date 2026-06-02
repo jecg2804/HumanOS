@@ -1,8 +1,6 @@
-# 01-VISION.md — Misión, north star, decisiones grandes
+# Visión — Misión, north star, decisiones grandes
 
 **Role:** misión HumanOS, north star, anti-decisiones de producto. · **Read-when:** al orientarte sobre el "por qué" o evaluar si algo está en scope estratégico. · **Maintain-when:** cambia la visión de producto o una decisión estratégica grande.
-
-**Última actualización**: 2026-05-27 (counts actualizados, decisiones finales sesión)
 
 ---
 
@@ -32,7 +30,7 @@ Métricas soporte: tiempo promedio de resolución per tipo (SLA compliance), sat
 2. **Mobile-first responsive** (no PWA service worker en MVP)
 3. **Schemas HumanOS modulares en BD compartida**, NO BD separada (cost + integration con MovimientOS)
 4. **Auth via Supabase**: invite codes generados por hr_admin + auth multi-app via `raw_app_meta_data.allowed_apps`
-5. **MVP completo = 39 features F1-F39** (no subset)
+5. **MVP completo = 39 features F1-F39** (no subset) (39 = catálogo completo; First Usable Release = milestone, ver docs/adr/0009)
 6. **Workflow paralelo total**: RRHH desde día 0 en TODOS los tipos no `parent_only`. President también en paralelo cuando aplica (per SOP)
 7. **SOP-driven approval chains** (R26): no desviarse del SOP sin validar con Samantha
 8. **Eliminado `'supervisor'` como app_role**: emerge contextualmente de `hr.employments.supervisor_id` y `tickets.selected_supervisor_id`

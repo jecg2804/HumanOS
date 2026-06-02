@@ -11,6 +11,7 @@ Principios **non-negotiable**. Anulan conveniencia, deadlines, y cualquier suger
 
 **1.2 SCHEMAS TOCABLES** — DDL + DML libre con validaciones:
 - `hr.*`, `requests.*`, `docs.*`, `workflows.*`, `audit.*`, `notifications.*`, `files.*`, `performance.*`, `learning.*`
+- Futuros MDM/ETL (reservados; al llegar la primera integración externa): `mdm.*`, `etl.*`, `backup.*`
 
 **1.3 Toda migration lleva COMMENT** — `COMMENT ON TABLE` + `COMMENT ON COLUMN` para columnas no obvias. Sin esto el Supabase Dashboard queda inutilizable para Samantha.
 
@@ -54,7 +55,7 @@ Principios **non-negotiable**. Anulan conveniencia, deadlines, y cualquier suger
 
 ## 4. Reglas de negocio críticas
 
-Las 26 reglas R1-R26 viven en `docs/05-BUSINESS-RULES.md`. Highlights non-negotiable:
+Las 27 reglas R1-R27 viven en `docs/reference/business-rules.md`. Highlights non-negotiable:
 
 **R4 — Préstamo $250**: cap operacional, NO escalation threshold. TODOS los préstamos van por el chain completo (supervisor + hr_admin + president) según R26. ICONSA NO cobra intereses.
 
@@ -87,6 +88,8 @@ Las 26 reglas R1-R26 viven en `docs/05-BUSINESS-RULES.md`. Highlights non-negoti
 **R25 — Manual entry F32**: hr_admin crea ticket en nombre del empleado con foto del form papel. `manual_entry=true`, `created_by_hr_admin=<id>`. Foto en `files.uploads` con `category='original_paper_form'`. NO columna nueva para attach.
 
 **R26 — SOP-driven chains**: NUNCA desviarse del SOP papel ICONSA sin validar con Samantha. Si SOP dice "Gerencia General", agregar step `president` (validar con Samantha si VP/otros gerentes incluyen).
+
+**R27 — Compliance Ley 81**: datos personales/sensibles (médicos) bajo Ley 81/2019 Panamá. Consentimiento versionado antes de capturar datos médicos/emergencia (Step6/7 onboarding); loggear acceso de LECTURA a `hr.medical_info` / `hr.personal_documents` desde día 1. Detalle + checklist legal en `docs/reference/compliance-ley81.md`.
 
 ## 5. Architecture decisions (locked in)
 
@@ -146,5 +149,5 @@ Las 26 reglas R1-R26 viven en `docs/05-BUSINESS-RULES.md`. Highlights non-negoti
 Cambios a este documento requieren:
 1. ADR explícito en `docs/adr/` (ver `docs/adr/README.md`) con razón documentada
 2. Approval de James por escrito (chat o PR)
-3. Update de `docs/09-ESTADO-ACTUAL.md` reflejando el cambio
+3. Update de `docs/STATUS.md` reflejando el cambio
 4. Si afecta hooks: actualizar `.claude/hooks/*.ps1` también

@@ -13,7 +13,7 @@
  * Tailwind generates utility classes automatically:
  *   bg-navy-500, text-gold-500, font-sans, etc.
  *
- * Semantic colors map directly to ticket states (docs/05-BUSINESS-RULES.md R16).
+ * Semantic colors map directly to ticket states (docs/reference/business-rules.md R16).
  */
 
 @theme {
