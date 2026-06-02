@@ -103,7 +103,7 @@ Las 27 reglas R1-R27 viven en `docs/reference/business-rules.md`. Highlights non
 
 **5.5 Repo `human-os` reusa in-place**: no crear repo nuevo. Trabajo directo en `main`.
 
-**5.6 ~~Branch overnight~~ obsoleto**: decisión revertida. Trabajamos directo en `main` porque HumanOS es greenfield sin users en producción. Si Code rompe el build durante overnight, James revierte commits específicos. No hay valor en overhead de branch para dev solitario sin PR review.
+**5.6 Modelo de ejecución: directo a `main`, atendido.** NO existe build overnight autónomo — fue aspiracional, nunca real (Groups 1-2 se hicieron human-in-the-loop). Modelo real: las fases de diseño (brainstorm → spec → grill → plan) son **atendidas** (Jaime decide en cada gate); una vez aprobado un plan, Code lo ejecuta a completitud sin interrupción. Trabajo directo en `main` (greenfield, sin users en prod, dev solo); CI es la señal visible + `npm run verify` verde antes de push; si algo entra rojo, Jaime revierte. Ejecución desatendida ("overnight") solo es viable con un spec bien definido + descompuesto en tasks sin decisiones abiertas — no es el default, nunca para diseño. Ver ADR del modelo de trabajo.
 
 **5.7 NO branches Supabase como dev environment**: producción es source of truth. Local dev usa `supabase start` cuando se necesite.
 

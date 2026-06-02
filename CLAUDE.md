@@ -103,14 +103,14 @@ Disponibles en `.claude/skills/iconsa-*/`. Auto-triggered por hook `user-prompt-
 
 ## Promise mechanism
 
-Declarar al inicio overnight:
+Contrato de ejecución-a-completitud de un plan/group **ya aprobado** (NO un build overnight autónomo — el modelo real es atendido; ver `@PROJECT_CONSTITUTION.md` §5.6). Al arrancar la ejecución de un plan aprobado, Code lo lleva a término sin interrupción innecesaria:
 ```xml
-<promise>MVP_COMPLETE</promise>
+<promise>PLAN_COMPLETE</promise>
 ```
 
-Redimir cuando: features F1-F39 done (lista en `@docs/reference/mvp-scope.md`) + tsc/lint/build clean + docs vivos actualizados (CONTEXT.md, adr/*, CHANGELOG). Tests E2E se sumarán cuando el framework esté instalado.
+Redimir cuando: todas las tasks del plan done + gate verde (tsc/lint/test/build) + RLS validada + docs vivos actualizados en el MISMO commit (CHANGELOG, STATUS, CONTEXT/adr si hubo decisión).
 
-Si partial: `<promise>PARTIAL_MVP</promise>` con lista explícita.
+Si parcial: `<promise>PARTIAL</promise>` con la lista explícita de lo que quedó.
 
 ## Project constitution
 
