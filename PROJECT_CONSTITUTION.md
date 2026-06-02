@@ -7,7 +7,7 @@ Principios **non-negotiable**. Anulan conveniencia, deadlines, y cualquier suger
 **1.1 SCHEMAS PROHIBIDOS** — bloqueados por hook `PreToolUse`:
 - `public.*` — MovimientOS production de otro proyecto en mismo Supabase
 - `payroll.*` — sistema planillas de compañero de Jaime
-- `humanos.*` — legacy v1 demo, archivo histórico
+- `humanos.*` — legacy v1 demo, **schema dropeado 2026-06-02 (W3 SEC-LEGACY)**; prohibición se mantiene contra recreación; data consolidada en `hr.*` + snapshot en `backup.*`
 
 **1.2 SCHEMAS TOCABLES** — DDL + DML libre con validaciones:
 - `hr.*`, `requests.*`, `docs.*`, `workflows.*`, `audit.*`, `notifications.*`, `files.*`, `performance.*`, `learning.*`

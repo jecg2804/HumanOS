@@ -11,7 +11,7 @@
 Code NUNCA modifica:
 - `public.*` (44 tablas — MovimientOS production)
 - `payroll.*` (9 tablas — sistema planillas)
-- `humanos.*` (5 tablas — demo legacy v1)
+- `humanos.*` (demo legacy v1 — **schema dropeado 2026-06-02 W3 SEC-LEGACY**; prohibición se mantiene contra recreación; snapshot en `backup.*`)
 
 Code SÍ modifica (DDL y DML):
 - `hr.*`, `requests.*`, `docs.*`, `workflows.*`, `audit.*`, `notifications.*`, `files.*`, `performance.*`, `learning.*`

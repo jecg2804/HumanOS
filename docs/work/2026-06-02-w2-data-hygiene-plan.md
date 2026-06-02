@@ -84,9 +84,9 @@ ALTER TABLE hr.people ADD CONSTRAINT people_national_id_format CHECK (
 ```
 **Alternativa más blanda (recomendada si el set de variantes es amplio):** sin CHECK duro; en su lugar un flag soft `needs_review` para las no-canónicas, que HR confirma. Decide tú/Samantha cuál.
 
-### 066 — Jerarquía de ubicación (Provincia/Distrito/Corregimiento) · **DIFERIDO (baja urgencia + vocab Samantha)**
+### (NNN al aplicar) — Jerarquía de ubicación (Provincia/Distrito/Corregimiento) · **DIFERIDO (baja urgencia + vocab Samantha)**
 
-> *Nota de numeración: el 065 lo tomó W3 (SEC-ENQUEUE, `065_revoke_enqueue_from_authenticated`, primera migración aplicada después de 064). Esta de ubicación pasa a 066+.*
+> *Nota de numeración: las migraciones APLICADAS toman los números secuenciales (065 = SEC-ENQUEUE, 066 = SEC-LEGACY drop). Esta de ubicación, por estar DIFERIDA, NO pinea número — se numerará al aplicar (hoy iría ~067+).*
 `hr.addresses` ya tiene `province` (vacío), `city`, `neighborhood`, `country`. Propuesta (cuando se haga): añadir `district`/`corregimiento` (nullable, COMMENT) y migrar `city`→`province` con vocabulario acentuado de Samantha. **No bloquea Group 3 → se difiere.**
 
 ---
@@ -124,4 +124,4 @@ ALTER TABLE hr.people ADD CONSTRAINT people_national_id_format CHECK (
 1. **SQL de 063 + 064a** (arriba) → aplico al darme el OK.
 2. **064b CHECK:** ¿candidato permisivo o flag soft? (o esperar a Samantha).
 3. **V-1:** ¿Opción A (manual UI) u B (sugerido + needs_review)?
-4. Confirmar que **066 + V-2/V-3/V-4 quedan diferidos/gated** (no se tocan ahora).
+4. Confirmar que **la ubicación (sin número pineado) + V-2/V-3/V-4 quedan diferidos/gated** (no se tocan ahora).

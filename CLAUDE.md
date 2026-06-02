@@ -35,7 +35,7 @@ HumanOS digitaliza formularios papel ICONSA. **Cada campo del SOP papel cae en U
 
 Estas reglas son non-negotiable. Hooks PowerShell en `.claude/hooks/` (`pre-tool-use.ps1`, `user-prompt-submit.ps1`, `post-tool-use.ps1`, `pre-compact.ps1`, `session-start.ps1`, `audit-claude-code.ps1`) bloquean violaciones físicamente; las demás son enforcement humano + skill `iconsa-business-rules`. Router de skills en `.claude/skill-rules.json`.
 
-1. **Schemas prohibited** — NUNCA write a `public.*`, `payroll.*`, `humanos.*`. Allowed: `hr.*`, `requests.*`, `docs.*`, `workflows.*`, `audit.*`, `notifications.*`, `files.*`, `performance.*`, `learning.*`, `mdm.*`, `etl.*`, `backup.*`.
+1. **Schemas prohibited** — NUNCA write a `public.*`, `payroll.*`, `humanos.*`. Allowed: `hr.*`, `requests.*`, `docs.*`, `workflows.*`, `audit.*`, `notifications.*`, `files.*`, `performance.*`, `learning.*`, `mdm.*`, `etl.*`, `backup.*`. (`humanos.*` = demo v1 **dropeado 2026-06-02** W3 SEC-LEGACY; la prohibición se MANTIENE contra recreación accidental; snapshot en `backup.humanos_*_20260602`.)
 
 2. **`auth.users` shared cross-app** — Destructive ops (DELETE, UPDATE mass) REQUIEREN filter por `raw_app_meta_data->'allowed_apps'` (SQL directo) o `app_metadata->'allowed_apps'` (RLS/JS). Snapshot a `backup.auth_users_YYYYMMDD` antes. Hook bloquea unfiltered. Incident 2026-05-25 erased 47 users — no repetir. Ver `@docs/reference/business-rules.md` R22.
 
