@@ -35,14 +35,15 @@ try {
         $handoff.git_error = $_.Exception.Message
     }
 
-    # Recent files modified
+    # Recent files (FAST: git only - never walks node_modules/.next/.git).
+    # Previous version used Get-ChildItem -Recurse over the whole tree, which walked
+    # node_modules and timed out -> the harness cancelled this hook during /compact.
     try {
-        $recent = Get-ChildItem -Recurse -File -Include *.ts,*.tsx,*.sql,*.md -ErrorAction SilentlyContinue |
-            Where-Object { $_.LastWriteTime -gt (Get-Date).AddHours(-2) -and $_.FullName -notmatch 'node_modules|\.next|\.git' } |
-            Sort-Object LastWriteTime -Descending |
-            Select-Object -First 15 -ExpandProperty FullName |
-            ForEach-Object { $_ -replace [regex]::Escape((Get-Location).Path + "\"), "" }
-        $handoff.recent_files = $recent
+        $files = New-Object System.Collections.Generic.List[string]
+        foreach ($f in @(& git diff --name-only 2>$null)) { if ($f) { $files.Add($f) } }
+        foreach ($f in @(& git diff --name-only --cached 2>$null)) { if ($f) { $files.Add($f) } }
+        foreach ($f in @(& git log -3 --name-only --pretty=format: 2>$null)) { if ($f) { $files.Add($f) } }
+        $handoff.recent_files = @($files | Select-Object -Unique -First 15)
     } catch {}
 
     # Write to Docs/HANDOFF.json (lowercase docs)
