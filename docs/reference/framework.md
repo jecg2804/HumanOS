@@ -1,6 +1,6 @@
 # Framework — Setup Claude Code + workflow
 
-**Role:** setup del harness Code (marketplaces, skills, subagents, hooks) + pipeline de desarrollo + sistema de documentación + protocolo de handoff Chat/Code/James. · **Read-when:** al configurar el entorno, decidir qué skill usar en cada fase, mantener docs, o coordinar un handoff. · **Maintain-when:** cambia el harness, el pipeline, los hooks, el sistema de docs, o el protocolo de handoff.
+**Role:** setup del harness Code (marketplaces, skills, subagents, hooks) + pipeline de desarrollo + sistema de documentación + protocolo de handoff Chat/Code/Jaime. · **Read-when:** al configurar el entorno, decidir qué skill usar en cada fase, mantener docs, o coordinar un handoff. · **Maintain-when:** cambia el harness, el pipeline, los hooks, el sistema de docs, o el protocolo de handoff.
 
 ---
 
@@ -153,9 +153,9 @@ Ver `CLAUDE.md` raíz real para el set completo de reglas YOU MUST follow + anti
 
 ---
 
-## Smoke tests bedrock (pre-overnight)
+## Smoke tests bedrock (pre-ejecución de plan)
 
-Antes de arrancar overnight ejecutar:
+Antes de arrancar la ejecución de un plan ejecutar:
 
 1. `npm run verify` (encadena tsc + lint + vitest + playwright + build) → 0 errors
 2. Conexión Supabase MCP → OK (e.g., `list_projects`)
@@ -167,13 +167,13 @@ Antes de arrancar overnight ejecutar:
 
 ---
 
-## Overnight execution readiness
+## Plan-execution readiness
 
-Un run desatendido sigue el **pipeline canónico v2** de arriba (BRAINSTORM→...→CLOSE), NO una lista aparte. (La vieja nota "brainstorming skip — ya hecho en Chat" está superada por `@docs/superpowers/specs/2026-05-29-skill-integration-design.md`.)
+La ejecución de un plan aprobado sigue el **pipeline canónico v2** de arriba (BRAINSTORM→...→CLOSE), NO una lista aparte. (La vieja nota "brainstorming skip — ya hecho en Chat" está superada por `@docs/superpowers/specs/2026-05-29-skill-integration-design.md`.)
 
-Antes de confiar en un run desatendido de un grupo completo, TODO esto debe ser verdad (criterios de `../work/framework-hardening-design.md` §4):
+Antes de ejecutar sin interrupción un plan que abarca un grupo completo, TODO esto debe ser verdad (criterios de `../work/framework-hardening-design.md` §4):
 
-1. El gate de merge **bloquea**, no solo recuerda (branch protection exige los checks de CI — H-5, acción de James).
+1. El gate de merge **bloquea**, no solo recuerda (branch protection exige los checks de CI — H-5, acción de Jaime).
 2. Los no-negociables son físicos (PreToolUse R1/R22/golden-record/bash/.env; R23 advertido en PostToolUse; voseo = `error`).
 3. El agente lee el gate del backlog (`STATUS.md` §6) + DoD al implementar (pre-flight en los SKILL bodies — H-1).
 4. `npm run verify` corre limpio local + CI (E2E al menos happy-path de la feature).
@@ -181,24 +181,20 @@ Antes de confiar en un run desatendido de un grupo completo, TODO esto debe ser 
 6. El handoff/audit log captura lo que pasó (PreCompact + `errors.log` de hooks).
 7. El run tiene un Definition-of-Done explícito y acotado (lista de features F-NN), no "haz el MVP".
 
-Hasta que (1)+(3) estén hechos y (5) probado una vez en manual, los runs desatendidos se limitan a UNA feature de bajo riesgo con revisión humana al despertar.
+Mientras (1) y (5) no estén probados, la ejecución sin interrupción se limita a planes acotados y de bajo riesgo, con revisión humana del diff antes de merge.
 
 ---
 
 ## Promise mechanism
 
-Code declara promise al inicio:
+Code declara el promise al arrancar un **plan aprobado**:
 ```xml
-<promise>MVP_COMPLETE</promise>
+<promise>PLAN_COMPLETE</promise>
 ```
 
-Y la "redime" cuando:
-- Features F1-F39 implementadas (lista en `mvp-scope.md`)
-- Tests E2E suite full pass
-- tsc + lint + build clean
-- Docs vivos actualizados (CHANGELOG, STATUS.md, ADRs)
+Y lo redime cuando: todas las tasks del plan done + gate verde (tsc + lint + vitest + Playwright + build) + RLS validada + docs vivos actualizados (CHANGELOG, STATUS.md, CONTEXT/ADR si hubo decisión) en el MISMO commit.
 
-Si no completa: `<promise>PARTIAL_MVP</promise>` con lista exacta de qué quedó.
+Si queda parcial: `<promise>PARTIAL</promise>` con la lista exacta de lo pendiente. La definición canónica vive en `CLAUDE.md §Promise mechanism` + ADR-0026.
 
 ---
 
@@ -214,7 +210,7 @@ Si no completa: `<promise>PARTIAL_MVP</promise>` con lista exacta de qué quedó
 
 ---
 
-## Handoff protocol — Chat / Code / James
+## Handoff protocol — Chat / Code / Jaime
 
 > Esta sección absorbe el antiguo `10-HANDOFF-PROTOCOL.md` (D3 merge 2026-06-01). Cómo las tres entidades que colaboran intercambian estado.
 
@@ -222,7 +218,7 @@ Si no completa: `<promise>PARTIAL_MVP</promise>` con lista exacta de qué quedó
 
 1. **Chat (Claude.ai conversational)** — strategy, decisiones grandes, dominio extenso, BD migrations bloqueantes, mantiene los docs estratégicos
 2. **Code (Claude Code CLI agent)** — implementación, repo, tests, deploy, mantiene `docs/` operativos
-3. **James (humano)** — owner final, valida decisiones, paste docs Chat→Code, commit repo
+3. **Jaime (humano)** — owner final, valida decisiones, paste docs Chat→Code, commit repo
 
 ## Direcciones de handoff
 
@@ -234,21 +230,21 @@ Si no completa: `<promise>PARTIAL_MVP</promise>` con lista exacta de qué quedó
    - Trigger sesión `grill-with-docs` (mattpocock, ya instalada en `.claude/skills/`)
    - Lista de tareas concretas
    - Referencia a docs (Code los lee via @imports CLAUDE.md + `STATUS.md`)
-3. James commit docs actualizados al repo HumanOS
-4. James abre Code en repo + pega prompt inicial
+3. Jaime commit docs actualizados al repo HumanOS
+4. Jaime abre Code en repo + pega prompt inicial
 5. Code lee `CLAUDE.md` raíz → `STATUS.md` → @imports condicionales + arranca grill-with-docs si aplica
 
-### Code → Chat (al completar overnight o cuando James reporta)
+### Code → Chat (al cerrar un plan o cuando Jaime reporta)
 
 1. Code mantiene `docs/CHANGELOG.md` con entries per feature
 2. Code mantiene el status en `STATUS.md` (status por-feature en `reference/mvp-scope.md`)
 3. Code genera `docs/adr/*` con decisiones técnicas
 4. Code mantiene `docs/CONTEXT.md` con vocabulary vivo
-5. Al final overnight, Code emite `<promise>MVP_COMPLETE</promise>` o `<promise>PARTIAL_MVP</promise>`
-6. James reporta a Chat: copia summary final Code → Chat
+5. Al cerrar un plan, Code emite `<promise>PLAN_COMPLETE</promise>` o `<promise>PARTIAL</promise>` (ver CLAUDE.md §Promise)
+6. Jaime reporta a Chat: copia summary final Code → Chat
 7. Chat actualiza `STATUS.md` reflejando nuevo state
 
-### Code ↔ Code (entre sesiones overnight con context compactation)
+### Code ↔ Code (handoff de sesión, con context compactation)
 
 1. Hook `PreCompact` genera `HANDOFF.json` (gitignored, local) automático antes de compactación
 2. Próxima sesión Code lee `HANDOFF.json` al arrancar
@@ -287,15 +283,15 @@ Los códigos de invitación vivos (sin consumir, por persona, con expiración) s
 |---|---|
 | Nueva sesión Chat | Sincroniza con repo docs + BD vía MCP al inicio |
 | Nueva sesión Code | Abrir Code en repo, leer `CLAUDE.md` → `STATUS.md`, pegar prompt inicial |
-| Code completó overnight | James reporta summary a Chat, Chat actualiza `STATUS.md` |
-| Cambio decisión grande | Chat actualiza docs + crea/actualiza ADR + notifica James |
-| Bug en producción | Code corre `diagnose` skill, genera report, James reporta a Chat |
-| Migration BD necesaria | Chat ejecuta vía Supabase MCP con approval per bloque James |
+| Code cerró un plan | Jaime reporta summary a Chat, Chat actualiza `STATUS.md` |
+| Cambio decisión grande | Chat actualiza docs + crea/actualiza ADR + notifica Jaime |
+| Bug en producción | Code corre `diagnose` skill, genera report, Jaime reporta a Chat |
+| Migration BD necesaria | Chat ejecuta vía Supabase MCP con approval per bloque Jaime |
 
 ### Anti-patterns handoff
 
 - ❌ Chat ejecutando código en repo HumanOS (no es su rol — Code lo hace)
 - ❌ Code tomando decisiones grandes sin consultar (cuando aplica, escala vía grill-with-docs)
-- ❌ James perdiendo invite codes (entregar personalmente Y mantener registro)
+- ❌ Jaime perdiendo invite codes (entregar personalmente Y mantener registro)
 - ❌ Sessions Code sin handoff (siempre genera HANDOFF.json antes de compact)
 - ❌ Docs quedando obsoletos (actualizar per sesión, en el mismo commit que el código)

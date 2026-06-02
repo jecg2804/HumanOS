@@ -16,7 +16,7 @@ ICONSA es empresa de **construcción en Panamá** con personal mixto: oficina, s
 
 **Tickets RRHH procesados digitalmente / total tickets RRHH (papel + digital) cada mes**.
 
-Target post-overnight #1: 30% en early adopters (equipo HR + supervisores oficina).
+Target post-MVP (primer release usable): 30% en early adopters (equipo HR + supervisores oficina).
 Target medio plazo: 70%.
 Target consolidación: 90%+.
 
@@ -77,7 +77,7 @@ Métricas soporte: tiempo promedio de resolución per tipo (SLA compliance), sat
 ## Stakeholders
 
 - **Samantha Kosmas** — Gerente RRHH, owner de SOPs, validador final business logic, decision-maker funcional
-- **James Cucalón** — IT/Developer, owner técnico, integración con MovimientOS, decisiones arquitectónicas
+- **Jaime Cucalón** — IT/Developer, owner técnico, integración con MovimientOS, decisiones arquitectónicas
 - **Rodrigo Eisenmann** — Presidente, approver final en chains que lo requieren
 - **Octavio Javier Ferrer** — Vicepresidente, potencial parte de "Gerencia General" en chains (validar con Samantha)
 - **Equipo HR** (Rocío, Milagros, Jerelyn) — power users operacionales
@@ -89,10 +89,10 @@ Métricas soporte: tiempo promedio de resolución per tipo (SLA compliance), sat
 
 | Horizonte | Entrega |
 |---|---|
-| Overnight #1 (actual) | MVP 39 features funcionando E2E |
-| Iteración humano post-overnight | Refinamiento UI, copy específico Samantha, edge cases descubiertos en uso real |
+| MVP — primer release usable (ADR-0009) | 39 features funcionando E2E |
+| Iteración humano post-MVP | Refinamiento UI, copy específico Samantha, edge cases descubiertos en uso real |
 | v1.1 | Documenso firma, Twilio WhatsApp/SMS, F39-B editor JSON, calendario vacaciones |
-| Overnight #2 | Onboarding workflow completo (`workflows.*`), Time Off advanced, expediente legal completo |
+| Fase 2 | Onboarding workflow completo (`workflows.*`), Time Off advanced, expediente legal completo |
 | v2 | Performance reviews, learning module, F39-C visual editor chains |
 
-(Sin estimar duraciones por preferencia James — la prioridad es entrega, no calendario.)
+(Sin estimar duraciones por preferencia Jaime — la prioridad es entrega, no calendario.)

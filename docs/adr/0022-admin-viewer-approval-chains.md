@@ -19,7 +19,7 @@
 
 - Samantha necesita visibilidad de qué está configurado (Nivel A da 80% del valor)
 - Pattern industria: BambooHR/Workday tienen workflow designer pero es feature de años
-- En MVP, James edita JSONB directo cuando Samantha pide cambios
+- En MVP, Jaime edita JSONB directo cuando Samantha pide cambios
 - Cuando Samantha tenga feedback real de uso, decidimos Nivel B (cuál UX prefiere ella editar)
 
 ### Alternativa descartada

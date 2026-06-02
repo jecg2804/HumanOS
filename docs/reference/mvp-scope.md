@@ -10,11 +10,11 @@
 
 ## Filosofía del MVP
 
-**Overnight #1 entrega un SHELL FUNCIONAL completo end-to-end**, no perfección de cada feature. Es la base sobre la cual iteración humana posterior refina UI, edge cases, copy específico.
+**El MVP — primer release usable (ADR-0009) — entrega un SHELL FUNCIONAL completo end-to-end**, no perfección de cada feature. Es la base sobre la cual iteración humana posterior refina UI, edge cases, copy específico.
 
-Construye **engines genéricos** + **first pass de cada feature** + **happy paths verificados con E2E**. Refinamiento granular es iteración humano-en-loop post-overnight.
+Construye **engines genéricos** + **first pass de cada feature** + **happy paths verificados con E2E**. Refinamiento granular es iteración humano-en-loop post-MVP.
 
-**MVP completo confirmado por James**: 39 features F1-F39. NO subset.
+**MVP completo confirmado por Jaime**: 39 features F1-F39. NO subset.
 
 ---
 
@@ -192,9 +192,9 @@ Cada uno usa los engines E1-E6. Construido como instancia de FormEngine + Approv
 | F36 | `/notificaciones` inbox in-app con badge contador | Lee `notifications.outbox` filtrado por user. Mark as read, archive |
 | F37 | `/admin/auditoría` audit log visible para hr_admin/admin — lee `audit.log` | Filtros por user, entity, fecha. Compliance + debugging |
 | F38 | `/solicitudes/[id]/imprimir` — generar PDF formato original SOP para firma física | Casos donde supervisor offline. Foto firmada se sube vía F32 |
-| F39 | `/admin/tipos` admin viewer **Nivel A**: lista los 24 tipos, vista detalle por tipo con form_schema visualizado + approval_chain visual (steps con role+SLA) + SOP referencia | Read-only MVP. Samantha ve qué está configurado. Si quiere cambiar, James edita JSONB. Edit JSON raw (Nivel B) → v1.1. Visual editor (Nivel C) → v2 |
+| F39 | `/admin/tipos` admin viewer **Nivel A**: lista los 24 tipos, vista detalle por tipo con form_schema visualizado + approval_chain visual (steps con role+SLA) + SOP referencia | Read-only MVP. Samantha ve qué está configurado. Si quiere cambiar, Jaime edita JSONB. Edit JSON raw (Nivel B) → v1.1. Visual editor (Nivel C) → v2 |
 
-**Total features MVP overnight #1**: F1-F39 = **39 features distintas, 24 form variants con sub-tipos**.
+**Total features del MVP (primer release usable)**: F1-F39 = **39 features distintas, 24 form variants con sub-tipos**.
 
 ---
 
@@ -217,11 +217,11 @@ Cada uno usa los engines E1-E6. Construido como instancia de FormEngine + Approv
 
 ---
 
-## Lo que NO entra en overnight #1 (diferido)
+## Lo que NO entra en el MVP (diferido)
 
 - Documenso firma legal — v1.1 (schema preparado)
 - Personal de campo SMS/WhatsApp auth via Twilio — v1.1
-- Onboarding workflow completo F-01-09 con contrato firmado, EPP, certificados médicos, lista capacitaciones inducción (`workflows.*` schema) — overnight #2
+- Onboarding workflow completo F-01-09 con contrato firmado, EPP, certificados médicos, lista capacitaciones inducción (`workflows.*` schema) — Fase 2
 - Performance reviews module (`performance.*` schema) — v2
 - Learning module completo (`learning.*` schema) — v2
 - F-05-04 Memo Amonestación — v2 (`hr.disciplinary_actions`)
@@ -242,13 +242,13 @@ Cada uno usa los engines E1-E6. Construido como instancia de FormEngine + Approv
 - **F39-B edit JSON raw** approval_chains — v1.1
 - **F39-C visual editor** approval_chains — v2
 
-El roadmap detallado de lo diferido (inmediato post-overnight, v1.1, v2, v2+) vive en la sección **"Roadmap post-MVP"** más abajo en este doc.
+El roadmap detallado de lo diferido (inmediato post-MVP, v1.1, v2, v2+) vive en la sección **"Roadmap post-MVP"** más abajo en este doc.
 
 ---
 
 ## Decisiones de scope confirmadas
 
-- MVP overnight #1 cubre **18 tipos top-level** (9 categoría A + 9 categoría B) = **24 form variants** con sub-tipos
+- El MVP (primer release usable) cubre **18 tipos top-level** (9 categoría A + 9 categoría B) = **24 form variants** con sub-tipos
 - Sign-up flow con invite codes cubre F-04-01 Info Emergencia + F-01-09 simplificado
 - Engines genéricos primero, forms después (JTBD vertical slicing)
 - PDF original solo para los 9 tipos con SOP en GDrive (categoría A). Categoría B usa template genérico ICONSA-branded
@@ -265,9 +265,9 @@ El roadmap detallado de lo diferido (inmediato post-overnight, v1.1, v2, v2+) vi
 
 ---
 
-## Criterios de aceptación overnight #1 completo
+## Criterios de aceptación del MVP (primer release usable) completo
 
-Output `<promise>MVP_COMPLETE</promise>` cuando:
+El MVP (primer release usable) se considera completo cuando:
 
 - 39 features F1-F39 implementadas (cada una con tests E2E happy path en verde)
 - `npx tsc --noEmit` 0 errors
@@ -279,9 +279,9 @@ Output `<promise>MVP_COMPLETE</promise>` cuando:
 - Commit log estructurado en `main` con prefijos conventional (`feat:`, `fix:`, `chore:`, `docs:`)
 - Deploy preview Vercel funcional accesible
 - KB completa RRHH migrada (PDFs + markdown extraídos)
-- Smoke tests bedrock pre-overnight pasaron
+- Smoke tests bedrock (pre-ejecución de plan) pasaron
 
-Si overnight no completa todo: la tabla "Status overall por feature" de este doc + `../STATUS.md` reflejan qué quedó hecho vs pendiente. Iteración humano-en-loop continúa desde donde quedó.
+Si una pasada no completa todo: la tabla "Status overall por feature" de este doc + `../STATUS.md` reflejan qué quedó hecho vs pendiente. Iteración humano-en-loop continúa desde donde quedó.
 
 ---
 
@@ -289,7 +289,7 @@ Si overnight no completa todo: la tabla "Status overall por feature" de este doc
 
 > Esta sección absorbe el antiguo roadmap post-MVP (D3 merge). El MVP es la base; la iteración humano-en-loop refina con uso real. El roadmap NO promete fechas — orden de prioridad y dependencias.
 
-### Inmediato post-overnight (iteración humano)
+### Inmediato post-MVP (iteración humano)
 
 1. **QA con Samantha y equipo HR** — usar sistema real con tickets reales sintéticos
 2. **Refinamiento UI** — copy específico, micro-interacciones, casos edge encontrados
@@ -301,7 +301,7 @@ Si overnight no completa todo: la tabla "Status overall por feature" de este doc
    - ¿VP Ferrer debe aprobar en `parallel` mode junto a Rodrigo?
    - ¿Otros gerentes (Finanzas, Proyectos) en algún tipo?
    - Si sí: implementar resolver `gerencia_user_list` con array UUIDs
-8. **Adjustar chains via F39 read-only viewer** — Samantha ve qué está configurado, James edita JSONB raw si necesita
+8. **Adjustar chains via F39 read-only viewer** — Samantha ve qué está configurado, Jaime edita JSONB raw si necesita
 
 ### v1.1 (siguiente release)
 
@@ -314,7 +314,7 @@ Si overnight no completa todo: la tabla "Status overall por feature" de este doc
 
 #### Approval chains
 
-- **F39-B Edit JSON raw chains**: editor de texto con JSON validado server-side para Samantha/James avanzados
+- **F39-B Edit JSON raw chains**: editor de texto con JSON validado server-side para Samantha/Jaime avanzados
 - **Calendario compartido vacaciones (Who's Out)**: vista mensual de aprobadas, conflict detection
 - **Resolver `gerencia_user_list`**: chains con array UUIDs en paralelo (no solo `president_user`)
 

@@ -228,13 +228,13 @@
       "name": "superpowers:finishing-a-development-branch",
       "enforcement": "high",
       "priority": "high",
-      "description": "Superpowers finishing: cierre overnight. Asegura tests verde, docs actualizados, CHANGELOG, tag version, ready to merge.",
+      "description": "Superpowers finishing: cierre de plan. Asegura tests verde, docs actualizados, CHANGELOG, tag version, ready to merge.",
       "keywords": [
-        "overnight", "branch close", "merge", "finishing", "MVP_COMPLETE",
-        "PARTIAL_MVP"
+        "overnight", "cierre de plan", "branch close", "merge", "finishing",
+        "PLAN_COMPLETE", "PARTIAL", "MVP_COMPLETE", "PARTIAL_MVP"
       ],
       "intent_patterns": [
-        "(cerrar|finalizar|close).*?(branch|overnight)",
+        "(cerrar|finalizar|close).*?(plan|branch|overnight)",
         "(ready|listo).*?(merge|prod)"
       ]
     },

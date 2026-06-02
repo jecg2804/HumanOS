@@ -1,6 +1,6 @@
 # HumanOS Project Constitution
 
-Principios **non-negotiable**. Anulan conveniencia, deadlines, y cualquier sugerencia de agent en contra. Si Code intenta violarlos, hooks deterministas bloquean. Si James decide cambiarlos, requiere ADR explícito en `docs/adr/` (ver `docs/adr/README.md`).
+Principios **non-negotiable**. Anulan conveniencia, deadlines, y cualquier sugerencia de agent en contra. Si Code intenta violarlos, hooks deterministas bloquean. Si Jaime decide cambiarlos, requiere ADR explícito en `docs/adr/` (ver `docs/adr/README.md`).
 
 ## 1. Database integrity
 
@@ -103,7 +103,7 @@ Las 27 reglas R1-R27 viven en `docs/reference/business-rules.md`. Highlights non
 
 **5.5 Repo `human-os` reusa in-place**: no crear repo nuevo. Trabajo directo en `main`.
 
-**5.6 Modelo de ejecución: directo a `main`, atendido.** NO existe build overnight autónomo — fue aspiracional, nunca real (Groups 1-2 se hicieron human-in-the-loop). Modelo real: las fases de diseño (brainstorm → spec → grill → plan) son **atendidas** (Jaime decide en cada gate); una vez aprobado un plan, Code lo ejecuta a completitud sin interrupción. Trabajo directo en `main` (greenfield, sin users en prod, dev solo); CI es la señal visible + `npm run verify` verde antes de push; si algo entra rojo, Jaime revierte. Ejecución desatendida ("overnight") solo es viable con un spec bien definido + descompuesto en tasks sin decisiones abiertas — no es el default, nunca para diseño. Ver ADR del modelo de trabajo.
+**5.6 Modelo de ejecución: directo a `main`, atendido.** NO existe build overnight autónomo — fue aspiracional, nunca real (Groups 1-2 se hicieron human-in-the-loop). Modelo real: las fases de diseño (brainstorm → spec → grill → plan) son **atendidas** (Jaime decide en cada gate); una vez aprobado un plan, Code lo ejecuta a completitud sin interrupción. Trabajo directo en `main` (greenfield, sin users en prod, dev solo); CI es la señal visible + `npm run verify` verde antes de push; si algo entra rojo, Jaime revierte. Ejecución desatendida ("overnight") solo es viable con un spec bien definido + descompuesto en tasks sin decisiones abiertas — no es el default, nunca para diseño. Ver ADR-0026 (modelo de trabajo).
 
 **5.7 NO branches Supabase como dev environment**: producción es source of truth. Local dev usa `supabase start` cuando se necesite.
 
@@ -148,6 +148,6 @@ Las 27 reglas R1-R27 viven en `docs/reference/business-rules.md`. Highlights non
 
 Cambios a este documento requieren:
 1. ADR explícito en `docs/adr/` (ver `docs/adr/README.md`) con razón documentada
-2. Approval de James por escrito (chat o PR)
+2. Approval de Jaime por escrito (chat o PR)
 3. Update de `docs/STATUS.md` reflejando el cambio
 4. Si afecta hooks: actualizar `.claude/hooks/*.ps1` también

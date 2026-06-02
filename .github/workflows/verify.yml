@@ -4,7 +4,7 @@
 # Two jobs:
 #  - checks: typecheck + lint + unit tests + secret scan + dependency audit. Needs NO app env,
 #            so it runs green immediately.
-#  - build:  next build. Needs Supabase env. James must add these GitHub Actions secrets
+#  - build:  next build. Needs Supabase env. Jaime must add these GitHub Actions secrets
 #            (Settings > Secrets and variables > Actions) for this job to pass:
 #              NEXT_PUBLIC_SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY, ONBOARDING_TOKEN_SECRET
 #            (NEXT_PUBLIC_SUPABASE_URL is public and inlined below.)

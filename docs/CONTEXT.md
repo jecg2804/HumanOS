@@ -183,7 +183,7 @@ Slowly Changing Dimension Type 2. Pattern en `hr.employments`: cambios criticos 
 Termino del documento papel ICONSA. NO esta claramente definido si refiere solo al Presidente (Rodrigo) o incluye VP (Javier Ferrer) y/o otros gerentes (Finanzas, Proyectos, Equipo, Calidad). MVP asume solo Rodrigo. Resolucion post-MVP con Samantha.
 
 **`requests.approvals.approver_role = 'specific_person'`**:
-CHECK constraint en BD incluye este valor pero NO esta en los 3 resolvers documentados (R11). Probable future-proofing o vestigial. Si aparece en codigo, validar con James si es para v1.1 (delegacion explicita pre-asignada) o eliminar.
+CHECK constraint en BD incluye este valor pero NO esta en los 3 resolvers documentados (R11). Probable future-proofing o vestigial. Si aparece en codigo, validar con Jaime si es para v1.1 (delegacion explicita pre-asignada) o eliminar.
 
 **`requests.tickets.current_step` + `current_assignee_id` en parallel mode**:
 Schema asume modelo sequential (current_step avanza 0,1,2...). En `parallel` mode todos los steps son simultaneos. Convencion adoptada: `current_step=0` + `current_assignee_id=NULL` mientras parallel pending. Approvers actuan via su fila en `requests.approvals` no via update directo al ticket. Documentar en ApprovalEngine spec.
@@ -208,4 +208,4 @@ Schema asume modelo sequential (current_step avanza 0,1,2...). En `parallel` mod
 
 **Samantha**: Eso es muy estricto. Si supervisor ya aprobo, no quiero molestarlo otra vez.
 
-**Code**: Decision discutida en cross-cutting grill (ADR-0004). Eleccion fue audit-correct sobre conveniencia: el stamp del supervisor dice "Aprobo $500", el ticket final es $300. Si no resetamos, audit es inconsistente. Si la modificacion es trivial (ej: motivo aclarado) no deberia disparar reset — pero MVP no distingue trivial vs sustantivo. Refinamiento humano post-overnight puede agregar checkbox "modificacion menor: no resetar otros steps".
+**Code**: Decision discutida en cross-cutting grill (ADR-0004). Eleccion fue audit-correct sobre conveniencia: el stamp del supervisor dice "Aprobo $500", el ticket final es $300. Si no resetamos, audit es inconsistente. Si la modificacion es trivial (ej: motivo aclarado) no deberia disparar reset — pero MVP no distingue trivial vs sustantivo. Refinamiento humano posterior puede agregar checkbox "modificacion menor: no resetar otros steps".

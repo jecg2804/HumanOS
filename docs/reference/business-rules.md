@@ -1,6 +1,6 @@
 # Business rules — Reglas de negocio críticas (R1-R27)
 
-**Role:** las reglas de negocio críticas R1-R27 — non-negotiable, Code DEBE seguirlas. · **Read-when:** antes de migrations, RLS, approval logic, ticket state, auth.users ops, o cuando el prompt menciona aprobación/préstamo/vacaciones/sello/allowed_apps/Ley 81. · **Maintain-when:** cambia una regla de negocio (requiere ADR + approval James).
+**Role:** las reglas de negocio críticas R1-R27 — non-negotiable, Code DEBE seguirlas. · **Read-when:** antes de migrations, RLS, approval logic, ticket state, auth.users ops, o cuando el prompt menciona aprobación/préstamo/vacaciones/sello/allowed_apps/Ley 81. · **Maintain-when:** cambia una regla de negocio (requiere ADR + approval Jaime).
 
 ---
 
@@ -510,7 +510,7 @@ Solo `hr_admin` o `admin` pueden crear manual-entry. Enforced via RLS policy en 
 
 ## R26 — SOP-driven approval chains (NUEVA esta sesión)
 
-**Source**: Decisión James 2026-05-27.
+**Source**: Decisión Jaime 2026-05-27.
 
 ### Regla
 
@@ -552,7 +552,7 @@ Tipos cuyo SOP NO menciona "Gerencia General" mantienen chain corto:
 
 Cuando Code o Chat propone modificar `approval_chain_template`:
 1. Consultar SOP relevante en `../sops/*.md`
-2. Si propone desviarse: documentar razón en ADR + pedir approval James
+2. Si propone desviarse: documentar razón en ADR + pedir approval Jaime
 3. Si SOP no es claro: dejar configurable y pedir validación a Samantha post-MVP via F39 admin viewer
 
 ### F39 admin viewer

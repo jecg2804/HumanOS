@@ -109,4 +109,4 @@ If returns > 0 for non-admin user accessing another's medical data: policy is wr
 - Do not skip Q1/Q2 after migrations — silent security gaps.
 - Do not use `USING (true)` without justification in comment.
 - Do not rely on app-level filters as substitute for RLS — RLS is the security boundary.
-- Do not modify policies on tables `audit.log` and `requests.audit_log` without consulting James — append-only is critical for compliance.
+- Do not modify policies on tables `audit.log` and `requests.audit_log` without consulting Jaime — append-only is critical for compliance.

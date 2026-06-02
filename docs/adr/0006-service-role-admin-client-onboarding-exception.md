@@ -104,7 +104,7 @@ Si hr_admin (Samantha) captura en F4 un email DIFERENTE al que la persona usa en
 Mitigación operacional (NO arquitectural):
 
 - F4 UI muestra placeholder y helper text: "Si la persona ya tiene cuenta en MovimientOS, usa el MISMO email/teléfono que tiene ahí. No improvises uno nuevo."
-- James pasa a Samantha lista pre-onboarding de los 48 emails empresariales existentes en `auth.users` (export una sola vez vía SQL) para que copie textual al crear invite codes
+- Jaime pasa a Samantha lista pre-onboarding de los 48 emails empresariales existentes en `auth.users` (export una sola vez vía SQL) para que copie textual al crear invite codes
 - Risk reducido por contexto: emails `@iconsanet.com` son canonical (no varían), phone numbers empresariales tampoco
 - Si ocurre a pesar de mitigación: J-item P2 v1.1 "Merge auth.users duplicados detectados (SQL admin manual)"
 

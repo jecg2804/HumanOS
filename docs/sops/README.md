@@ -4,7 +4,7 @@ Documentos oficiales de RRHH ICONSA en formato PDF (manuales, procedimientos, in
 
 **Para Claude Code**: Lee estos PDFs con Filesystem MCP. Google Drive MCP no está habilitado. Para entender qué tipo de solicitud corresponde a cada formulario y cómo implementarlo, consulta `docs/reference/domain.md` (catálogo dominio) y el skill `.claude/skills/iconsa-form-implementation/SKILL.md` (procedimiento de implementación).
 
-**Para mantenimiento (James)**: cuando Samantha actualiza un SOP en GDrive, descarga la versión nueva, reemplaza el archivo en este folder respetando el nombre, commit con mensaje `chore(sops): update IC-RH-X-XX vYY`.
+**Para mantenimiento (Jaime)**: cuando Samantha actualiza un SOP en GDrive, descarga la versión nueva, reemplaza el archivo en este folder respetando el nombre, commit con mensaje `chore(sops): update IC-RH-X-XX vYY`.
 
 ## Estructura
 

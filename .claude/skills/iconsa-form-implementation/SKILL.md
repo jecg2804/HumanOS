@@ -9,7 +9,7 @@ The differentiation between forms lives in `requests.types.form_schema` JSONB an
 
 ## Pre-flight (obligatorio antes de implementar)
 
-1. **Lee el backlog en `docs/STATUS.md`** (sección backlog con triggers/gate). Si esta feature toca un item diferido o bloqueado ahí, resuélvelo o confírmalo con James — NO lo saltes silenciosamente.
+1. **Lee el backlog en `docs/STATUS.md`** (sección backlog con triggers/gate). Si esta feature toca un item diferido o bloqueado ahí, resuélvelo o confírmalo con Jaime — NO lo saltes silenciosamente.
 2. **Confirma los acceptance criteria del spec** en `docs/work/` (spec del group en construcción). Cada criterio = al menos 1 test (E2E happy + edge + `iconsa-rls-validation`). Sin criterios escritos, no hay implementación.
 
 ## Definition of Done (obligatorio antes de marcar completo)
@@ -93,7 +93,7 @@ Si el form tiene SOP papel ICONSA:
 - Lee el PDF, identifica TODOS los campos del form papel
 - Mapea cada campo a `profile` | `user_input` | `computed`
 - Identifica chain de firmas en SOP → valida contra `requests.types.approval_chain_template`
-- Si hay discrepancia significativa: documenta ADR + consulta James (R26)
+- Si hay discrepancia significativa: documenta ADR + consulta Jaime (R26)
 
 ### 2. Verificar `requests.types` row existe
 

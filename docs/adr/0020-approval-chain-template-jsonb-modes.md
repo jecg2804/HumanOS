@@ -60,10 +60,10 @@ Si Samantha confirma incluir Javier Ferrer (VP) u otros gerentes:
 Estado al 2026-06-01:
 
 - **BL-2 (presidente self-approval) — DECIDIDO**: cuando el solicitante ES el presidente, se **omite el paso de aprobación del presidente** y se registra un **flag de auditoría** en `audit.log` (no existe autoridad superior al presidente sobre la cual encadenar). El chain no incluye un step de auto-aprobación del presidente.
-- **BL-3 — PENDIENTE (James/Samantha)**: `form_schema` source definitivo en los 8 seeds de `requests.types`.
-- **BL-4 — PENDIENTE (James/Samantha)**: `requests.next_ticket_number` + reset anual del `request_number`.
-- **BL-5 — PENDIENTE (James/Samantha)**: enum `Devuelta_Info` huérfano — confirmar si se usa o se elimina.
-- **BL-6 — PENDIENTE (James/Samantha)**: reglas de SLA + escalación cuando un step vence.
-- **BL-7 — PENDIENTE (James/Samantha)**: reglas de delegación de aprobaciones.
+- **BL-3 — PENDIENTE (Jaime/Samantha)**: `form_schema` source definitivo en los 8 seeds de `requests.types`.
+- **BL-4 — PENDIENTE (Jaime/Samantha)**: `requests.next_ticket_number` + reset anual del `request_number`.
+- **BL-5 — PENDIENTE (Jaime/Samantha)**: enum `Devuelta_Info` huérfano — confirmar si se usa o se elimina.
+- **BL-6 — PENDIENTE (Jaime/Samantha)**: reglas de SLA + escalación cuando un step vence.
+- **BL-7 — PENDIENTE (Jaime/Samantha)**: reglas de delegación de aprobaciones.
 
 BL-3..7 deben cerrarse antes de construir los forms president-gated / money (Group 6). Tracking en `../STATUS.md` (§Backlog).

@@ -169,7 +169,7 @@ if (Test-Path ".claude/skills") {
 
 H2 ".agents/ (legacy matt-pocock location)"
 if (Test-Path ".agents") {
-    INFO "Existe .agents/ - James menciono que borro"
+    INFO "Existe .agents/ - Jaime menciono que borro"
 } else {
     OK ".agents/ borrado (correcto, movido a .claude/skills/)"
 }

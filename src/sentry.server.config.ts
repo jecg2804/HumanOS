@@ -1,5 +1,5 @@
 // Sentry server-side init. Loaded by src/instrumentation.ts when NEXT_RUNTIME === 'nodejs'.
-// No-op until James provisions the Sentry project and sets NEXT_PUBLIC_SENTRY_DSN / SENTRY_DSN
+// No-op until Jaime provisions the Sentry project and sets NEXT_PUBLIC_SENTRY_DSN / SENTRY_DSN
 // (dsn undefined => Sentry.init does nothing). Until then errors still hit stderr via reportError.
 import * as Sentry from '@sentry/nextjs';
 

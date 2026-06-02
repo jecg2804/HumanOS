@@ -191,7 +191,7 @@ try {
 
         if ($filePath -match "\.env\.local$") {
             $msg = "BLOCKED: Modifying .env.local is not allowed.`n"
-            $msg += ".env.local secrets must be managed manually by James and via Vercel Dashboard."
+            $msg += ".env.local secrets must be managed manually by Jaime and via Vercel Dashboard."
             [Console]::Error.WriteLine($msg)
             exit 2
         }

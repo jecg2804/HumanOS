@@ -1,6 +1,6 @@
 # 0025 — Vocabulario canónico de `source_system`: token de SoR `humanos_app`, distinto del origen (`person_sources`)
 
-**Fecha:** 2026-06-02 · **Status:** Accepted · **Decidido por:** James (W1 batch 1). **Relacionado:** ADR-0014 (MDM gradual), ADR-0011 (schemas modulares).
+**Fecha:** 2026-06-02 · **Status:** Accepted · **Decidido por:** Jaime (W1 batch 1). **Relacionado:** ADR-0014 (MDM gradual), ADR-0011 (schemas modulares).
 
 ## Decisión
 
@@ -26,7 +26,7 @@ source_system IN ('humanos_app', 'payday', 'b2w', 'spectrum', 'manual_entry')
 
 ## Contexto
 
-W1 batch 1 (`054_foundation_lifecycle_columns`) introdujo `source_system` como fundación transversal (MDM Pilar 8, data lineage) en las 9 entidades master-data de `hr`. El diseño original (`db-final-vision-design.md` §1.3) proponía DEFAULT `'humanos'`; James lo corrigió a `humanos_app` por la colisión con `humanos.*`/`humanos_v1`, y exigió alinear `hr.leave_*` (creadas en 047 con `'humanos'`) al mismo token + CHECK para no dejar dos tokens para lo mismo.
+W1 batch 1 (`054_foundation_lifecycle_columns`) introdujo `source_system` como fundación transversal (MDM Pilar 8, data lineage) en las 9 entidades master-data de `hr`. El diseño original (`db-final-vision-design.md` §1.3) proponía DEFAULT `'humanos'`; Jaime lo corrigió a `humanos_app` por la colisión con `humanos.*`/`humanos_v1`, y exigió alinear `hr.leave_*` (creadas en 047 con `'humanos'`) al mismo token + CHECK para no dejar dos tokens para lo mismo.
 
 ## Alternativas rechazadas
 

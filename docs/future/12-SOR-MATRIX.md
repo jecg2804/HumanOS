@@ -10,7 +10,7 @@
 
 **Status**: PRELIMINAR. Se completará por integration a medida que cada API se conecte realmente.
 
-**Realidad concreta de integrations (input James 2026-05-25)**:
+**Realidad concreta de integrations (input Jaime 2026-05-25)**:
 
 - **Skydata GPS**: API REST live ✓ (credenciales en Vercel env). Primera integration a implementar.
 - **Trimble Spectrum**: SDK disponible, cubre **master data only** (Employees, Equipment, Projects, Cost Codes, Vendors). **Transactional (POs, Invoices, GL) pendiente fase 2** — SDK actual NO lo expone.

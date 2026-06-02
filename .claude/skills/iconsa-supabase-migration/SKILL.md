@@ -9,8 +9,8 @@ Use `mcp__supabase__apply_migration` for DDL, `mcp__supabase__execute_sql` for D
 
 ## Pre-flight (obligatorio antes de migrar)
 
-1. **Lee el backlog en `docs/STATUS.md`** (sección backlog con triggers/gate). Si la migración toca un item diferido/bloqueado (p.ej. MIG-DRIFT, una decisión BLOCKED-on-James), resuélvelo o confírmalo con James — NO lo saltes silenciosamente.
-2. **Schema-first:** si la migración cambia la *forma* del esquema (tablas/columnas/policies nuevas), el diseño debe estar aprobado por James antes de aplicar. Verifica el estado vivo de la BD vía Supabase MCP (no asumas) antes de escribir DDL.
+1. **Lee el backlog en `docs/STATUS.md`** (sección backlog con triggers/gate). Si la migración toca un item diferido/bloqueado (p.ej. MIG-DRIFT, una decisión BLOCKED-on-Jaime), resuélvelo o confírmalo con Jaime — NO lo saltes silenciosamente.
+2. **Schema-first:** si la migración cambia la *forma* del esquema (tablas/columnas/policies nuevas), el diseño debe estar aprobado por Jaime antes de aplicar. Verifica el estado vivo de la BD vía Supabase MCP (no asumas) antes de escribir DDL.
 3. **No `supabase db push`** mientras MIG-DRIFT esté abierto (migraciones locales desalineadas con `supabase_migrations`).
 
 ## Definition of Done (obligatorio antes de marcar completo)
@@ -147,6 +147,6 @@ CREATE POLICY "table_select_ticket" ON schema.table
 - Do not write migrations directly via Supabase Dashboard. Use `apply_migration` MCP tool.
 - Do not hardcode UUIDs of seed data into migrations. Use deterministic generators or query existing.
 - Do not create tables in `public.*`, `payroll.*`, `humanos.*`. Hook blocks.
-- Do not skip COMMENT — Supabase Dashboard becomes unusable for Samantha and James.
+- Do not skip COMMENT — Supabase Dashboard becomes unusable for Samantha and Jaime.
 - Do not skip RLS — security incident risk.
 - Do not re-create helper functions that already exist.

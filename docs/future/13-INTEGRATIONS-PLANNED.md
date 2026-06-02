@@ -127,7 +127,7 @@
 
 ## Apps futuras (otras mini-apps ICONSA)
 
-**Aspiración documentada (James, 2026-05-25)**: ICONSA tendrá varios mini-apps internos siguiendo el patrón MovimientOS + HumanOS — digitalizar formularios + agregar valor con APIs/data integration. Ejemplos no comprometidos:
+**Aspiración documentada (Jaime, 2026-05-25)**: ICONSA tendrá varios mini-apps internos siguiendo el patrón MovimientOS + HumanOS — digitalizar formularios + agregar valor con APIs/data integration. Ejemplos no comprometidos:
 
 - App de mantenimiento equipos (RCM + preventive scheduling con GPS data Skydata)
 - App de despacho/ruteo (algoritmos sobre data MovimientOS + GPS)

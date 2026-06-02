@@ -55,7 +55,7 @@ Estas reglas son non-negotiable. Hooks PowerShell en `.claude/hooks/` (`pre-tool
 
 8. **No estimar tiempos** en days/weeks/months. Usar P1/P2/P3 + trivial/non-trivial/alta-complejidad.
 
-9. **SOP-driven approval chains** — NUNCA desviarse del SOP papel sin validar con James. Ver `@docs/reference/business-rules.md` R26.
+9. **SOP-driven approval chains** — NUNCA desviarse del SOP papel sin validar con Jaime. Ver `@docs/reference/business-rules.md` R26.
 
 10. **Library docs check via Context7**: antes de escribir código que use Next.js, React, Tailwind, Supabase SDK, Resend, Twilio, Documenso, Zod, o cualquier librería externa, invoca Context7 (`resolve-library-id` + `get-library-docs`) para verificar APIs actuales. Tu training puede tener APIs deprecated. Caso real: Next.js 16 renombró `middleware.ts` → `proxy.ts` — sin consultar Context7, este breaking change pasa desapercibido. Ver skill `iconsa-library-docs-check`.
 
@@ -103,7 +103,7 @@ Disponibles en `.claude/skills/iconsa-*/`. Auto-triggered por hook `user-prompt-
 
 ## Promise mechanism
 
-Contrato de ejecución-a-completitud de un plan/group **ya aprobado** (NO un build overnight autónomo — el modelo real es atendido; ver `@PROJECT_CONSTITUTION.md` §5.6). Al arrancar la ejecución de un plan aprobado, Code lo lleva a término sin interrupción innecesaria:
+Contrato de ejecución-a-completitud de un plan/group **ya aprobado** (NO un build overnight autónomo — el modelo real es atendido; ver `@PROJECT_CONSTITUTION.md` §5.6 + ADR-0026). Al arrancar la ejecución de un plan aprobado, Code lo lleva a término sin interrupción innecesaria:
 ```xml
 <promise>PLAN_COMPLETE</promise>
 ```
@@ -124,7 +124,7 @@ Si parcial: `<promise>PARTIAL</promise>` con la lista explícita de lo que qued�
 - ❌ DELETE/UPDATE de tablas críticas sin WHERE
 - ❌ Modificar archivos en `public.*`, `payroll.*`, `humanos.*`
 - ❌ Confiar en memoria de SOPs — leer PDFs en `docs/sops/` (NO Google Drive MCP, no está habilitado)
-- ❌ Desviarse de R26 sin documentar + validar con James
+- ❌ Desviarse de R26 sin documentar + validar con Jaime
 - ❌ Implementar logic per-form custom — usar FormEngine + ApprovalEngine
 - ❌ Hardcodear chain steps — están en `requests.types.approval_chain_template`
 - ❌ Duplicar info que BD ya tiene — consultar via MCP

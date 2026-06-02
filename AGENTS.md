@@ -15,7 +15,7 @@ Entry delgado para agentes que NO cargan `CLAUDE.md` automáticamente (p. ej. Co
 - **R13 datos sensibles** (`hr.medical_info`, `hr.personal_documents`): owner + hr_admin únicamente.
 - **R23 encoding:** UTF-8 sin BOM; hooks `.ps1` ASCII puro.
 - **Idioma UI:** español neutro Panamá. **NUNCA voseo** (usa tú/tienes/puedes/verifica). El lint `iconsa/no-voseo` es `error`.
-- **Schema-first:** no cambies la forma del esquema sin diseño aprobado por James. **No `supabase db push`** (drift abierto, ver STATUS).
+- **Schema-first:** no cambies la forma del esquema sin diseño aprobado por Jaime. **No `supabase db push`** (drift abierto, ver STATUS).
 - **No estimar tiempos** (P1/P2/P3 + trivial/non-trivial/alta-complejidad).
 - **BD = fuente de verdad** para estado vivo (conteos, migraciones): consultar vía Supabase MCP, no duplicar en docs.
 

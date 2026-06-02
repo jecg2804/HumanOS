@@ -19,7 +19,7 @@ Read the rules from `docs/reference/business-rules.md` before acting. This skill
 
 **R23 - Encoding**: All config files (.json, .ps1, .md, .ts, .tsx, .css) MUST be UTF-8 without BOM. Hooks `.ps1` MUST be ASCII pure (no em-dash, no accents, no smart quotes). Use `[System.IO.File]::WriteAllText($path, $content, [System.Text.UTF8Encoding]::new($false))` in PowerShell 5.1.
 
-**R26 - SOP-driven chains**: NEVER deviate from SOP-defined approval chains without consulting James. If SOP says "Gerencia General", add a `president` step. Excepciones documented in `docs/reference/business-rules.md`.
+**R26 - SOP-driven chains**: NEVER deviate from SOP-defined approval chains without consulting Jaime. If SOP says "Gerencia General", add a `president` step. Excepciones documented in `docs/reference/business-rules.md`.
 
 ## Important rules (check before acting)
 
@@ -65,7 +65,7 @@ Read the rules from `docs/reference/business-rules.md` before acting. This skill
 1. Read `docs/reference/business-rules.md` for full text of the relevant R.
 2. Before implementing: list which Rs apply.
 3. Before submitting code: re-check each R for the touched code paths.
-4. If unsure: ask James, do not guess.
+4. If unsure: ask Jaime, do not guess.
 
 ## What NOT to do
 
@@ -73,6 +73,6 @@ Read the rules from `docs/reference/business-rules.md` before acting. This skill
 - Do not add CHECK `approver_id != requester_id` to `requests.approvals` (R5 is in code).
 - Do not modify `auth.users` without explicit `allowed_apps` filter (R22).
 - Do not write `.ps1` files with non-ASCII characters (R23).
-- Do not deviate from SOP chains without James approval (R26).
+- Do not deviate from SOP chains without Jaime approval (R26).
 - Do not assume `'supervisor'` is a valid `app_role` value (R10 - it is not).
 - Do not invent new approval modes outside `parallel|direct_hr_admin|any_of_hr|parent_only` (R24).

@@ -2,7 +2,7 @@ import type { MetadataRoute } from 'next';
 
 // FE-4: basic web app manifest (PWA-ready). Next auto-links this at
 // /manifest.webmanifest. Icons + full offline support are deferred until
-// design assets exist (needs James) — declaring metadata + theme is the
+// design assets exist (needs Jaime) — declaring metadata + theme is the
 // bounded remediation here.
 export default function manifest(): MetadataRoute.Manifest {
   return {
