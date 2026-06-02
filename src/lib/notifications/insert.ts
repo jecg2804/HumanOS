@@ -1,3 +1,4 @@
+import 'server-only';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import type { Database, Json } from '@/lib/supabase/database.types';
 import { type NotificationTypeValue, TEMPLATE_CODE_MAP } from './types';

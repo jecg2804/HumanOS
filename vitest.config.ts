@@ -30,6 +30,11 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': resolve(__dirname, './src'),
+      // server-only's default index.js throws outside an RSC server bundle. Under vitest (jsdom)
+      // we stub it to the package's own no-op empty.js so server-only modules (e.g.
+      // notifications/insert.ts, SEC-ENQUEUE) are testable. Next enforces the real client/server
+      // boundary at build time.
+      'server-only': resolve(__dirname, './node_modules/server-only/empty.js'),
     },
   },
 });

@@ -6,6 +6,10 @@ Cambios por feature/grupo. Formato: conventional commits + entries `[bd]` para m
 
 Group 3 (Profile + KB) en planning. Ver `reference/mvp-scope.md` F6-F9.
 
+### W3 — Código/seguridad (audit-closing, batch-por-batch, 2026-06-02)
+
+- `[bd] 065_revoke_enqueue_from_authenticated` — **SEC-ENQUEUE (P1):** `notifications.enqueue` (SECURITY DEFINER) era EXECUTE-able por `authenticated` → un usuario logueado podía encolar notificaciones a cualquier `recipient_id` (spoof/spam). `REVOKE EXECUTE ... FROM authenticated, anon, public` (ACL post: `postgres` + `service_role`). Verificado: todos los callers de prod usan el admin client service-role (`onboarding/actions.ts` + cron worker); REVOKE no rompe nada. **+** `import 'server-only'` en `src/lib/notifications/insert.ts` (defensa: no se bundlea client-side) + alias `server-only`→`empty.js` en `vitest.config.ts` (jsdom, su `index.js` lanza). Gate verde: tsc + lint + 67 vitest + build. Mismo patrón que 044/055.
+
 ### W2 — DATA-HYGIENE (estructura; audit read-only, 2026-06-02)
 
 - **Audit read-only** (cero mutaciones) de `hr.people`/`addresses`/`contacts`: 370 personas (184 activos); cédula `national_id` 14% poblada (134 activos sin), formato DGI limpio + variantes VÁLIDAS (E-/pasaporte `AY######`/asiento corto); `full_name` campo único limpio (77% 2 tokens, sin `first_name`/`last_name`); 0 dups por cédula/nombre **pero** 6 inactivos con sufijo ` 2` = dup-person enmascarado (ej. "Hector Pino 2"); `external_data` de `person_sources` vacío → no hay fuente interna de cédula; addresses `province` 0/128 + `city` inconsistente (case/tildes/semántica); contacts `is_emergency`=0. Perfil + plan: `docs/work/2026-06-02-w2-data-hygiene-plan.md`.
