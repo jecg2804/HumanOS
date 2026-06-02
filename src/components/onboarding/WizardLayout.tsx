@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 interface Props {
@@ -13,6 +13,8 @@ interface Props {
 export function WizardLayout({ step, totalSteps, children, onCancel, showCancel = true }: Props) {
   const [confirmingCancel, setConfirmingCancel] = useState(false);
   const router = useRouter();
+  const titleId = useId();
+  const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handler = (e: BeforeUnloadEvent) => {
@@ -22,6 +24,39 @@ export function WizardLayout({ step, totalSteps, children, onCancel, showCancel 
     window.addEventListener('beforeunload', handler);
     return () => window.removeEventListener('beforeunload', handler);
   }, []);
+
+  // FE-3 a11y: while the cancel-confirmation dialog is open, trap Tab inside it, close on Escape,
+  // and restore focus to whatever was focused before (the "Cancelar y reiniciar" trigger).
+  useEffect(() => {
+    if (!confirmingCancel) return;
+    const previouslyFocused = document.activeElement as HTMLElement | null;
+    const focusables = modalRef.current?.querySelectorAll<HTMLElement>(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    focusables?.[0]?.focus();
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setConfirmingCancel(false);
+        return;
+      }
+      if (e.key === 'Tab' && focusables && focusables.length > 0) {
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      previouslyFocused?.focus();
+    };
+  }, [confirmingCancel]);
 
   const pct = Math.round((step / totalSteps) * 100);
 
@@ -43,7 +78,14 @@ export function WizardLayout({ step, totalSteps, children, onCancel, showCancel 
           </button>
         )}
       </header>
-      <div className="h-2 bg-gray-200">
+      <div
+        className="h-2 bg-gray-200"
+        role="progressbar"
+        aria-valuenow={pct}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-label={`Progreso del onboarding: paso ${step} de ${totalSteps}`}
+      >
         <div
           className="h-full bg-gold-500 transition-all"
           style={{ width: `${pct}%` }}
@@ -52,8 +94,14 @@ export function WizardLayout({ step, totalSteps, children, onCancel, showCancel 
       <main className="max-w-2xl mx-auto p-6">{children}</main>
       {confirmingCancel && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg p-6 max-w-md">
-            <h2 className="text-lg font-bold">¿Salir del onboarding?</h2>
+          <div
+            ref={modalRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby={titleId}
+            className="bg-white rounded-lg p-6 max-w-md"
+          >
+            <h2 id={titleId} className="text-lg font-bold">¿Salir del onboarding?</h2>
             <p className="text-sm text-gray-600 mt-2">
               Perderás todo el progreso. Tendrás que iniciar desde el primer paso la próxima vez.
             </p>

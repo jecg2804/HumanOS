@@ -56,6 +56,7 @@ export function Step9Acknowledgments({ state, dispatch }: Props) {
             href="/sops/IC-RH-M-01.pdf"
             target="_blank"
             rel="noopener noreferrer"
+            aria-label="Ver Manual de Ética IC-RH-M-01 (PDF, abre en ventana nueva)"
             className="text-sm text-info-500 underline"
           >
             Ver documento (PDF)
@@ -84,6 +85,7 @@ export function Step9Acknowledgments({ state, dispatch }: Props) {
             href="/sops/IC-RH-D-07.pdf"
             target="_blank"
             rel="noopener noreferrer"
+            aria-label="Ver Política contra Trabajo Infantil IC-RH-D-07 (PDF, abre en ventana nueva)"
             className="text-sm text-info-500 underline"
           >
             Ver documento (PDF)

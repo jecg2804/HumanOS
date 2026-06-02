@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useId, useState } from 'react';
 
 interface Option {
   id: string;
@@ -24,13 +24,15 @@ export function CatalogComboboxField({
   onFreeText,
 }: Props) {
   const [useFreeText, setUseFreeText] = useState(!!freeText && !selectedId);
+  const fieldId = useId();
 
   return (
     <div>
-      <label className="block text-sm font-medium mb-1">{label}</label>
+      <label htmlFor={fieldId} className="block text-sm font-medium mb-1">{label}</label>
       {useFreeText ? (
         <>
           <input
+            id={fieldId}
             type="text"
             value={freeText}
             onChange={(e) => onFreeText(e.target.value)}
@@ -51,6 +53,7 @@ export function CatalogComboboxField({
       ) : (
         <>
           <select
+            id={fieldId}
             value={selectedId}
             onChange={(e) => onSelectId(e.target.value)}
             className="w-full p-3 border rounded"

@@ -1,4 +1,5 @@
 'use client';
+import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useNotificationsRealtime } from '@/lib/notifications/realtime';
 import { NotificationItem } from './NotificationItem';
@@ -11,9 +12,33 @@ interface Props {
 export function NotificationDropdown({ personId, onClose }: Props) {
   const { notifications, markAsRead, markAllAsRead } = useNotificationsRealtime(personId);
   const top = notifications.slice(0, 10);
+  const ref = useRef<HTMLDivElement>(null);
+
+  // FE-3 a11y: close on Escape and on outside click. The outside-click listener is deferred one
+  // tick so the same click that opened the panel (on the bell) does not immediately close it.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    const onClick = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) onClose();
+    };
+    document.addEventListener('keydown', onKey);
+    const t = setTimeout(() => document.addEventListener('mousedown', onClick), 0);
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      clearTimeout(t);
+      document.removeEventListener('mousedown', onClick);
+    };
+  }, [onClose]);
 
   return (
-    <div className="absolute right-0 top-12 w-96 bg-white rounded-lg shadow-lg border z-50">
+    <div
+      ref={ref}
+      role="region"
+      aria-label="Notificaciones"
+      className="absolute right-0 top-12 w-96 bg-white rounded-lg shadow-lg border z-50"
+    >
       <div className="flex items-center justify-between p-3 border-b">
         <h3 className="font-bold">Notificaciones</h3>
         <button onClick={markAllAsRead} className="text-xs text-info-500 underline">

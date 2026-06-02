@@ -16,8 +16,10 @@ export function NotificationBell({ personId }: Props) {
     <div className="relative">
       <button
         onClick={() => setOpen(!open)}
-        className="relative p-2 rounded hover:bg-gray-100"
-        aria-label="Notificaciones"
+        className="relative p-2 rounded hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-500 focus-visible:ring-offset-2"
+        aria-haspopup="true"
+        aria-expanded={open}
+        aria-label={unreadCount > 0 ? `Notificaciones, ${unreadCount} sin leer` : 'Notificaciones'}
       >
         <Bell className="w-5 h-5" />
         {unreadCount > 0 && (

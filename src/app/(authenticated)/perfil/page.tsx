@@ -50,6 +50,14 @@ export default async function PerfilPage() {
     employment_type: { short_name: string } | null;
   } | null;
 
+  const initials =
+    person.full_name
+      .split(' ')
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((p) => p[0]?.toUpperCase() ?? '')
+      .join('') || '?';
+
   return (
     <main className="max-w-3xl mx-auto p-6">
       <h1 className="text-2xl font-bold text-navy-500">Mi perfil</h1>
@@ -67,7 +75,13 @@ export default async function PerfilPage() {
             className="w-24 h-24 rounded-full object-cover"
           />
         ) : (
-          <div className="w-24 h-24 rounded-full bg-gray-200" />
+          <div
+            role="img"
+            aria-label={`Foto de perfil de ${person.full_name} (no disponible)`}
+            className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center text-2xl font-semibold text-gray-500"
+          >
+            {initials}
+          </div>
         )}
         <dl className="flex-1 space-y-2 text-sm">
           <Row label="Nombre" value={person.full_name} />

@@ -28,6 +28,7 @@ export function EmployeeList({ employees }: Props) {
       <div className="flex gap-2 mb-4">
         <button
           onClick={() => setFilter('all')}
+          aria-pressed={filter === 'all'}
           className={`px-3 py-1 rounded text-sm ${
             filter === 'all' ? 'bg-navy-500 text-white' : 'bg-gray-200'
           }`}
@@ -36,6 +37,7 @@ export function EmployeeList({ employees }: Props) {
         </button>
         <button
           onClick={() => setFilter('needs_review')}
+          aria-pressed={filter === 'needs_review'}
           className={`px-3 py-1 rounded text-sm ${
             filter === 'needs_review' ? 'bg-warning-500 text-white' : 'bg-gray-200'
           }`}
@@ -56,14 +58,15 @@ export function EmployeeList({ employees }: Props) {
         </Link>
       </div>
       <table className="w-full bg-white border rounded">
+        <caption className="sr-only">Lista de empleados de ICONSA</caption>
         <thead className="bg-gray-50 border-b">
           <tr>
-            <th className="text-left p-3 text-sm">Nombre</th>
-            <th className="text-left p-3 text-sm">Cédula</th>
-            <th className="text-left p-3 text-sm">Cargo</th>
-            <th className="text-left p-3 text-sm">Departamento</th>
-            <th className="text-left p-3 text-sm">Estado</th>
-            <th></th>
+            <th scope="col" className="text-left p-3 text-sm">Nombre</th>
+            <th scope="col" className="text-left p-3 text-sm">Cédula</th>
+            <th scope="col" className="text-left p-3 text-sm">Cargo</th>
+            <th scope="col" className="text-left p-3 text-sm">Departamento</th>
+            <th scope="col" className="text-left p-3 text-sm">Estado</th>
+            <th scope="col"><span className="sr-only">Acciones</span></th>
           </tr>
         </thead>
         <tbody>
