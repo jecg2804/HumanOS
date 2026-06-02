@@ -144,7 +144,7 @@ async function main() {
       person_id: personId,
       app_role: APP_ROLE,
       position_text: 'Administrador de Pruebas (seed)',
-      is_current: true,
+      // is_current is a GENERATED column (valid_to IS NULL) - never insert it.
     });
     if (error) throw error;
     console.log(`hr.employments created (app_role=${APP_ROLE})`);
