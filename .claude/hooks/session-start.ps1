@@ -37,11 +37,15 @@ Incident 2026-05-25 documented in docs/reference/business-rules.md R22.
 2. COMMENT ON TABLE + COMMENT ON COLUMN
 3. If golden record (cross-app entity): {entity}_external_ids + _source column
 
-[HELPER FUNCTIONS - NO redefinir]
-- hr.current_person_id(), hr.current_app_role()
-- hr.is_hr_admin(), hr.is_president_or_admin()
-- hr.is_supervisor_of(uuid), hr.has_direct_reports()
-- requests.can_view_ticket(uuid), hr.touch_updated_at()
+[HELPER FUNCTIONS - NO redefinir; lista parcial, pg_proc es la fuente]
+- RLS: hr.current_person_id(), hr.current_app_role(), hr.is_hr_admin(),
+  hr.is_president_or_admin(), hr.is_supervisor_of(uuid), hr.has_direct_reports(),
+  requests.can_view_ticket(uuid), hr.check_invite_code_rate_limit()
+- Write (SECURITY DEFINER, service_role-only): hr.complete_onboarding_writes(),
+  hr.apply_employment_scd2_change(), hr.create_employee_with_invite(),
+  hr.find_auth_user_by_identifier(), hr.post_leave_ledger_entry(),
+  requests.next_sequence(), notifications.enqueue()
+- Triggers/infra: hr.touch_updated_at(), hr.create_default_user_settings(), audit.log_access()
 
 [IDIOMA UI]
 Espanol neutro Panama. NUNCA voseo (vos, tenes, podes, registra-tilde).

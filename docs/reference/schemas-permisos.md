@@ -2,7 +2,7 @@
 
 **Role:** modelo de permisos — qué schemas tocar (writable/read-only/prohibido), RLS conventions, helper functions, CHECK constraints, SCD-2. · **Read-when:** antes de tocar la BD (migration, RLS policy, query) o al validar acceso. · **Maintain-when:** cambia el modelo de permisos, se agrega un helper/constraint, o un patrón RLS nuevo.
 
-**Última actualización**: 2026-06-01 (D10-DOC4 staleness fix — counts derivan de BD, no se hardcodean)
+**Última actualización**: 2026-06-02 (foundation reality-audit: helper-list completa + grant-layer `authenticated` + Exposed Schemas documentados)
 
 > Los **counts** (número de tablas por schema, total de RLS policies, rows backfilled, auth.users) NO se duplican aquí — **consultar la BD vía Supabase MCP** (`list_tables`, `execute_sql` sobre `pg_policies`/`pg_class`) es la fuente de verdad. Este doc documenta el **modelo de permisos** (qué tocar, RLS conventions, helpers), no el inventario vivo.
 
@@ -50,15 +50,44 @@ CREATE POLICY "policy_name" ON schema.tabla
 
 ## Helper functions disponibles (NO redefinir)
 
+> **Lista NO exhaustiva** — `pg_proc` es la fuente de verdad (consultar antes de crear cualquier helper). Todas son `SECURITY DEFINER` con `search_path=''`.
+
+**RLS helpers** (read; EXECUTE para `authenticated`):
+
 | Function | Returns | Uso |
 |---|---|---|
 | `hr.current_person_id()` | uuid | person_id de auth.uid() actual |
-| `hr.current_app_role()` | text | employee \| hr_admin \| president \| admin (nuevo migration 025) |
+| `hr.current_app_role()` | text | employee \| hr_admin \| president \| admin |
 | `hr.is_hr_admin()` | boolean | true si app_role='hr_admin' |
 | `hr.is_president_or_admin()` | boolean | true si app_role IN ('president','admin') |
 | `hr.is_supervisor_of(person_id uuid)` | boolean | true si auth.uid() es supervisor_id de person_id |
-| `hr.has_direct_reports()` | boolean | true si auth.uid() tiene al menos un employment.supervisor_id apuntando a la persona (nuevo migration 025) |
-| `requests.can_view_ticket(ticket_id uuid)` | boolean | true si auth.uid() es requester, supervisor del requester, hr_admin, o president |
+| `hr.has_direct_reports()` | boolean | true si auth.uid() tiene reportes directos |
+| `requests.can_view_ticket(ticket_id uuid)` | boolean | requester, supervisor, hr_admin o president |
+| `hr.check_invite_code_rate_limit(...)` | boolean | rate-limit de intentos de invite (onboarding) |
+
+**Write / transaccionales** (`SECURITY DEFINER`, EXECUTE **solo `service_role`** — llamar desde el admin client, NO redefinir):
+
+| Function | Uso |
+|---|---|
+| `hr.complete_onboarding_writes(...)` | escritura atómica del wizard de onboarding |
+| `hr.apply_employment_scd2_change(...)` | cambio SCD-2 de employment (cierra viejo + inserta nuevo) |
+| `hr.create_employee_with_invite(...)` | alta atómica admin (people+employment+invite); CODE-ADMIN-TX |
+| `hr.find_auth_user_by_identifier(...)` | lookup de auth.users por email/code (onboarding) |
+| `hr.post_leave_ledger_entry(...)` | asiento en el ledger de vacaciones |
+| `requests.next_sequence(...)` | secuencia atómica para `request_number` (HUM-YYYY-NNNN) |
+| `notifications.enqueue(...)` | encolar notificación (outbox) |
+
+**Triggers / infra** (NO llamar directo; EXECUTE revocado): `hr.touch_updated_at()`, `hr.create_default_user_settings()` (trigger AFTER INSERT en `hr.people`), `audit.log_access()`.
+
+---
+
+## Grants a `authenticated` + Exposed Schemas (prereq de deploy)
+
+**Dos capas, ambas necesarias** — lección del 2026-06-02 (primer login real end-to-end):
+
+1. **GRANT de tabla.** El rol `authenticated` necesita `GRANT SELECT [/INSERT/UPDATE/DELETE]` sobre la tabla. **RLS solo filtra filas DESPUÉS del grant.** Sin grant → Postgres niega acceso ANTES de evaluar RLS → `permission denied for table X` (la app lo ve como "no perfil vinculado" y redirige a login). Convención: `authenticated` tiene CRUD en la mayoría de tablas HumanOS (RLS filtra las filas). **Excepción `hr.people`: SELECT-only** (migración 069) — todas sus escrituras van por RPCs `SECURITY DEFINER` / admin client service-role, así que `authenticated` no necesita DML. Al crear una tabla nueva en schema custom: **conceder el grant explícito** (Supabase lo da por default en `public`, NO en schemas custom) + RLS.
+
+2. **Exposed Schemas (PostgREST).** PostgREST solo sirve los schemas listados en **Dashboard → Settings → API → Exposed schemas**. **NO es legible por SQL** (`pgrst.db_schemas` = null a nivel sesión). DEBE incluir todos los schemas HumanOS (`hr, requests, docs, workflows, audit, notifications, files, performance, learning, mdm`) además de `public`. Si un schema no está expuesto, `supabase.schema('hr')...` falla con `Invalid schema` y la app no funciona (2026-06-02: solo `public` estaba expuesto → ningún login HumanOS funcionaba). **Antes de un `DROP SCHEMA` de un schema expuesto: quitarlo de Exposed Schemas PRIMERO** — si no, el schema-cache de PostgREST se rompe → **503 en toda la API** del proyecto compartido (incidente del 066, afectó a MovimientOS).
 
 ---
 

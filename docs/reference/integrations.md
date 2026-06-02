@@ -60,6 +60,15 @@
 | **Env vars** | Gestionados en Vercel Dashboard (override .env.local). MCP Chat NO lee env vars — solo lista projects, deployments, logs |
 | **Owner ICONSA** | Jaime |
 
+### Supabase (config crítica de deploy)
+
+| Item | Valor |
+|---|---|
+| **Proyecto** | `bzeoszympkkicwlfdtcn` (compartido con MovimientOS) |
+| **Exposed Schemas** ⚠️ | Dashboard → Settings → API → Exposed schemas **DEBE** incluir los schemas HumanOS (`hr, requests, docs, workflows, audit, notifications, files, performance, learning, mdm`) + `public`. **NO es legible por SQL.** Si falta uno, `supabase.schema('x')` falla con "Invalid schema" y la app no funciona (2026-06-02: solo `public` expuesto → ningún login HumanOS funcionaba). Antes de un `DROP SCHEMA` expuesto, quitarlo de aquí PRIMERO (incidente 066: rompió PostgREST → 503 cross-app). Grant-layer + detalle: `schemas-permisos.md`. |
+| **API keys** | Legacy JWT (`anon`/`service_role`) + nuevas (`sb_publishable_`/`sb_secret_`) coexisten; legacy muere fines 2026. `SUPABASE_SERVICE_ROLE_KEY` (server-only) en .env.local + Vercel env. |
+| **Owner ICONSA** | Jaime |
+
 ### MCPs activos
 
 **Chat (Anthropic API directo)**:
