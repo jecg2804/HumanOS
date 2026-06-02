@@ -1,0 +1,16 @@
+-- 069_restrict_authenticated_people_grant
+-- NOTE: Supabase migration history recorded this as version 20260602213613 with the name
+-- "068_restrict_authenticated_people_grant". Renumbered to 069 locally because the build session
+-- concurrently applied its own 068 (068_create_employee_with_invite, version 20260602213508,
+-- ~1 min earlier). The version timestamp is the unique key and orders correctly after the build's 068.
+-- (Symptom of two sessions applying migrations to the same DB concurrently — flagged to Jaime.)
+--
+-- Codex stop-review on 067: granting full DML to authenticated on hr.people was unnecessary.
+-- ALL hr.people writes go through either the service_role admin client (employees-actions.ts
+-- create/edit + onboarding needs_review update) or SECURITY DEFINER RPCs (create_employee_with_invite),
+-- both of which bypass grants+RLS. There is NO authenticated-session writer to hr.people.
+-- Least privilege: authenticated needs SELECT only (the login/layout reads people). SELECT (from 067)
+-- stays; this revokes the rest. When a real authenticated write path lands (e.g. profile self-edit
+-- in Group 3), grant exactly that privilege then, gated by the existing people_* RLS policies.
+-- Verified: as authenticated, SELECT works (login OK), INSERT/UPDATE/DELETE denied. Idempotent.
+REVOKE INSERT, UPDATE, DELETE ON hr.people FROM authenticated;
