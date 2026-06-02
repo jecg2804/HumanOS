@@ -31,11 +31,19 @@ Perfeccionar la **fundación (docs + BD estructura/contenido + framework)** para
 **P2 pre-Group-3:** SEC-SEQ · TYPES-STALE · CODE-ADMIN-TX · CODE-CRON · SEC-LEGACY · SEC-DEPS · ENV-SROLE.
 **BLOCKED-James:** BL-3 (form_schema sources, Group 4) · BL-4=seq-reset anual (Group 4) · BL-5..7 (SLA/delegación/Devuelta_Info, Group 4/6).
 
-## Decisiones de James pendientes (idealmente antes/temprano en sesión nueva)
+## Decisiones de James — CONFIRMADAS (2026-06-01)
 
-**BD (de db-final-vision-design):** (1) `deleted_by` en todas vs solo tablas Ley-81; (2) views en schema de dominio (`hr.v_*`, recomendado) vs schema de presentación; (3) extender `audit.log` (+source_system/valid_from-to) vs `audit.changes` bitemporal nuevo; (4) modelo de embeddings + `vector(N)` dimensión + dónde se generan; (5) Ley 81 — loggear READ de `hr.medical_info`/`personal_documents` desde día 1 (R27) o diferir.
-**Toolstack (de toolstack-roadmap):** confirmar ADOPT-NOW Group 3 (pgvector + Vercel AI SDK/Gateway + Postgres FTS) y los rechazos (Pinecone→pgvector, LangChain→AI SDK, CMS-as-data→no).
-**Signup (Group 3):** las 6 decisiones del signup-advisory §6.
+1. **soft-delete:** `deleted_at` en todas; `deleted_by` solo en tablas con datos personales/Ley-81. ✅
+2. **views:** schema de dominio `hr.v_*` con `security_invoker`. Empezar con `v_directory` + `v_org_chart` (Group 3); matviews para analytics = futuro. ✅
+3. **audit:** extender `audit.log` (+`source_system`); `audit.changes` bitemporal DIFERIDO (YAGNI). ✅
+4. **embeddings/RAG:** pgvector enabled NOW (provision); tablas de embeddings al shippear KB (Group 3+). `vector(1536)` (text-embedding-3-small) vía Vercel AI Gateway; generación en server action/cron al crear/editar contenido. Revisar dimensión solo si la calidad no alcanza. ✅
+5. **Ley 81:** loggear READ de `hr.medical_info`/`personal_documents` desde día 1. ✅
+
+**Contenido user-authored (corrección de James):** SÍ queremos features donde el usuario crea contenido (capacitaciones, blog, anuncios) — como los líderes. NO es un CMS externo: se construye sobre nuestro propio schema (`docs.articles`/`article_versions` para KB/blog/anuncios, `learning.courses`/`course_modules` para capacitaciones) + un editor (markdown/rich-text). Un CMS externo duplicaría la SOR y complicaría RLS. El SCHEMA ya existe; falta la UI de autoría (Groups 5-7).
+
+**Offline + apps móviles (Android/iOS) — futuro deseado:** la BD se provisiona para soportarlo (soft-delete + `source_system` + columnas de sync diferidas con su feature); las apps móviles serán clientes futuros sobre la misma Supabase API. No se construye ahora, pero el diseño no lo bloquea.
+
+**Signup (Group 3):** las 6 decisiones del signup-advisory §6 — se deciden al diseñar signup.
 
 ## Reglas duras
 
