@@ -18,6 +18,7 @@ export default function ResetPasswordPage() {
           <input
             name="password"
             type="password"
+            aria-label="Nueva contraseña"
             placeholder="Nueva contraseña"
             minLength={10}
             required

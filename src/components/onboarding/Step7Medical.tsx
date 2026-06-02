@@ -48,6 +48,7 @@ export function Step7Medical({ state, dispatch }: Props) {
         </select>
       </div>
       <textarea
+        aria-label="Alergias"
         placeholder="Alergias"
         value={state.medical.allergies ?? ''}
         onChange={(e) => update('allergies', e.target.value)}
@@ -55,6 +56,7 @@ export function Step7Medical({ state, dispatch }: Props) {
         rows={2}
       />
       <textarea
+        aria-label="Condiciones crónicas"
         placeholder="Condiciones crónicas (diabetes, hipertensión, asma…)"
         value={state.medical.chronic_conditions ?? ''}
         onChange={(e) => update('chronic_conditions', e.target.value)}
@@ -62,6 +64,7 @@ export function Step7Medical({ state, dispatch }: Props) {
         rows={2}
       />
       <textarea
+        aria-label="Medicamentos actuales"
         placeholder="Medicamentos actuales"
         value={state.medical.current_medications ?? ''}
         onChange={(e) => update('current_medications', e.target.value)}
@@ -69,30 +72,35 @@ export function Step7Medical({ state, dispatch }: Props) {
         rows={2}
       />
       <input
+        aria-label="Nombre del médico de cabecera"
         placeholder="Nombre del médico de cabecera"
         value={state.medical.doctor_name ?? ''}
         onChange={(e) => update('doctor_name', e.target.value)}
         className="w-full p-3 border rounded"
       />
       <input
+        aria-label="Teléfono del médico"
         placeholder="Teléfono del médico"
         value={state.medical.doctor_phone ?? ''}
         onChange={(e) => update('doctor_phone', e.target.value)}
         className="w-full p-3 border rounded"
       />
       <input
+        aria-label="Aseguradora"
         placeholder="Aseguradora"
         value={state.medical.medical_insurance_provider ?? ''}
         onChange={(e) => update('medical_insurance_provider', e.target.value)}
         className="w-full p-3 border rounded"
       />
       <input
+        aria-label="Número de póliza"
         placeholder="Número de póliza"
         value={state.medical.medical_insurance_number ?? ''}
         onChange={(e) => update('medical_insurance_number', e.target.value)}
         className="w-full p-3 border rounded"
       />
       <input
+        aria-label="Número de Seguro Social (CSS)"
         placeholder="CSS"
         value={state.medical.css_number ?? ''}
         onChange={(e) => update('css_number', e.target.value)}

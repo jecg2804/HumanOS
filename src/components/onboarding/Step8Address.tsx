@@ -44,18 +44,21 @@ export function Step8Address({ state, dispatch }: Props) {
       <h1 className="text-2xl font-bold text-navy-500">Tu dirección</h1>
       <p className="text-gray-700">Dónde vives actualmente.</p>
       <input
+        aria-label="Calle, casa, apartamento"
         placeholder="Calle, casa, apartamento"
         value={state.address.street}
         onChange={(e) => update('street', e.target.value)}
         className="w-full p-3 border rounded"
       />
       <input
+        aria-label="Barrio o corregimiento"
         placeholder="Barrio o corregimiento"
         value={state.address.neighborhood}
         onChange={(e) => update('neighborhood', e.target.value)}
         className="w-full p-3 border rounded"
       />
       <input
+        aria-label="Ciudad"
         placeholder="Ciudad"
         value={state.address.city}
         onChange={(e) => update('city', e.target.value)}
@@ -78,6 +81,7 @@ export function Step8Address({ state, dispatch }: Props) {
         </select>
       </div>
       <input
+        aria-label="Código postal (opcional)"
         placeholder="Código postal (opcional)"
         value={state.address.postal_code}
         onChange={(e) => update('postal_code', e.target.value)}

@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { Step6Schema } from '@/lib/onboarding/validation';
 import type { WizardState, WizardAction } from './WizardReducer';
 
@@ -86,10 +86,12 @@ function FormField({
   placeholder?: string;
   type?: string;
 }) {
+  const fieldId = useId();
   return (
     <div>
-      <label className="block text-sm font-medium mb-1">{label}</label>
+      <label htmlFor={fieldId} className="block text-sm font-medium mb-1">{label}</label>
       <input
+        id={fieldId}
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}

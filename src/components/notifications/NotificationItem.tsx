@@ -18,6 +18,7 @@ export function NotificationItem({ notification, onMarkRead }: Props) {
     <Link
       href={deepLink}
       onClick={() => unread && onMarkRead(notification.id)}
+      aria-label={notification.subject ?? 'Notificación'}
       className={`block p-3 border-b hover:bg-gray-50 ${unread ? 'bg-blue-50' : ''}`}
     >
       <div className="text-sm font-medium">{notification.subject}</div>

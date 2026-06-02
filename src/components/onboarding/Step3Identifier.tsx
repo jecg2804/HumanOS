@@ -58,6 +58,7 @@ export function Step3Identifier({ state, dispatch }: Props) {
         <input
           name="delivery_target"
           type="text"
+          aria-label="Correo empresarial o número de teléfono"
           value={state.delivery_target}
           onChange={(e) =>
             dispatch({ type: 'SET_FIELD', key: 'delivery_target', value: e.target.value })

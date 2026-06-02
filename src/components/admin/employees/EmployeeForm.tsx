@@ -1,5 +1,5 @@
 'use client';
-import { useActionState, useState } from 'react';
+import { useActionState, useId, useState } from 'react';
 import { CatalogComboboxField } from './CatalogComboboxField';
 import {
   createEmployeeAction,
@@ -302,10 +302,12 @@ function Field({
   type?: string;
   required?: boolean;
 }) {
+  const fieldId = useId();
   return (
     <div>
-      <label className="block text-sm font-medium mb-1">{label}</label>
+      <label htmlFor={fieldId} className="block text-sm font-medium mb-1">{label}</label>
       <input
+        id={fieldId}
         type={type}
         name={name}
         value={value}

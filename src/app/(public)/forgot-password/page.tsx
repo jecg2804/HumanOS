@@ -18,6 +18,7 @@ export default function ForgotPasswordPage() {
           <input
             name="identifier"
             type="text"
+            aria-label="Correo empresarial"
             placeholder="ejemplo@iconsanet.com"
             required
             className="w-full p-3 border rounded"
