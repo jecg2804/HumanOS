@@ -21,7 +21,7 @@ Orden de dependencia. Detalle de diseño en `docs/work/`.
 |----|-----|--------|
 | **W0** | Migrar doc-system (reference/ topical · STATUS único · work/_archive · borrar stubs · fix stale · @imports) | **en curso** |
 | **W0.5** | Framework hardening HARDEN-NOW (H-1..H-4 hechos; H-6 en framework.md; **H-5 = acción de James**) | código hecho |
-| **W1** | BD schema-first — `docs/work/db-final-vision-design.md`. **James aprueba el diseño ANTES de migrar.** Incluye MIG-DRIFT + TYPES-STALE | pendiente (GATE de aprobación) |
+| **W1** | BD schema-first — `docs/work/db-final-vision-design.md`. **James aprueba el diseño ANTES de migrar.** Incluye MIG-DRIFT + TYPES-STALE | en curso (batches 1-3 aplicados: 054/055/056; batch 4 PROVISION + TYPES-STALE pendiente) |
 | **W2** | DATA-HYGIENE (split nombre/apellido, cédula DGI, backfill, dedup, addresses) | pendiente |
 | **W3** | Código/seguridad (válidos de Codex): SEC-CONSENT, SEC-ENQUEUE, SEC-SEQ, CODE-ADMIN-TX, CODE-CRON, SEC-LEGACY, SEC-DEPS, ENV-SROLE, FW-PROXY | pendiente |
 | **W4** | FE-3 a11y full + FE-4 íconos PWA | pendiente |
@@ -75,8 +75,8 @@ Orden de dependencia. Detalle de diseño en `docs/work/`.
 |----|------|--------|-----|--------|-----------|-------------------|
 | SEC-CONSENT | Consentimiento Ley 81 antes de Step6/7 (médico/emergencia) + BD de consentimiento versionado (`consent_at/version/scope/actor/IP`) + bloquear write sin consentimiento. Texto validado por abogado | both | P1 | OPEN | security | pre-Group-3 |
 | SEC-ENQUEUE | `notifications.enqueue` SECURITY DEFINER ejecutable por `authenticated` sin validar que el caller pueda notificar al `recipient_id`. REVOKE de authenticated + solo service-role o guard interno; `import 'server-only'` en `insert.ts` | Codex | P1 | OPEN | security | pre-Group-3 |
-| MIG-DRIFT | `supabase/migrations/047..051` no alineados con `supabase_migrations` (locales vs remotos `20260601130108...`). Renombrar a timestamps reales o mover a `snippets/` + documentar. NO `db push` hasta resolver | Codex | P1/P2 | OPEN | DB-structure | pre-Group-3 (W1) |
-| SEC-SEQ | `requests.next_sequence` (050) SECURITY DEFINER con grant `authenticated` sin guard → cualquiera quema numeración. REVOKE authenticated o guard interno | Codex | P2 | OPEN | security | pre-Group-3 |
+| MIG-DRIFT | ~~`047..053` locales sin prefijo timestamp~~ **DONE (W1):** renombrados a `<timestamp>_NNN_*.sql` matching `supabase_migrations`. | Codex | P1/P2 | DONE | DB-structure | — |
+| SEC-SEQ | ~~`requests.next_sequence` ejecutable por authenticated~~ **DONE (W1 055):** `REVOKE EXECUTE ... FROM authenticated`; solo service-role + el bumper SECURITY DEFINER. | Codex | P2 | DONE | security | — |
 | TYPES-STALE | `database.types.ts` + `humanos_baseline.sql` desfasados vs BD viva (faltan `leave_ledger/leave_balances/post_leave_ledger_entry/next_sequence/dedupe_key`). Regenerar desde live + revisar diff | Codex | P2 | OPEN | code | pre-Group-3 (W1) |
 | CODE-ADMIN-TX | Creación admin de empleado no transaccional (`people`→`employments`→`user_settings`→invite); falla parcial deja empleado roto. RPC service-role transaccional o compensating cleanup | Codex | P2 | OPEN | code | pre-Group-3 |
 | CODE-CRON | Worker de cron ignora `{ error }` en updates (`sent`/`markPermanent`/`markRetryable`) → estado falso, duplicados o reintentos eternos | Codex | P2 | OPEN | code | pre-Group-3 |
