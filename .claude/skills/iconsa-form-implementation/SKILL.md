@@ -7,6 +7,17 @@ description: Implement a new HumanOS form / request type end-to-end. Use wheneve
 
 The differentiation between forms lives in `requests.types.form_schema` JSONB and `requests.types.approval_chain_template` JSONB — NOT in custom code per form.
 
+## Pre-flight (obligatorio antes de implementar)
+
+1. **Lee el backlog en `docs/STATUS.md`** (sección backlog con triggers/gate). Si esta feature toca un item diferido o bloqueado ahí, resuélvelo o confírmalo con James — NO lo saltes silenciosamente.
+2. **Confirma los acceptance criteria del spec** en `docs/work/` (spec del group en construcción). Cada criterio = al menos 1 test (E2E happy + edge + `iconsa-rls-validation`). Sin criterios escritos, no hay implementación.
+
+## Definition of Done (obligatorio antes de marcar completo)
+
+- `npm run verify` limpio (typecheck + lint + test + build); E2E al menos happy-path de la feature.
+- Subagents de review corridos: `migration-reviewer` / `rls-reviewer` (si hubo migración), `sop-chain-auditor` (si tocó una cadena de aprobación).
+- Docs vivos actualizados **en el mismo commit que el código**: `CHANGELOG.md`, `CONTEXT.md` (si cambió vocabulario), `docs/adr/` (si hubo decisión). Edit-in-place; el estado vive SOLO en `docs/STATUS.md`.
+
 ## CORE MENTAL MODEL — Field source matrix
 
 HumanOS digitaliza formularios papel ICONSA. **Cada campo del SOP papel cae en UNA de 3 categorías**:

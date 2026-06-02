@@ -26,6 +26,12 @@ try {
 
     $matched = @()
 
+    # W0.5 H-4: short, purely-alphabetic keywords (and a few common long ones) match on a WORD
+    # BOUNDARY to cut false positives - "form" matched "informacion", "page"/"hook"/"plan" fired on
+    # "explanation"/"specific", training the agent to ignore the router. Keywords with digits, dots,
+    # hyphens or spaces (codes like F-05-01, HUM-, next.js, CREATE TABLE) keep substring matching.
+    $shortKwDenylist = @("update", "page", "layout", "form", "policy")
+
     foreach ($skill in $rules.skills) {
         $isMatch = $false
         $reason = ""
@@ -33,7 +39,16 @@ try {
         # Match by keywords
         if ($skill.keywords) {
             foreach ($kw in $skill.keywords) {
-                if ($promptLower.Contains($kw.ToLower())) {
+                $kwLower = $kw.ToLower()
+                $isAlpha = $kwLower -match '^[a-z]+$'
+                $useBoundary = $isAlpha -and (($kwLower.Length -le 5) -or ($shortKwDenylist -contains $kwLower))
+                $hit = $false
+                if ($useBoundary) {
+                    $hit = $promptLower -match "\b$([regex]::Escape($kwLower))\b"
+                } else {
+                    $hit = $promptLower.Contains($kwLower)
+                }
+                if ($hit) {
                     $isMatch = $true
                     $reason = "keyword: $kw"
                     break

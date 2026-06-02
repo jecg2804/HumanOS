@@ -72,6 +72,35 @@ try {
                 }
             }
         }
+
+        # R23 encoding guard (W0.5 H-2): warn if a config/text file was written with a UTF-8 BOM,
+        # or if a .ps1 hook contains non-ASCII bytes. Advisory only (exit 0) - blocking here would
+        # break legitimate writes when an editor reintroduces a BOM.
+        if ($filePath -match "\.(json|ps1|md|ts|tsx|css)$" -and (Test-Path $filePath)) {
+            try {
+                $bytes = [System.IO.File]::ReadAllBytes($filePath)
+                $warnings = @()
+                if ($bytes.Length -ge 3 -and $bytes[0] -eq 0xEF -and $bytes[1] -eq 0xBB -and $bytes[2] -eq 0xBF) {
+                    $warnings += "UTF-8 BOM detected (R23 requires UTF-8 WITHOUT BOM)."
+                }
+                if ($filePath -match "\.ps1$") {
+                    $nonAscii = $false
+                    foreach ($b in $bytes) { if ($b -gt 127) { $nonAscii = $true; break } }
+                    if ($nonAscii) {
+                        $warnings += "Non-ASCII byte in a .ps1 hook (R23 requires ASCII-only PowerShell: no accents, em-dash, or smart quotes)."
+                    }
+                }
+                if ($warnings.Count -gt 0) {
+                    $shortName = $filePath -replace '.*[\\/]',''
+                    Write-Output ""
+                    Write-Output "<encoding_warning>"
+                    Write-Output "R23 encoding check on $shortName"
+                    foreach ($w in $warnings) { Write-Output "  - $w" }
+                    Write-Output "Rewrite the file as UTF-8 without BOM (ASCII-only for .ps1) before commit."
+                    Write-Output "</encoding_warning>"
+                }
+            } catch { }
+        }
     }
 
     # SQL migration reminders (always fire, cheap)

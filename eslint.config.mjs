@@ -37,9 +37,10 @@ const config = [
     },
     rules: {
       'iconsa/no-admin-client-in-client': 'error',
-      // R6/R15 anti-voseo guard (audit 2026-05-29 H9). 'warn' first to surface any pre-existing
-      // voseo without breaking the gate; escalate to 'error' once the count is zero.
-      'iconsa/no-voseo': 'warn',
+      // R6/R15 anti-voseo guard (audit 2026-05-29 H9). Escalated to 'error' on 2026-06-01 (W0.5 H-3)
+      // after `npm run lint` confirmed the codebase voseo count is zero. The gate now blocks any new
+      // voseo from shipping; never downgrade without James sign-off.
+      'iconsa/no-voseo': 'error',
     },
   },
   {

@@ -7,6 +7,18 @@ description: Apply ICONSA conventions when creating a Supabase migration (CREATE
 
 Use `mcp__supabase__apply_migration` for DDL, `mcp__supabase__execute_sql` for DML. Hook `PreToolUse` validates schema permissions and blocks writes to `public.*`, `payroll.*`, `humanos.*`.
 
+## Pre-flight (obligatorio antes de migrar)
+
+1. **Lee el backlog en `docs/STATUS.md`** (sección backlog con triggers/gate). Si la migración toca un item diferido/bloqueado (p.ej. MIG-DRIFT, una decisión BLOCKED-on-James), resuélvelo o confírmalo con James — NO lo saltes silenciosamente.
+2. **Schema-first:** si la migración cambia la *forma* del esquema (tablas/columnas/policies nuevas), el diseño debe estar aprobado por James antes de aplicar. Verifica el estado vivo de la BD vía Supabase MCP (no asumas) antes de escribir DDL.
+3. **No `supabase db push`** mientras MIG-DRIFT esté abierto (migraciones locales desalineadas con `supabase_migrations`).
+
+## Definition of Done (obligatorio antes de marcar completo)
+
+- Advisors de Supabase corridos (`get_advisors` security + performance) y limpios para nuestros schemas; `multiple_permissive_policies` en 0.
+- Subagents de review corridos: `migration-reviewer` + `rls-reviewer` sobre el .sql.
+- `CHANGELOG.md` actualizado (`[bd] NNN_migration_name - qué - por qué`) en el mismo commit; estado SOLO en `docs/STATUS.md`.
+
 ## Naming convention
 
 Migration name: `NNN_action_target` snake_case. Examples:
