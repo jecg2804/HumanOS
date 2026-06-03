@@ -4,7 +4,7 @@
 
 **Última actualización**: sesión 2026-05-27 (modes finales + F39 admin viewer chains Nivel A + decisiones SOP-driven + BD ready post-migrations); roadmap post-MVP absorbido de 03 (2026-06-01)
 
-**Owner update**: Claude Chat. Auditar cada feature contra Supabase real + repomix antes de cerrar el MVP scope.
+**Mantenimiento:** auditar cada feature contra la BD real (Supabase MCP) antes de cerrar su scope; el status por-feature vive aquí, el estado global en `../STATUS.md`.
 
 ---
 

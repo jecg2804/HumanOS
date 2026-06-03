@@ -38,7 +38,7 @@ Métricas soporte: tiempo promedio de resolución per tipo (SLA compliance), sat
 10. **Manual entry F32**: hr_admin crea solicitud en nombre del empleado con foto del form papel (realidad campo)
 11. **F39 admin viewer chains Nivel A**: read-only MVP. Edit JSON raw v1.1
 12. **Framework Claude Code**: cherry-pick Superpowers + mattpocock grill-with-docs + custom ICONSA skills
-13. **Triple stack docs**: Project Files (Chat) / repo docs (Code) / wiki cross-app futuro
+13. **Set único de docs** (NO triple-stack por audiencia): ADR-0024 retiró el split "docs Chat vs Code" de ADR-0016. Un solo set canónico en `docs/` (reference topical + STATUS + ADRs); wiki cross-app sigue siendo futuro.
 14. **Lenguaje español neutro Panamá**: NUNCA voseo
 15. **No firma legal MVP**: stamp_data jsonb con metadata. Documenso v1.1
 

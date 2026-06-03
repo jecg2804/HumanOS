@@ -2,7 +2,7 @@
 
 App HR de ICONSA (construcción Panamá). Stack: Next.js 16 + TS strict + Tailwind 4 + Supabase + Vercel. Replaces Humand ($4/user/mes). Coexiste con MovimientOS en misma BD Supabase.
 
-**Estado actual del repo:** Group 2 (Onboarding) shipped en tag v0.0.2 (commit `32ef28b`). Group 1 (auth foundation) shipped v0.0.1. Features F1 (wizard 10 steps), F2 (login), F3 (AppShell), F4 (admin nuevo empleado), F5 (admin editar + SCD-2) + F-04-01 + F-01-09 acks + /forgot-password + /perfil + NotificationBell + Vercel Cron worker + 4 email templates de dominio Resend (+ BaseLayout) en producción. F6-F39 pendientes (Groups 3-7). Docs en `docs/` (reference/ topical + STATUS + CONTEXT + CHANGELOG + adr/; índice en `docs/reference/README.md`), harness en `.claude/` (5 ICONSA skills + 4 mattpocock + 6 hooks).
+**Estado actual del repo:** Group 2 (Onboarding) shipped en tag v0.0.2 (commit `32ef28b`). Group 1 (auth foundation) shipped v0.0.1. Features F1 (wizard 10 steps), F2 (login), F3 (AppShell), F4 (admin nuevo empleado), F5 (admin editar + SCD-2) + F-04-01 + F-01-09 acks + /forgot-password + /perfil + NotificationBell + Vercel Cron worker + 4 email templates de dominio Resend (+ BaseLayout) en producción. F6-F39 pendientes (Groups 3-7). Docs en `docs/` (reference/ topical + STATUS + CONTEXT + CHANGELOG + adr/; índice en `docs/reference/README.md`), harness en `.claude/` (skills ICONSA + mattpocock + hooks + subagents; counts NO aquí — ver `docs/reference/framework.md`).
 
 **Para el estado actual** (counts, tablas, helpers, migrations aplicadas, invite codes): consulta la BD directamente vía Supabase MCP. No duplicamos eso aquí — la BD es la fuente de verdad.
 

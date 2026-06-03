@@ -171,7 +171,7 @@ Antes de arrancar la ejecución de un plan ejecutar:
 
 La ejecución de un plan aprobado sigue el **pipeline canónico v2** de arriba (BRAINSTORM→...→CLOSE), NO una lista aparte. (La vieja nota "brainstorming skip — ya hecho en Chat" está superada por `@docs/superpowers/specs/2026-05-29-skill-integration-design.md`.)
 
-Antes de ejecutar sin interrupción un plan que abarca un grupo completo, TODO esto debe ser verdad (criterios de `../work/framework-hardening-design.md` §4):
+Antes de ejecutar sin interrupción un plan que abarca un grupo completo, TODO esto debe ser verdad (criterios de `../work/_archive/framework-hardening-design.md` §4):
 
 1. El gate de merge **bloquea**, no solo recuerda (branch protection exige los checks de CI — H-5, acción de Jaime).
 2. Los no-negociables son físicos (PreToolUse R1/R22/golden-record/bash/.env; R23 advertido en PostToolUse; voseo = `error`).
