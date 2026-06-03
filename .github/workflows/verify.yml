@@ -41,6 +41,8 @@ jobs:
         run: npm run typecheck
       - name: Lint
         run: npm run lint
+      - name: Docs drift check
+        run: npm run docs:check
       - name: Unit tests
         run: npm run test
       - name: Secret scan (gitleaks)
