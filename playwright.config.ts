@@ -23,12 +23,20 @@ export default defineConfig({
     video: 'retain-on-failure',
   },
   projects: [
-    // Auth bootstrap: logs in as hr_admin and writes e2e/.auth/hr_admin.json (consumed by
-    // admin-empleados.spec via test.use({ storageState })).
+    // Auth bootstrap: logs in as hr_admin and writes e2e/.auth/hr_admin.json. Skips gracefully
+    // (see e2e/auth.setup.ts) when E2E_HR_ADMIN_* are unset, so the public suite still runs.
     { name: 'setup', testMatch: /auth\.setup\.ts/ },
+    // Public suite: no auth needed (login, forgot/reset password, onboarding). Runs without creds.
     {
-      name: 'chromium',
+      name: 'public',
       use: { ...devices['Desktop Chrome'] },
+      testIgnore: [/auth\.setup\.ts/, /admin-empleados\.spec\.ts/],
+    },
+    // Authenticated suite: needs the hr_admin storage state. Whole file skips when creds are unset.
+    {
+      name: 'authenticated',
+      use: { ...devices['Desktop Chrome'], storageState: 'e2e/.auth/hr_admin.json' },
+      testMatch: /admin-empleados\.spec\.ts/,
       dependencies: ['setup'],
     },
   ],

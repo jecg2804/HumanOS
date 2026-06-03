@@ -18,9 +18,11 @@ Principios **non-negotiable**. Anulan conveniencia, deadlines, y cualquier suger
 **1.4 RLS obligatorio** — toda tabla nueva en schemas HumanOS tiene `ALTER TABLE ... ENABLE ROW LEVEL SECURITY` + mínimo 1 policy SELECT. Validar post-creación con skill `iconsa-rls-validation`. Sin excepciones.
 
 **1.5 Helpers existentes — NO redefinir**:
-- *RLS:* `hr.current_person_id()`, `hr.current_app_role()`, `hr.is_hr_admin()`, `hr.is_president_or_admin()`, `hr.is_supervisor_of()`, `hr.has_direct_reports()`, `requests.can_view_ticket()`, `hr.check_invite_code_rate_limit()`.
-- *Write/transaccionales* (`SECURITY DEFINER`, service_role-only): `hr.complete_onboarding_writes()`, `hr.apply_employment_scd2_change()`, `hr.create_employee_with_invite()`, `hr.find_auth_user_by_identifier()`, `hr.post_leave_ledger_entry()`, `requests.next_sequence()`, `notifications.enqueue()`.
-- *Triggers/infra:* `hr.touch_updated_at()`, `hr.create_default_user_settings()`, `audit.log_access()`.
+- *RLS:* `hr.current_person_id()`, `hr.current_app_role()`, `hr.is_hr_admin()`, `hr.is_president_or_admin()`, `hr.is_supervisor_of()`, `hr.has_direct_reports()`, `requests.can_view_ticket()`.
+- *RPC pre-auth* (`SECURITY DEFINER`, EXECUTE anon/PUBLIC; retorna jsonb, NO es helper RLS): `hr.check_invite_code_rate_limit()`.
+- *Write/transaccionales* (`SECURITY DEFINER`, EXECUTE service_role-only): `hr.complete_onboarding_writes()`, `hr.apply_employment_scd2_change()`, `hr.create_employee_with_invite()`, `hr.find_auth_user_by_identifier()`, `requests.next_sequence()`, `notifications.enqueue()`.
+- *Definer con EXECUTE `authenticated`* (guard interno — revisar al cablear su feature): `hr.post_leave_ledger_entry()`, `audit.log_access()`.
+- *Triggers/infra* (EXECUTE revocado de anon/auth/public): `hr.touch_updated_at()`, `hr.create_default_user_settings()`.
 
 **Lista NO exhaustiva — `pg_proc` es la fuente; verificar antes de crear cualquier helper.** (Detalle + el grant-layer / Exposed-Schemas en `docs/reference/schemas-permisos.md`.)
 

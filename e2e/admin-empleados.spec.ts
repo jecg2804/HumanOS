@@ -1,6 +1,13 @@
 import { test, expect } from '@playwright/test';
 import { adminClient, cleanupTestEmployee } from './lib/sql-helpers';
 
+// File-scope skip (evaluated before fixtures) so the storageState file is never required when the
+// hr_admin creds are unset. Keeps `npm run verify:e2e` green on a fresh checkout.
+test.skip(
+  !process.env.E2E_HR_ADMIN_EMAIL || !process.env.E2E_HR_ADMIN_PASSWORD,
+  'requires E2E_HR_ADMIN_* creds (authenticated E2E)'
+);
+
 test.use({ storageState: 'e2e/.auth/hr_admin.json' });
 
 test('hr_admin creates employee + invite + edits + regenerates', async ({ page }) => {
