@@ -52,7 +52,7 @@
 | **Team principal** | `team_eF8Xr3TDs6yd5Q6nAhics6s3` (great-mann's projects) |
 | **Team secundario** | `team_yGAYhYjLvxBn2Ar4LjDkKxtJ` (jecg2804's projects) — legacy `movilizaciones-iconsa` candidato a archivar |
 | **MovimientOS** | `prj_o28h5tYDskqF3AjBg1w5W3F3fYu4` → `rein-eisenwerk.com` + `www.rein-eisenwerk.com` |
-| **HumanOS** | `prj_DqJQEL9LJ5qcwkw8Et6WYUpUxiLQ` → `humanos.rein-eisenwerk.com` (validado DNS+HTTP) |
+| **HumanOS (app activa)** | **NO desplegada aún** (repo-state v0.0.2). El proyecto `prj_DqJQEL9LJ5qcwkw8Et6WYUpUxiLQ` (`human-os`, team great-mann) deploya el **demo viejo de `ICONSA-Solutions/HumanOS`** — builds ERROR (prebuild copy-sops), `live:false`, sin dominio custom. Ver fila "HumanOS" en Sistemas internos abajo |
 | **Node** | 24.x |
 | **Framework** | Next.js 16 |
 | **Cron jobs (HumanOS Group 2+)** | Declarados en `vercel.ts` (knowledge update 2026 reemplaza `vercel.json`). Schedule `*/5 * * * *` para `/api/cron/process-notifications` email worker |
@@ -111,11 +111,11 @@ Las 6 integraciones ETL/master data planned (PayDay, Trimble B2W, Trimble Spectr
 
 | Item | Valor |
 |---|---|
-| **Status** | Live (Group 2 Onboarding shipped tag v0.0.2 commit `32ef28b` 2026-05-27 noche). Group 3 (Profile + KB) en preparación |
+| **Status** | **NO desplegado a prod (repo-state v0.0.2, NO live).** "shipped" = tag v0.0.2 commit `32ef28b` en el repo, no un deploy. Dev en `jecg2804/HumanOS`; el deploy real + dominio se hacen al migrar a `ICONSA-Solutions/HumanOS` cuando el MVP esté listo. Group 3 (Profile + KB) en preparación |
 | **Tipo** | App interna Next.js — RRHH self-service |
-| **Repo** | jecg2804/HumanOS |
-| **Vercel project** | `prj_DqJQEL9LJ5qcwkw8Et6WYUpUxiLQ` |
-| **Domain** | `humanos.rein-eisenwerk.com` (subdomain del domain personal Jaime, validado DNS+HTTP) |
+| **Repo** | **Dev (activo):** `jecg2804/HumanOS` — repo personal de Jaime usado como mirror para dar acceso a Claude Code/Codex (`ICONSA-Solutions` es privado). **Destino MVP:** `ICONSA-Solutions/HumanOS` (repo de la compañía, hoy con el demo inicial como backup) — se reemplaza al estar listo el MVP |
+| **Vercel project** | `prj_DqJQEL9LJ5qcwkw8Et6WYUpUxiLQ` existe pero apunta al **demo viejo** (`ICONSA-Solutions/HumanOS`), builds ERROR — NO sirve la app activa. Falta un proyecto Vercel para `jecg2804/HumanOS` (o reconectar al migrar) |
+| **Domain** | `humanos.rein-eisenwerk.com` planeado; **aún NO wired a un deploy live** |
 | **Schemas usados** | `hr.*`, `requests.*`, `docs.*`, `workflows.*`, `audit.*`, `notifications.*`, `files.*`, `performance.*`, `learning.*` (52+ tablas total) |
 | **Auth** | Supabase auth — `auth.users` con `allowed_apps` incluyendo `'humanOS'` |
 | **Email sender** | `HumanOS <notificaciones@rein-eisenwerk.com>` (verificado en Resend) |
