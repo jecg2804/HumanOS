@@ -33,7 +33,7 @@ HumanOS digitaliza formularios papel ICONSA. **Cada campo del SOP papel cae en U
 
 ## YOU MUST follow
 
-Estas reglas son non-negotiable. Hooks PowerShell en `.claude/hooks/` (`pre-tool-use.ps1`, `user-prompt-submit.ps1`, `post-tool-use.ps1`, `pre-compact.ps1`, `session-start.ps1`, `audit-claude-code.ps1`) bloquean violaciones físicamente; las demás son enforcement humano + skill `iconsa-business-rules`. Router de skills en `.claude/skill-rules.json`.
+Estas reglas son non-negotiable. Hooks PowerShell registrados en `.claude/settings.json` (`session-start`, `user-prompt-submit`, `pre-tool-use`, `post-tool-use`, `pre-compact`, `stop`) bloquean violaciones físicamente (`audit-claude-code.ps1` es script de diagnóstico manual, NO un hook registrado); las demás son enforcement humano + skill `iconsa-business-rules`. Router de skills en `.claude/skill-rules.json`.
 
 1. **Schemas prohibited** — NUNCA write a `public.*`, `payroll.*`, `humanos.*`. Allowed: `hr.*`, `requests.*`, `docs.*`, `workflows.*`, `audit.*`, `notifications.*`, `files.*`, `performance.*`, `learning.*`, `mdm.*`, `etl.*`, `backup.*`. (`humanos.*` = demo v1 **dropeado 2026-06-02** W3 SEC-LEGACY; la prohibición se MANTIENE contra recreación accidental; snapshot en `backup.humanos_*_20260602`.)
 
@@ -55,7 +55,7 @@ Estas reglas son non-negotiable. Hooks PowerShell en `.claude/hooks/` (`pre-tool
 
 8. **No estimar tiempos** en days/weeks/months. Usar P1/P2/P3 + trivial/non-trivial/alta-complejidad.
 
-9. **SOP-driven approval chains** — NUNCA desviarse del SOP papel sin validar con Jaime. Ver `@docs/reference/business-rules.md` R26.
+9. **SOP-driven approval chains** — NUNCA desviarse del SOP papel sin validar con Jaime (el SOP es dominio de Samantha, fuera del loop de dev; Jaime valida desviaciones). Fidelidad de cadena: ADR-0027 (firma=aprobación · RRHH=visibilidad). Ver `@docs/reference/business-rules.md` R26.
 
 10. **Library docs check via Context7**: antes de escribir código que use Next.js, React, Tailwind, Supabase SDK, Resend, Twilio, Documenso, Zod, o cualquier librería externa, invoca Context7 (`resolve-library-id` + `get-library-docs`) para verificar APIs actuales. Tu training puede tener APIs deprecated. Caso real: Next.js 16 renombró `middleware.ts` → `proxy.ts` — sin consultar Context7, este breaking change pasa desapercibido. Ver skill `iconsa-library-docs-check`.
 

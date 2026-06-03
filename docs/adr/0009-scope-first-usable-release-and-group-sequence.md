@@ -67,3 +67,19 @@ engine exists. Planning and estimates should use the build-unit count, not the c
 - Open per-form chain decisions (BL-2 president self-approval, BL-3..7) are tracked in
   `0020-approval-chain-template-jsonb-modes.md`, not here. BL-2 is decided (omit the president
   self-approval step + audit flag); BL-3..7 remain pending Jaime/Samantha.
+
+## Update 2026-06-03 (Jaime) — de-risk slice changes from CARTA_TRABAJO
+
+The de-risk first slice (above, lines 22-25/38) **changes**: instead of CARTA_TRABAJO, the engine is
+proven on **ACTUALIZACION_DATOS** (FormEngine — `direct_hr_admin`, no chain, built in Group 3 with the
+signup rework) and then **ACCION_PERSONAL** (ApprovalEngine — `parallel`+`president`+R8, Group 4).
+Rationale: **CARTA_TRABAJO is already handled by PayDay** (low value to digitize first), while
+acciones-de-personal + actualización-de-datos are Samantha's stated starting priority — so the slice
+de-risks the engine incrementally (FormEngine on the simplest type, then ApprovalEngine on the hardest)
+*and* delivers priority value.
+
+**Unchanged / still valid:** full-catalog FUR scope, the Group/tag vocabulary (and the W1-W2-W3 wave
+REJECTION — no parallel "ARC/wave" vocabulary), the ~33 honest build-count, ACCION_PERSONAL = one family.
+The authoritative HR form catalog (fields + corrected chains + the ~14 net-new legal-gap types) lives in
+**`docs/work/2026-06-03-hr-catalog-and-launch-plan.md`** (alongside `reference/mvp-scope.md`). Chain-fidelity
+rules behind the corrected chains: ADR-0027.

@@ -166,7 +166,7 @@ Investigación 2026-05-27 — opciones que aportan valor a la visión final pero
 | Upstash Redis | Rate limiting + session cache | Considerado | NO MVP (sin volumen suficiente) |
 | CodeRabbit | AI code reviews PRs | Considerado | NO MVP (Code single dev) |
 | PostHog | Product analytics | Considerado | NO MVP (instrumentar post-funnel onboarding completo) |
-| Sanity | Headless CMS (KB editing por Samantha) | Considerado | NO MVP (Notion ya wireado para esto) |
+| Sanity | Headless CMS (KB editing por Samantha) | Considerado | NO MVP — la autoría de KB es **IN-APP** sobre `docs.articles`/`article_versions` (schema propio + editor), NO un CMS externo (duplicaría la SOR + complica RLS). La nota previa "Notion ya wireado" es **stale**/incorrecta |
 | Linear / GitHub Projects | Backlog tracker | Considerado | NO MVP (BACKLOG.md manual funciona) |
 | Terraform | Infrastructure-as-Code | Considerado | NO MVP (2 Vercel projects + 1 Supabase = overkill) |
 | Supabase Edge Functions | Worker compute cerca de BD | Considerado para email worker | **NO** — ver ADR-0008 alternativa rechazada (b revisited). Vercel Cron preferido para HumanOS por templates single-source + same Node runtime |

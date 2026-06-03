@@ -1,3 +1,5 @@
+> **ARCHIVADO / SUPERSEDED (2026-06-03).** merge de los 2 ADR-ledgers DONE 2026-06-01 (ver docs/adr/README.md History). Estado vivo: `docs/STATUS.md`. No empezar aqui.
+
 # Skill Integration Design — HumanOS Claude Code Harness
 
 **Status:** ACCEPTED (lead engineer decision, ratified by James 2026-05-29)

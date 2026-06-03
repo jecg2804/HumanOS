@@ -1,3 +1,5 @@
+> **ARCHIVADO / SUPERSEDED (2026-06-03).** ejecutado (W0; ADR-0024). Estado vivo: `docs/STATUS.md`. No empezar aqui.
+
 # Docs Restructure Plan — set canónico + ownership
 
 **Status:** PLAN (para una pasada dedicada; no ejecutado todavía). Ratifica la dirección de

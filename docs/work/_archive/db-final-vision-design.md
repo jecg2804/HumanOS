@@ -1,3 +1,5 @@
+> **ARCHIVADO / SUPERSEDED (2026-06-03).** ratificado+shipped como migraciones 054-062 (W1). Estado vivo: `docs/STATUS.md`. No empezar aqui.
+
 # DB Final-Vision Design Scope — GAP entre el schema actual y la visión market-leader
 
 **Status: PROPUESTA — pendiente de ratificación por James. Diseño, NO migraciones por aplicar.**

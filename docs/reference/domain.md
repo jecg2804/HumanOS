@@ -24,7 +24,9 @@
 | Rodrigo Eisenmann | EIS772 | Presidente |
 | Octavio Javier Ferrer | FER337 | Vice Presidente |
 
-### Otros gerentes en BD (potencial "Gerencia General" según SOP — validar con Samantha)
+### Otros gerentes en BD
+
+> **Gerencia General (canonical):** Gerencia General (SOP) = el rol president (MAPPING RESUELTO 2026-06-03); president (Rodrigo) aprueba+recibe los steps GG. ABIERTO solo si el VP Javier Ferrer u otros gerentes de esta tabla tambien gatean en algun tipo (ver ADR-0020 + ADR-0027). El roster de abajo es factual (titulos BD), no implica que gaten hoy.
 
 | Persona | employee_code | Cargo | Departamento |
 |---|---|---|---|

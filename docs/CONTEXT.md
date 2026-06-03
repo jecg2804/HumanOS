@@ -115,8 +115,8 @@ Persona que aparece como `supervisor_id` en algun `hr.employments.is_current=tru
 Override del solicitante en `requests.tickets.selected_supervisor_id`. Permite elegir supervisor distinto al de su employment (ej: jefe de proyecto vs jefe jerarquico). Activable cuando `requests.types.allow_supervisor_override=true`.
 
 **Gerencia General**:
-Termino del SOP papel ICONSA. En MVP mapea a `president_user` resolver = Rodrigo Eisenmann (unico `app_role='president'`). Validacion post-MVP con Samantha si VP/otros gerentes deben incluirse (deferred v1.1 segun `docs/adr/0020-approval-chain-template-jsonb-modes.md`).
-_Avoid_: usar "Presidente" cuando el SOP dice "Gerencia General" — son potencialmente diferentes.
+Termino del SOP papel ICONSA = el rol/step `president`. RESUELTO (Jaime 2026-06-03): el president (Rodrigo, unico `app_role='president'` en MVP) **aprueba + recibe** todos los steps que el SOP marca "Gerencia General"; resolver = `president_user`. ABIERTO/define-in-practice: solo la MEMBRESIA (si VP Javier Ferrer u otros gerentes tambien gatean) — ver `docs/adr/0020-approval-chain-template-jsonb-modes.md` + `docs/adr/0027-chain-fidelity-signature-approval-rrhh-visibility.md`.
+_Avoid_: tratar GG como "indefinido" — el mapping a `president` esta resuelto; solo la membresia sigue abierta.
 
 ### Empleo + contrato
 
@@ -179,8 +179,8 @@ Slowly Changing Dimension Type 2. Pattern en `hr.employments`: cambios criticos 
 
 ### Flagged ambiguities
 
-**"Gerencia General" del SOP**:
-Termino del documento papel ICONSA. NO esta claramente definido si refiere solo al Presidente (Rodrigo) o incluye VP (Javier Ferrer) y/o otros gerentes (Finanzas, Proyectos, Equipo, Calidad). MVP asume solo Rodrigo. Resolucion post-MVP con Samantha.
+**Membresia de `president` (GG)**:
+El MAPPING "Gerencia General"→`president` esta RESUELTO (ver glosario, Jaime 2026-06-03). Lo unico ABIERTO: si el rol `president` incluye solo a Rodrigo o tambien al VP (Javier Ferrer) y/o otros gerentes (Finanzas, Proyectos, Equipo, Calidad). MVP asume solo Rodrigo. Resolucion define-in-practice (Opcion A/B en ADR-0020).
 
 **`requests.approvals.approver_role = 'specific_person'`**:
 CHECK constraint en BD incluye este valor pero NO esta en los 3 resolvers documentados (R11). Probable future-proofing o vestigial. Si aparece en codigo, validar con Jaime si es para v1.1 (delegacion explicita pre-asignada) o eliminar.

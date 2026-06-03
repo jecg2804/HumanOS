@@ -30,7 +30,7 @@ Métricas soporte: tiempo promedio de resolución per tipo (SLA compliance), sat
 2. **Mobile-first responsive** (no PWA service worker en MVP)
 3. **Schemas HumanOS modulares en BD compartida**, NO BD separada (cost + integration con MovimientOS)
 4. **Auth via Supabase**: invite codes generados por hr_admin + auth multi-app via `raw_app_meta_data.allowed_apps`
-5. **MVP completo = 39 features F1-F39** (no subset) (39 = catálogo completo; First Usable Release = milestone, ver docs/adr/0009)
+5. **MVP completo = 39 features F1-F39** (no subset). 39 = tamaño del catálogo (variantes de form); ~33 = build-units honestos (ACCION_PERSONAL = una familia engine-driven, no N builds separados); First Usable Release = milestone a cobertura completa de TODOS los forms (ADR-0009). NO diferir features del MVP
 6. **Workflow paralelo total**: RRHH desde día 0 en TODOS los tipos no `parent_only`. President también en paralelo cuando aplica (per SOP)
 7. **SOP-driven approval chains** (R26): no desviarse del SOP sin validar con Samantha
 8. **Eliminado `'supervisor'` como app_role**: emerge contextualmente de `hr.employments.supervisor_id` y `tickets.selected_supervisor_id`
@@ -56,7 +56,7 @@ Métricas soporte: tiempo promedio de resolución per tipo (SLA compliance), sat
 - ❌ Tocar `public.*`, `payroll.*`, `humanos.*` legacy — schemas prohibidos R1
 - ❌ Bloquear acción de usuario por falla de notificación — fire-and-forget R18
 - ❌ Modificar `auth.users` sin filtro explícito de `allowed_apps` — R22 critical
-- ❌ Asumir que "Gerencia General" en SOP = "Presidente" Rodrigo único — validar con Samantha si VP/otros gerentes incluyen
+- ❌ Re-litigar el mapping "Gerencia General" — Gerencia General (SOP) = el rol president (MAPPING RESUELTO 2026-06-03); president (Rodrigo) aprueba+recibe los steps GG; ABIERTO solo si el VP Javier Ferrer u otros gerentes tambien gatean (ver ADR-0020 + ADR-0027)
 - ❌ Implementar features sin SOP papel sin validación previa con Samantha — R26
 
 ---
@@ -79,7 +79,7 @@ Métricas soporte: tiempo promedio de resolución per tipo (SLA compliance), sat
 - **Samantha Kosmas** — Gerente RRHH, owner de SOPs, validador final business logic, decision-maker funcional
 - **Jaime Cucalón** — IT/Developer, owner técnico, integración con MovimientOS, decisiones arquitectónicas
 - **Rodrigo Eisenmann** — Presidente, approver final en chains que lo requieren
-- **Octavio Javier Ferrer** — Vicepresidente, potencial parte de "Gerencia General" en chains (validar con Samantha)
+- **Octavio Javier Ferrer** — Vicepresidente. Gerencia General (SOP) = el rol president (MAPPING RESUELTO 2026-06-03; president Rodrigo aprueba+recibe los steps GG); ABIERTO solo si el VP Javier Ferrer u otros gerentes tambien gatean (ver ADR-0020 + ADR-0027)
 - **Equipo HR** (Rocío, Milagros, Jerelyn) — power users operacionales
 - **184 empleados activos** — usuarios finales
 
@@ -89,7 +89,7 @@ Métricas soporte: tiempo promedio de resolución per tipo (SLA compliance), sat
 
 | Horizonte | Entrega |
 |---|---|
-| MVP — primer release usable (ADR-0009) | 39 features funcionando E2E |
+| MVP — primer release usable (ADR-0009) | catálogo de 39 variantes de form funcionando E2E (~33 build-units; First Usable Release = milestone a cobertura completa de TODOS los forms) |
 | Iteración humano post-MVP | Refinamiento UI, copy específico Samantha, edge cases descubiertos en uso real |
 | v1.1 | Documenso firma, Twilio WhatsApp/SMS, F39-B editor JSON, calendario vacaciones |
 | Fase 2 | Onboarding workflow completo (`workflows.*`), Time Off advanced, expediente legal completo |

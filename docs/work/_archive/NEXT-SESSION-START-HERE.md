@@ -1,3 +1,5 @@
+> **ARCHIVADO / SUPERSEDED (2026-06-03).** handoff consumido (W0/W0.5 done); rutas internas rotas. Estado vivo: `docs/STATUS.md`. No empezar aqui.
+
 # START HERE — Sesión nueva de Code (post 2026-06-01)
 
 **Cómo arrancar (orden de lectura mínimo):** este doc → `docs/work/consolidated-backlog.md` (qué falta) → `docs/work/db-final-vision-design.md` (qué construir en BD) → `docs/DOC-SYSTEM-PROPOSAL.md` (cómo migrar docs, GO dado) → `docs/reference/toolstack-roadmap.md` (toolstack por fases). NO leas "mil archivos" — todo el contexto vive en esos 4 + CLAUDE.md.

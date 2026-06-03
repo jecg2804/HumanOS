@@ -19,7 +19,15 @@ Read the rules from `docs/reference/business-rules.md` before acting. This skill
 
 **R23 - Encoding**: All config files (.json, .ps1, .md, .ts, .tsx, .css) MUST be UTF-8 without BOM. Hooks `.ps1` MUST be ASCII pure (no em-dash, no accents, no smart quotes). Use `[System.IO.File]::WriteAllText($path, $content, [System.Text.UTF8Encoding]::new($false))` in PowerShell 5.1.
 
-**R26 - SOP-driven chains**: NEVER deviate from SOP-defined approval chains without consulting Jaime. If SOP says "Gerencia General", add a `president` step. Excepciones documented in `docs/reference/business-rules.md`.
+**R26 - SOP-driven chains**: NEVER deviate from SOP-defined approval chains without consulting Jaime. If SOP says "Gerencia General", add a `president` step (mapping resuelto 2026-06-03: Gerencia General = el rol `president`, Rodrigo). Excepciones documented in `docs/reference/business-rules.md`.
+
+**Chain-fidelity rulings (ADR-0027)** — un digital chain correctamente COLAPSADO no es una desviacion. Aplica antes de juzgar la cadena:
+- **signature = approval**: cada linea de firma del form papel es un step `kind=approval`. Una accion de approval digital ES la firma; no inventes un step "firmar" aparte.
+- **RRHH = visibility, no gate**: hr_admin (RRHH) aparece para visibilidad o procesamiento post-aprobacion y NO gatea la cadena, A MENOS que el SOP exija que RRHH firme. Si firma, es `kind=approval`; si no, su step es `kind=processing` (received/processed) y no cuenta como aprobador faltante.
+- **app collapses paper hand-offs**: el SOP rutea una hoja fisica de escritorio en escritorio; el chain digital colapsa esos hand-offs en los steps de aprobacion + processing. Menos steps que cajas de papel = esperado, no discrepancia.
+- **PO master > 2012 scans**: cuando el doc de proceso master y un scan de form viejo difieren, gana el process owner master (PO-05, 2018) sobre los scans de form de 2012.
+
+Canonico: defiere a `docs/reference/business-rules.md` R26 + ADR-0027.
 
 ## Important rules (check before acting)
 

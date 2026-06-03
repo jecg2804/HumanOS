@@ -1,3 +1,5 @@
+> **ARCHIVADO / SUPERSEDED (2026-06-03).** HARDEN-NOW shipped W0.5; el framing overnight/unattended esta SUPERSEDED por ADR-0026 (modelo atendido). Estado vivo: `docs/STATUS.md`. No empezar aqui.
+
 # Framework Hardening — Design Doc
 
 **Fecha:** 2026-06-01

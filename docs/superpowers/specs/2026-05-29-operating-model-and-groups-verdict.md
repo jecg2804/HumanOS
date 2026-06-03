@@ -1,3 +1,5 @@
+> **ARCHIVADO / SUPERSEDED (2026-06-03).** aterrizo como ADR-0009/0024/0026; CARTA_TRABAJO-first SUPERSEDED -> de-risk = ACTUALIZACION_DATOS luego ACCION_PERSONAL (ADR-0009 update + docs/work/2026-06-03). Estado vivo: `docs/STATUS.md`. No empezar aqui.
+
 # HumanOS Operating Model + Groups/MVP Verdict — Audit Synthesis 2026-05-29
 
 **Status:** PROPOSED — pending James's ratification via one consolidating ADR. Nothing here is applied to the harness or docs yet.

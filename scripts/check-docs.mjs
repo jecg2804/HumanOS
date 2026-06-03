@@ -11,7 +11,7 @@ import { join, dirname, resolve, relative, basename } from 'node:path';
 const ROOT = process.cwd();
 const SKIP = new Set(['node_modules', '.next', '.git', '.vercel', 'coverage', 'test-results', 'playwright-report', 'dist', 'build']);
 const EXCLUDE = /(^|[\\/])(_archive|superpowers)[\\/]|(^|[\\/])\.claude[\\/]skills[\\/]|(AUDITORIA|FOUNDATION-AUDIT)/;
-const STATE_OK = new Set(['CLAUDE.md', 'AGENTS.md', 'PROJECT_CONSTITUTION.md']);
+const STATE_OK = new Set(['CLAUDE.md', 'AGENTS.md', 'PROJECT_CONSTITUTION.md', 'README.md']);
 
 function walk(dir, acc = []) {
   for (const name of readdirSync(dir)) {

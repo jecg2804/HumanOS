@@ -1,3 +1,5 @@
+> **ARCHIVADO / SUPERSEDED (2026-06-03).** propuesta ejecutada; end-state en docs/ + ADR-0024. Estado vivo: `docs/STATUS.md`. No empezar aqui.
+
 # HumanOS — Sistema de Documentación (propuesta, research-backed)
 
 **Estado:** PROPUESTA pendiente de GO de James. Al ejecutarse, este doc + `HANDOFF-NEXT-SESSION-2026-06-01.md` + `superpowers/specs/2026-06-01-docs-restructure-plan.md` se archivan (reemplazados por este sistema).

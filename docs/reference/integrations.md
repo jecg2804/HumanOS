@@ -16,7 +16,7 @@
 
 | Item | Valor |
 |---|---|
-| **Status** | Live para MovimientOS, Implementing para HumanOS (Group 2 in-progress) |
+| **Status** | Live para MovimientOS (shared-infra). HumanOS email templates shipped (v0.0.2, repo-state); app NOT deployed (no live recipients yet) |
 | **Tipo** | Transactional email service |
 | **API** | REST + SDK Node (resend v6.12) |
 | **Auth** | API key `RESEND_API_KEY` en .env.local + Vercel env vars |

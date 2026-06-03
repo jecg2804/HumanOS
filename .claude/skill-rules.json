@@ -63,7 +63,7 @@
       "name": "iconsa-form-implementation",
       "enforcement": "high",
       "priority": "high",
-      "description": "Implementacion de formularios HumanOS end-to-end. Patron: leer SOP -> form_schema -> approval_chain -> server action -> tests E2E. 24 form variants en 2 categorias.",
+      "description": "Implementacion de formularios HumanOS end-to-end. Patron: leer SOP -> form_schema -> approval_chain -> server action -> tests E2E. Catalogo de forms y conteos viven en el doc de catalogo autoritativo, no aqui.",
       "keywords": [
         "form", "formulario", "solicitud", "ticket", "FormEngine", "ApprovalEngine",
         "F-05-01", "F-05-02", "F-05-03", "F-05-04", "F-05-05",

@@ -55,6 +55,8 @@ Si Samantha confirma incluir Javier Ferrer (VP) u otros gerentes:
 - Opción B: cambiar `app_role` de FER337 + otros gerentes a `'president'`
 - Decisión post-MVP en F39-B v1.1 cuando Samantha tenga claridad uso real
 
+> **Update 2026-06-03 (Jaime):** el MAPPING está RESUELTO — "Gerencia General" (SOP) = el step/rol `president`; el president (Rodrigo, único en MVP) **aprueba + recibe** todos los steps que el SOP marca Gerencia General. Resolver = `president_user`, sin cambio. Lo que sigue ABIERTO/define-in-practice es SOLO la MEMBRESÍA (Opción A/B arriba: si Javier Ferrer VP u otros gerentes también gatean). Ver ADR-0027 (fidelidad de cadena) + `CONTEXT.md`.
+
 ### Decisiones humanas de approval-chain (BL-2..7)
 
 Estado al 2026-06-01:

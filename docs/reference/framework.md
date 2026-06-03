@@ -141,7 +141,7 @@ Minimal entry point con @imports condicionales. Pattern real:
 
 ## Conditional imports (load when relevant)
 - Implementando form/feature: @docs/reference/domain.md (catalogo + dominio)
-- Implementing approval chain: leer SOP en docs/sops/ (Filesystem MCP / Read; NO Google Drive)
+- Implementing approval chain: leer SOP — la fuente de verdad de SOPs es el GDrive RECURSOS HUMANOS (Code lo lee via el conector claude.ai; read_file_content da OCR). El repo docs/sops/ es un espejo INCOMPLETO (preferir GDrive, fallback Read local)
 - Past decisions: @docs/adr/README.md (canonical index) + @docs/adr/*.md
 - Vocabulario en duda: @docs/CONTEXT.md (vivo)
 - MDM foundational (aspiracional): @docs/future/11-MDM-PRINCIPLES.md + @docs/future/12-SOR-MATRIX.md
@@ -205,7 +205,7 @@ Si queda parcial: `<promise>PARTIAL</promise>` con la lista exacta de lo pendien
 - ❌ NO crear columnas sin COMMENT
 - ❌ NO escribir SQL sin WHERE en DELETE/UPDATE de tablas críticas
 - ❌ NO modificar archivos `public.*`, `payroll.*`, `humanos.*` legacy
-- ❌ NO confiar en mi memoria de SOPs — leer `docs/sops/` (Filesystem MCP / Read; NO Google Drive)
+- ❌ NO confiar en mi memoria de SOPs — la fuente de verdad de SOPs es el GDrive RECURSOS HUMANOS (Code lo lee via el conector claude.ai; read_file_content da OCR). El repo docs/sops/ es un espejo INCOMPLETO (preferir GDrive, fallback Read local)
 - ❌ NO desviarse de R26 (SOP-driven chains) sin documentar + validar con Samantha (autoridad RRHH; ver R26)
 
 ---

@@ -7,6 +7,8 @@ description: Implement a new HumanOS form / request type end-to-end. Use wheneve
 
 The differentiation between forms lives in `requests.types.form_schema` JSONB and `requests.types.approval_chain_template` JSONB — NOT in custom code per form.
 
+> **Counts read as catalog-size, not build scope.** 39 = tamano del catalogo (variantes de form); ~33 = build-units honestos (ACCION_PERSONAL = una familia engine-driven, no N builds separados). ACCION_PERSONAL es UNA familia driven por config fan-out (un FormEngine + ApprovalEngine, los sub-types varian via `form_schema`/`approval_chain_template`), no N implementaciones. First Usable Release = milestone a cobertura completa de TODOS los forms (ADR-0009). NO diferir features del MVP. Catalogo autoritativo: `docs/work/2026-06-03-hr-catalog-and-launch-plan.md` + ADR-0009.
+
 ## Pre-flight (obligatorio antes de implementar)
 
 1. **Lee el backlog en `docs/STATUS.md`** (sección backlog con triggers/gate). Si esta feature toca un item diferido o bloqueado ahí, resuélvelo o confírmalo con Jaime — NO lo saltes silenciosamente.
@@ -88,8 +90,8 @@ FormEngine renderiza:
 ### 1. Leer SOP primero (categoría A)
 
 Si el form tiene SOP papel ICONSA:
-- Lee el PDF desde `docs/sops/formularios/<subcarpeta>/IC-RH-F-XX-XX.pdf` con Filesystem MCP (Read tool). **NO uses Google Drive MCP** — no está habilitado para este proyecto. Los SOPs ya están en el repo.
-- Consulta `docs/sops/README.md` para encontrar el path exacto si dudas
+- La fuente de verdad de SOPs es el GDrive RECURSOS HUMANOS (Code lo lee via el conector claude.ai; read_file_content da OCR). El repo docs/sops/ es un espejo INCOMPLETO (preferir GDrive, fallback Read local). Localiza el form por code/title (p.ej. `IC-RH-F-XX-XX`); usa `docs/sops/README.md` para el path local del espejo si caes al fallback.
+- **Confirma que el PDF realmente da texto.** Varios SOPs core son scans image-only con CERO texto extraíble. Si la fuente no rinde texto legible, PARA y reporta — no audites contra memoria, filename ni un doc secundario.
 - Lee el PDF, identifica TODOS los campos del form papel
 - Mapea cada campo a `profile` | `user_input` | `computed`
 - Identifica chain de firmas en SOP → valida contra `requests.types.approval_chain_template`

@@ -1,4 +1,6 @@
-# HumanOS — Catálogo HR autoritativo + plan de launch por arcos
+# HumanOS — Catálogo HR autoritativo + plan de launch por grupos
+
+> **Decisions in scope / cross-ref:** ADR-0009 (FUR = catálogo completo + secuencia de grupos + ~33 build-units), ADR-0027 (fidelidad de cadena), ADR-0020 (modes + GG=president). Vocabulario canónico de secuencia = **grupos** (NO "arcos/waves" — ADR-0009 rechazó vocabularios paralelos).
 
 **Estado:** working doc (insumo del spec formal). · **Creado:** 2026-06-03. · **Fuente:** lectura completa del GDrive `RECURSOS HUMANOS` (la SOR de SOPs, vía conector claude.ai `read_file_content`) + reconciliación contra los 24 `requests.types` en BD (`bzeoszympkkicwlfdtcn`) + análisis de gaps ley Panamá. Reemplaza el análisis basado solo en `docs/sops/` (espejo incompleto).
 
@@ -102,14 +104,16 @@ Inferidos de Código de Trabajo + CSS + MITRADEL + DIGECA (validar duraciones vs
 
 ---
 
-## 8. Plan de build por arcos (NADA diferido — secuenciado)
+## 8. Plan de build por grupos (NADA diferido — secuenciado, ADR-0009)
 
-- **ARC 0 — tooling/infra de test:** Supabase branching + pgTAP + supabase-test-helpers + Squawk + `db diff` (arregla los gaps del audit: 0 cobertura de RPCs, RLS sin tests, baseline-drift). OCR de SOPs one-off (Docling+Mistral) para el runtime KB. **Aprobado por Jaime.**
-- **ARC 1 — signup + consent + expediente + dashboard:** rework signup/identidad + **wire Ley 81 consent** (gap #1: `medical_info=43` vs `consent=0`) + bucket propio HumanOS + perfil/directorio + **expediente digital (IT-01)** + dashboard de tickets (Samantha lo pidió temprano).
-- **ARC 2 — engines (ruta crítica):** FormEngine + ApprovalEngine (R5/R9/R24) + ChainResolver + StampEngine + **ChainBuilder/FormBuilder (CMS admin-editable)** + seed leave-policies (D-05) + ADR audit-trigger. Probar contra **acciones de personal** (el caso duro = la prioridad).
-- **ARC 3 — catálogo completo de forms (config):** autorar los 16 `form_schema` + los tipos nuevos (§3.C, §5) como instancias del engine. Cada uno: cadena validada (R26) + field-source matrix + E2E.
-- **ARC 4 — KB-CMS + performance + learning/certs + announcements + analytics.**
-- **Módulos/plataforma (expediente UI, CMS-builder, perf, learning, anuncios, mapa vs Viewpoint/Spectrum/ProjectSight/B2W/PayDay):** pendiente del benchmark `w3qrmwut0` (re-corriendo) → se anexa aquí.
+Vocabulario canónico = **grupos** (ADR-0009 re-secuenció Groups 3-7; rechazó vocabularios "wave/ARC" paralelos). La única adición es una **fase de fundación pre-Group-3** (tooling/test, que ADR-0009 no contempla).
+
+- **Fundación pre-Group-3 — tooling/infra de test (aprobada por Jaime):** Supabase branching + pgTAP + supabase-test-helpers + Squawk + `db diff` (arregla los gaps del audit: 0 cobertura de RPCs, RLS sin tests, baseline-drift). OCR de SOPs one-off (Docling+Mistral) para el runtime KB.
+- **Group 3 — perfil + directorio + KB + signup/consent/expediente + dashboard:** rework signup/identidad + **wire Ley 81 consent** (gap #1: `medical_info=43` vs `consent=0`) + bucket propio HumanOS + perfil/directorio + **expediente digital (IT-01)** + dashboard de tickets (Samantha lo pidió temprano). **FormEngine se prueba aquí en ACTUALIZACION_DATOS** (direct_hr_admin, sin cadena — slice de de-risk per ADR-0009 update 2026-06-03).
+- **Group 4 — engines (ruta crítica):** FormEngine + ApprovalEngine (R5/R9/R24) + ChainResolver + StampEngine + seed leave-policies (D-05) + ADR audit-trigger. **ApprovalEngine se prueba en ACCION_PERSONAL** (parallel+president+R8 — el caso duro = la prioridad de Samantha). El F39 viewer es **read-only en MVP** (ADR-0022); las cadenas son config en `approval_chain_template`, pero su **editor (ChainBuilder)** es v1.1/v2 — NO MVP.
+- **Groups 5-6 — catálogo completo de forms (config):** autorar los 16 `form_schema` + los tipos nuevos (§3.C, §5) como instancias del engine. Cada uno: cadena validada (R26/ADR-0027) + field-source matrix + E2E.
+- **Group 7 / v1.1+ — KB-CMS + performance + learning/certs + announcements + analytics** (BD ya provisionada; humand-ia-design-brief los marca DROP→v2, NO en nav MVP).
+- **Capa de módulos/plataforma (expediente UI, CMS-builder, perf, learning, anuncios, mapa vs Viewpoint/Spectrum/ProjectSight/B2W/PayDay):** del benchmark `w3qrmwut0` (completado) → se anexa en una revisión siguiente.
 
 ---
 

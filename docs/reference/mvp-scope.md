@@ -6,7 +6,7 @@
 
 **Mantenimiento:** auditar cada feature contra la BD real (Supabase MCP) antes de cerrar su scope; el status por-feature vive aquí, el estado global en `../STATUS.md`.
 
-> **⚠️ Doc detrás de la BD (foundation final-check 2026-06-03):** la BD está ~2 grupos adelante de lo que este doc implica. Verificado contra la BD viva: NotificationEngine NO es "parcial" (Resend+Cron+outbox live); `requests.next_sequence()` YA existe (migración 050 — NO es pre-req pendiente); son **16** tipos sin `form_schema` (no 15) y 7 de Cat-B ya lo tienen; los 24 tipos ya tienen `approval_chain_template` seeded + verificado vs R11. Implicación: Groups 5+6 NO son ~18 builds — son ~16 `form_schema` JSONB (config/data) una vez que la FormEngine renderiza. Re-encuadre engine-first + reestructura de los 7 grupos a ~4 arcos: ver `../STATUS.md` §roadmap.
+> **⚠️ Doc detrás de la BD (foundation final-check 2026-06-03):** la BD está ~2 grupos adelante de lo que este doc implica. Verificado contra la BD viva: NotificationEngine NO es "parcial" (Resend+Cron+outbox live); `requests.next_sequence()` YA existe (migración 050 — NO es pre-req pendiente); son **16** tipos sin `form_schema` (no 15) y 7 de Cat-B ya lo tienen; los 24 tipos ya tienen `approval_chain_template` seeded + verificado vs R11. Implicación: Groups 5+6 NO son ~18 builds — son ~16 `form_schema` JSONB (config/data) una vez que la FormEngine renderiza. Re-encuadre engine-first + secuencia de **grupos** (Group 3-7, ADR-0009) + una fase de fundación tooling/test pre-Group-3: ver `../STATUS.md` §2 + el catálogo autoritativo `../work/2026-06-03-hr-catalog-and-launch-plan.md`.
 
 ---
 
@@ -17,6 +17,8 @@
 Construye **engines genéricos** + **first pass de cada feature** + **happy paths verificados con E2E**. Refinamiento granular es iteración humano-en-loop post-MVP.
 
 **MVP completo confirmado por Jaime**: 39 features F1-F39. NO subset.
+
+> **39 vs ~33 (canonical):** 39 = tamano del catalogo (variantes de form); ~33 = build-units honestos (ACCION_PERSONAL = una familia engine-driven, no N builds separados); First Usable Release = milestone a cobertura completa de TODOS los forms (ADR-0009). NO diferir features del MVP. Catalogo HR autoritativo: [`../work/2026-06-03-hr-catalog-and-launch-plan.md`](../work/2026-06-03-hr-catalog-and-launch-plan.md). Los ~14 tipos net-new del legal-gap estan IN-SCOPE (no diferidos).
 
 ---
 
@@ -159,14 +161,14 @@ Cada uno usa los engines E1-E6. Construido como instancia de FormEngine + Approv
 | Group 1 — Foundation | F2 (login), F3 (AppShell) | ✅ shipped | v0.0.1 |
 | Group 2 — Onboarding | F1 (wizard), F4 (admin nuevo), F5 (admin editar) + F-04-01 emergency/medical + F-01-09 acks + /forgot-password + /perfil + notifications + Vercel Cron | ✅ shipped | v0.0.2 |
 | Group 3 — Profile + KB | F6 (perfil base), F7 (perfil editar SCD-2), F8 (directorio), F9 (KB completa GDrive) | 🟡 planning | (próximo) |
-| Group 4 — Engines | E1 FormEngine, E2 ApprovalEngine, E3 ChainResolver, E4 StampEngine, E5 PdfEngine, E6 NotificationEngine (parcial — Vercel Cron worker ya shipped en Group 2) | ⏳ pending | — |
+| Group 4 — Engines | E1 FormEngine, E2 ApprovalEngine, E3 ChainResolver, E4 StampEngine, E5 PdfEngine, E6 NotificationEngine (LIVE — Resend + Vercel Cron + outbox ya shipped en Group 2) | ⏳ pending | — |
 | Group 5 — Forms Cat A | F10-F18 (9 top + 6 sub F-05-01 ACCION_PERSONAL): VACACIONES, PRESTAMO, ACCION_PERSONAL+6, ACTUALIZACION_DATOS, RECLAMO_PAGO, PERMISO, REFERENCIA_LABORAL, ENTREVISTA_SALIDA, CAPACITACION | ⏳ pending | — |
 | Group 6 — Forms Cat B | F19-F27 (9 adiciones mercado): CARTA_TRABAJO, CERTIFICACION_LABORAL, CONSTANCIA_NO_ADEUDO, COPIA_CONTRATO, COPIA_COLILLA, CAMBIO_CUENTA_BANCO, CAMBIO_DEPENDIENTES, SOLICITUD_EPP, REPORTE_INCIDENTE | ⏳ pending | — |
 | Group 7 — Admin/UI | F28 /solicitudes, F29 /solicitudes/nueva, F30 /solicitudes/[id], F31 /admin dashboard, F32 manual entry, F33 /settings, F34 /perfil completo, F35 search global, F36 /notificaciones, F37 /admin/auditoría, F38 imprimir PDF, F39 /admin/tipos viewer | ⏳ pending | — |
 
 **Pre-requisitos cross-Group**:
 
-- Form schemas JSONB para 15 tipos sin `form_schema` (verificado BD audit 2026-05-28): VACACIONES, PRESTAMO, ACCION_PERSONAL+6 subtipos, PERMISO, CARTA_TRABAJO, RECLAMO_PAGO, ACTUALIZACION_DATOS, ENTREVISTA_SALIDA, REFERENCIA_LABORAL, CAPACITACION. Workflow propio con skill `iconsa-form-implementation` (SOP por SOP) antes de Group 5+.
+- Form schemas JSONB para 16 tipos sin `form_schema` (verificado BD foundation final-check 2026-06-03): VACACIONES, PRESTAMO, ACCION_PERSONAL+6 subtipos, PERMISO, CARTA_TRABAJO, RECLAMO_PAGO, ACTUALIZACION_DATOS, ENTREVISTA_SALIDA, REFERENCIA_LABORAL, CAPACITACION. Workflow propio con skill `iconsa-form-implementation` (SOP por SOP) antes de Group 5+.
 - `requests.next_sequence() SECURITY DEFINER` bumper para `requests.sequences` antes de Group 4 — actual policy_count=0 va a fallar primer ticket si no se crea el definer (per audit 2026-05-28 P1.4 → reclasificado checklist Group 3).
 
 ---

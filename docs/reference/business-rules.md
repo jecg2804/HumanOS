@@ -444,8 +444,8 @@ Estructura definitiva:
 ### Lógica ApprovalEngine
 
 ```
-Estado por step en approval_state JSONB:
-  {step_id, role, approver_id (resuelto), status, decided_at, comments, stamp_data}
+Estado por step NORMALIZADO en filas de requests.approvals (BD-reality verificada 2026-06-03; NO un approval_state JSONB sobre el ticket):
+  requests.approvals: {step_order, approver_role, approver_id (resuelto), decision, decision_at, comments, stamp_text, stamp_data, kind(approval|processing|submit)}
 
 Ticket.status transitions:
   - mode 'parallel': Aprobada cuando TODOS steps required = approved
@@ -520,7 +520,7 @@ Solo `hr_admin` o `admin` pueden crear manual-entry. Enforced via RLS policy en 
 
 ### Regla
 
-El SOP papel define quiénes deben aprobar. Si el SOP dice "Gerencia General" → agregar step `president` en mode `parallel`. **NO desviarse del SOP sin validar con Samantha**.
+El SOP papel define quiénes deben aprobar. Si el SOP dice "Gerencia General" → agregar step `president` en mode `parallel` (GG=president RESUELTO, ver Aclaración abajo). **NO desviarse del SOP sin validar con Jaime** (el SOP es dominio de Samantha, pero ella NO está en el loop de dev — Jaime valida las desviaciones; Samantha revisa el resultado y pide cambios). **Fidelidad de cadena: ver ADR-0027** — firma=aprobación · RRHH=visibilidad/expediente (no-gate salvo que firme) · el app colapsa hand-offs de papel · PO maestro (PO-05 2018) gana sobre scans 2012; los steps llevan `kind` (approval/processing).
 
 ### Pattern
 
@@ -534,7 +534,7 @@ El SOP papel define quiénes deben aprobar. Si el SOP dice "Gerencia General" �
 
 ### Aclaración "Gerencia General"
 
-"Gerencia General" en SOP NO necesariamente significa Rodrigo (Presidente). Podría incluir:
+"Gerencia General" (SOP) = el rol `president` — **MAPPING RESUELTO** (Jaime 2026-06-03); president=Rodrigo en MVP, aprueba+recibe todos los steps GG. Lo único ABIERTO/define-in-practice es la MEMBRESÍA del rol `president`, que podría incluir:
 - Rodrigo Eisenmann (Presidente, EIS772)
 - Octavio Javier Ferrer (Vice Presidente, FER337)
 - Otros gerentes (Gerente Finanzas, Gerente Proyectos, etc.)

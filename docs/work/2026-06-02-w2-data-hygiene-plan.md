@@ -1,6 +1,6 @@
 # W2 DATA-HYGIENE — Plan de normalización
 
-**Fecha:** 2026-06-02 · **Status:** PROPUESTA — pendiente de revisión de SQL por Jaime. Las migraciones de *forma* no se aplican sin su OK; el *backfill de valores* queda gated en data fresca (Samantha) + signup. · **Decisiones base:** Jaime 2026-06-02 (#1-#5, abajo). · **Backlog:** `DATA-HYGIENE`, `SIGNUP-formula`, `SIGNUP-datamodel` (STATUS §6).
+**Fecha:** 2026-06-02 · **Status:** TRACKER VIVO (forma shipped, valores gated). **Migraciones de forma 063 (given/surnames) + 064 (national_id UNIQUE) DONE.** Quedan abiertos: backfills de valor (V-1..V-4), el CHECK de formato de cédula (064b), y la jerarquía de ubicación — todos **gated a Group 3 + data fresca de Samantha**. · **Decisiones base:** Jaime 2026-06-02 (#1-#5, abajo). · **Backlog:** `DATA-HYGIENE`, `SIGNUP-formula`, `SIGNUP-datamodel` (STATUS §6).
 
 > **Principio rector (de Jaime):** lo ejecutable AHORA es la **estructura** (migraciones de forma, revisables W1-style). El **backfill de valores** NO se ejecuta ahora — depende de data fresca de Samantha + captura en signup. "Forma ahora, valores después." Y `Paso 0 SIEMPRE`: snapshot a `backup.*` antes de cualquier `UPDATE`.
 
@@ -37,11 +37,11 @@ Población: **370** personas (184 Activo, 186 Inactivo); 0 soft-deleted; **0 con
 
 ---
 
-## 3. Migraciones de FORMA — para aplicar AHORA (pendiente revisión de SQL)
+## 3. Migraciones de FORMA — DONE (063 + 064a aplicadas)
 
-Aditivas, no-destructivas (no tocan data existente → no requieren snapshot; reversibles vía `DROP COLUMN`/`DROP INDEX`). RLS de `hr.people`/`hr.addresses` ya activa; columnas nuevas heredan las policies de tabla (R13: ninguna de estas es médica/sensible-restringida, son PII de directorio).
+**Estado: 063 + 064a APLICADAS.** Aditivas, no-destructivas (no tocaron data existente → no requirieron snapshot; reversibles vía `DROP COLUMN`/`DROP INDEX`). RLS de `hr.people`/`hr.addresses` ya activa; columnas nuevas heredan las policies de tabla (R13: ninguna de estas es médica/sensible-restringida, son PII de directorio). SQL aplicado (referencia histórica):
 
-### Migración 063 — `063_add_given_surnames_to_people`
+### Migración 063 — `063_add_given_surnames_to_people` · **DONE**
 
 ```sql
 -- 063: split estructural de full_name (forma). Valores poblados por revision HR (no auto-split). full_name sigue siendo display SoR.
@@ -57,7 +57,7 @@ COMMENT ON COLUMN hr.people.surnames IS
 
 *Nota: `text` sin CHECK de longitud, por consistencia con `hr.people.full_name` (también `text` libre). Si prefieres un cap defensivo (`char_length <= 120`), lo agrego.*
 
-### Migración 064a — `064_national_id_unique_index`
+### Migración 064a — `064_national_id_unique_index` · **DONE**
 
 ```sql
 -- 064: UNIQUE defensivo sobre national_id (cedula/pasaporte = identidad legal unica por persona).
@@ -84,9 +84,9 @@ ALTER TABLE hr.people ADD CONSTRAINT people_national_id_format CHECK (
 ```
 **Alternativa más blanda (recomendada si el set de variantes es amplio):** sin CHECK duro; en su lugar un flag soft `needs_review` para las no-canónicas, que HR confirma. Decide tú/Samantha cuál.
 
-### (NNN al aplicar) — Jerarquía de ubicación (Provincia/Distrito/Corregimiento) · **DIFERIDO (baja urgencia + vocab Samantha)**
+### (sin número pineado) — Jerarquía de ubicación (Provincia/Distrito/Corregimiento) · **DIFERIDO (baja urgencia + vocab Samantha)**
 
-> *Nota de numeración: las migraciones APLICADAS toman los números secuenciales (065 = SEC-ENQUEUE, 066 = SEC-LEGACY drop). Esta de ubicación, por estar DIFERIDA, NO pinea número — se numerará al aplicar (hoy iría ~067+).*
+> *Nota de numeración: por estar DIFERIDA, esta migración NO pinea número — toma el siguiente secuencial al momento de aplicar.*
 `hr.addresses` ya tiene `province` (vacío), `city`, `neighborhood`, `country`. Propuesta (cuando se haga): añadir `district`/`corregimiento` (nullable, COMMENT) y migrar `city`→`province` con vocabulario acentuado de Samantha. **No bloquea Group 3 → se difiere.**
 
 ---
@@ -119,9 +119,10 @@ ALTER TABLE hr.people ADD CONSTRAINT people_national_id_format CHECK (
 
 ---
 
-## 7. Lo que pido aprobar ahora
+## 7. Items abiertos (gated)
 
-1. **SQL de 063 + 064a** (arriba) → aplico al darme el OK.
-2. **064b CHECK:** ¿candidato permisivo o flag soft? (o esperar a Samantha).
-3. **V-1:** ¿Opción A (manual UI) u B (sugerido + needs_review)?
-4. Confirmar que **la ubicación (sin número pineado) + V-2/V-3/V-4 quedan diferidos/gated** (no se tocan ahora).
+> **063 + 064a YA APLICADAS** (forma shipped). Lo que sigue abierto, todo gated a Group 3 + data fresca de Samantha:
+
+1. **064b CHECK:** ¿candidato permisivo o flag soft? (o esperar a Samantha).
+2. **V-1:** ¿Opción A (manual UI) u B (sugerido + needs_review)?
+3. **Ubicación (sin número pineado) + V-2/V-3/V-4 quedan diferidos/gated** (no se tocan hasta Group 3 + Samantha).

@@ -1,8 +1,10 @@
+> **ARCHIVADO / SUPERSEDED (2026-06-03).** historico; items vivos en STATUS.md seccion 6. Estado vivo: `docs/STATUS.md`. No empezar aqui.
+
 # Signup Advisory — HumanOS (ICONSA)
 
 **Status:** ADVISORY (output de la mini-auditoría multi-agente 2026-06-01; 9 agentes, 3/3 refutaron la versión ingenua de seguridad). Siembra el brainstorming de signup en **Group 3**. NO es spec final. Decisiones marcadas para James abajo.
 
-> **CORRECCIÓN (James, 2026-06-01): la fórmula SÍ es correcta** — `employee_code` = 3 letras del apellido + 3 últimos dígitos de la cédula (ej. `CUC166` = CUCalon, cédula 8-930-2**166**). El reporte original ("falla 84-90%, dígitos intercambiados") fue un **falso negativo por DATA SUCIA**: el agente comparó `employee_code` vs `national_id` y, como el CONTENIDO no está limpio/normalizado (nombres/apellidos, formato cédula, solo ~14% con cédula poblada, no hay columna `apellido`), vio mismatches. **Eso es auditoría de CONTENIDO, no de ESTRUCTURA — y el contenido nunca se ha auditado.** Implicaciones: (1) el código **se puede computar** de apellido+cédula cuando están limpios; (2) **antes** de usarlo como identificador, correr un **workstream de normalización de datos** (split nombre/apellido, formato cédula DGI, backfill, dedup) — ver `DEFERRED-ITEMS.md` "data-hygiene"; (3) la seguridad del §4 NO cambia (sigue siendo un identificador adivinable, nunca credencial).
+> **CORRECCIÓN (James, 2026-06-01): la fórmula SÍ es correcta** — `employee_code` = 3 letras del apellido + 3 últimos dígitos de la cédula (ej. `CUC166` = CUCalon, cédula 8-930-2**166**). El reporte original ("falla 84-90%, dígitos intercambiados") fue un **falso negativo por DATA SUCIA**: el agente comparó `employee_code` vs `national_id` y, como el CONTENIDO no está limpio/normalizado (nombres/apellidos, formato cédula, solo ~14% con cédula poblada, no hay columna `apellido`), vio mismatches. **Eso es auditoría de CONTENIDO, no de ESTRUCTURA — y el contenido nunca se ha auditado.** Implicaciones: (1) el código **se puede computar** de apellido+cédula cuando están limpios; (2) **antes** de usarlo como identificador, correr un **workstream de normalización de datos** (split nombre/apellido, formato cédula DGI, backfill, dedup) — ver `docs/STATUS.md` (seccion 6 DATA-HYGIENE) + `docs/work/2026-06-02-w2-data-hygiene-plan.md`; (3) la seguridad del §4 NO cambia (sigue siendo un identificador adivinable, nunca credencial).
 
 ## 1. Cómo funciona hoy
 
@@ -21,7 +23,7 @@
 ## 3. Código Spectrum: feasibility + generación
 
 - Vive en `hr.people.employee_code` (UNIQUE, nullable, 184/370 poblados); debería espejar `hr.person_sources(source_system='spectrum', external_id)`. **Nada enforza que coincidan** → trigger de mirror.
-- **Modo A = espejar** el código real desde Spectrum (`person_sources`, la fuente de verdad). **Modo B = computar** `UPPER(left(apellido,3)) || right(cedula,3)` para empleados sin código — **válido SOLO con data limpia** (requiere el workstream data-hygiene primero: apellido separado + cédula formateada). **Modo C = generar local** con secuencia si computar produce colisión, marcado `source_system='humanos'`.
+- **Modo A = espejar** el código real desde Spectrum (`person_sources`, la fuente de verdad). **Modo B = computar** `UPPER(left(apellido,3)) || right(cedula,3)` para empleados sin código — **válido SOLO con data limpia** (requiere el workstream data-hygiene primero: apellido separado + cédula formateada; ver `docs/STATUS.md` seccion 6 DATA-HYGIENE + `docs/work/2026-06-02-w2-data-hygiene-plan.md`). **Modo C = generar local** con secuencia si computar produce colisión, marcado `source_system='humanos'`.
 - Requiere índice único case-insensitive `upper(employee_code)` para login + colisión-handling (CUC166 puede repetirse entre dos CUCalon con mismos 3 dígitos de cédula).
 
 ## 4. Seguridad — reglas no-negociables (3/3 refutaron la versión ingenua)

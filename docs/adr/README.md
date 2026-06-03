@@ -36,8 +36,9 @@ context / alternatives rejected / risks).
 | 0024 | Sistema de docs: reference/ topical + STATUS único + work/_archive | `0024-doc-system-topical-living-docs.md` |
 | 0025 | Vocabulario canónico de source_system (SoR `humanos_app` vs origen) | `0025-source-system-canonical-vocabulary.md` |
 | 0026 | Modelo de trabajo: diseño atendido + ejecución de plan aprobado (retira overnight autónomo) | `0026-work-model-attended-design-plan-execution.md` |
+| 0027 | Chain fidelity: firma=aprobación · RRHH=visibilidad no gate · app colapsa hand-offs de papel · PO maestro gana | `0027-chain-fidelity-signature-approval-rrhh-visibility.md` |
 
-New ADRs continue from **0027**.
+New ADRs continue from **0028**.
 
 ## History: the legacy `docs/08-ADRs.md` ledger (merged 2026-06-01)
 

@@ -78,7 +78,7 @@ External IDs preservados en `hr.person_sources` (columna `source_system`):
 - `source_system='spectrum'` → Employee ID en Spectrum (vía SDK master data fase 1)
 - `source_system='projectsight'` → User ID en ProjectSight (fase 2)
 - `source_system='skydata'` → Driver ID en Skydata (solo conductores)
-- `system='movimientos'` → `public.people.id` (provisional hasta resolución Person duplication ADR)
+- `source_system='movimientos'` → `public.people.id` (provisional hasta resolución Person duplication ADR)
 
 **Conflict resolution prioridad cuando PayDay batch vs HumanOS manual difieren**:
 - Campos PayDay-SOR (salary, hire_date, vacation_balance, employment_status, termination_date): **PayDay siempre gana** después de cada batch. Si HumanOS muestra valor diferente entre batches, indica stale data — refresh esperar próximo dump.
@@ -102,7 +102,7 @@ Golden record: TBD. Hoy: `public.equipment` (MovimientOS). Posible migración fu
 | `maintenance_schedule` | TBD | — | TBD | Posible Fleetio futuro |
 | `tariff_rate` | manual (IC-EQ-PO-02) | Spectrum (replica) | `manual_override` | Calculado por formula F-02-03 |
 
-External IDs en `equipment_external_ids`:
+External IDs en `equipment_external_ids` (**aspiracional — la tabla NO existe aún**; se creará con la integration Spectrum/Skydata, patrón `hr.person_sources`):
 
 - `system='spectrum'` → Asset ID Spectrum
 - `system='b2w'` → Equipment ID B2W
@@ -127,7 +127,7 @@ Golden record: TBD. Hoy: `public.projects` (MovimientOS).
 | `status` | ProjectSight | Spectrum (replica), MovimientOS | `sor_wins` | PM tool es SOR de estado operacional |
 | `current_phase` | ProjectSight | — | `sor_wins` | |
 
-External IDs en `projects_external_ids`:
+External IDs en `projects_external_ids` (**aspiracional — la tabla NO existe aún**; se creará con la integration Spectrum/ProjectSight, patrón `hr.person_sources`):
 
 - `system='spectrum'` → Job Number Spectrum
 - `system='projectsight'` → Project ID ProjectSight

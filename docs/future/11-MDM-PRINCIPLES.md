@@ -138,6 +138,8 @@ La matriz completa por entidad vive en `12-SOR-MATRIX.md`.
 
 ### 4. Bitemporal Audit Trail
 
+> **Aspiracional / no construido aún.** `audit.changes` (bitemporal) **NO existe** — fue DIFERIDO (YAGNI, decisión Jaime 2026-06-01; ver STATUS §3). Hoy la auditoría vive en `audit.log` (transaction-time + `source_system`, agregado en 057-060). El esquema bitemporal de abajo es el diseño futuro.
+
 Cada cambio a una tabla canónica genera entry en `audit.changes` con:
 
 - **`recorded_at`** (transaction time) — cuándo se grabó el cambio en la BD
@@ -258,7 +260,7 @@ Combinado con `audit.changes.source_system`, da lineage completo.
 
 ### 9. Schema Governance
 
-**Naming conventions** (enforced por hooks y skill `iconsa-mdm-integrity-check`):
+**Naming conventions** (enforced por hooks; el skill `iconsa-mdm-integrity-check` referido en versiones previas **no existe** — los skills ICONSA reales viven en `.claude/skills/iconsa-*/`):
 
 - Schemas: lowercase singular para módulos (`hr`, `requests`, `audit`, `mdm`, `etl`). NO plurales (`hrs`).
 - Tablas: lowercase plural snake_case (`hr.people`, `requests.tickets`, `etl.payday_employees_staging`)

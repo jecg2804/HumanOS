@@ -6,6 +6,12 @@ Cambios por feature/grupo. Formato: conventional commits + entries `[bd]` para m
 
 Group 3 (Profile + KB) en planning. Ver `reference/mvp-scope.md` F6-F9.
 
+### Doc-sync + ADR pass — chain fidelity + catálogo HR + limpieza (2026-06-03)
+
+- `[docs]` **ADR-0027 (chain fidelity)** — firma=aprobación; RRHH=visibilidad-no-gate; la app colapsa los hand-offs de papel; el master del PO gana. Catálogo HR autoritativo en `docs/work/2026-06-03-hr-catalog-and-launch-plan.md` (39 = tamaño del catálogo de variantes; ~33 build-units honestos por ADR-0009). Detalle de planning vive en STATUS/ADR — no se duplica aquí.
+- `[docs]` **Notas datadas ADR-0009 / ADR-0020:** mapping **Gerencia General = rol president** RESUELTO (Rodrigo aprueba+recibe los steps GG; ABIERTO solo si VP Javier Ferrer u otros gerentes también gatean — ver ADR-0020 + ADR-0027); slice de de-risk (engine + primer form + ticket UI primero, el resto como config). FUR = cobertura de TODOS los forms; NO diferir features del MVP.
+- `[docs]` **Doc-sync pass:** vocabulario canónico de secuencia = **GROUPS (Group 3-7) + una fase de fundación tooling/test pre-Group-3** (NUNCA ARC/wave); SOR de SOPs corregida (fuente = GDrive RECURSOS HUMANOS vía el conector claude.ai con OCR; `docs/sops/` es espejo INCOMPLETO, fallback Read local — removidas las claims de "Filesystem MCP exclusivo" / "Google Drive MCP no habilitado"); auditorías one-off archivadas con banner SUPERSEDED apuntando a STATUS. Caveats de aspiracional añadidos en `docs/future/` (`audit.changes` no existe → hoy `audit.log`; `equipment/projects_external_ids` no existen; skill `iconsa-mdm-integrity-check` no existe; Sanity NO-MVP por KB IN-APP sobre `docs.articles`, no Notion). README expandido (stack + dev-mirror/not-deployed + punteros).
+
 ### Foundation final-check — auditoría adversarial multi-agente (2026-06-03)
 
 Workflow de 20 agentes contra la BD viva sobre el foundation arc. **Verificado limpio:** migraciones repo↔BD 1:1 (30 HumanOS, 076+077 aplicadas), 60/60 tablas HumanOS con RLS+policy+COMMENT, grants de 076 vía `has_table_privilege`, gate verde (typecheck/lint/84 tests/build), HOOK-MCP-GAP real. Hallazgos corregidos YA:

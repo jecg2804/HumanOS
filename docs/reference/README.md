@@ -15,7 +15,7 @@ Arranque de sesión: **`CLAUDE.md` (raíz) → `docs/STATUS.md`**. El pipeline j
 | `work/` (+ `_archive/`) | spec/plan/diseño en construcción → archivar al shippear | transitorio |
 | `future/` | conocimiento PLANEADO, no operacional | edit cuando madure |
 | `superpowers/specs+plans` | specs/plans históricos por grupo | archivo |
-| `sops/` | PDFs fuente de los formularios papel | fuente externa |
+| `sops/` | PDFs fuente de los formularios papel (espejo INCOMPLETO; ver nota GDrive abajo) | fuente externa |
 
 ## Reference docs (verdad durable)
 
@@ -39,6 +39,10 @@ Arranque de sesión: **`CLAUDE.md` (raíz) → `docs/STATUS.md`**. El pipeline j
 - **Vocabulario:** [../CONTEXT.md](../CONTEXT.md) (glosario vivo, mantenido vía `grill-with-docs`).
 - **Historia:** [../CHANGELOG.md](../CHANGELOG.md) (append-only).
 - **Conocimiento aspiracional:** [../future/](../future/) (MDM, SOR matrix, integraciones planned).
+
+## SOPs = GDrive, no repo
+
+La fuente de verdad de SOPs es el GDrive RECURSOS HUMANOS (Code lo lee via el conector claude.ai; read_file_content da OCR). El repo `docs/sops/` es un espejo INCOMPLETO (preferir GDrive, fallback Read local).
 
 ## Conteos vivos = BD, no docs
 

@@ -1,3 +1,5 @@
+> **ARCHIVADO / SUPERSEDED (2026-06-03).** seedeo de STATUS.md; backlog vivo = STATUS.md seccion 6. Estado vivo: `docs/STATUS.md`. No empezar aqui.
+
 # HumanOS — Backlog Consolidado de Auditoría (fuente única)
 
 **Fecha:** 2026-06-01
