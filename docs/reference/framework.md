@@ -35,7 +35,7 @@
 **Política CLI-first:** preferimos CLIs sobre MCPs cuando existe equivalente, porque son más auditables, no consumen tokens de schema y ya están autenticadas:
 
 - **`gh`** (GitHub CLI) reemplaza el GitHub MCP — PRs, issues, branch protection, secrets, CI runs.
-- **`supabase`** CLI para link/dump local; el **Supabase MCP** sigue siendo el camino para `apply_migration`/`execute_sql`/`get_advisors` (no requiere Docker).
+- **`supabase`** CLI para link/dump local; el **Supabase MCP** sigue siendo el camino para `apply_migration`/`execute_sql`/`get_advisors` (no requiere Docker). **Dos capas (F-10):** el `.mcp.json` repo-visible está en `read_only=true` (solo lectura, reproducible); las escrituras DDL (`apply_migration`) vienen del MCP del **plugin/usuario**, que NO es repo-visible. Además el **prefijo del tool varía por entorno** (`mcp__plugin_supabase_supabase__*`, `mcp__claude_ai_Supabase__*`, o un id de sesión) — cargar vía ToolSearch y usar el que esté disponible; no asumir un nombre fijo. Si `apply_migration` no está disponible, NO planear DDL en esa sesión.
 - **`vercel`** CLI para env/deploy/logs (recomendado instalar: `npm i -g vercel`).
 
 **MCPs activos (set honesto):**
@@ -265,7 +265,7 @@ docs/
 ├── adr/                (ledger canónico ADRs 0001+, append-only; Code genera al implementar)
 ├── work/               (spec/plan/diseño en construcción) + work/_archive/ (consumidos al shippear)
 ├── future/             (foundational/aspiracional: 11-MDM, 12-SOR, 13-INTEGRATIONS-PLANNED)
-├── sops/               (PDFs originales + markdown extraído)
+├── sops/               (PDFs originales — varios imagen-only SIN texto extraíble; markdown extraído PENDIENTE, ver backlog AUDIT2-SOP-MD. Solo README.md como .md hoy)
 └── superpowers/        (specs/ + plans/ históricos Code-generated por grupo)
 
 CLAUDE.md (raíz repo) — entry point con @imports condicionales a docs/
