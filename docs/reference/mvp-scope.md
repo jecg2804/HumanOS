@@ -51,55 +51,7 @@ Estos son construidos UNA vez y reutilizados por las 24 form variants:
 }
 ```
 
-**Comportamiento por mode**:
-
-| Mode | Estado terminal | Notificación día 0 |
-|---|---|---|
-| `parallel` | Aprobada cuando TODOS los steps required = approved. Rechazada si ALGUNO = rejected | A todos los stakeholders simultáneamente (visibility universal) |
-| `direct_hr_admin` | Aprobada cuando 1 hr_admin actúa | A todos los hr_admin (4 personas) |
-| `any_of_hr` | Aprobada cuando 1 hr_admin actúa (idéntico a direct_hr_admin, semantic distinction para documentos) | A todos los hr_admin |
-| `parent_only` | Sin chain (tipo parent — sub-tipos llevan el chain real) | Ninguna |
-
-**RRHH SIEMPRE incluido desde día 0** en todos los modes excepto `parent_only`.
-
----
-
-## Mapping definitivo tipos → mode (24 tipos verificados en BD)
-
-### parallel con president (8 tipos per SOP)
-
-| Tipo | SLA | Stakeholders paralelos |
-|---|---|---|
-| PRESTAMO | 72h | supervisor + hr_admin + president |
-| VACACIONES | 72h | supervisor + hr_admin + president |
-| ACCION_AUMENTO_SALARIO | 120h | supervisor + hr_admin + president |
-| ACCION_DESPIDO | 120h | supervisor + hr_admin + president |
-| ACCION_LIQUIDACION | 120h | supervisor + hr_admin + president |
-| ACCION_HORAS_EXTRAS | 120h | supervisor + hr_admin + president |
-| ACCION_PERMISOS | 120h | supervisor + hr_admin + president |
-| ACCION_DESCUENTO | 120h | supervisor + hr_admin + president |
-
-### parallel sin president (5 tipos, SOP no incluye gerencia)
-
-| Tipo | SLA | Stakeholders |
-|---|---|---|
-| PERMISO (horas) | 48h | supervisor + hr_admin |
-| RECLAMO_PAGO | 48h | supervisor + hr_admin (SLA 48h per PO-05 §5.11) |
-| CAPACITACION | 168h | supervisor + hr_admin |
-| SOLICITUD_EPP | 72h | supervisor + hr_admin |
-| REPORTE_INCIDENTE | 24h | supervisor + hr_admin |
-
-### any_of_hr (5 tipos documentos)
-
-CARTA_TRABAJO (48h), CERTIFICACION_LABORAL (72h), CONSTANCIA_NO_ADEUDO (72h), COPIA_CONTRATO (48h), COPIA_COLILLA (48h).
-
-### direct_hr_admin (5 tipos)
-
-ACTUALIZACION_DATOS (48h), CAMBIO_CUENTA_BANCO (48h), CAMBIO_DEPENDIENTES (72h), REFERENCIA_LABORAL (120h, RRHH inicia), ENTREVISTA_SALIDA (72h, RRHH inicia).
-
-### parent_only (1 tipo)
-
-ACCION_PERSONAL (parent — sub-tipos llevan el chain real).
+**Comportamiento por mode + mapping completo tipo → mode → SLA → steps (24 tipos):** fuente canónica **[`business-rules.md` R11](business-rules.md#r11--mapping-tipos--mode-per-sop)** (modes, resolvers, SLA por tipo, `allow_supervisor_override`). No se reproduce aquí para evitar drift. RRHH siempre incluido día 0 excepto `parent_only`. Verdad runtime: BD `requests.types.approval_chain_template`. El desglose por feature F# (con SOP + notas) está en las tablas de abajo.
 
 ---
 

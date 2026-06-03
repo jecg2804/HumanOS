@@ -102,6 +102,8 @@
 
 ## Mapping definitivo tipos → mode + chain (24 tipos verificados BD)
 
+> **Mode/SLA/steps canónicos en `business-rules.md` R11** (única fuente editable; verdad runtime = BD `requests.types.approval_chain_template`). Esta tabla se conserva por su **traza a SOP** (códigos de forma + secciones PO-05, que R11 no enumera). Si un mode/SLA cambia, edita R11; refleja aquí solo la columna SOP.
+
 ### parallel con president (8 tipos per SOP)
 
 | Tipo | SOP | SLA | Chain (paralelo) |

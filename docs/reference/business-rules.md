@@ -172,6 +172,8 @@ UI `/solicitudes` tiene 2 pestañas:
 
 ## R11 — Mapping tipos → mode (per SOP)
 
+**Fuente canónica (docs) del mapping tipo → mode → SLA → steps.** `domain.md` (traza forma↔SOP) y `mvp-scope.md` (features F#) apuntan aquí; la verdad runtime es la BD (`requests.types.approval_chain_template`). Si cambia un mode/SLA, edita SOLO aquí.
+
 `requests.types.approval_chain_template` JSONB con estructura `{mode, visibility, steps[]}`.
 
 ### Modes finales (3 + parent_only)
