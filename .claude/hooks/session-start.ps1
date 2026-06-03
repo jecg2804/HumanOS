@@ -45,7 +45,7 @@ Incident 2026-05-25 documented in docs/reference/business-rules.md R22.
 - Write (SECURITY DEFINER, EXECUTE service_role-only): hr.complete_onboarding_writes(),
   hr.apply_employment_scd2_change(), hr.create_employee_with_invite(),
   hr.find_auth_user_by_identifier(), requests.next_sequence(), notifications.enqueue()
-- Definer con EXECUTE authenticated (guard interno, revisar): hr.post_leave_ledger_entry(), audit.log_access()
+- Definer con EXECUTE authenticated (guard interno is_hr_admin/owner): hr.post_leave_ledger_entry(), audit.log_access(), hr.regenerate_invite_code(), hr.update_person_profile()
 - Triggers/infra (EXECUTE revocado anon/auth/public): hr.touch_updated_at(), hr.create_default_user_settings()
 
 [IDIOMA UI]

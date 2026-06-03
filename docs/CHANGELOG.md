@@ -6,6 +6,15 @@ Cambios por feature/grupo. Formato: conventional commits + entries `[bd]` para m
 
 Group 3 (Profile + KB) en planning. Ver `reference/mvp-scope.md` F6-F9.
 
+### Foundation final-check — auditoría adversarial multi-agente (2026-06-03)
+
+Workflow de 20 agentes contra la BD viva sobre el foundation arc. **Verificado limpio:** migraciones repo↔BD 1:1 (30 HumanOS, 076+077 aplicadas), 60/60 tablas HumanOS con RLS+policy+COMMENT, grants de 076 vía `has_table_privilege`, gate verde (typecheck/lint/84 tests/build), HOOK-MCP-GAP real. Hallazgos corregidos YA:
+
+- `[harness]` **2 hoyos HIGH en `pre-tool-use.ps1` (R1/R22) — guardrails muertos** [85fbf5b]: (1) `"update "` (espacio final) + el `\s+` del patrón exigían DOS espacios → un `UPDATE public.foo SET...` normal NO se bloqueaba (R1 sin enforcement para el verbo más común contra MovimientOS prod). (2) la lista destructiva de `auth.users` tenía delete/truncate/drop pero NO update → un `UPDATE auth.users SET raw_app_meta_data='{}'` masivo (borra `allowed_apps` de los 48 users compartidos = clase del incidente 2026-05-25) pasaba. Ambos verificados con payloads reales por el hook. Fix + `pre-tool-use.tests.ps1` (14 casos, ALL PASS) — la causa raíz: NO existía test de hooks.
+- `[bd] 077_function_execute_least_privilege` (P2) — completa el least-privilege de 076: (1) revierte el `ALTER DEFAULT PRIVILEGES ... ON FUNCTIONS TO service_role` que 075 dejó (auto-otorgaba service_role EXECUTE a los 2 RPCs nuevos + toda función futura); (2) quita el service_role EXECUTE no intencional de los 2 RPCs (van por session client); (3) saca 7 helpers SECURITY DEFINER legacy del grant PUBLIC/anon, re-otorgando `authenticated`+`service_role`. Seguro: anon SELECT 0 tablas HumanOS (no evalúa RLS), authenticated tiene grant EXPLÍCITO. Gate: migration-reviewer APPROVE-WITH-FIXES + **rls-reviewer APPROVE** (primera corrida real del subagent post-fix YAML). Post-apply verificado: 7 helpers anon=false/auth=true; 2 RPCs svc=false; rate_limit intacto. Limpia 7 de 8 anon advisor WARNs.
+- `[docs]` accuracy: R24 (estado de aprobación NORMALIZADO en `requests.approvals` rows, NO un JSONB blob en el ticket); `mvp-scope.md` stale (NotificationEngine NO "parcial"; `next_sequence` existe vía 050; 16 tipos sin form_schema, no 15); CLAUDE.md `verify` (= typecheck+lint+vitest+docs:check+build; e2e aparte); session-start helper-list (+2 RPCs authenticated-definer).
+- **Refutado por verificación adversarial:** el finder de docs alegó "SLA re-duplicado en domain.md/mvp-scope" con F-numbers fabricados + frase mal atribuida; los valores SLA están en sync y la columna de domain es traza-SOP intencional (commit 85e8fc4). El verificador lo desmintió — la capa de verify funciona en ambos sentidos.
+
 ### Audit2-revalidado — re-scoped a foundations + Groups 1-2 (2026-06-03)
 
 Segunda pasada de Codex, re-scopeada (sin OCR/legal/KB-feature). Findings verificados contra la BD viva antes de actuar.

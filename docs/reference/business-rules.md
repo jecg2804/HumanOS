@@ -421,6 +421,8 @@ Method correcto PowerShell 5.1:
 
 ## R24 — Approval modes en `requests.types.approval_chain_template` JSONB
 
+> **BD reality (verificado 2026-06-03):** el JSONB de abajo es el **TEMPLATE** del chain (definición), en `requests.types.approval_chain_template`. El **estado de aprobación en runtime** (decisión por step) vive **NORMALIZADO en filas de `requests.approvals`** (`step_order`, `approver_role`, `approver_id`, `decision`, `decision_at`, `stamp_text`, `stamp_data`), NO en un JSONB de estado sobre el ticket. La ApprovalEngine lee el template + escribe/lee filas de `requests.approvals`.
+
 Estructura definitiva:
 
 ```json

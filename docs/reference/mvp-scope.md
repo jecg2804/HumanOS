@@ -6,6 +6,8 @@
 
 **Mantenimiento:** auditar cada feature contra la BD real (Supabase MCP) antes de cerrar su scope; el status por-feature vive aquí, el estado global en `../STATUS.md`.
 
+> **⚠️ Doc detrás de la BD (foundation final-check 2026-06-03):** la BD está ~2 grupos adelante de lo que este doc implica. Verificado contra la BD viva: NotificationEngine NO es "parcial" (Resend+Cron+outbox live); `requests.next_sequence()` YA existe (migración 050 — NO es pre-req pendiente); son **16** tipos sin `form_schema` (no 15) y 7 de Cat-B ya lo tienen; los 24 tipos ya tienen `approval_chain_template` seeded + verificado vs R11. Implicación: Groups 5+6 NO son ~18 builds — son ~16 `form_schema` JSONB (config/data) una vez que la FormEngine renderiza. Re-encuadre engine-first + reestructura de los 7 grupos a ~4 arcos: ver `../STATUS.md` §roadmap.
+
 ---
 
 ## Filosofía del MVP

@@ -16,7 +16,7 @@ npm run lint       # eslint .
 npm run typecheck  # tsc --noEmit
 npm test           # vitest unit tests (cuenta viva en CI, no hardcodear aqui)
 npm run test:e2e   # Playwright E2E specs
-npm run verify     # gate completo: typecheck + lint + vitest + e2e + build
+npm run verify     # gate pre-merge (== CI): typecheck + lint + vitest + docs:check + build · e2e va aparte (npm run verify:e2e)
 ```
 
 Tests: vitest (jsdom env, 70% coverage thresholds) + Playwright (chromium, baseURL :3001). `npm run verify` es el gate de pre-merge — Group 2 v0.0.2 lo pasó limpio.
