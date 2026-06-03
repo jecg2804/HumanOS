@@ -2339,6 +2339,27 @@ export type Database = {
       }
       current_app_role: { Args: never; Returns: string }
       current_person_id: { Args: never; Returns: string }
+      regenerate_invite_code: {
+        Args: {
+          p_code: string
+          p_delivery_target: string
+          p_invite_method: string
+          p_person_id: string
+        }
+        Returns: {
+          out_code: string
+          out_expires_at: string
+        }[]
+      }
+      update_person_profile: {
+        Args: {
+          p_employee_code?: string
+          p_full_name: string
+          p_national_id: string
+          p_person_id: string
+        }
+        Returns: undefined
+      }
       find_auth_user_by_identifier: {
         Args: { p_field: string; p_value: string }
         Returns: {

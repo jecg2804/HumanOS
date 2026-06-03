@@ -1,10 +1,12 @@
 'use server';
-// ADR-0006 exception: invite code generation uses admin client for hr.invite_codes insert
-// (RLS would require hr_admin context; service role bypasses for atomic creation with audit).
+// SEC-ROLE-RPC (migration 076 / ADR-0001): the LOGGED-IN hr_admin paths (regenerate invite, update
+// person profile) call SECURITY DEFINER RPCs via the SESSION client (authenticated) -- the RPC's
+// internal is_hr_admin() guard authorizes and the privileged write runs as owner. createEmployee +
+// the employment SCD-2 change still use service_role to call their own definer RPCs (not direct DML).
 import { randomInt } from 'node:crypto';
 import { createSupabaseAdminClient } from '@/lib/supabase/admin';
+import { createSupabaseServerClient } from '@/lib/supabase/server';
 import { AuthorizationError, requireHrAdmin } from '@/lib/auth/require-hr-admin';
-import { reportError } from '@/lib/observability/report';
 import { z } from 'zod';
 
 type FormState = {
@@ -126,11 +128,9 @@ export async function regenerateInviteCodeAction(
   const deliveryTarget = formData.get('delivery_target') as string | null;
   if (!personId || !deliveryTarget) return { ok: false, message: 'Datos faltantes' };
 
-  // P1.6 Batch 3: require hr_admin role.
-  // DB-5/audit 2026-05-29: generated_by + audit.log.actor_id FK -> hr.people(id); use person id.
-  let actorPersonId: string;
+  // P1.6 Batch 3: require hr_admin role (friendly error early + defense-in-depth; the RPC re-checks).
   try {
-    ({ personId: actorPersonId } = await requireHrAdmin());
+    await requireHrAdmin();
   } catch (e) {
     if (e instanceof AuthorizationError) {
       return { ok: false, message: e.message };
@@ -138,56 +138,28 @@ export async function regenerateInviteCodeAction(
     throw e;
   }
 
-  const admin = createSupabaseAdminClient();
-
-  // F-11: abort if expiring the old unconsumed codes fails — otherwise we could insert a second
-  // live invite and leave >1 unconsumed code for the same person (support/admin ambiguity).
-  const { error: expireErr } = await admin
-    .schema('hr')
-    .from('invite_codes')
-    .update({ expires_at: new Date().toISOString() })
-    .eq('person_id', personId)
-    .is('consumed_at', null);
-  if (expireErr) return { ok: false, message: expireErr.message };
-
   const code = generateInviteCode();
-  const { data: invite, error } = await admin
-    .schema('hr')
-    .from('invite_codes')
-    .insert({
-      code,
-      person_id: personId,
-      generated_by: actorPersonId,
-      invite_method: deliveryTarget.includes('@') ? 'email' : 'whatsapp',
-      delivery_target: deliveryTarget,
-    })
-    .select('id, code, expires_at')
-    .single();
-  if (error || !invite) return { ok: false, message: error?.message };
+  const supabase = await createSupabaseServerClient();
 
-  // Audit 2026-05-29: 'action' must be in the audit.log CHECK set (insert/update/delete/restore/
-  // custom/login/logout/export/view_sensitive); the semantic name goes in reason + metadata.
-  // actor_id FK -> hr.people(id) so use actorPersonId (not the auth user id). Check the error so
-  // a failed audit write is surfaced, not silently swallowed (it was the only audit write path).
-  const { error: auditErr } = await admin.schema('audit').from('log').insert({
-    actor_id: actorPersonId,
-    action: 'custom',
-    record_id: personId,
-    schema_name: 'hr',
-    table_name: 'invite_codes',
-    reason: 'invite_code_regenerated',
-    metadata: { semantic_action: 'invite_code_regenerated', new_code: invite.code },
-  });
-  if (auditErr) {
-    // Don't fail the operation — the invite was already regenerated (primary effect). Surface the
-    // swallowed audit-write failure to Sentry/stderr. The durable fix is DB-1 (audit triggers).
-    reportError(new Error(`audit.log insert failed: ${auditErr.message}`), {
-      where: 'regenerateInviteCodeAction',
-      person_id: personId,
-    });
+  // SEC-ROLE-RPC (076): one SECURITY DEFINER RPC, called via the session client, does it all
+  // atomically as owner — expire prior unconsumed codes (F-11), insert the new one (generated_by =
+  // current_person_id() resolved inside the RPC), and write the audit entry. Its internal
+  // is_hr_admin() guard authorizes. Replaces the prior direct service_role writes to invite_codes +
+  // audit.log; the audit write is now in the same transaction (no more swallowed-failure path).
+  const { data: invite, error } = await supabase
+    .schema('hr')
+    .rpc('regenerate_invite_code', {
+      p_person_id: personId,
+      p_code: code,
+      p_invite_method: deliveryTarget.includes('@') ? 'email' : 'whatsapp',
+      p_delivery_target: deliveryTarget,
+    })
+    .single();
+  if (error || !invite) {
+    return { ok: false, message: error?.message ?? 'No se pudo regenerar el código.' };
   }
 
-  return { ok: true, data: { code: invite.code, expires_at: invite.expires_at } };
+  return { ok: true, data: { code: invite.out_code, expires_at: invite.out_expires_at } };
 }
 
 const UpdateEmployeeSchema = EmployeeSchema.omit({ delivery_target: true }).extend({
@@ -212,19 +184,23 @@ export async function updateEmployeeAction(
     throw e;
   }
 
-  const admin = createSupabaseAdminClient();
-
-  const { error: pErr } = await admin
+  // SEC-ROLE-RPC (076): people-write via SECURITY DEFINER RPC. hr.people stays SELECT-only for
+  // authenticated (069); the RPC does the write as owner after its internal is_hr_admin() guard.
+  const supabase = await createSupabaseServerClient();
+  const { error: pErr } = await supabase
     .schema('hr')
-    .from('people')
-    .update({
-      full_name: parsed.data.full_name,
-      national_id: parsed.data.national_id,
-      employee_code: parsed.data.employee_code || null,
-      updated_at: new Date().toISOString(),
-    })
-    .eq('id', parsed.data.person_id);
+    .rpc('update_person_profile', {
+      p_person_id: parsed.data.person_id,
+      p_full_name: parsed.data.full_name,
+      p_national_id: parsed.data.national_id,
+      p_employee_code: parsed.data.employee_code || undefined,
+    });
   if (pErr) return { ok: false, message: pErr.message };
+
+  // Employment changes stay on apply_employment_scd2_change: it is EXECUTE service_role-only, and
+  // calling a definer RPC via service_role is a definer-RPC call (not direct DML) — ADR-0001-fine,
+  // unaffected by 076.
+  const admin = createSupabaseAdminClient();
 
   const { error: scdErr } = await admin
     .schema('hr')

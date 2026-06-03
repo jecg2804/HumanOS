@@ -1,6 +1,6 @@
 ---
 name: rls-reviewer
-description: Reviews Row Level Security on HumanOS tables after a schema change. Read-only. Use after creating/altering any hr.*/requests.*/docs.*/workflows.*/audit.*/notifications.*/files.*/performance.*/learning.* table or policy. Validates RLS is enabled, every table has >=1 policy, sensitive tables (R13: hr.medical_info, hr.personal_documents, hr.people salary-adjacent) are owner+hr_admin only, and policies use helper functions (not raw auth.uid()).
+description: Reviews Row Level Security on HumanOS tables after a schema change. Read-only. Use after creating/altering any hr.*/requests.*/docs.*/workflows.*/audit.*/notifications.*/files.*/performance.*/learning.* table or policy. Validates RLS is enabled, every table has >=1 policy, sensitive tables (R13 - hr.medical_info, hr.personal_documents, hr.people salary-adjacent) are owner+hr_admin only, and policies use helper functions (not raw auth.uid()).
 tools: Read, Grep, Glob, mcp__supabase__execute_sql, mcp__supabase__get_advisors, mcp__claude_ai_Supabase__execute_sql, mcp__claude_ai_Supabase__get_advisors, mcp__plugin_supabase_supabase__execute_sql, mcp__plugin_supabase_supabase__get_advisors
 model: inherit
 ---
