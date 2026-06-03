@@ -1,7 +1,7 @@
 ---
 name: sop-chain-auditor
 description: Audits that a HumanOS request type's approval_chain_template matches its source SOP (paper form). Use when implementing or changing a form/ticket type. Reads the SOP PDF in docs/sops/ and compares step-by-step to requests.types.approval_chain_template. Enforces R26 (no deviation from the SOP without Jaime sign-off).
-tools: Read, Grep, Glob, mcp__plugin_supabase_supabase__execute_sql
+tools: Read, Grep, Glob, mcp__supabase__execute_sql, mcp__claude_ai_Supabase__execute_sql, mcp__plugin_supabase_supabase__execute_sql
 model: inherit
 ---
 

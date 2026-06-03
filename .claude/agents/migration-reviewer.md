@@ -1,7 +1,7 @@
 ---
 name: migration-reviewer
 description: Reviews a HumanOS migration .sql file (diff) against the CREATE TABLE checklist and business rules before it is treated as done. Use after writing any supabase/migrations/*.sql. Checks RLS+policy, COMMENT ON TABLE/COLUMN, helper reuse, SECURITY DEFINER search_path, FK ON DELETE, timestamptz, forbidden schemas, no hardcoded UUIDs.
-tools: Read, Grep, Glob, mcp__plugin_supabase_supabase__execute_sql
+tools: Read, Grep, Glob, mcp__supabase__execute_sql, mcp__supabase__list_migrations, mcp__claude_ai_Supabase__execute_sql, mcp__claude_ai_Supabase__list_migrations, mcp__plugin_supabase_supabase__execute_sql, mcp__plugin_supabase_supabase__list_migrations
 model: inherit
 ---
 
