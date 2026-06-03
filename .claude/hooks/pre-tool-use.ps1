@@ -44,7 +44,7 @@ try {
             "create trigger",
             "drop trigger",
             "insert into",
-            "update ",
+            "update",
             "delete from",
             "truncate"
         )
@@ -92,6 +92,8 @@ try {
         $authDestructivePatterns = @(
             "delete\s+from\s+auth\.users",
             "delete\s+from\s+auth\.identities",
+            "update\s+auth\.users",
+            "update\s+auth\.identities",
             "truncate\s+(table\s+)?auth\.users",
             "truncate\s+(table\s+)?auth\.identities",
             "drop\s+table\s+(if\s+exists\s+)?auth\.users",
