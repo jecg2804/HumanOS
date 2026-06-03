@@ -210,9 +210,11 @@ Si queda parcial: `<promise>PARTIAL</promise>` con la lista exacta de lo pendien
 
 ---
 
-## Handoff protocol — Chat / Code / Jaime
+## Handoff y sesiones
 
-> Esta sección absorbe el antiguo `10-HANDOFF-PROTOCOL.md` (D3 merge 2026-06-01). Cómo las tres entidades que colaboran intercambian estado.
+> ⚠️ **Modelo VIGENTE (ADR-0026 + Constitution §5.6):** UNA sesión Claude Code **atendida** + **Jaime** (decide en los gates, commitea). Una sesión **Codex** opcional en paralelo = revisor **read-only** (no escribe). El modelo **3-actores Chat/Code/Jaime** descrito abajo quedó **RETIRADO** (ADR-0024 superó ADR-0016) — Code lee el repo directamente, NO hay paste Chat→Code.
+>
+> **Sigue vigente** de esta sección: *Layout repo docs*, *Bootstrap invite codes*, y el *handoff Code↔Code (PreCompact)*. **Ignora** las *Direcciones de handoff Chat↔Code* y las filas "Chat" del cheat-sheet/anti-patterns (residuo histórico, no se borra para preservar el contexto del merge D3).
 
 ### Tres entidades que colaboran
 

@@ -78,14 +78,10 @@
 - Google Drive ✓
 - Resend — configurado disabled status (no crítico MVP)
 
-**Code (Claude Code en VS Code)**:
-- Supabase ✓ (built-in plugin)
-- Vercel ✓ (built-in plugin)
-- Context7 ✓ (docs Next.js/React/Tailwind/Resend/Supabase actualizadas)
-- Playwright ✓
-- chrome-devtools-mcp ✓
-- Filesystem ✓
-- Notion ✓
+**Code (Claude Code en VS Code)** — fuente real: `.mcp.json` + plugins habilitados (verificar con `/mcp`):
+- Supabase ✓ (`.mcp.json`, http read-only) · Context7 ✓ · next-devtools ✓
+- Playwright ✓ · chrome-devtools-mcp ✓ (plugins)
+- *(Filesystem / Notion: NO activos — fantasma del doc viejo; usar Read/Grep/Glob nativos)*
 
 ---
 
