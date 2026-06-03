@@ -63,21 +63,23 @@ CREATE POLICY "policy_name" ON schema.tabla
 | `hr.is_supervisor_of(person_id uuid)` | boolean | true si auth.uid() es supervisor_id de person_id |
 | `hr.has_direct_reports()` | boolean | true si auth.uid() tiene reportes directos |
 | `requests.can_view_ticket(ticket_id uuid)` | boolean | requester, supervisor, hr_admin o president |
-| `hr.check_invite_code_rate_limit(...)` | boolean | rate-limit de intentos de invite (onboarding) |
+> **RPC pre-auth** (categoría aparte, NO helper de RLS): `hr.check_invite_code_rate_limit(...)` retorna **`jsonb`** (no boolean) y tiene **EXECUTE anon/authenticated/PUBLIC** porque el onboarding corre pre-auth (rol `anon`). `SECURITY DEFINER` con guard interno. Intencional.
 
-**Write / transaccionales** (`SECURITY DEFINER`, EXECUTE **solo `service_role`** — llamar desde el admin client, NO redefinir):
+**Write / transaccionales** (`SECURITY DEFINER`; NO redefinir). **Clasificación verificada contra la BD viva 2026-06-03 (F-07)** — el grant NO es uniforme, no asumir "solo service_role":
 
-| Function | Uso |
-|---|---|
-| `hr.complete_onboarding_writes(...)` | escritura atómica del wizard de onboarding |
-| `hr.apply_employment_scd2_change(...)` | cambio SCD-2 de employment (cierra viejo + inserta nuevo) |
-| `hr.create_employee_with_invite(...)` | alta atómica admin (people+employment+invite); CODE-ADMIN-TX |
-| `hr.find_auth_user_by_identifier(...)` | lookup de auth.users por email/code (onboarding) |
-| `hr.post_leave_ledger_entry(...)` | asiento en el ledger de vacaciones |
-| `requests.next_sequence(...)` | secuencia atómica para `request_number` (HUM-YYYY-NNNN) |
-| `notifications.enqueue(...)` | encolar notificación (outbox) |
+| Function | EXECUTE (grant real) | Uso |
+|---|---|---|
+| `hr.complete_onboarding_writes(...)` | service_role | escritura atómica del wizard de onboarding |
+| `hr.apply_employment_scd2_change(...)` | service_role | cambio SCD-2 de employment (cierra viejo + inserta nuevo) |
+| `hr.create_employee_with_invite(...)` | service_role | alta atómica admin (people+employment+invite); CODE-ADMIN-TX |
+| `hr.find_auth_user_by_identifier(...)` | service_role | lookup de auth.users por email/code (onboarding) |
+| `requests.next_sequence(...)` | service_role | secuencia atómica para `request_number` (HUM-YYYY-NNNN) |
+| `notifications.enqueue(...)` | service_role (065 revoke) | encolar notificación (outbox) |
+| `hr.post_leave_ledger_entry(...)` | **`authenticated`** (guard interno) | asiento en el ledger de vacaciones — **NO es service_role-only**; revisar si el guard es suficiente o debe revocarse a service_role cuando se cablee leave (Group 5) |
 
-**Triggers / infra** (NO llamar directo; EXECUTE revocado): `hr.touch_updated_at()`, `hr.create_default_user_settings()` (trigger AFTER INSERT en `hr.people`), `audit.log_access()`.
+**Triggers / infra (`SECURITY DEFINER`):**
+- EXECUTE revocado de anon/auth/public: `hr.touch_updated_at()`, `hr.create_default_user_settings()` (trigger AFTER INSERT en `hr.people`; 072).
+- `audit.log_access()` retorna `void` y tiene **EXECUTE `authenticated`** (no revocado, contrario a lo que decía esta doc). SECURITY DEFINER con guard interno; el logger de acceso lo necesita on-write desde sesión del usuario. **Revisar** si conviene moverlo a trigger-only / service_role cuando se cablee `audit.access_log` (hoy 0 filas).
 
 ---
 

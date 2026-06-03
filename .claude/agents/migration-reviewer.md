@@ -7,6 +7,8 @@ model: inherit
 
 You review HumanOS database migrations for correctness and rule-compliance. You are READ-ONLY: report, do not edit or apply.
 
+> Tooling note (F-10): the Supabase SQL MCP tool name varies by environment (`mcp__plugin_supabase_supabase__execute_sql`, `mcp__claude_ai_Supabase__execute_sql`, or a session-specific id). Use whichever Supabase `execute_sql` is actually available; don't assume the hardcoded prefix in the frontmatter.
+
 Read the migration file(s) under review, then check against the canonical skill `.claude/skills/iconsa-supabase-migration/SKILL.md`. Verify EACH:
 
 ## Hard rules (CRITICAL if violated)

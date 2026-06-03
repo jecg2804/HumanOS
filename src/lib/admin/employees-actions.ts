@@ -140,12 +140,15 @@ export async function regenerateInviteCodeAction(
 
   const admin = createSupabaseAdminClient();
 
-  await admin
+  // F-11: abort if expiring the old unconsumed codes fails — otherwise we could insert a second
+  // live invite and leave >1 unconsumed code for the same person (support/admin ambiguity).
+  const { error: expireErr } = await admin
     .schema('hr')
     .from('invite_codes')
     .update({ expires_at: new Date().toISOString() })
     .eq('person_id', personId)
     .is('consumed_at', null);
+  if (expireErr) return { ok: false, message: expireErr.message };
 
   const code = generateInviteCode();
   const { data: invite, error } = await admin

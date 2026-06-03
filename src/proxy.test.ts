@@ -34,6 +34,17 @@ describe('proxy', () => {
     expect(updateSession).not.toHaveBeenCalled();
   });
 
+  // F-01 regression: password-reset pages must bypass the auth gate, otherwise anonymous
+  // users get redirected to /login and the shipped reset flow is unreachable.
+  it.each(['/forgot-password', '/reset-password'])(
+    'passes through %s without auth check',
+    async (path) => {
+      const req = makeReq(path);
+      await proxy(req);
+      expect(updateSession).not.toHaveBeenCalled();
+    }
+  );
+
   it('redirects to /login when user is not authenticated', async () => {
     vi.mocked(updateSession).mockResolvedValue({
       response: NextResponse.next(),

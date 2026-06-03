@@ -16,6 +16,7 @@ coverage/
 playwright-report/
 test-results/
 .last-run.json
+e2e/.auth/
 
 # Ephemeral / generated artifacts (per audit Batch 1, 2026-05-28)
 docs/HANDOFF.json

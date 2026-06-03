@@ -2,6 +2,8 @@ export const APP_NAME = 'humanOS' as const;
 
 export const PUBLIC_ROUTES = [
   '/login',
+  '/forgot-password',
+  '/reset-password',
   '/onboarding',
   '/api/auth',
   '/error',
