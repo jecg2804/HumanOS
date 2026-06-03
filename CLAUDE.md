@@ -85,7 +85,7 @@ Bugs duros: `diagnose` / `systematic-debugging`. Per feature: E2E happy path + e
 ## Conditional imports (load when relevant)
 
 - Implementando form/feature: `@docs/reference/domain.md` (catálogo formularios + dominio)
-- Implementing approval chain: leer SOP relevante en `docs/sops/` (Filesystem MCP, NO Google Drive)
+- Implementing approval chain: leer el SOP **fuente** en GDrive `RECURSOS HUMANOS` (SOR, vía conector claude.ai `read_file_content` — SÍ disponible para Code; el repo `docs/sops/` es espejo incompleto). Catálogo + cadenas validadas R26: `docs/work/2026-06-03-hr-catalog-and-launch-plan.md`
 - Past decisions: `@docs/adr/README.md` (canonical index) + `@docs/adr/*.md`
 - Vocabulario en duda: `@docs/CONTEXT.md` (vivo, mantén con grill-with-docs)
 - MDM foundational (aspiracional): `@docs/future/11-MDM-PRINCIPLES.md` + `@docs/future/12-SOR-MATRIX.md`
@@ -123,7 +123,7 @@ Si parcial: `<promise>PARTIAL</promise>` con la lista explícita de lo que qued�
 - ❌ Crear columnas sin COMMENT
 - ❌ DELETE/UPDATE de tablas críticas sin WHERE
 - ❌ Modificar archivos en `public.*`, `payroll.*`, `humanos.*`
-- ❌ Confiar en memoria de SOPs — leer PDFs en `docs/sops/` (NO Google Drive MCP, no está habilitado)
+- ❌ Confiar en memoria de SOPs — leer la fuente en GDrive (conector claude.ai SÍ disponible para Code; `read_file_content` da OCR); `docs/sops/` es subconjunto incompleto
 - ❌ Desviarse de R26 sin documentar + validar con Jaime
 - ❌ Implementar logic per-form custom — usar FormEngine + ApprovalEngine
 - ❌ Hardcodear chain steps — están en `requests.types.approval_chain_template`

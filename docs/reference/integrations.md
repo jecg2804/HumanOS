@@ -82,6 +82,7 @@
 - Supabase ✓ (`.mcp.json`, http read-only) · Context7 ✓ · next-devtools ✓
 - Playwright ✓ · chrome-devtools-mcp ✓ (plugins)
 - *(Filesystem / Notion: NO activos — fantasma del doc viejo; usar Read/Grep/Glob nativos)*
+- **Conectores claude.ai (ADEMÁS del `.mcp.json`, vía ToolSearch):** Code TAMBIÉN alcanza los conectores de la cuenta claude.ai — **Google Drive** (`read_file_content`/`search_files`, OCR; **SOR de los SOPs** — corrige el claim viejo "GDrive no habilitado para Code"), `claude_ai_Supabase` (writable: `apply_migration`/`execute_sql`), Vercel, Sentry. ⚠️ pueden faltar en runs headless/cron — los agentes en background confirman acceso (reportan si no).
 
 ---
 
