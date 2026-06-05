@@ -2069,6 +2069,84 @@ export type Database = {
           },
         ]
       }
+      employment_classifications: {
+        Row: {
+          cost_center: string | null
+          created_at: string
+          created_from: string
+          deleted_at: string | null
+          deleted_by: string | null
+          department_code: string | null
+          id: string
+          is_current: boolean
+          occupation: string | null
+          person_id: string
+          source_system: string
+          trade: string | null
+          union_code: string | null
+          updated_at: string
+          valid_from: string
+          valid_to: string | null
+          wage_class: string | null
+          worker_comp_code: string | null
+        }
+        Insert: {
+          cost_center?: string | null
+          created_at?: string
+          created_from?: string
+          deleted_at?: string | null
+          deleted_by?: string | null
+          department_code?: string | null
+          id?: string
+          is_current?: boolean
+          occupation?: string | null
+          person_id: string
+          source_system?: string
+          trade?: string | null
+          union_code?: string | null
+          updated_at?: string
+          valid_from?: string
+          valid_to?: string | null
+          wage_class?: string | null
+          worker_comp_code?: string | null
+        }
+        Update: {
+          cost_center?: string | null
+          created_at?: string
+          created_from?: string
+          deleted_at?: string | null
+          deleted_by?: string | null
+          department_code?: string | null
+          id?: string
+          is_current?: boolean
+          occupation?: string | null
+          person_id?: string
+          source_system?: string
+          trade?: string | null
+          union_code?: string | null
+          updated_at?: string
+          valid_from?: string
+          valid_to?: string | null
+          wage_class?: string | null
+          worker_comp_code?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "employment_classifications_person_id_fkey"
+            columns: ["person_id"]
+            isOneToOne: false
+            referencedRelation: "people"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "employment_classifications_person_id_fkey"
+            columns: ["person_id"]
+            isOneToOne: false
+            referencedRelation: "v_directory"
+            referencedColumns: ["person_id"]
+          },
+        ]
+      }
       employment_types: {
         Row: {
           code: string
@@ -3250,6 +3328,20 @@ export type Database = {
         }
         Returns: undefined
       }
+      apply_spectrum_classification: {
+        Args: {
+          p_batch_id: string
+          p_cost_center: string
+          p_department_code: string
+          p_occupation: string
+          p_person_id: string
+          p_trade: string
+          p_union_code: string
+          p_wage_class: string
+          p_worker_comp_code: string
+        }
+        Returns: string
+      }
       check_invite_code_rate_limit: {
         Args: {
           p_block_minutes?: number
@@ -3359,6 +3451,10 @@ export type Database = {
           out_code: string
           out_expires_at: string
         }[]
+      }
+      sync_spectrum_people: {
+        Args: { p_batch_id: string; p_records: Json }
+        Returns: Json
       }
       update_person_profile: {
         Args: {

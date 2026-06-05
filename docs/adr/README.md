@@ -43,8 +43,9 @@ context / alternatives rejected / risks).
 | 0031 | GDrive "Usuarios SG" = SOR documental; docs/sops = espejo curado pinneado | `0031-gdrive-usuarios-sg-sor-curated-mirror.md` |
 | 0032 | Core MDM foundation: schema `core` (rename mdm) + masters Spectrum SDX + obra 4-niveles + people golden hr.people / core.persons VIEW | `0032-core-mdm-foundation-spectrum-sdx.md` |
 | 0033 | Excepción autorizada: build nocturno dirigido por consejo de agentes (override puntual de ADR-0026) | `0033-overnight-council-build-exception.md` |
+| 0034 | People sync v2 (Spectrum GetEmployee): sidecar SCD-2 de clasificación + survivorship FLAG-ONLY | `0034-people-sync-v2-sidecar-scd2-flag-only.md` |
 
-New ADRs continue from **0034**.
+New ADRs continue from **0035**.
 
 > **Amendments 2026-06-04** (no nuevo número): ADR-0009 (planilla en MVP) y ADR-0011 (solo `public.*` prohibido; `payroll.*` usable) llevan `## Update 2026-06-04`. Por **SP-0b / ADR-0032**: ADR-0011 (core/raw/meta), ADR-0014 (master=core; people VIEW), ADR-0025 (DOMAIN→core), ADR-0028 (obra→core.jobs) llevan `## Update 2026-06-04 (SP-0b / ADR-0032)`.
 

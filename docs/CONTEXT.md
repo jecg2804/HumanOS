@@ -173,7 +173,10 @@ Vista **`security_invoker=true`** sobre `hr.people` = contrato people cross-app,
 _Avoid_: tratar core.persons como tabla fisica o segundo master; exponer PII en la VIEW; FK a la VIEW.
 
 **Autoridad por campo (field_authority)**:
-Que fuente gana por campo (survivorship a nivel atributo): empleo/org <- Spectrum; identidad self-entered (cedula/contacto/emergencia/dependientes) <- onboarding + historico + PayDay; salario <- PayDay; `employment_status` <- local (nunca overwrite ciego). Declarado en `core.field_authority`.
+Que fuente gana por campo (survivorship a nivel atributo): empleo/org <- Spectrum; identidad self-entered (cedula/contacto/emergencia/dependientes) <- onboarding + historico + PayDay; salario <- PayDay; `employment_status` <- local (nunca overwrite ciego). Declarado en `core.field_authority`. **LIVE desde 2026-06-05** (primer consumidor real = people sync v2 / `hr.sync_spectrum_people`, eje empleo/org): paso de declarativo a vivo.
+
+**hr.employment_classifications** (sidecar SCD-2):
+Eje **payroll/labor de Spectrum** (`department_code`/`occupation`/`cost_center`/`union_code`/`wage_class`/`worker_comp_code`/`trade`) aterrizado como sidecar SCD-2 persona-scoped en `hr.*`, **SEPARADO** del eje HR-org de `hr.employments` (`position_id`/`department_id`→`hr.org_units`). Una sola fila `is_current=true` por persona. Lo alimenta el people sync v2 (`hr.sync_spectrum_people` vía `hr.apply_spectrum_classification`) **FLAG-ONLY**: enriquece la clasificacion, FLAGea `status_drift`/`new_active_unmatched`, NUNCA escribe identidad ni `status` de `hr.people`, NUNCA crea personas. Spectrum es dueno absoluto de esta tabla (`sor_wins` trivial). Planilla (Group 4-5) la consumira (cost_center/department/wage_class). _Avoid_: mapear estos campos a los FK HR-org de `hr.employments` (corrompe la semantica); meter la clasificacion en la misma linea SCD-2 de `hr.employments` (cadencias distintas).
 
 **Spectrum SDX**:
 Fuente live read-only (SOAP/XML, 14 servicios Get) de master data. POSEE empleo/org (Department/Occupation/Union/Wage_Class/Cost_Center); NO posee cedula/salario/hire_date/email/supervisor/status. Z-sentinel: ejecutivos usan codigos `*9999` (ZEIS99999=Rodrigo). Ingesta via Edge `sdx-sync` (sin VPS).
