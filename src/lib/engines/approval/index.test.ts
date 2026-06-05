@@ -15,7 +15,9 @@ const REQ = 'req';
 const SUP = 'sup';
 const PRES = 'pres';
 
-// VACACIONES rows right after instantiation (submit already Aprobada; gates Pendiente).
+// VACACIONES rows right after instantiation (submit already Aprobada; gates Pendiente). NOTE the
+// RRHH-recibe processing step (2) is still Pendiente here -- so the supervisor gate (3) is NOT yet
+// actionable in sequential mode (S1: no gate fires while an earlier step is pending).
 function freshRows(): ApprovalRow[] {
   return [
     { stepOrder: 1, kind: 'submit', decision: 'Aprobada', approverPersonId: REQ },
@@ -24,6 +26,13 @@ function freshRows(): ApprovalRow[] {
     { stepOrder: 4, kind: 'processing', decision: 'Pendiente', approverPersonId: null },
     { stepOrder: 5, kind: 'approval', decision: 'Pendiente', approverPersonId: PRES },
   ];
+}
+
+// After RRHH-recibe (step 2 stamped): the supervisor gate (3) is now the actionable step.
+function rowsAfterRRHH(): ApprovalRow[] {
+  return freshRows().map((r) =>
+    r.stepOrder === 2 ? { ...r, decision: 'Aprobada' as const } : r
+  );
 }
 
 describe('ApprovalEngine.isActionable', () => {
@@ -61,14 +70,34 @@ describe('ApprovalEngine.hasLaterGate', () => {
 });
 
 describe('ApprovalEngine.actuate -- supervisor gate (step 3)', () => {
+  // RRHH already received (step 2 done), so the supervisor gate is genuinely actionable.
   const base = {
-    rows: freshRows(),
+    rows: rowsAfterRRHH(),
     status: 'En_Revision' as const,
     mode: 'sequential' as ChainMode,
     requesterPersonId: REQ,
     gateStepOrder: 3,
     isHrAdmin: false,
   };
+
+  it('S1: supervisor (step 3) cannot approve while RRHH-recibe (step 2 processing) is still pending', () => {
+    try {
+      actuate({
+        rows: freshRows(), // step 2 still Pendiente
+        status: 'En_Revision',
+        mode: 'sequential',
+        requesterPersonId: REQ,
+        approverPersonId: SUP,
+        gateStepOrder: 3,
+        isHrAdmin: false,
+        decision: 'Aprobada',
+      });
+      expect.unreachable('should throw');
+    } catch (e) {
+      expect(e).toBeInstanceOf(ApprovalError);
+      expect((e as ApprovalError).code).toBe('step_out_of_order');
+    }
+  });
 
   it('approve advances to the next approval gate (GG), staying En_Revision (skips processing 4)', () => {
     const r = actuate({ ...base, approverPersonId: SUP, decision: 'Aprobada' });
@@ -114,8 +143,9 @@ describe('ApprovalEngine.actuate -- supervisor gate (step 3)', () => {
 
 describe('ApprovalEngine.actuate -- GG final gate (step 5)', () => {
   it('approve -> Aprobada + commit ledger (no later gate)', () => {
+    // Every earlier step resolved (RRHH recibe, supervisor, Planilla verifica) -> GG is actionable (S1).
     const rows = freshRows().map((r) =>
-      r.stepOrder === 3 ? { ...r, decision: 'Aprobada' as const } : r
+      r.stepOrder < 5 ? { ...r, decision: 'Aprobada' as const } : r
     );
     const r = actuate({
       rows,

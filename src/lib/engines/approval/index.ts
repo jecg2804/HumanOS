@@ -27,6 +27,7 @@ export class ApprovalError extends Error {
       | 'no_pending_gate'
       | 'not_current_approver'
       | 'invalid_status'
+      | 'step_out_of_order'
   ) {
     super(message);
     this.name = 'ApprovalError';
@@ -99,12 +100,28 @@ export function actuate(input: ActuationInput): ActuationResult {
     throw new ApprovalError('No hay gate de aprobacion pendiente.', 'no_pending_gate');
   }
 
-  // In sequential mode the actuated gate must be the current (lowest pending) gate.
-  if (input.mode === 'sequential' && gate.stepOrder !== input.gateStepOrder) {
-    throw new ApprovalError(
-      'No es el gate actual (orden secuencial).',
-      'not_current_approver'
+  // Sequential ordering (ADR-0037; mirrors requests.act_on_approval S1 exactly): NO gate may fire
+  // while ANY earlier step -- approval OR processing -- is still Pendiente. This is why the supervisor
+  // cannot approve before RRHH-recibe (a processing step), and GG cannot before Planilla-verifica. The
+  // currentGate() helper only looks at approval gates, so this check (over ALL rows) is what actually
+  // enforces the SOP order. parallel mode opens every gate day 0 (ADR-0004) and skips this.
+  if (input.mode === 'sequential') {
+    const earlierPending = input.rows.some(
+      (r) => r.decision === 'Pendiente' && r.stepOrder < gate.stepOrder
     );
+    if (earlierPending) {
+      throw new ApprovalError(
+        'Paso fuera de orden: hay un paso previo sin resolver (orden secuencial).',
+        'step_out_of_order'
+      );
+    }
+    // The actuated gate must be the current (lowest pending) approval gate.
+    if (gate.stepOrder !== input.gateStepOrder) {
+      throw new ApprovalError(
+        'No es el gate actual (orden secuencial).',
+        'not_current_approver'
+      );
+    }
   }
 
   const targetGate =
