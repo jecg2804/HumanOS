@@ -30,6 +30,9 @@ const config = [
       'playwright-report/**',
       'test-results/**',
       'src/lib/supabase/database.types.ts',
+      // Supabase Edge Functions are Deno (npm:/jsr: specifiers, Deno globals) — not lintable
+      // by the Next.js/Node config; they have their own runtime. Excluded like database.types.ts.
+      'supabase/functions/**',
     ],
   },
   {
