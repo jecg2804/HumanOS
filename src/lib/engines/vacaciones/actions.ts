@@ -210,6 +210,102 @@ export async function submitVacaciones(
   };
 }
 
+export interface VacacionesFormContext {
+  ok: boolean;
+  message?: string;
+  typeName?: string;
+  schema?: FormSchema;
+  /** profile + computed values for read-only display (the authoritative snapshot is rebuilt at submit). */
+  prefill?: Record<string, unknown>;
+  /** name of the employment supervisor who will approve (display only). */
+  supervisorName?: string | null;
+}
+
+/**
+ * Load everything the new-VACACIONES form needs to render: the schema, the profile/computed prefill,
+ * and the supervisor name. Display-only — submitVacaciones rebuilds the authoritative snapshot
+ * server-side at submit (ADR-0003), never trusting client-sent prefill.
+ */
+export async function getVacacionesFormContext(): Promise<VacacionesFormContext> {
+  const supabase = await createSupabaseServerClient();
+
+  const { data: auth } = await supabase.auth.getUser();
+  if (!auth?.user) return { ok: false, message: 'No autenticado.' };
+
+  const { data: person, error: personErr } = await supabase
+    .schema('hr')
+    .from('people')
+    .select('id, full_name, national_id')
+    .eq('auth_id', auth.user.id)
+    .maybeSingle();
+  if (personErr || !person) return { ok: false, message: 'No se encontro tu perfil.' };
+
+  const { data: typeRow, error: typeErr } = await supabase
+    .schema('requests')
+    .from('types')
+    .select('name, form_schema')
+    .eq('code', 'VACACIONES')
+    .maybeSingle();
+  if (typeErr || !typeRow?.form_schema) {
+    return { ok: false, message: 'El tipo VACACIONES no tiene esquema configurado.' };
+  }
+  const schema = typeRow.form_schema as unknown as FormSchema;
+
+  const { data: emp } = await supabase
+    .schema('hr')
+    .from('employments')
+    .select(
+      'position_text, department_text, hire_date, supervisor:people!supervisor_id(full_name)'
+    )
+    .eq('person_id', person.id)
+    .eq('is_current', true)
+    .order('valid_from', { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  const { data: saldoData } = await callRpc(supabase, 'hr', 'get_leave_balance', {
+    p_person_id: person.id,
+  });
+  const leaveBalance =
+    typeof saldoData === 'number' ? saldoData : saldoData == null ? null : Number(saldoData);
+
+  const supervisorRaw = (emp as { supervisor?: unknown } | null)?.supervisor;
+  const supervisor = (Array.isArray(supervisorRaw) ? supervisorRaw[0] : supervisorRaw) as
+    | { full_name: string }
+    | null
+    | undefined;
+
+  const empTyped = emp as
+    | { position_text: string | null; department_text: string | null; hire_date: string | null }
+    | null;
+
+  const tenureYears =
+    empTyped?.hire_date != null
+      ? Math.floor(
+          (Date.now() - new Date(empTyped.hire_date).getTime()) / (365.25 * 24 * 3600 * 1000)
+        )
+      : null;
+
+  const prefill: Record<string, unknown> = {
+    fecha_solicitud: new Date().toISOString().slice(0, 10),
+    nombre_empleado: person.full_name,
+    cedula: person.national_id,
+    cargo: empTyped?.position_text ?? null,
+    departamento: empTyped?.department_text ?? null,
+    antiguedad: tenureYears,
+    saldo_vacaciones: leaveBalance,
+    // dias_solicitados is computed live from the date ranges in the form (and authoritatively at submit).
+  };
+
+  return {
+    ok: true,
+    typeName: typeRow.name,
+    schema,
+    prefill,
+    supervisorName: supervisor?.full_name ?? null,
+  };
+}
+
 export interface ActOnApprovalInput {
   ticketId: string;
   decision: 'Aprobada' | 'Rechazada' | 'Modificada';
