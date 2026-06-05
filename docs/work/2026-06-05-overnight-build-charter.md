@@ -4,6 +4,30 @@
 > council-driven build (ADR-0033) AND the running progress log. The PROGRESS LOG at the bottom is
 > appended slice-by-slice through the night.
 
+## MORNING TL;DR (2026-06-05)
+
+**Shipped + verified + committed + pushed** on branch `overnight/mvp-build-2026-06-05` (4 commits; `main` untouched at `7a3d468`). Every slice was adversarially council-reviewed — the council caught fabricated metrics, dead-code test-theater, a consent-bypass function overload, and a collision-formula bug **before** they shipped.
+
+| # | Slice | What | Verified | Commit |
+|---|---|---|---|---|
+| 1 | **people-sync v2** (Core MDM) | mig 089: `hr.employment_classifications` SCD-2 sidecar + `sync_spectrum_people` (FLAG-ONLY) + Edge `sdx-people-sync` deployed | LIVE cold-start: 184 read, 176 matched, 2 Z-skip, 12 flagged; `hr.people` untouched; 0 R12 viol. | `294156b` |
+| 2 | **SEC-CONSENT Ley 81** (P1 gap) | mig 090: L1 RPC guard + L2 `hr.medical_info` trigger + `has_active_consent` + `v_pending_reconsent`; consent UI step | LIVE: L2 blocked a no-consent medical insert (0 stray); 43 flagged, 0 fabricated | `9efc1c2` |
+| 3 | **signup `employee_code` formula** | mig 091: `hr.generate_employee_code` (PO-06) + CI-unique index; full signup-cluster DESIGN | LIVE: `ZZZ999->ZZZ99A`, `Nunez->NUN899`, real `CUC166` collision->`CUC16A` | `806f01a` |
+
+**Test in the morning** (E2E is NOT in `npm run verify`, so unverified by me):
+- Onboarding wizard end-to-end (new **consent step 6**; 11-step flow). Note: no session is created post-onboarding yet (SIGNUP-session-bug is **designed, not built**).
+- Re-run people sync (`POST /functions/v1/sdx-people-sync`, anon bearer) -> idempotent; review the **12 flags** in `core.sync_runs.details` (6 Spectrum actives absent from `hr.people`; 6 status mismatches) = HR-admin follow-ups, not bugs.
+- Review `hr.v_pending_reconsent` (the 43) and decide the re-consent prompt rollout.
+
+**Flagged for your ATTENDED build (NOT done — R22/auth.users / needs E2E / vendor / legal):**
+- SIGNUP-session-bug, SIGNUP-phone, SIGNUP-guardrails + wiring `generate_employee_code` into `create_employee_with_invite` (designed: `docs/superpowers/specs/2026-06-05-signup-cluster-design.md` + ADR-0036).
+- SDX nightly cron stays **disabled** until the vendor confirms the GUID/auth quirk.
+- Consent legal text is a **BORRADOR** pending your lawyer (`src/lib/consent/legal-text.ts`; `legal_version` makes the swap clean).
+- Spectrum `Employment_Status` C/S exact meaning to confirm with Samantha (flag labels only).
+- Group 4 engines + VACACIONES: a **design-only** spec is being produced for you to react to before an attended build.
+
+**Rollback:** repo -> `git checkout pre-overnight-2026-06-05` (or reset to any commit). DB -> additive only; snapshots `backup.person_sources_pre_spectrum_20260605` + `backup.people_pre_consent_flag_20260605`; reverse via compensating migration (not `git`). New ADRs: 0033 (the exception) + 0034/0035/0036.
+
 ## Restore points (how to roll back)
 
 - **Repo, to this exact pre-build moment:** `git checkout pre-overnight-2026-06-05` (tag at `7a3d468`).
