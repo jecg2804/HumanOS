@@ -3585,6 +3585,10 @@ export type Database = {
           raw_app_meta_data: Json
         }[]
       }
+      generate_employee_code: {
+        Args: { p_apellido_paterno: string; p_national_id: string }
+        Returns: string
+      }
       has_active_consent: {
         Args: { p_person_id: string; p_scope: string }
         Returns: boolean

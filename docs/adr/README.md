@@ -45,8 +45,9 @@ context / alternatives rejected / risks).
 | 0033 | Excepción autorizada: build nocturno dirigido por consejo de agentes (override puntual de ADR-0026) | `0033-overnight-council-build-exception.md` |
 | 0034 | People sync v2 (Spectrum GetEmployee): sidecar SCD-2 de clasificación + survivorship FLAG-ONLY | `0034-people-sync-v2-sidecar-scd2-flag-only.md` |
 | 0035 | Enforcement de consentimiento Ley 81 (SEC-CONSENT): captura onboarding + guard fail-closed defense-in-depth + las 43 = flag-for-reconsent | `0035-consent-enforcement-ley81.md` |
+| 0036 | employee_code formula PO-06 (3 letras apellido + 3 digitos cedula) con crosswalk `person_sources` como link durable + reconciliacion con codigos Spectrum (formula solo para net-new sin crosswalk) | `0036-employee-code-formula-and-spectrum-reconciliation.md` |
 
-New ADRs continue from **0036**.
+New ADRs continue from **0037**.
 
 > **Amendments 2026-06-04** (no nuevo número): ADR-0009 (planilla en MVP) y ADR-0011 (solo `public.*` prohibido; `payroll.*` usable) llevan `## Update 2026-06-04`. Por **SP-0b / ADR-0032**: ADR-0011 (core/raw/meta), ADR-0014 (master=core; people VIEW), ADR-0025 (DOMAIN→core), ADR-0028 (obra→core.jobs) llevan `## Update 2026-06-04 (SP-0b / ADR-0032)`.
 
