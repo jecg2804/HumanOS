@@ -2894,6 +2894,42 @@ export type Database = {
         }
         Relationships: []
       }
+      login_attempts: {
+        Row: {
+          attempts: number
+          blocked_until: string | null
+          created_at: string
+          first_attempt_at: string
+          id: string
+          identifier_hash: string
+          ip_address: unknown
+          last_attempt_at: string
+          updated_at: string
+        }
+        Insert: {
+          attempts?: number
+          blocked_until?: string | null
+          created_at?: string
+          first_attempt_at?: string
+          id?: string
+          identifier_hash: string
+          ip_address: unknown
+          last_attempt_at?: string
+          updated_at?: string
+        }
+        Update: {
+          attempts?: number
+          blocked_until?: string | null
+          created_at?: string
+          first_attempt_at?: string
+          id?: string
+          identifier_hash?: string
+          ip_address?: unknown
+          last_attempt_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       medical_info: {
         Row: {
           allergies: string | null
@@ -3527,6 +3563,16 @@ export type Database = {
         }
         Returns: Json
       }
+      check_login_rate_limit: {
+        Args: {
+          p_block_minutes?: number
+          p_identifier_hash: string
+          p_ip_address: unknown
+          p_max_attempts?: number
+          p_window_minutes?: number
+        }
+        Returns: Json
+      }
       complete_onboarding_writes: {
         Args: {
           p_ack_child_labor_at?: string
@@ -3638,6 +3684,10 @@ export type Database = {
           out_code: string
           out_expires_at: string
         }[]
+      }
+      resolve_login_identifier: {
+        Args: { p_identifier: string }
+        Returns: string
       }
       sync_spectrum_people: {
         Args: { p_batch_id: string; p_records: Json }

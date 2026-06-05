@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { passwordPolicySchema } from '@/lib/auth/password-policy';
 
 export const Step1Schema = z.object({
   code: z.string().length(8, 'Código debe tener 8 caracteres'),
@@ -18,8 +19,12 @@ export const Step3Schema = z.object({
   delivery_target: emailOrPhone,
 });
 
+// SIGNUP-guardrails #1: la fuerza de contrasena se centraliza en passwordPolicySchema
+// (auth/password-policy). Step4 la reusa para que onboarding y cualquier futuro flujo de
+// contrasena compartan exactamente la misma politica de FORMA. El leak-check (pwned) lo hace
+// Supabase Auth server-side.
 export const Step4Schema = z.object({
-  password: z.string().min(10, 'Contraseña debe tener al menos 10 caracteres'),
+  password: passwordPolicySchema,
 });
 
 export const Step6Schema = z.object({

@@ -48,8 +48,12 @@ export function Step3Identifier({ state, dispatch }: Props) {
     <section className="space-y-4">
       <h1 className="text-2xl font-bold text-navy-500">¿Cómo te contactamos?</h1>
       <p className="text-gray-700">
-        Ingresa tu correo empresarial o tu número de teléfono. Si ya tienes cuenta en
+        Ingresa tu correo empresarial (recomendado) o tu número de teléfono. Si ya tienes cuenta en
         MovimientOS u otra app de ICONSA, usa el mismo dato para que no se duplique.
+      </p>
+      <p className="text-sm text-gray-500">
+        Si no tienes correo, te creamos una cuenta interna: podrás iniciar sesión con tu código de
+        empleado y la contraseña que elijas en el siguiente paso.
       </p>
       <form action={formAction} className="space-y-4">
         <input type="hidden" name="code" value={state.code} />

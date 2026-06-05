@@ -30,14 +30,14 @@ export function LoginForm({
   return (
     <form onSubmit={onSubmit} className="space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="email">Correo</Label>
+        <Label htmlFor="identifier">Correo o codigo de empleado</Label>
         <Input
-          id="email"
-          name="email"
-          type="email"
+          id="identifier"
+          name="identifier"
+          type="text"
           required
-          autoComplete="email"
-          placeholder="tu@iconsanet.com"
+          autoComplete="username"
+          placeholder="tu@iconsanet.com o CUC166"
         />
       </div>
       <div className="space-y-2">

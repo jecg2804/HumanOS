@@ -4,7 +4,8 @@ test.describe('Auth flow', () => {
   test('login page renders with form fields', async ({ page }) => {
     await page.goto('/login');
     await expect(page.getByRole('heading', { name: 'HumanOS' })).toBeVisible();
-    await expect(page.getByLabel('Correo')).toBeVisible();
+    // SIGNUP-phone: el login acepta correo O codigo de empleado.
+    await expect(page.getByLabel('Correo o codigo de empleado')).toBeVisible();
     await expect(page.getByLabel('Contrasena')).toBeVisible();
     await expect(page.getByRole('button', { name: 'Ingresar' })).toBeVisible();
   });
@@ -17,13 +18,14 @@ test.describe('Auth flow', () => {
 
   test('invalid credentials show error', async ({ page }) => {
     await page.goto('/login');
-    await page.getByLabel('Correo').fill('nope@example.com');
+    await page.getByLabel('Correo o codigo de empleado').fill('nope@example.com');
     await page.getByLabel('Contrasena').fill('wrongpassword');
     await page.getByRole('button', { name: 'Ingresar' }).click();
+    // Anti-enumeracion (guardrail #4): error generico unico para cualquier fallo de credenciales.
     await expect(
       page
         .getByRole('alert')
-        .filter({ hasText: /incorrectos|invalido|invalido/i })
+        .filter({ hasText: /incorrect|invalido/i })
     ).toBeVisible({ timeout: 15000 });
   });
 

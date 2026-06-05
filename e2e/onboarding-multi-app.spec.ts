@@ -82,7 +82,12 @@ test('multi-app merge preserves encrypted_password (no MovimientOS break)', asyn
   await page.locator('button:has-text("Continuar")').click();
   await page.locator('button:has-text("Confirmar")').click();
 
-  await expect(page).toHaveURL(/\/perfil/);
+  // SIGNUP-session-bug A6: el branch de MERGE cross-app NO eleva una sesion silenciosa; redirige a
+  // /login?merged=1 para que el usuario inicie sesion con su credencial ya existente (R22-safe).
+  await expect(page).toHaveURL(/\/login\?merged=1/);
+  await expect(
+    page.getByRole('status').filter({ hasText: /ya existia en otra app/i })
+  ).toBeVisible();
 
   const usersAfter = await countAuthUsers();
   expect(usersAfter).toBe(usersBefore);

@@ -6,6 +6,8 @@ import { createHash } from 'node:crypto';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { createSupabaseAdminClient } from '@/lib/supabase/admin';
+import { createSupabaseServerClient } from '@/lib/supabase/server';
+import { buildSyntheticEmail } from '@/lib/auth/identity';
 import {
   Step1Schema,
   Step2Schema,
@@ -412,8 +414,45 @@ export async function completeOnboardingAction(
     };
   }
 
+  // SIGNUP-phone (spec 2026-06-05 seccion 4, Recomendacion A): email es el identificador canonico de
+  // auth.users. Si el target es telefono, NUNCA se mintea una cuenta phone-only (esas quedan no-
+  // logueables porque el login es email+password). En su lugar se deriva un email sintetico no-ruteable
+  // (@no-mail.iconsa.local) a partir de un identificador estable del empleado (employee_code o digitos
+  // de cedula). El telefono queda como dato de contacto (delivery_target del invite), nunca como
+  // identificador de login. Para el MERGE cross-app SI se busca por telefono (find_auth_user_by_identifier
+  // hace match exacto), pero el minteo de cuenta nueva es siempre por email.
   let authId: string;
   let originalAppMetadata: Record<string, unknown> | null = null;
+
+  // Resolver el email canonico con el que se minteara/firmara la sesion.
+  let authEmail: string;
+  if (input.target_field === 'email') {
+    authEmail = input.normalized_target;
+  } else {
+    // Email sintetico para obrero sin buzon. Seed estable: employee_code si existe, si no la cedula.
+    const { data: personForEmail } = await admin
+      .schema('hr')
+      .from('people')
+      .select('employee_code, national_id')
+      .eq('id', input.person_id)
+      .maybeSingle();
+    const seed =
+      personForEmail?.employee_code?.trim() ||
+      (personForEmail?.national_id ?? '').replace(/\D/g, '') ||
+      input.person_id;
+    try {
+      authEmail = buildSyntheticEmail(seed);
+    } catch {
+      return {
+        ok: false,
+        message:
+          'No se pudo activar la cuenta por telefono. Contacta a RRHH para registrar un correo.',
+      };
+    }
+  }
+
+  // Lookup de MERGE cross-app: por el identificador original (email o phone). Phone SOLO para detectar
+  // una cuenta de otra app y agregarle humanOS; nunca se mintea phone-only (spec #2).
   const { data: existingRows } = await admin.schema('hr').rpc('find_auth_user_by_identifier', {
     p_field: input.target_field,
     p_value: input.normalized_target,
@@ -428,6 +467,8 @@ export async function completeOnboardingAction(
     const currentApps =
       (existing.raw_app_meta_data as { allowed_apps?: string[] })?.allowed_apps ?? [];
     if (!currentApps.includes('humanOS')) {
+      // R22: write scoped a UN solo usuario resuelto; spread ...existing preserva allowed_apps de
+      // OTRAS apps (nunca se remueven entradas). Solo se AGREGA 'humanOS'.
       const newApps = Array.from(new Set([...currentApps, 'humanOS']));
       const { error } = await admin.auth.admin.updateUserById(existing.id, {
         app_metadata: {
@@ -444,10 +485,12 @@ export async function completeOnboardingAction(
     if (!input.password) {
       return { ok: false, message: 'Password requerido para crear nueva cuenta.' };
     }
+    // Minteo SIEMPRE por email (real o sintetico). email_confirm=true: la posesion ya se probo con el
+    // invite-code out-of-band (guardrail #2), y el email sintetico no es ruteable para confirmar.
     const { data: newUser, error } = await admin.auth.admin.createUser({
-      [input.target_field]: input.normalized_target,
+      email: authEmail,
       password: input.password,
-      email_confirm: input.target_field === 'email',
+      email_confirm: true,
       app_metadata: { allowed_apps: ['humanOS'] },
     });
     if (error || !newUser?.user) {
@@ -529,6 +572,47 @@ export async function completeOnboardingAction(
     // Idempotency (BE-2): one welcome per person, even on double-submit/retry.
     dedupeKey: `welcome:${input.person_id}`,
   });
+
+  // SIGNUP-session-bug (spec 2026-06-05 seccion 3, A4): el aprovisionamiento corrio sobre el client
+  // admin/service_role, que NO escribe cookies de auth -> sin esto el usuario rebota a /login al
+  // entrar a /perfil. La sesion se establece AHORA (tras exito del RPC; nunca antes, para no dejar
+  // sesion usable si el onboarding hizo rollback) sobre el server client cookie-bound de @supabase/ssr,
+  // cuyo setAll escribe el cookie sb-<ref>-auth-token (confirmado via Context7). Esto corre dentro de
+  // un Server Action, donde cookieStore.set() SI persiste (a diferencia de un Server Component).
+  //
+  // Branches (A6):
+  //   - new-user: tenemos email canonico (real o sintetico) + el password tecleado -> signInWithPassword
+  //     aterriza autenticado en /perfil.
+  //   - existing-user merge: ignoramos el password tecleado a proposito (anti-enumeracion, guardrail #8)
+  //     y NO elevamos una sesion cross-app silenciosa (R22-safe). -> redirect a /login con aviso.
+  if (existing) {
+    return {
+      ok: true,
+      data: {
+        auth_id: authId,
+        // La cuenta ya existia en otra app de ICONSA; el usuario inicia sesion con su credencial actual.
+        redirect_to: '/login?merged=1',
+      },
+    };
+  }
+
+  if (input.password) {
+    const sessionClient = await createSupabaseServerClient();
+    const { error: signInErr } = await sessionClient.auth.signInWithPassword({
+      email: authEmail,
+      password: input.password,
+    });
+    if (signInErr) {
+      // La cuenta quedo aprovisionada correctamente; solo fallo el auto-login (caso raro). No es un
+      // fallo de onboarding -> no se rollbackea; el usuario simplemente inicia sesion manualmente.
+      reportError(signInErr, {
+        where: 'completeOnboarding.autoSignIn',
+        authId,
+        personId: input.person_id,
+      });
+      return { ok: true, data: { auth_id: authId, redirect_to: '/login' } };
+    }
+  }
 
   return { ok: true, data: { auth_id: authId, redirect_to: '/perfil' } };
 }

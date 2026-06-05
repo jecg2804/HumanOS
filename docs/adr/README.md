@@ -47,8 +47,9 @@ context / alternatives rejected / risks).
 | 0035 | Enforcement de consentimiento Ley 81 (SEC-CONSENT): captura onboarding + guard fail-closed defense-in-depth + las 43 = flag-for-reconsent | `0035-consent-enforcement-ley81.md` |
 | 0036 | employee_code formula PO-06 (3 letras apellido + 3 digitos cedula) con crosswalk `person_sources` como link durable + reconciliacion con codigos Spectrum (formula solo para net-new sin crosswalk) | `0036-employee-code-formula-and-spectrum-reconciliation.md` |
 | 0037 | Modelo de runtime de aprobacion: `kind` por step en `requests.approvals` + reinstaurar mode `sequential` (orden desacoplado de visibilidad RRHH); fija reset secuencial de revision + BL-4/BL-5 (PROPUESTO, design-only) | `0037-approval-runtime-kind-and-sequential-ordering.md` |
+| 0038 | Signup auth-flow: onboarding establece sesion (new-user A4) / merge -> redirect-to-login (A6); email canonico + sintetico `@no-mail` para phone (A5); login resuelve email\|employee_code + rate-limit + anti-enumeracion; triaje de guardrails (#1/#4/#5 DONE) | `0038-signup-authflow-session-phone-guardrails.md` |
 
-New ADRs continue from **0038**.
+New ADRs continue from **0039**.
 
 > **Amendments 2026-06-04** (no nuevo número): ADR-0009 (planilla en MVP) y ADR-0011 (solo `public.*` prohibido; `payroll.*` usable) llevan `## Update 2026-06-04`. Por **SP-0b / ADR-0032**: ADR-0011 (core/raw/meta), ADR-0014 (master=core; people VIEW), ADR-0025 (DOMAIN→core), ADR-0028 (obra→core.jobs) llevan `## Update 2026-06-04 (SP-0b / ADR-0032)`.
 

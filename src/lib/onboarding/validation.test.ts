@@ -35,8 +35,21 @@ describe('wizard step schemas', () => {
   });
 
   it('Step4Schema enforces 10 char min', () => {
-    expect(Step4Schema.safeParse({ password: '123456789' }).success).toBe(false);
-    expect(Step4Schema.safeParse({ password: '1234567890' }).success).toBe(true);
+    expect(Step4Schema.safeParse({ password: 'Abcde123!' }).success).toBe(false); // 9 chars
+    expect(Step4Schema.safeParse({ password: 'Abcde1234!' }).success).toBe(true); // 10 chars
+  });
+
+  // SIGNUP-guardrails #1: Step4 reusa passwordPolicySchema (letra + numero/simbolo, sin espacios).
+  it('Step4Schema rejects digits-only (no letter)', () => {
+    expect(Step4Schema.safeParse({ password: '1234567890' }).success).toBe(false);
+  });
+
+  it('Step4Schema rejects letters-only (no number/symbol)', () => {
+    expect(Step4Schema.safeParse({ password: 'abcdefghij' }).success).toBe(false);
+  });
+
+  it('Step4Schema accepts a strong mixed password', () => {
+    expect(Step4Schema.safeParse({ password: 'Obra2026Segura' }).success).toBe(true);
   });
 
   it('Step6Schema requires emergency contact name + at least one phone', () => {

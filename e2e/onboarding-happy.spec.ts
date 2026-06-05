@@ -90,7 +90,11 @@ test('new user onboarding happy path', async ({ page }) => {
   // Step 11: Photo + confirm.
   await page.locator('button:has-text("Confirmar")').click();
 
+  // SIGNUP-session-bug regression: completeOnboardingAction now establishes a real
+  // cookie-bound session (signInWithPassword on the server client) after provisioning,
+  // so the user lands authenticated at /perfil and is NOT bounced to /login.
   await expect(page).toHaveURL(/\/perfil/);
+  await expect(page).not.toHaveURL(/\/login/);
 
   const usersAfter = await countAuthUsers();
   expect(usersAfter).toBe(usersBefore + 1);
