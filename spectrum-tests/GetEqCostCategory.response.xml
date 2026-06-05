@@ -1,0 +1,38 @@
+<SOAP-ENV:Envelope SOAP-ENV:encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' xmlns:xsd='http://www.w3.org/2001/XMLSchema' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:SOAP-ENV='http://schemas.xmlsoap.org/soap/envelope/'><SOAP-ENV:Header></SOAP-ENV:Header><SOAP-ENV:Body><nis:GetEqCostCategoryResponse xmlns:nis='http://www.northgate-is.com/proiv/webservices/types'><returnArray><returnData>
+
+<getEqCostCategory>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Cost_Category_Code>FU1</Cost_Category_Code>
+        <Cost_Category_Description>Combustible</Cost_Category_Description>
+        <Cost_Category_Type>1</Cost_Category_Type>
+        <Status>A</Status>
+        <Cost_Center>EQO</Cost_Center>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Cost_Category_Code>GM4</Cost_Category_Code>
+        <Cost_Category_Description>700101</Cost_Category_Description>
+        <Cost_Category_Type>4</Cost_Category_Type>
+        <Status>A</Status>
+        <Cost_Center>EQA</Cost_Center>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Cost_Category_Code>GM5</Cost_Category_Code>
+        <Cost_Category_Description>General Maintenance - Partes</Cost_Category_Description>
+        <Cost_Category_Type>5</Cost_Category_Type>
+        <Status>A</Status>
+        <Cost_Center>EQO</Cost_Center>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+</getEqCostCategory>
+</returnData></returnArray></nis:GetEqCostCategoryResponse></SOAP-ENV:Body></SOAP-ENV:Envelope>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <GetPayType xmlns="http://www.northgate-is.com/proiv/webservices/types">
+      <Authorization_ID>API</Authorization_ID>
+      <GUID>639d768f-33fb-45dc-b7a3-867590bd1697</GUID>
+      <pCompany_Code>ICN</pCompany_Code>
+      <pPay_Type></pPay_Type>
+      <pSort_By></pSort_By>
+    </GetPayType>
+  </soap:Body>
+</soap:Envelope>

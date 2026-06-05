@@ -10,7 +10,6 @@
     "topFilesLength": 5
   },
   "include": [
-    "src/**",
     "e2e/**",
     ".claude/**",
     "docs/**",

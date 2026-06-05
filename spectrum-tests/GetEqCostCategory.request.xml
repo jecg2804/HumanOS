@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <GetEqCostCategory xmlns="http://www.northgate-is.com/proiv/webservices/types">
+      <Authorization_ID>API</Authorization_ID>
+      <GUID>91864933-0171-4a21-b71a-647114438c5c</GUID>
+      <pCompany_Code>ICN</pCompany_Code>
+      <pCost_Category_Type></pCost_Category_Type>
+      <pStatus></pStatus>
+      <pCost_Center></pCost_Center>
+      <pSort_By></pSort_By>
+    </GetEqCostCategory>
+  </soap:Body>
+</soap:Envelope>

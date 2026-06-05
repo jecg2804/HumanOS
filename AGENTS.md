@@ -10,7 +10,7 @@ Entry delgado para agentes que NO cargan `CLAUDE.md` automáticamente (p. ej. Co
 
 ## Reglas duras (no negociables)
 
-- **Schemas prohibidos** (hooks bloquean writes): `public.*`, `payroll.*`, `humanos.*`. Tocables: `hr.*`, `requests.*`, `docs.*`, `workflows.*`, `audit.*`, `notifications.*`, `files.*`, `performance.*`, `learning.*`, `mdm.*`, `etl.*`, `backup.*`.
+- **Schemas prohibidos** (hooks bloquean writes): `public.*`, `humanos.*`. Tocables: `hr.*`, `requests.*`, `docs.*`, `workflows.*`, `audit.*`, `notifications.*`, `files.*`, `performance.*`, `learning.*`, `payroll.*`, `core.*`, `raw_spectrum.*`, `meta.*`, `mdm.*`, `etl.*`, `backup.*`.
 - **`auth.users` compartido** (R22): nunca DELETE/UPDATE sin filtro `allowed_apps` + snapshot a `backup.*`.
 - **R13 datos sensibles** (`hr.medical_info`, `hr.personal_documents`): owner + hr_admin únicamente.
 - **R23 encoding:** UTF-8 sin BOM; hooks `.ps1` ASCII puro.

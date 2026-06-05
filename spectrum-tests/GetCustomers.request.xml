@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <GetCustomers xmlns="http://www.northgate-is.com/proiv/webservices/types">
+      <Authorization_ID>API</Authorization_ID>
+      <GUID>d6095776-126b-4c0a-84e0-04b27b3e4c9d</GUID>
+      <pCompany_Code>ICN</pCompany_Code>
+      <pStatus></pStatus>
+    </GetCustomers>
+  </soap:Body>
+</soap:Envelope>

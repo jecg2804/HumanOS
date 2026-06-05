@@ -5,12 +5,13 @@ Principios **non-negotiable**. Anulan conveniencia, deadlines, y cualquier suger
 ## 1. Database integrity
 
 **1.1 SCHEMAS PROHIBIDOS** — bloqueados por hook `PreToolUse`:
-- `public.*` — MovimientOS production de otro proyecto en mismo Supabase
-- `payroll.*` — sistema planillas de compañero de Jaime
+- `public.*` — MovimientOS production de otro proyecto en mismo Supabase (**único schema HARD-prohibido**)
 - `humanos.*` — legacy v1 demo, **schema dropeado 2026-06-02 (W3 SEC-LEGACY)**; prohibición se mantiene contra recreación; data consolidada en `hr.*` + snapshot en `backup.*`
 
 **1.2 SCHEMAS TOCABLES** — DDL + DML libre con validaciones:
 - `hr.*`, `requests.*`, `docs.*`, `workflows.*`, `audit.*`, `notifications.*`, `files.*`, `performance.*`, `learning.*`
+- `payroll.*` — **usable desde 2026-06-04** (ADR-0011 update + ADR-0028): el compañero que lo creó **NO usa Supabase**; es nuestro. Catálogos de proyectos/códigos (master data de planilla). Subir a estándar foundation (RLS + policies + COMMENT) antes de apoyarse.
+- `core.*`, `raw_spectrum.*`, `meta.*` — **schemas aditivos LIVE (ADR-0032, F0.2)**: `core.*` = masters conformados (EXPUESTO PostgREST); `raw_spectrum.*` = bronze landing + `meta.*` = metadata de pipeline (ambos service_role-only, NO exponer).
 - Futuros MDM/ETL (reservados; al llegar la primera integración externa): `mdm.*`, `etl.*`, `backup.*`
 
 **1.3 Toda migration lleva COMMENT** — `COMMENT ON TABLE` + `COMMENT ON COLUMN` para columnas no obvias. Sin esto el Supabase Dashboard queda inutilizable para Samantha.
@@ -101,7 +102,7 @@ Las 27 reglas R1-R27 viven en `docs/reference/business-rules.md`. Highlights non
 
 **5.1 Stack**: Next.js 16 App Router + TS strict + Tailwind 4 + Supabase + Vercel. No cambiar sin ADR.
 
-**5.2 NO payroll**: ICONSA usa Payday (sistema externo). HumanOS NO maneja nómina.
+**5.2 HumanOS NO calcula nómina**: ICONSA usa PayDay (sistema externo); HumanOS NO la reemplaza ni computa nómina. PERO sí captura la **planilla (data input)** como insumo de PayDay (ADR-0028), y `payroll.*` (catálogos) es usable (1.2). "NO payroll" = no cálculo de nómina, NO una prohibición del schema.
 
 **5.3 `hr.*` cross-app master data**: otras apps ICONSA pueden leer `hr.people` vía RLS. NO duplicar persona data.
 

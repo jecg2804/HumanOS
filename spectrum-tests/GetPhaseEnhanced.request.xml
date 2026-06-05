@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <GetPhaseEnhanced xmlns="http://www.northgate-is.com/proiv/webservices/types">
+      <Authorization_ID>API</Authorization_ID>
+      <GUID>730fcdec-8795-45dd-a19e-2f3a575bfe19</GUID>
+      <pCompany_Code>ICN</pCompany_Code>
+      <pCost_Type></pCost_Type>
+      <pJob_Number></pJob_Number>
+      <pStatus_Code></pStatus_Code>
+      <pCost_Center></pCost_Center>
+      <pSort_By></pSort_By>
+    </GetPhaseEnhanced>
+  </soap:Body>
+</soap:Envelope>

@@ -100,7 +100,7 @@ Cobertura complementaria: hook `pre-tool-use.ps1` (block schemas/auth.users sin 
 |---|---|
 | `SessionStart` | Emite `<EXTREMELY_IMPORTANT>` framing con schemas prohibidos + R22 + R23 + idioma neutro |
 | `UserPromptSubmit` | Skill router — lee `.claude/skill-rules.json`, ordena por priority, emite `<skill_router>` block. Word-boundary match para keywords cortas (W0.5 H-4) |
-| `PreToolUse` | Bloquea: (1) writes a schemas prohibidos `public/payroll/humanos`, (2) DELETE/UPDATE en `auth.users` sin WHERE + filtro `allowed_apps` (R22), (3) destructive ops en golden records (`hr.people`, `requests.tickets`, etc.) sin WHERE, (4) bash dangerous (`rm -rf /`, force push), (5) Edit/Write a `.env.local` |
+| `PreToolUse` | Bloquea: (1) writes a schemas prohibidos `public/humanos`, (2) DELETE/UPDATE en `auth.users` sin WHERE + filtro `allowed_apps` (R22), (3) destructive ops en golden records (`hr.people`, `requests.tickets`, etc.) sin WHERE, (4) bash dangerous (`rm -rf /`, force push), (5) Edit/Write a `.env.local` |
 | `PostToolUse` | (1) Edit/Write `.ts/.tsx` → `npx tsc --noEmit` debounced 30s (artifact `.claude/hooks/last-tsc-check.txt` gitignored). (2) Migration applied → reminder RLS + COMMENT + external_ids + advisors. (3) Encoding guard R23: advierte (exit 0) si un `.json/.ps1/.md/.ts/.tsx/.css` se escribe con BOM, o si un `.ps1` trae bytes no-ASCII (W0.5 H-2) |
 | `PreCompact` | Genera `docs/HANDOFF.json` (gitignored, local) antes de context compaction para continuidad cross-session |
 | `Stop` | **Implementado** (`stop.ps1`, registrado en `settings.json`): advisory verify-reminder. Cuando quedan `.ts/.tsx/.sql/.css` sin commitear, recuerda correr `npm run verify` (debounced 10 min). Exit 0 — NUNCA bloquea; el gate duro de merge es CI |
@@ -204,7 +204,7 @@ Si queda parcial: `<promise>PARTIAL</promise>` con la lista exacta de lo pendien
 - ❌ NO crear tablas sin RLS habilitada
 - ❌ NO crear columnas sin COMMENT
 - ❌ NO escribir SQL sin WHERE en DELETE/UPDATE de tablas críticas
-- ❌ NO modificar archivos `public.*`, `payroll.*`, `humanos.*` legacy
+- ❌ NO modificar archivos `public.*`, `humanos.*` legacy
 - ❌ NO confiar en mi memoria de SOPs — la fuente de verdad de SOPs es el GDrive RECURSOS HUMANOS (Code lo lee via el conector claude.ai; read_file_content da OCR). El repo docs/sops/ es un espejo INCOMPLETO (preferir GDrive, fallback Read local)
 - ❌ NO desviarse de R26 (SOP-driven chains) sin documentar + validar con Samantha (autoridad RRHH; ver R26)
 

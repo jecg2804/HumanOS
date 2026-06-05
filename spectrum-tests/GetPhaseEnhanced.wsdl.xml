@@ -1,0 +1,35 @@
+<definitions targetNamespace='http://www.northgate-is.com/proiv/webservices/wsdl' xmlns:tns='http://www.northgate-is.com/proiv/webservices/wsdl' xmlns:xsd-nis='http://www.northgate-is.com/proiv/webservices/types' name='GetPhaseEnhanced' xmlns:xsd='http://www.w3.org/2001/XMLSchema' xmlns:soap='http://schemas.xmlsoap.org/wsdl/soap/' xmlns='http://schemas.xmlsoap.org/wsdl/'>
+ <!--SPECTRUM 20151116  -->
+  <types>
+    <schema xmlns:soap11-enc='http://schemas.xmlsoap.org/soap/encoding/' targetNamespace='http://www.northgate-is.com/proiv/webservices/types' xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/' xmlns:tns='http://www.northgate-is.com/proiv/webservices/types' xmlns='http://www.w3.org/2001/XMLSchema' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'><import namespace='http://schemas.xmlsoap.org/soap/encoding/'></import><element name='GetPhaseEnhanced'><complexType><sequence><element nillable='false' name='Authorization_ID' type='xsd:string'></element><element nillable='false' name='GUID' type='xsd:string'></element><element nillable='false' name='pCompany_Code' type='xsd:string'></element><element nillable='false' name='pCost_Type' type='xsd:string'></element><element nillable='false' name='pJob_Number' type='xsd:string'></element><element nillable='false' name='pStatus_Code' type='xsd:string'></element><element nillable='false' name='pCost_Center' type='xsd:string'></element><element nillable='false' name='pSort_By' type='xsd:string'></element></sequence></complexType></element><element name='GetPhaseEnhancedResponse'><complexType><sequence><element nillable='false' name='returnArray'><complexType><sequence><element nillable='false' name='returnData' maxOccurs='unbounded' minOccurs='0'><complexType><sequence><any></any></sequence></complexType></element></sequence></complexType></element></sequence></complexType></element></schema>
+  </types>
+  <message name='GetPhaseEnhancedOutput'>
+    <part element='xsd-nis:GetPhaseEnhancedResponse' name='parameters'></part>
+  </message>
+  <message name='GetPhaseEnhancedInput'>
+    <part element='xsd-nis:GetPhaseEnhanced' name='parameters'></part>
+  </message>
+  <portType name='GetPhaseEnhancedPortType'>
+    <operation name='GetPhaseEnhanced'>
+      <input message='tns:GetPhaseEnhancedInput'></input>
+      <output message='tns:GetPhaseEnhancedOutput'></output>
+    </operation>
+  </portType>
+  <binding name='GetPhaseEnhancedSoapBinding' type='tns:GetPhaseEnhancedPortType'>
+    <soap:binding style='document' transport='http://schemas.xmlsoap.org/soap/http'></soap:binding>
+    <operation name='GetPhaseEnhanced'>
+      <soap:operation soapAction='https://iconsanet.dexterchaney.com:8482/ws/GetPhaseEnhanced'></soap:operation>
+      <input>
+        <soap:body use='literal'></soap:body>
+      </input>
+      <output>
+        <soap:body use='literal'></soap:body>
+      </output>
+    </operation>
+  </binding>
+  <service name='GetPhaseEnhancedService'>
+    <port name='GetPhaseEnhancedPort' binding='tns:GetPhaseEnhancedSoapBinding'>
+      <soap:address location='https://iconsanet.dexterchaney.com:8482/ws/GetPhaseEnhanced'></soap:address>
+    </port>
+  </service>
+</definitions>

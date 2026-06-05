@@ -37,8 +37,15 @@ context / alternatives rejected / risks).
 | 0025 | Vocabulario canónico de source_system (SoR `humanos_app` vs origen) | `0025-source-system-canonical-vocabulary.md` |
 | 0026 | Modelo de trabajo: diseño atendido + ejecución de plan aprobado (retira overnight autónomo) | `0026-work-model-attended-design-plan-execution.md` |
 | 0027 | Chain fidelity: firma=aprobación · RRHH=visibilidad no gate · app colapsa hand-offs de papel · PO maestro gana | `0027-chain-fidelity-signature-approval-rrhh-visibility.md` |
+| 0028 | Planilla/time-capture en MVP: HumanOS capta el insumo de PayDay, no lo reemplaza | `0028-planilla-time-capture-mvp-payday-input.md` |
+| 0029 | Frontera KB: HumanOS = KB RRHH; SG Usuarios (eQMS company-wide) = proyecto aparte | `0029-kb-boundary-rrhh-vs-company-eqms.md` |
+| 0030 | Aprobador "Gerencia General" = presidente (generalización PROVISIONAL del MVP) | `0030-gg-approver-presidente-provisional.md` |
+| 0031 | GDrive "Usuarios SG" = SOR documental; docs/sops = espejo curado pinneado | `0031-gdrive-usuarios-sg-sor-curated-mirror.md` |
+| 0032 | Core MDM foundation: schema `core` (rename mdm) + masters Spectrum SDX + obra 4-niveles + people golden hr.people / core.persons VIEW | `0032-core-mdm-foundation-spectrum-sdx.md` |
 
-New ADRs continue from **0028**.
+New ADRs continue from **0033**.
+
+> **Amendments 2026-06-04** (no nuevo número): ADR-0009 (planilla en MVP) y ADR-0011 (solo `public.*` prohibido; `payroll.*` usable) llevan `## Update 2026-06-04`. Por **SP-0b / ADR-0032**: ADR-0011 (core/raw/meta), ADR-0014 (master=core; people VIEW), ADR-0025 (DOMAIN→core), ADR-0028 (obra→core.jobs) llevan `## Update 2026-06-04 (SP-0b / ADR-0032)`.
 
 ## History: the legacy `docs/08-ADRs.md` ledger (merged 2026-06-01)
 

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <GetProjectLogTransID xmlns="http://www.northgate-is.com/proiv/webservices/types">
+      <Authorization_ID>API</Authorization_ID>
+      <GUID>8e22a7e2-6b63-49df-9786-6d6c1e987c3c</GUID>
+      <pCompany_Code>ICN</pCompany_Code>
+    </GetProjectLogTransID>
+  </soap:Body>
+</soap:Envelope>

@@ -1,0 +1,35 @@
+<definitions targetNamespace='http://www.northgate-is.com/proiv/webservices/wsdl' xmlns:tns='http://www.northgate-is.com/proiv/webservices/wsdl' xmlns:xsd-nis='http://www.northgate-is.com/proiv/webservices/types' name='GetInventoryItems' xmlns:xsd='http://www.w3.org/2001/XMLSchema' xmlns:soap='http://schemas.xmlsoap.org/wsdl/soap/' xmlns='http://schemas.xmlsoap.org/wsdl/'>
+ <!--SPECTRUM 20150114  -->
+  <types>
+    <schema xmlns:soap11-enc='http://schemas.xmlsoap.org/soap/encoding/' targetNamespace='http://www.northgate-is.com/proiv/webservices/types' xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/' xmlns:tns='http://www.northgate-is.com/proiv/webservices/types' xmlns='http://www.w3.org/2001/XMLSchema' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'><import namespace='http://schemas.xmlsoap.org/soap/encoding/'></import><element name='GetInventoryItems'><complexType><sequence><element nillable='false' name='Authorization_ID' type='xsd:string'></element><element nillable='false' name='GUID' type='xsd:string'></element><element nillable='false' name='pCompany_Code' type='xsd:string'></element><element nillable='false' name='pItem_Category' type='xsd:string'></element><element nillable='false' name='pItem_Description' type='xsd:string'></element><element nillable='false' name='pEDP_Part_Number' type='xsd:string'></element><element nillable='false' name='pVendor_Part_Number' type='xsd:string'></element><element nillable='false' name='pPrimary_Vendor' type='xsd:string'></element><element nillable='false' name='pStatus_Discontinue_Flag' type='xsd:string'></element><element nillable='false' name='pCost_Center' type='xsd:string'></element><element nillable='false' name='pSort_By' type='xsd:string'></element></sequence></complexType></element><element name='GetInventoryItemsResponse'><complexType><sequence><element nillable='false' name='returnArray'><complexType><sequence><element nillable='false' name='returnData' maxOccurs='unbounded' minOccurs='0'><complexType><sequence><any></any></sequence></complexType></element></sequence></complexType></element></sequence></complexType></element></schema>
+  </types>
+  <message name='GetInventoryItemsOutput'>
+    <part element='xsd-nis:GetInventoryItemsResponse' name='parameters'></part>
+  </message>
+  <message name='GetInventoryItemsInput'>
+    <part element='xsd-nis:GetInventoryItems' name='parameters'></part>
+  </message>
+  <portType name='GetInventoryItemsPortType'>
+    <operation name='GetInventoryItems'>
+      <input message='tns:GetInventoryItemsInput'></input>
+      <output message='tns:GetInventoryItemsOutput'></output>
+    </operation>
+  </portType>
+  <binding name='GetInventoryItemsSoapBinding' type='tns:GetInventoryItemsPortType'>
+    <soap:binding style='document' transport='http://schemas.xmlsoap.org/soap/http'></soap:binding>
+    <operation name='GetInventoryItems'>
+      <soap:operation soapAction='https://iconsanet.dexterchaney.com:8482/ws/GetInventoryItems'></soap:operation>
+      <input>
+        <soap:body use='literal'></soap:body>
+      </input>
+      <output>
+        <soap:body use='literal'></soap:body>
+      </output>
+    </operation>
+  </binding>
+  <service name='GetInventoryItemsService'>
+    <port name='GetInventoryItemsPort' binding='tns:GetInventoryItemsSoapBinding'>
+      <soap:address location='https://iconsanet.dexterchaney.com:8482/ws/GetInventoryItems'></soap:address>
+    </port>
+  </service>
+</definitions>

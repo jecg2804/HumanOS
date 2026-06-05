@@ -1,0 +1,98 @@
+<SOAP-ENV:Envelope SOAP-ENV:encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' xmlns:xsd='http://www.w3.org/2001/XMLSchema' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:SOAP-ENV='http://schemas.xmlsoap.org/soap/envelope/'><SOAP-ENV:Header></SOAP-ENV:Header><SOAP-ENV:Body><nis:GetInventoryItemsResponse xmlns:nis='http://www.northgate-is.com/proiv/webservices/types'><returnArray><returnData>
+
+<getInventoryItem>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Item_Code>PETRO</Item_Code>
+        <Item_Description>Test Petro Item</Item_Description>
+        <Standard_Cost>1.5000 </Standard_Cost>
+        <Purchase_Unit_Of_Measure>LT</Purchase_Unit_Of_Measure>
+        <Unit_Of_Measure_Conversion>1.0000</Unit_Of_Measure_Conversion>
+        <Price_List1>.00 </Price_List1>
+        <Price_List2>.00 </Price_List2>
+        <Price_List3>.00 </Price_List3>
+        <Price_List4>.00 </Price_List4>
+        <Price_List5>.00 </Price_List5>
+        <Sell_Unit_Of_Measure>LT</Sell_Unit_Of_Measure>
+        <Price_Per_Factor>1.0000 </Price_Per_Factor>
+        <Phase_Code/>
+        <Cost_Type>CON</Cost_Type>
+        <Default_Cost_Category/>
+        <Markup_Price>.00 </Markup_Price>
+        <Item_Category>FUEL</Item_Category>
+        <ABC_Class/>
+        <EDP_Part_Number/>
+        <Vendor_Part_Number/>
+        <Primary_Vendor/>
+        <Alternate_Vendor/>
+        <Unit_Weight>.0000</Unit_Weight>
+        <Status_Discontinue_Flag>A</Status_Discontinue_Flag>
+        <Date_Discontinued></Date_Discontinued>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Item_Code>TEST MATERIAL</Item_Code>
+        <Item_Description>Test Material Item</Item_Description>
+        <Standard_Cost>100.0000 </Standard_Cost>
+        <Purchase_Unit_Of_Measure>EA</Purchase_Unit_Of_Measure>
+        <Unit_Of_Measure_Conversion>1.0000</Unit_Of_Measure_Conversion>
+        <Price_List1>.00 </Price_List1>
+        <Price_List2>.00 </Price_List2>
+        <Price_List3>.00 </Price_List3>
+        <Price_List4>.00 </Price_List4>
+        <Price_List5>.00 </Price_List5>
+        <Sell_Unit_Of_Measure>EA</Sell_Unit_Of_Measure>
+        <Price_Per_Factor>1.0000 </Price_Per_Factor>
+        <Phase_Code/>
+        <Cost_Type/>
+        <Default_Cost_Category/>
+        <Markup_Price>.00 </Markup_Price>
+        <Item_Category>MATL</Item_Category>
+        <ABC_Class/>
+        <EDP_Part_Number/>
+        <Vendor_Part_Number/>
+        <Primary_Vendor/>
+        <Alternate_Vendor/>
+        <Unit_Weight>.0000</Unit_Weight>
+        <Status_Discontinue_Flag>A</Status_Discontinue_Flag>
+        <Date_Discontinued></Date_Discontinued>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Item_Code>TEST PART</Item_Code>
+        <Item_Description>Test Part</Item_Description>
+        <Standard_Cost>10.0000 </Standard_Cost>
+        <Purchase_Unit_Of_Measure>EA</Purchase_Unit_Of_Measure>
+        <Unit_Of_Measure_Conversion>1.0000</Unit_Of_Measure_Conversion>
+        <Price_List1>.00 </Price_List1>
+        <Price_List2>.00 </Price_List2>
+        <Price_List3>.00 </Price_List3>
+        <Price_List4>.00 </Price_List4>
+        <Price_List5>.00 </Price_List5>
+        <Sell_Unit_Of_Measure>EA</Sell_Unit_Of_Measure>
+        <Price_Per_Factor>1.0000 </Price_Per_Factor>
+        <Phase_Code/>
+        <Cost_Type/>
+        <Default_Cost_Category>GM5</Default_Cost_Category>
+        <Markup_Price>.00 </Markup_Price>
+        <Item_Category>EQUP</Item_Category>
+        <ABC_Class/>
+        <EDP_Part_Number/>
+        <Vendor_Part_Number/>
+        <Primary_Vendor/>
+        <Alternate_Vendor/>
+        <Unit_Weight>.0000</Unit_Weight>
+        <Status_Discontinue_Flag>A</Status_Discontinue_Flag>
+        <Date_Discontinued></Date_Discontinued>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+</getInventoryItem>
+</returnData></returnArray></nis:GetInventoryItemsResponse></SOAP-ENV:Body></SOAP-ENV:Envelope>

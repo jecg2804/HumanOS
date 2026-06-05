@@ -53,7 +53,7 @@ Métricas soporte: tiempo promedio de resolución per tipo (SLA compliance), sat
 - ❌ Re-implementar MovimientOS desde cero — coexistencia, integración futura
 - ❌ Forzar correo a todos los empleados — sign-up acepta email O phone
 - ❌ Auto-aprobaciones — toda solicitud requiere acción humana (anti-self-approval R5)
-- ❌ Tocar `public.*`, `payroll.*`, `humanos.*` legacy — schemas prohibidos R1
+- ❌ Tocar `public.*`, `humanos.*` legacy — schemas prohibidos R1
 - ❌ Bloquear acción de usuario por falla de notificación — fire-and-forget R18
 - ❌ Modificar `auth.users` sin filtro explícito de `allowed_apps` — R22 critical
 - ❌ Re-litigar el mapping "Gerencia General" — Gerencia General (SOP) = el rol president (MAPPING RESUELTO 2026-06-03); president (Rodrigo) aprueba+recibe los steps GG; ABIERTO solo si el VP Javier Ferrer u otros gerentes tambien gatean (ver ADR-0020 + ADR-0027)

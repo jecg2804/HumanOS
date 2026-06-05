@@ -1,0 +1,35 @@
+<definitions targetNamespace='http://www.northgate-is.com/proiv/webservices/wsdl' xmlns:tns='http://www.northgate-is.com/proiv/webservices/wsdl' xmlns:xsd-nis='http://www.northgate-is.com/proiv/webservices/types' name='GetJobTitles' xmlns:xsd='http://www.w3.org/2001/XMLSchema' xmlns:soap='http://schemas.xmlsoap.org/wsdl/soap/' xmlns='http://schemas.xmlsoap.org/wsdl/'>
+  <!-- SPECTRUM 20160901 -->
+  <types>
+    <schema xmlns:soap11-enc='http://schemas.xmlsoap.org/soap/encoding/' targetNamespace='http://www.northgate-is.com/proiv/webservices/types' xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/' xmlns:tns='http://www.northgate-is.com/proiv/webservices/types' xmlns='http://www.w3.org/2001/XMLSchema' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'><import namespace='http://schemas.xmlsoap.org/soap/encoding/'></import><element name='GetJobTitles'><complexType><sequence><element nillable='false' name='Authorization_ID' type='xsd:string'></element><element nillable='false' name='GUID' type='xsd:string'></element><element nillable='false' name='pCompany_Code' type='xsd:string'></element></sequence></complexType></element><element name='GetJobTitlesResponse'><complexType><sequence><element nillable='false' name='returnArray'><complexType><sequence><element nillable='false' name='returnData' maxOccurs='unbounded' minOccurs='0'><complexType><sequence><any></any></sequence></complexType></element></sequence></complexType></element></sequence></complexType></element></schema>
+  </types>
+  <message name='GetJobTitlesOutput'>
+    <part element='xsd-nis:GetJobTitlesResponse' name='parameters'></part>
+  </message>
+  <message name='GetJobTitlesInput'>
+    <part element='xsd-nis:GetJobTitles' name='parameters'></part>
+  </message>
+  <portType name='GetJobTitlesPortType'>
+    <operation name='GetJobTitles'>
+      <input message='tns:GetJobTitlesInput'></input>
+      <output message='tns:GetJobTitlesOutput'></output>
+    </operation>
+  </portType>
+  <binding name='GetJobTitlesSoapBinding' type='tns:GetJobTitlesPortType'>
+    <soap:binding style='document' transport='http://schemas.xmlsoap.org/soap/http'></soap:binding>
+    <operation name='GetJobTitles'>
+      <soap:operation soapAction='https://iconsanet.dexterchaney.com:8482/ws/GetJobTitles'></soap:operation>
+      <input>
+        <soap:body use='literal'></soap:body>
+      </input>
+      <output>
+        <soap:body use='literal'></soap:body>
+      </output>
+    </operation>
+  </binding>
+  <service name='GetJobTitlesService'>
+    <port name='GetJobTitlesPort' binding='tns:GetJobTitlesSoapBinding'>
+      <soap:address location='https://iconsanet.dexterchaney.com:8482/ws/GetJobTitles'></soap:address>
+    </port>
+  </service>
+</definitions>

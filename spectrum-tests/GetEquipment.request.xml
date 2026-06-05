@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <GetEquipment xmlns="http://www.northgate-is.com/proiv/webservices/types">
+      <Authorization_ID>API</Authorization_ID>
+      <GUID>11470871-408c-404e-9999-4f49ccebce45</GUID>
+      <pCompany_Code>ICN</pCompany_Code>
+      <pEquipment_Type></pEquipment_Type>
+      <pEquipment_Make></pEquipment_Make>
+      <pEquipment_Model></pEquipment_Model>
+      <pYear></pYear>
+      <pStatus_Code></pStatus_Code>
+      <pCost_Center></pCost_Center>
+      <pSort_By></pSort_By>
+    </GetEquipment>
+  </soap:Body>
+</soap:Envelope>

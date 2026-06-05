@@ -83,3 +83,9 @@ REJECTION — no parallel "ARC/wave" vocabulary), the ~33 honest build-count, AC
 The authoritative HR form catalog (fields + corrected chains + the ~14 net-new legal-gap types) lives in
 **`docs/work/2026-06-03-hr-catalog-and-launch-plan.md`** (alongside `reference/mvp-scope.md`). Chain-fidelity
 rules behind the corrected chains: ADR-0027.
+
+## Update 2026-06-04 (Jaime) — planilla / time-capture entra al MVP
+
+La **planilla (registro de tiempo y asistencia)** se incorpora al alcance del MVP como **insumo de datos hacia PayDay** (NO reemplaza PayDay). En el modelo de datos es "un formulario más" sobre los engines (FormEngine + ApprovalEngine); la superficie nueva acotada es la UI de grilla masiva (capataz × cuadrilla × días), la recurrencia bisemanal, el export CSV, y el lock post-aprobación. De-riskeada porque el catálogo de códigos (proyectos/fases/cost codes) ya existe poblado en `payroll.*`. Topología y schema: **ADR-0028**. Las formas de tiempo viven en GESTION DE PROYECTOS (`IC-GP-IT-01` instructivo, `IC-GP-F-01-15` planilla, `IC-GP-F-01-14` hoja de tiempo) + `IC-EQ-F-01-05` tarjeta de tiempo de mecánico; el PO de planilla (PO-06) vive en RRHH.
+
+Secuencia: la planilla es un slice/vertical propio de time-capture dentro de la escalera (cae cerca de Group 4-5; asignación exacta a definir en el spec). No cambia el principio de secuenciación (engine + de-risk first) ni el FUR full-catalog scope.

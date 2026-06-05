@@ -1,0 +1,165 @@
+<SOAP-ENV:Envelope SOAP-ENV:encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' xmlns:xsd='http://www.w3.org/2001/XMLSchema' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:SOAP-ENV='http://schemas.xmlsoap.org/soap/envelope/'><SOAP-ENV:Header></SOAP-ENV:Header><SOAP-ENV:Body><nis:GetPayTypeResponse xmlns:nis='http://www.northgate-is.com/proiv/webservices/types'><returnArray><returnData>
+
+<getPayType>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Pay_Type>R</Pay_Type>
+        <Pay_Type_Desc>Regular Pay</Pay_Type_Desc>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Pay_Type>O</Pay_Type>
+        <Pay_Type_Desc>Overtime Pay</Pay_Type_Desc>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Pay_Type>D</Pay_Type>
+        <Pay_Type_Desc>Double Time Pay</Pay_Type_Desc>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Pay_Type>V</Pay_Type>
+        <Pay_Type_Desc>Vacation Pay</Pay_Type_Desc>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Pay_Type>H</Pay_Type>
+        <Pay_Type_Desc>Holiday Pay</Pay_Type_Desc>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Pay_Type>S</Pay_Type>
+        <Pay_Type_Desc>Sick Pay</Pay_Type_Desc>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Pay_Type>C</Pay_Type>
+        <Pay_Type_Desc>Commissions</Pay_Type_Desc>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Pay_Type>M</Pay_Type>
+        <Pay_Type_Desc>Miscellaneous</Pay_Type_Desc>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Pay_Type>ER</Pay_Type>
+        <Pay_Type_Desc>Equipment Regular Pay</Pay_Type_Desc>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Pay_Type>EO</Pay_Type>
+        <Pay_Type_Desc>Equipment Overtime Pay</Pay_Type_Desc>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Pay_Type>ED</Pay_Type>
+        <Pay_Type_Desc>Equipment Double Time Pay</Pay_Type_Desc>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Pay_Type>EU</Pay_Type>
+        <Pay_Type_Desc>Equipment Usage</Pay_Type_Desc>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Pay_Type>SR</Pay_Type>
+        <Pay_Type_Desc>Special Rate</Pay_Type_Desc>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Pay_Type>SA</Pay_Type>
+        <Pay_Type_Desc>SPEC</Pay_Type_Desc>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Pay_Type>RP</Pay_Type>
+        <Pay_Type_Desc>Retro Pay</Pay_Type_Desc>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Pay_Type>1</Pay_Type>
+        <Pay_Type_Desc>OTHER1</Pay_Type_Desc>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Pay_Type>2</Pay_Type>
+        <Pay_Type_Desc>OTHER2</Pay_Type_Desc>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Pay_Type>3</Pay_Type>
+        <Pay_Type_Desc>OTHER3</Pay_Type_Desc>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Pay_Type>JX</Pay_Type>
+        <Pay_Type_Desc>Job-Only Adjustment</Pay_Type_Desc>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Pay_Type>U</Pay_Type>
+        <Pay_Type_Desc>Unpaid Time</Pay_Type_Desc>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+</getPayType>
+</returnData></returnArray></nis:GetPayTypeResponse></SOAP-ENV:Body></SOAP-ENV:Envelope>

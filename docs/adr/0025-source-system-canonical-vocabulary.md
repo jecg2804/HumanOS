@@ -39,3 +39,7 @@ W1 batch 1 (`054_foundation_lifecycle_columns`) introdujo `source_system` como f
 - Toda columna `source_system` nueva (Groups 5-7, tablas MDM/ETL futuras) usa el CHECK canónico (PROVISION-NOW del diseño).
 - `hr.leave_*` re-alineadas (`humanos`→`humanos_app`, backfill no-op por estar vacías).
 - Glosario en `docs/CONTEXT.md` (source_system vs origen vs created_from).
+
+## Update 2026-06-04 (SP-0b / ADR-0032) — el DOMAIN se muda a `core`; crosswalks en `core`
+
+El DOMAIN `mdm.source_system` se renombra a **`core.source_system`** vía `ALTER DOMAIN mdm.source_system SET SCHEMA core` (Postgres repunta solo las 16 columnas dependientes — verificado: 16, no 13). Los crosswalks `{entity}_external_ids` viven en `core` (no `mdm`). Nuevo: `core.source_systems` (tabla registro de fuentes) + `core.field_authority` (autoridad por campo / survivorship). `hr.person_sources.source_system` (lineage) ya admite `spectrum` + `onboarding`; fuentes futuras (skydata/b2w/projectsight/spectrum_infolink) se agregan al CHECK cuando lleguen. Spectrum SDX alimenta los crosswalks live (posee empleo/org; NO cédula/salario/status). Ver ADR-0032.

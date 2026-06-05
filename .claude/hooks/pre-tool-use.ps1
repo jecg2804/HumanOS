@@ -31,7 +31,9 @@ try {
         # ----------------------------------------------------------
         # CHECK 1a: Writes to prohibited schemas
         # ----------------------------------------------------------
-        $prohibitedSchemas = @("public", "payroll", "humanos")
+        # 2026-06-04: payroll.* removed from prohibited (ADR-0011 update + ADR-0028) - it is ours.
+        # Only public.* (MovimientOS) is hard-prohibited; humanos.* kept as do-not-recreate guard (dropped legacy).
+        $prohibitedSchemas = @("public", "humanos")
         $writeKeywords = @(
             "create table",
             "alter table",
@@ -58,11 +60,10 @@ try {
                     $msg += "Tool: $toolName`n`n"
                     $msg += "Schemas allowed for HumanOS writes:`n"
                     $msg += "  hr, requests, docs, workflows, audit, notifications, files,`n"
-                    $msg += "  performance, learning, mdm, etl, backup`n`n"
+                    $msg += "  performance, learning, payroll, core, raw_spectrum, meta, mdm, etl, backup`n`n"
                     $msg += "Schemas prohibited (NEVER write):`n"
                     $msg += "  public (MovimientOS production)`n"
-                    $msg += "  payroll (compania de Jaime)`n"
-                    $msg += "  humanos (legacy v1 demo)`n`n"
+                    $msg += "  humanos (dropped legacy v1 - do not recreate)`n`n"
                     $msg += "Reads (SELECT) from prohibited schemas are allowed.`n"
                     $msg += "See docs/reference/schemas-permisos.md and docs/reference/business-rules.md R1.`n"
                     [Console]::Error.WriteLine($msg)
@@ -76,10 +77,10 @@ try {
         # DROP SCHEMA public CASCADE is catastrophic (nukes MovimientOS) and is NOT
         # caught by CHECK 1a (which keys on a trailing dot, e.g. public.foo).
         # ----------------------------------------------------------
-        if ($sqlLower -match 'drop\s+schema\s+(if\s+exists\s+)?(public|payroll|humanos)(\s|;|$)') {
+        if ($sqlLower -match 'drop\s+schema\s+(if\s+exists\s+)?(public|humanos)(\s|;|$)') {
             $msg = "BLOCKED: DROP SCHEMA of a prohibited schema detected.`n"
-            $msg += "Prohibited: public (MovimientOS), payroll (Jaime payroll), humanos (legacy v1).`n"
-            $msg += "Dropping these is catastrophic or cross-owner. Requires an explicit human-approved exception (run it manually).`n"
+            $msg += "Prohibited: public (MovimientOS), humanos (dropped legacy v1).`n"
+            $msg += "Dropping public is catastrophic (nukes MovimientOS). Requires an explicit human-approved exception (run it manually).`n"
             [Console]::Error.WriteLine($msg)
             exit 2
         }

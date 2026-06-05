@@ -5,7 +5,7 @@ description: Apply ICONSA conventions when creating a Supabase migration (CREATE
 
 # ICONSA Supabase migration workflow
 
-Use `mcp__supabase__apply_migration` for DDL, `mcp__supabase__execute_sql` for DML. Hook `PreToolUse` validates schema permissions and blocks writes to `public.*`, `payroll.*`, `humanos.*`.
+Use `mcp__supabase__apply_migration` for DDL, `mcp__supabase__execute_sql` for DML. Hook `PreToolUse` blocks writes to `public.*` and `humanos.*` only (`payroll.*` usable since 2026-06-04; `core.*`/`raw_spectrum.*`/`meta.*` are live additive schemas, ADR-0032). **Session note:** if `mcp__supabase__*` is read-only, apply DDL via `mcp__claude_ai_Supabase__apply_migration`.
 
 ## Pre-flight (obligatorio antes de migrar)
 
@@ -147,7 +147,7 @@ CREATE POLICY "table_select_ticket" ON schema.table
 
 - Do not write migrations directly via Supabase Dashboard. Use `apply_migration` MCP tool.
 - Do not hardcode UUIDs of seed data into migrations. Use deterministic generators or query existing.
-- Do not create tables in `public.*`, `payroll.*`, `humanos.*`. Hook blocks.
+- Do not create tables in `public.*` or `humanos.*` (hook blocks). `payroll.*`/`core.*`/`raw_spectrum.*`/`meta.*` are allowed.
 - Do not skip COMMENT — Supabase Dashboard becomes unusable for Samantha and Jaime.
 - Do not skip RLS — security incident risk.
 - Do not re-create helper functions that already exist.

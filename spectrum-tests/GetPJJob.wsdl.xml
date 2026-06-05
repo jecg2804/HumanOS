@@ -1,0 +1,35 @@
+<definitions targetNamespace='http://www.northgate-is.com/proiv/webservices/wsdl' xmlns:tns='http://www.northgate-is.com/proiv/webservices/wsdl' xmlns:xsd-nis='http://www.northgate-is.com/proiv/webservices/types' name='GetPJJob' xmlns:xsd='http://www.w3.org/2001/XMLSchema' xmlns:soap='http://schemas.xmlsoap.org/wsdl/soap/' xmlns='http://schemas.xmlsoap.org/wsdl/'>
+  <!--SPECTRUM 06/30/2015-->
+  <types>
+    <schema xmlns:soap11-enc='http://schemas.xmlsoap.org/soap/encoding/' targetNamespace='http://www.northgate-is.com/proiv/webservices/types' xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/' xmlns:tns='http://www.northgate-is.com/proiv/webservices/types' xmlns='http://www.w3.org/2001/XMLSchema' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'><import namespace='http://schemas.xmlsoap.org/soap/encoding/'></import><element name='GetPJJob'><complexType><sequence><element nillable='false' name='Authorization_ID' type='xsd:string'></element><element nillable='false' name='GUID' type='xsd:string'></element><element nillable='false' name='pCompany_Code' type='xsd:string'></element><element nillable='false' name='pJob_Number' type='xsd:string'></element><element nillable='false' name='pStatus_Code' type='xsd:string'></element><element nillable='false' name='pCost_Center' type='xsd:string'></element><element nillable='false' name='pSort_By' type='xsd:string'></element></sequence></complexType></element><element name='GetPJJobResponse'><complexType><sequence><element nillable='false' name='returnArray'><complexType><sequence><element nillable='false' name='returnData' maxOccurs='unbounded' minOccurs='0'><complexType><sequence><any></any></sequence></complexType></element></sequence></complexType></element></sequence></complexType></element></schema>
+  </types>
+  <message name='GetPJJobOutput'>
+    <part element='xsd-nis:GetPJJobResponse' name='parameters'></part>
+  </message>
+  <message name='GetPJJobInput'>
+    <part element='xsd-nis:GetPJJob' name='parameters'></part>
+  </message>
+  <portType name='GetPJJobPortType'>
+    <operation name='GetPJJob'>
+      <input message='tns:GetPJJobInput'></input>
+      <output message='tns:GetPJJobOutput'></output>
+    </operation>
+  </portType>
+  <binding name='GetPJJobSoapBinding' type='tns:GetPJJobPortType'>
+    <soap:binding style='document' transport='http://schemas.xmlsoap.org/soap/http'></soap:binding>
+    <operation name='GetPJJob'>
+      <soap:operation soapAction='https://iconsanet.dexterchaney.com:8482/ws/GetPJJob'></soap:operation>
+      <input>
+        <soap:body use='literal'></soap:body>
+      </input>
+      <output>
+        <soap:body use='literal'></soap:body>
+      </output>
+    </operation>
+  </binding>
+  <service name='GetPJJobService'>
+    <port name='GetPJJobPort' binding='tns:GetPJJobSoapBinding'>
+      <soap:address location='https://iconsanet.dexterchaney.com:8482/ws/GetPJJob'></soap:address>
+    </port>
+  </service>
+</definitions>

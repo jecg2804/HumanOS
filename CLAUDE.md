@@ -35,7 +35,7 @@ HumanOS digitaliza formularios papel ICONSA. **Cada campo del SOP papel cae en U
 
 Estas reglas son non-negotiable. Hooks PowerShell registrados en `.claude/settings.json` (`session-start`, `user-prompt-submit`, `pre-tool-use`, `post-tool-use`, `pre-compact`, `stop`) bloquean violaciones físicamente (`audit-claude-code.ps1` es script de diagnóstico manual, NO un hook registrado); las demás son enforcement humano + skill `iconsa-business-rules`. Router de skills en `.claude/skill-rules.json`.
 
-1. **Schemas prohibited** — NUNCA write a `public.*`, `payroll.*`, `humanos.*`. Allowed: `hr.*`, `requests.*`, `docs.*`, `workflows.*`, `audit.*`, `notifications.*`, `files.*`, `performance.*`, `learning.*`, `mdm.*`, `etl.*`, `backup.*`. (`humanos.*` = demo v1 **dropeado 2026-06-02** W3 SEC-LEGACY; la prohibición se MANTIENE contra recreación accidental; snapshot en `backup.humanos_*_20260602`.)
+1. **Schemas prohibited** — NUNCA write a `public.*` (MovimientOS; único HARD-prohibido) ni recrear `humanos.*`. Allowed: `hr.*`, `requests.*`, `docs.*`, `workflows.*`, `audit.*`, `notifications.*`, `files.*`, `performance.*`, `learning.*`, `payroll.*`, `core.*`, `raw_spectrum.*`, `meta.*`, `mdm.*`, `etl.*`, `backup.*`. **`payroll.*` es usable desde 2026-06-04** (ADR-0011 update + ADR-0028; el compañero que lo creó NO usa Supabase; RLS fail-closed via mig 078). (`humanos.*` = demo v1 **dropeado 2026-06-02** W3 SEC-LEGACY; la prohibición se MANTIENE contra recreación accidental; snapshot en `backup.humanos_*_20260602`.)
 
 2. **`auth.users` shared cross-app** — Destructive ops (DELETE, UPDATE mass) REQUIEREN filter por `raw_app_meta_data->'allowed_apps'` (SQL directo) o `app_metadata->'allowed_apps'` (RLS/JS). Snapshot a `backup.auth_users_YYYYMMDD` antes. Hook bloquea unfiltered. Incident 2026-05-25 erased 47 users — no repetir. Ver `@docs/reference/business-rules.md` R22.
 
@@ -122,7 +122,7 @@ Si parcial: `<promise>PARTIAL</promise>` con la lista explícita de lo que qued�
 - ❌ Crear tablas sin RLS habilitada
 - ❌ Crear columnas sin COMMENT
 - ❌ DELETE/UPDATE de tablas críticas sin WHERE
-- ❌ Modificar archivos en `public.*`, `payroll.*`, `humanos.*`
+- ❌ Escribir en `public.*` o recrear `humanos.*` (único hard-prohibido = `public.*`; `payroll.*` ya es usable — ADR-0011 update)
 - ❌ Confiar en memoria de SOPs — leer la fuente en GDrive (conector claude.ai SÍ disponible para Code; `read_file_content` da OCR); `docs/sops/` es subconjunto incompleto
 - ❌ Desviarse de R26 sin documentar + validar con Jaime
 - ❌ Implementar logic per-form custom — usar FormEngine + ApprovalEngine

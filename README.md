@@ -8,6 +8,7 @@ Plataforma de RRHH self-service para ICONSA (construcción Panamá). Digitaliza 
 
 ## Punteros
 
+- **`DOCS-GUIDE.md`** — guía humana del sistema de documentación: dónde vive cada cosa y cómo se mantiene consistente.
 - **`CLAUDE.md`** — contrato del agente (reglas non-negotiable, stack, mental model, workflow).
 - **`AGENTS.md`** — entry para agentes (Codex y otros).
 - **`docs/STATUS.md`** — estado vivo (fase, decisiones, blockers, backlog). El único doc mutable de "qué falta".

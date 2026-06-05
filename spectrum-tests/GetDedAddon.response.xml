@@ -1,0 +1,355 @@
+<SOAP-ENV:Envelope SOAP-ENV:encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' xmlns:xsd='http://www.w3.org/2001/XMLSchema' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:SOAP-ENV='http://schemas.xmlsoap.org/soap/envelope/'><SOAP-ENV:Header></SOAP-ENV:Header><SOAP-ENV:Body><nis:GetDedAddonResponse xmlns:nis='http://www.northgate-is.com/proiv/webservices/types'><returnArray><returnData>
+
+<getDedAddOn>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Vol_Deduct_Code>ACREED CEL</Vol_Deduct_Code>
+        <Vol_Deduct_Description>CEL ICONSA</Vol_Deduct_Description>
+        <Deduct_Type>D</Deduct_Type>
+        <Calc_Method>F</Calc_Method>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Vol_Deduct_Code>ACREEDOR</Vol_Deduct_Code>
+        <Vol_Deduct_Description>ACREE ICONSA</Vol_Deduct_Description>
+        <Deduct_Type>D</Deduct_Type>
+        <Calc_Method>F</Calc_Method>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Vol_Deduct_Code>AJUS-TRANS</Vol_Deduct_Code>
+        <Vol_Deduct_Description>AJUSTES DE TRAN</Vol_Deduct_Description>
+        <Deduct_Type>D</Deduct_Type>
+        <Calc_Method>F</Calc_Method>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Vol_Deduct_Code>BANCO</Vol_Deduct_Code>
+        <Vol_Deduct_Description>BGENERAL</Vol_Deduct_Description>
+        <Deduct_Type>D</Deduct_Type>
+        <Calc_Method>F</Calc_Method>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Vol_Deduct_Code>BANESC</Vol_Deduct_Code>
+        <Vol_Deduct_Description>BANESCO</Vol_Deduct_Description>
+        <Deduct_Type>D</Deduct_Type>
+        <Calc_Method>F</Calc_Method>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Vol_Deduct_Code>BANIST</Vol_Deduct_Code>
+        <Vol_Deduct_Description>BANISTMO</Vol_Deduct_Description>
+        <Deduct_Type>D</Deduct_Type>
+        <Calc_Method>F</Calc_Method>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Vol_Deduct_Code>CAJA</Vol_Deduct_Code>
+        <Vol_Deduct_Description>CAJA DE AHORROS</Vol_Deduct_Description>
+        <Deduct_Type>D</Deduct_Type>
+        <Calc_Method>F</Calc_Method>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Vol_Deduct_Code>CESANTIA</Vol_Deduct_Code>
+        <Vol_Deduct_Description>Cesantia</Vol_Deduct_Description>
+        <Deduct_Type>A</Deduct_Type>
+        <Calc_Method>G</Calc_Method>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Vol_Deduct_Code>COSOL</Vol_Deduct_Code>
+        <Vol_Deduct_Description>COSOL</Vol_Deduct_Description>
+        <Deduct_Type>D</Deduct_Type>
+        <Calc_Method>F</Calc_Method>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Vol_Deduct_Code>CREDIC</Vol_Deduct_Code>
+        <Vol_Deduct_Description>CREDICORP</Vol_Deduct_Description>
+        <Deduct_Type>D</Deduct_Type>
+        <Calc_Method>F</Calc_Method>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Vol_Deduct_Code>CUOTAS</Vol_Deduct_Code>
+        <Vol_Deduct_Description>Cuotas</Vol_Deduct_Description>
+        <Deduct_Type>D</Deduct_Type>
+        <Calc_Method>U</Calc_Method>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Vol_Deduct_Code>DECIMO</Vol_Deduct_Code>
+        <Vol_Deduct_Description>Decimo Tercer M</Vol_Deduct_Description>
+        <Deduct_Type>A</Deduct_Type>
+        <Calc_Method>G</Calc_Method>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Vol_Deduct_Code>DEFUNC FAM</Vol_Deduct_Code>
+        <Vol_Deduct_Description>Def padre hijo</Vol_Deduct_Description>
+        <Deduct_Type>A</Deduct_Type>
+        <Calc_Method>F</Calc_Method>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Vol_Deduct_Code>DEFUNC TIO</Vol_Deduct_Code>
+        <Vol_Deduct_Description>Def tios o herm</Vol_Deduct_Description>
+        <Deduct_Type>A</Deduct_Type>
+        <Calc_Method>F</Calc_Method>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Vol_Deduct_Code>DELTA</Vol_Deduct_Code>
+        <Vol_Deduct_Description>DELTA</Vol_Deduct_Description>
+        <Deduct_Type>D</Deduct_Type>
+        <Calc_Method>F</Calc_Method>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Vol_Deduct_Code>FINEXP</Vol_Deduct_Code>
+        <Vol_Deduct_Description>FINANC EXPRESS</Vol_Deduct_Description>
+        <Deduct_Type>D</Deduct_Type>
+        <Calc_Method>F</Calc_Method>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Vol_Deduct_Code>GRUPOA</Vol_Deduct_Code>
+        <Vol_Deduct_Description>GRUPOA</Vol_Deduct_Description>
+        <Deduct_Type>D</Deduct_Type>
+        <Calc_Method>F</Calc_Method>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Vol_Deduct_Code>IC EPP</Vol_Deduct_Code>
+        <Vol_Deduct_Description>IC EQ PROT PERS</Vol_Deduct_Description>
+        <Deduct_Type>D</Deduct_Type>
+        <Calc_Method>F</Calc_Method>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Vol_Deduct_Code>INVCRE</Vol_Deduct_Code>
+        <Vol_Deduct_Description>INV CREPUSCULO</Vol_Deduct_Description>
+        <Deduct_Type>D</Deduct_Type>
+        <Calc_Method>F</Calc_Method>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Vol_Deduct_Code>NACIMIENTO</Vol_Deduct_Code>
+        <Vol_Deduct_Description>BENIF NACIMIENT</Vol_Deduct_Description>
+        <Deduct_Type>A</Deduct_Type>
+        <Calc_Method>F</Calc_Method>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Vol_Deduct_Code>PANAFI</Vol_Deduct_Code>
+        <Vol_Deduct_Description>PANAFI</Vol_Deduct_Description>
+        <Deduct_Type>D</Deduct_Type>
+        <Calc_Method>F</Calc_Method>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Vol_Deduct_Code>POW</Vol_Deduct_Code>
+        <Vol_Deduct_Description>POWERTRONIC</Vol_Deduct_Description>
+        <Deduct_Type>D</Deduct_Type>
+        <Calc_Method>F</Calc_Method>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Vol_Deduct_Code>PRESTA</Vol_Deduct_Code>
+        <Vol_Deduct_Description>PRESTA PMA</Vol_Deduct_Description>
+        <Deduct_Type>D</Deduct_Type>
+        <Calc_Method>F</Calc_Method>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Vol_Deduct_Code>PROME</Vol_Deduct_Code>
+        <Vol_Deduct_Description>PROME</Vol_Deduct_Description>
+        <Deduct_Type>D</Deduct_Type>
+        <Calc_Method>F</Calc_Method>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Vol_Deduct_Code>RIESGOPROF</Vol_Deduct_Code>
+        <Vol_Deduct_Description>Riesgo Profes.</Vol_Deduct_Description>
+        <Deduct_Type>A</Deduct_Type>
+        <Calc_Method>G</Calc_Method>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Vol_Deduct_Code>SEG ED</Vol_Deduct_Code>
+        <Vol_Deduct_Description>Seg Educ colab</Vol_Deduct_Description>
+        <Deduct_Type>D</Deduct_Type>
+        <Calc_Method>G</Calc_Method>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Vol_Deduct_Code>SEG SOC CO</Vol_Deduct_Code>
+        <Vol_Deduct_Description>Seg Soc Colabor</Vol_Deduct_Description>
+        <Deduct_Type>D</Deduct_Type>
+        <Calc_Method>G</Calc_Method>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Vol_Deduct_Code>SEG VIDA</Vol_Deduct_Code>
+        <Vol_Deduct_Description>SEG VIDA</Vol_Deduct_Description>
+        <Deduct_Type>A</Deduct_Type>
+        <Calc_Method>F</Calc_Method>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Vol_Deduct_Code>SEGURO EDU</Vol_Deduct_Code>
+        <Vol_Deduct_Description>Seguro Educativ</Vol_Deduct_Description>
+        <Deduct_Type>A</Deduct_Type>
+        <Calc_Method>G</Calc_Method>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Vol_Deduct_Code>SEGURO SOC</Vol_Deduct_Code>
+        <Vol_Deduct_Description>Seguro Social</Vol_Deduct_Description>
+        <Deduct_Type>A</Deduct_Type>
+        <Calc_Method>G</Calc_Method>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Vol_Deduct_Code>STGEO2</Vol_Deduct_Code>
+        <Vol_Deduct_Description>ST GEORGES</Vol_Deduct_Description>
+        <Deduct_Type>D</Deduct_Type>
+        <Calc_Method>F</Calc_Method>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Vol_Deduct_Code>TRANS PROY</Vol_Deduct_Code>
+        <Vol_Deduct_Description>TranspSantraico</Vol_Deduct_Description>
+        <Deduct_Type>A</Deduct_Type>
+        <Calc_Method>F</Calc_Method>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Vol_Deduct_Code>TRANS VIAT</Vol_Deduct_Code>
+        <Vol_Deduct_Description>VIATICOS TRANSP</Vol_Deduct_Description>
+        <Deduct_Type>A</Deduct_Type>
+        <Calc_Method>F</Calc_Method>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Vol_Deduct_Code>VACACIONES</Vol_Deduct_Code>
+        <Vol_Deduct_Description>Vacaciones</Vol_Deduct_Description>
+        <Deduct_Type>A</Deduct_Type>
+        <Calc_Method>G</Calc_Method>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+    <response>
+        <Company_Code>ICN</Company_Code>
+        <Vol_Deduct_Code>XIII VAC</Vol_Deduct_Code>
+        <Vol_Deduct_Description>XIII SOBRE VAC</Vol_Deduct_Description>
+        <Deduct_Type>A</Deduct_Type>
+        <Calc_Method>G</Calc_Method>
+        <Error_Code/>
+        <Error_Description/>
+        <Error_Column/>
+    </response>
+</getDedAddOn>
+</returnData></returnArray></nis:GetDedAddonResponse></SOAP-ENV:Body></SOAP-ENV:Envelope>

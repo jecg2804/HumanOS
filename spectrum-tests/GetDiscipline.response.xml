@@ -1,0 +1,5 @@
+<SOAP-ENV:Envelope SOAP-ENV:encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' xmlns:xsd='http://www.w3.org/2001/XMLSchema' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:SOAP-ENV='http://schemas.xmlsoap.org/soap/envelope/'><SOAP-ENV:Header></SOAP-ENV:Header><SOAP-ENV:Body><nis:GetDisciplineResponse xmlns:nis='http://www.northgate-is.com/proiv/webservices/types'><returnArray><returnData>
+
+<getDiscipline>
+</getDiscipline>
+</returnData></returnArray></nis:GetDisciplineResponse></SOAP-ENV:Body></SOAP-ENV:Envelope>

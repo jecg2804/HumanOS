@@ -13,8 +13,8 @@
 | Schema | Writable HumanOS? |
 |---|---|
 | `public.*` | ❌ PROHIBIDO (R1) — MovimientOS prod |
-| `payroll.*` | ❌ PROHIBIDO (R1) — sistema planillas |
 | `humanos.*` | ❌ PROHIBIDO (R1) — demo legacy v1 |
+| `payroll.*` | ✅ nuestro (ADR-0011 update) — catálogos de planilla (master data) |
 | `hr.*` | ✅ master data cross-app (incl invite_codes + user_settings) |
 | `requests.*` | ✅ core tickets |
 | `docs.*` | ✅ KB / SOPs / signatures |
@@ -25,6 +25,9 @@
 | `notifications.*` | ✅ outbox |
 | `files.*` | ✅ (`uploads` polimórfica) |
 | `auth.*` | ⚠️ con cuidado (R22) — Supabase managed, compartido cross-app |
+| `core.*` | ✅ masters conformados (ADR-0032) — EXPUESTO PostgREST; writable via migration / service_role |
+| `raw_spectrum.*` | ✅ bronze landing (ADR-0032) — service_role-only, NO exponer |
+| `meta.*` | ✅ metadata de pipeline (ADR-0032) — service_role-only, NO exponer |
 | `mdm.*`, `etl.*`, `backup.*` | ✅ cuando integration lo justifique |
 
 Conteo de tablas y policies por schema: consultar BD (fuente de verdad).

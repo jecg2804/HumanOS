@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <GetDedAddon xmlns="http://www.northgate-is.com/proiv/webservices/types">
+      <Authorization_ID>API</Authorization_ID>
+      <GUID>c8101e3a-c5dd-4828-8828-cf7637072f1f</GUID>
+      <pCompany_Code>ICN</pCompany_Code>
+      <pVol_Deduct_Code></pVol_Deduct_Code>
+      <pDeduct_Type></pDeduct_Type>
+      <pCost_Center></pCost_Center>
+      <pSort_By></pSort_By>
+    </GetDedAddon>
+  </soap:Body>
+</soap:Envelope>

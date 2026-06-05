@@ -9,7 +9,7 @@ Read the rules from `docs/reference/business-rules.md` before acting. This skill
 
 ## Critical rules (block immediately if violated)
 
-**R1 - Schemas prohibited**: NEVER write to `public.*`, `payroll.*`, `humanos.*`. Hook `PreToolUse` blocks. If a write fails with "BLOCKED: Write to prohibited schema", check schema name. Allowed schemas: `hr.*`, `requests.*`, `docs.*`, `workflows.*`, `audit.*`, `notifications.*`, `files.*`, `performance.*`, `learning.*`, `mdm.*`, `etl.*`, `backup.*`.
+**R1 - Schemas prohibited**: NEVER write to `public.*` (MovimientOS) or recreate `humanos.*` (dropped legacy v1). `payroll.*` is USABLE since 2026-06-04 (ADR-0011 update + ADR-0028 — the colleague who created it does NOT use Supabase). Hook `PreToolUse` blocks only `public.*` and `humanos.*`. Allowed schemas: `hr.*`, `requests.*`, `docs.*`, `workflows.*`, `audit.*`, `notifications.*`, `files.*`, `performance.*`, `learning.*`, `payroll.*`, `core.*`, `raw_spectrum.*`, `meta.*`, `mdm.*`, `etl.*`, `backup.*`.
 
 **R5 - No self-approval**: `approver_id != requester_id`. Enforced in ApprovalEngine code, NOT BD constraint. If implementing approval logic, validate this explicitly.
 
@@ -19,7 +19,7 @@ Read the rules from `docs/reference/business-rules.md` before acting. This skill
 
 **R23 - Encoding**: All config files (.json, .ps1, .md, .ts, .tsx, .css) MUST be UTF-8 without BOM. Hooks `.ps1` MUST be ASCII pure (no em-dash, no accents, no smart quotes). Use `[System.IO.File]::WriteAllText($path, $content, [System.Text.UTF8Encoding]::new($false))` in PowerShell 5.1.
 
-**R26 - SOP-driven chains**: NEVER deviate from SOP-defined approval chains without consulting Jaime. If SOP says "Gerencia General", add a `president` step (mapping resuelto 2026-06-03: Gerencia General = el rol `president`, Rodrigo). Excepciones documented in `docs/reference/business-rules.md`.
+**R26 - SOP-driven chains**: NEVER deviate from SOP-defined approval chains without consulting Jaime. If SOP says "Gerencia General", add a `president` step. The `Gerencia General -> president` mapping is a **PROVISIONAL MVP generalization** (ADR-0030, 2026-06-04), correctable in use — NOT durable; resolve by role, do not hardcode a person. Excepciones documented in `docs/reference/business-rules.md`.
 
 **Chain-fidelity rulings (ADR-0027)** — un digital chain correctamente COLAPSADO no es una desviacion. Aplica antes de juzgar la cadena:
 - **signature = approval**: cada linea de firma del form papel es un step `kind=approval`. Una accion de approval digital ES la firma; no inventes un step "firmar" aparte.

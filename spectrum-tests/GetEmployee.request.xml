@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <GetEmployee xmlns="http://www.northgate-is.com/proiv/webservices/types">
+      <Authorization_ID>API</Authorization_ID>
+      <GUID>96d93bbc-1c04-4e60-a6a7-8a25cbf61f25</GUID>
+      <pCompany_Code>ICN</pCompany_Code>
+      <pWage_Class></pWage_Class>
+      <pUnion_Code></pUnion_Code>
+      <pOccupation></pOccupation>
+      <pTrade></pTrade>
+      <pStatus_Type></pStatus_Type>
+      <pCost_Center></pCost_Center>
+      <pSort_By></pSort_By>
+    </GetEmployee>
+  </soap:Body>
+</soap:Envelope>

@@ -2,7 +2,7 @@
 
 **Role:** glosario canonico vivo — terminos del dominio + que evitar, mas dialogo de ejemplo. · **Read-when:** vocabulario en duda o al nombrar algo nuevo (tabla, concepto, estado). · **Maintain-when:** aparece o cambia un termino del dominio (inline durante grill-with-docs).
 
-App HR interna ICONSA (construccion Panama). Reemplaza Humand. Coexiste con MovimientOS en mismo Supabase project. Domain: digitalizar formularios papel RRHH ICONSA con engines genericos + 24 form variants seedeados en `requests.types`.
+App HR interna ICONSA (construccion Panama). Reemplaza Humand. Coexiste con MovimientOS en mismo Supabase project. Domain: digitalizar formularios papel RRHH ICONSA con engines genericos + 24 form variants seedeados en `requests.types`, mas la **planilla** (registro de tiempo, insumo de PayDay; ADR-0028). RRHH-scoped (NO plataforma company-wide de formularios; ADR-0029).
 
 Vocabulario vivo. Mantener actualizado por Code durante grill-with-docs. Solo glosario — implementacion fuera de scope (eso vive en `docs/adr/`, `docs/superpowers/specs/`).
 
@@ -114,9 +114,9 @@ Persona que aparece como `supervisor_id` en algun `hr.employments.is_current=tru
 **selected_supervisor_id**:
 Override del solicitante en `requests.tickets.selected_supervisor_id`. Permite elegir supervisor distinto al de su employment (ej: jefe de proyecto vs jefe jerarquico). Activable cuando `requests.types.allow_supervisor_override=true`.
 
-**Gerencia General**:
-Termino del SOP papel ICONSA = el rol/step `president`. RESUELTO (Jaime 2026-06-03): el president (Rodrigo, unico `app_role='president'` en MVP) **aprueba + recibe** todos los steps que el SOP marca "Gerencia General"; resolver = `president_user`. ABIERTO/define-in-practice: solo la MEMBRESIA (si VP Javier Ferrer u otros gerentes tambien gatean) — ver `docs/adr/0020-approval-chain-template-jsonb-modes.md` + `docs/adr/0027-chain-fidelity-signature-approval-rrhh-visibility.md`.
-_Avoid_: tratar GG como "indefinido" — el mapping a `president` esta resuelto; solo la membresia sigue abierta.
+**Gerencia General / presidente**:
+Termino del SOP papel ICONSA = el rol/step `president`. Termino canonico: **"presidente"** (CEO = presidente; usar presidente, no CEO). Para MVP, el step que el SOP marca "Gerencia General" -> aprobador presidente (resolver = `president_user`), que **aprueba + recibe**. **Esta generalizacion es PROVISIONAL** (Jaime 2026-06-04, ADR-0030): GG->presidente es del MVP, corregible en uso — NO regla durable. Mecanismo: rol configurable (ADR-0020), no hardcodeado a persona. Membresia (solo Rodrigo vs +VP Javier Ferrer/otros gerentes) sigue define-in-practice. Ver `docs/adr/0030-gg-approver-presidente-provisional.md`, `docs/adr/0020-approval-chain-template-jsonb-modes.md`, `docs/adr/0027-chain-fidelity-signature-approval-rrhh-visibility.md`.
+_Avoid_: tratar GG->presidente como regla durable/inmutable (es provisional); usar "CEO" (el termino es presidente).
 
 ### Empleo + contrato
 
@@ -127,6 +127,60 @@ _Avoid_: "tipo de empleo" (overloaded), "categoria" (overloaded), enum literal (
 **Catalog fallback (`*_text`)**:
 Patron en `hr.employments` para `position`, `department`, `office`: cada uno tiene `_id` FK al catalogo + columna `_text` libre. Si hr_admin no encuentra el valor en el catalogo, ingresa string en `_text` y deja `_id=NULL`. UI muestra link explicito "No veo el mio" que cambia el input. Eventualmente reconciliacion humana mapea `_text` a `_id`. NO aplica a `employment_type_id` (dominio cerrado SOP).
 _Avoid_: tratar `_text` como source of truth — es deuda tecnica deliberada para no bloquear F4.
+
+### Planilla / tiempo
+
+**Planilla**:
+Registro de tiempo y asistencia + asignacion de costo de mano de obra, por proyecto y bisemana. El capataz la llena para su cuadrilla; es el **insumo** de PayDay (nomina externa), NO la reemplaza. Forma fuente: `IC-GP-F-01-15` + instructivo `IC-GP-IT-01` (GESTION DE PROYECTOS); PO en RRHH (PO-06). En el modelo de datos = un formulario mas (FormEngine + ApprovalEngine). Ver ADR-0028.
+_Avoid_: "nomina" (HumanOS capta el insumo, no calcula nomina); confundir con PayDay.
+
+**Time-capture / registro de tiempo**:
+La captura user-facing de horas (grilla capataz x cuadrilla x dias). Vive en `hr.*` con RLS estricta, referenciando los catalogos de `payroll.*`. `computed` para horas trabajadas; `user_input` para horas/codigos; `profile` para identidad del empleado (Emp No. = `employee_code`).
+
+**Capataz**:
+Foreman: llena la planilla en nombre de su cuadrilla. Patron construction-native (no auto-registro individual). Su firma = aprobacion del step (ADR-0027).
+
+**Cuadrilla / crew**:
+Grupo de empleados asignados a un capataz/proyecto. Son las filas de la grilla de planilla (prefill `profile` desde el roster `hr.*`).
+
+**Project Code / Project Phase / Work Code**:
+Codigos de la planilla. **Project Code** (ej. "22-208") + **extra** (ej. "E1") + **Phase / cost code** (CSI MasterFormat, ej. "013100") = jerarquia de costo de mano de obra. **Work Code** = tipo de tiempo (`Normal | CertMed | AusPaga | AusNoPag | FiesNac`). Master data en `payroll.*` (`projects`/`project_extras`/`phases`/`cost_centers`), ya poblado. Validados al ingreso (reject unknown).
+_Avoid_: pedir estos codigos como texto libre (son catalogo cerrado en payroll.*).
+
+**payroll.\*** (catalogos):
+Schema **nuestro** (ADR-0011 update; el compañero que lo creo no usa Supabase) con el master data de proyectos/codigos (semilla MDM, futuro `core.*`). HumanOS lo consume como referencia (read) para prefill/validacion de planilla. Tablas `stg_*` = staging ETL; `person_project_assignments` = puente a `hr.people`. Subir a estandar foundation (RLS + policies + COMMENT) antes de apoyarse — ADR-0028.
+_Avoid_: tratar payroll.* como prohibido (ya no lo es; solo `public.*` queda intocable); escribir captura user-facing ahi (va en `hr.*`).
+
+**PayDay**:
+Nomina computarizada externa. **Consumidor downstream** de la planilla via export CSV estructurado y code-keyed. HumanOS NO la reemplaza (ni a corto/mediano plazo) — la complementa. Es uno de los `source_system` (ADR-0025).
+_Avoid_: asumir que HumanOS calcula/reemplaza nomina.
+
+### Core / MDM (ADR-0032 / SP-0b)
+
+**MDM**:
+Master Data Management = la **disciplina** (autoridad por campo + golden record + crosswalk). NO un schema. El schema de masters compartidos se llama `core`.
+_Avoid_: usar "mdm" como nombre de schema (era el error; el DOMAIN se mudo a `core`).
+
+**core** (schema):
+Capa de masters conformados (golden record) consumida por todas las apps (HumanOS, MovimientOS, futuras). Rename del `mdm` vacio. Contiene los masters Spectrum-SDX (jobs/job_extras/phases/equipment/customers/wage_codes/pay_types/deductions/eq_cost_categories) + governance (`source_systems`, `field_authority`, `sync_runs`).
+_Avoid_: poner captura user-facing en core (eso vive en dominios `hr.*`); duplicar masters por app.
+
+**Medallion**:
+`raw_<source>` (bronze, landing verbatim) -> `core` (gold, conformado) -> dominios (consumen core). `stg_*` reservado (fuentes sucias / Info-Link). SDX limpio va raw->core directo.
+
+**core.persons** (VIEW):
+Vista **`security_invoker=true`** sobre `hr.people` = contrato people cross-app, SIN repoint de los 75 FKs. `hr.people` sigue la golden record **fisica** de personas. NO existe `core.employees` master paralelo. `security_invoker` hereda la RLS de `hr.people` (sin el, fugaria todo). Expone solo identidad/linkage segura (id/employee_code/nombres/status/photo) — **SIN PII** (cedula/DOB/genero/dependientes). Person refs en otras tablas core (ej. jobs PM/super) = texto, NO FK a la VIEW (una VIEW no puede ser target de FK).
+_Avoid_: tratar core.persons como tabla fisica o segundo master; exponer PII en la VIEW; FK a la VIEW.
+
+**Autoridad por campo (field_authority)**:
+Que fuente gana por campo (survivorship a nivel atributo): empleo/org <- Spectrum; identidad self-entered (cedula/contacto/emergencia/dependientes) <- onboarding + historico + PayDay; salario <- PayDay; `employment_status` <- local (nunca overwrite ciego). Declarado en `core.field_authority`.
+
+**Spectrum SDX**:
+Fuente live read-only (SOAP/XML, 14 servicios Get) de master data. POSEE empleo/org (Department/Occupation/Union/Wage_Class/Cost_Center); NO posee cedula/salario/hire_date/email/supervisor/status. Z-sentinel: ejecutivos usan codigos `*9999` (ZEIS99999=Rodrigo). Ingesta via Edge `sdx-sync` (sin VPS).
+_Avoid_: confiar status de Spectrum (puede estar stale); confundir SDX (master, sin VPS) con Info-Link (transaccional, con VPS).
+
+**Obra (jerarquia 4 niveles, DESIGN A)**:
+`core.jobs` = **UNA fila por `Job_Number`** (obra base Y extra; adjacency list / Single-Table-Inheritance) con `obra_code` agrupador DERIVADO + `extra_code`/`is_extra` + `parent_job_id` self-FK **NULLABLE soft** (NULL para base y para extras huerfanos cuya obra base no existe en Spectrum). `core.phases` grano **`(job_id, phase_code)`** (estructural: description/status/uom constantes por phase_code). Categoria = `Cost_Type` (**8 valores** live: CON/EQA/EQI/ICS/MAT/OTR/SAL/SUB) -> nivel **diferido** a `core.phase_costs` (fact) junto con los actuales `$`. Spectrum codifica obra+extra en `Job_Number` (24-404E1). Reemplaza texto libre + `payroll.projects` (superseded). _Avoid_: dos tablas jobs/extras (Design B = polymorphic-association anti-pattern); meter `Cost_Type`/`$` en `core.phases`; tratar `parent_job_id` como agrupador (usar `obra_code`).
 
 ### Engines
 
@@ -180,7 +234,7 @@ Slowly Changing Dimension Type 2. Pattern en `hr.employments`: cambios criticos 
 ### Flagged ambiguities
 
 **Membresia de `president` (GG)**:
-El MAPPING "Gerencia General"→`president` esta RESUELTO (ver glosario, Jaime 2026-06-03). Lo unico ABIERTO: si el rol `president` incluye solo a Rodrigo o tambien al VP (Javier Ferrer) y/o otros gerentes (Finanzas, Proyectos, Equipo, Calidad). MVP asume solo Rodrigo. Resolucion define-in-practice (Opcion A/B en ADR-0020).
+El MAPPING "Gerencia General"->`president` es la generalizacion del MVP, marcada **PROVISIONAL** (ADR-0030, Jaime 2026-06-04): corregible en uso, no durable. ABIERTO: si el rol `president` incluye solo a Rodrigo o tambien al VP (Javier Ferrer) y/o otros gerentes (Finanzas, Proyectos, Equipo, Calidad). MVP asume solo Rodrigo. Resolucion define-in-practice (Opcion A/B en ADR-0020).
 
 **`requests.approvals.approver_role = 'specific_person'`**:
 CHECK constraint en BD incluye este valor pero NO esta en los 3 resolvers documentados (R11). Probable future-proofing o vestigial. Si aparece en codigo, validar con Jaime si es para v1.1 (delegacion explicita pre-asignada) o eliminar.

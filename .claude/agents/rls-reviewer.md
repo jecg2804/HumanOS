@@ -25,7 +25,7 @@ Use `mcp__plugin_supabase_supabase__execute_sql` with `project_id: "bzeoszympkki
 - Policies: `select schemaname, tablename, policyname, permissive, cmd, roles, qual, with_check from pg_policies where schemaname='<schema>' and tablename='<table>';`
 - Then run `mcp__plugin_supabase_supabase__get_advisors` (type: security) and report any NEW lint vs known pre-existing ones (MovimientOS public.*, legacy humanos.*, requests.sequences).
 
-Also read the local skill `.claude/skills/iconsa-rls-validation/SKILL.md` (queries Q1-Q5) for the canonical checklist, and respect the forbidden-schema rule (R1): never suggest touching public.*/payroll.*/humanos.*.
+Also read the local skill `.claude/skills/iconsa-rls-validation/SKILL.md` (queries Q1-Q5) for the canonical checklist, and respect the forbidden-schema rule (R1): never suggest touching public.*/humanos.* (payroll.* is ours).
 
 ## Output format
 

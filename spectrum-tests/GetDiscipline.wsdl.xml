@@ -1,0 +1,35 @@
+<definitions targetNamespace='http://www.northgate-is.com/proiv/webservices/wsdl' xmlns:tns='http://www.northgate-is.com/proiv/webservices/wsdl' xmlns:xsd-nis='http://www.northgate-is.com/proiv/webservices/types' name='GetDiscipline' xmlns:xsd='http://www.w3.org/2001/XMLSchema' xmlns:soap='http://schemas.xmlsoap.org/wsdl/soap/' xmlns='http://schemas.xmlsoap.org/wsdl/'>
+ <!--SPECTRUM 20150114  -->
+  <types>
+    <schema xmlns:soap11-enc='http://schemas.xmlsoap.org/soap/encoding/' targetNamespace='http://www.northgate-is.com/proiv/webservices/types' xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/' xmlns:tns='http://www.northgate-is.com/proiv/webservices/types' xmlns='http://www.w3.org/2001/XMLSchema' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'><import namespace='http://schemas.xmlsoap.org/soap/encoding/'></import><element name='GetDiscipline'><complexType><sequence><element nillable='false' name='Authorization_ID' type='xsd:string'></element><element nillable='false' name='GUID' type='xsd:string'></element><element nillable='false' name='pCompany_Code' type='xsd:string'></element><element nillable='false' name='pLog_Class' type='xsd:string'></element><element nillable='false' name='pSort_By' type='xsd:string'></element></sequence></complexType></element><element name='GetDisciplineResponse'><complexType><sequence><element nillable='false' name='returnArray'><complexType><sequence><element nillable='false' name='returnData' maxOccurs='unbounded' minOccurs='0'><complexType><sequence><any></any></sequence></complexType></element></sequence></complexType></element></sequence></complexType></element></schema>
+  </types>
+  <message name='GetDisciplineInput'>
+    <part element='xsd-nis:GetDiscipline' name='parameters'></part>
+  </message>
+  <message name='GetDisciplineOutput'>
+    <part element='xsd-nis:GetDisciplineResponse' name='parameters'></part>
+  </message>
+  <portType name='GetDisciplinePortType'>
+    <operation name='GetDiscipline'>
+      <input message='tns:GetDisciplineInput'></input>
+      <output message='tns:GetDisciplineOutput'></output>
+    </operation>
+  </portType>
+  <binding name='GetDisciplineSoapBinding' type='tns:GetDisciplinePortType'>
+    <soap:binding style='document' transport='http://schemas.xmlsoap.org/soap/http'></soap:binding>
+    <operation name='GetDiscipline'>
+      <soap:operation soapAction='https://iconsanet.dexterchaney.com:8482/ws/GetDiscipline'></soap:operation>
+      <input>
+        <soap:body use='literal'></soap:body>
+      </input>
+      <output>
+        <soap:body use='literal'></soap:body>
+      </output>
+    </operation>
+  </binding>
+  <service name='GetDisciplineService'>
+    <port name='GetDisciplinePort' binding='tns:GetDisciplineSoapBinding'>
+      <soap:address location='https://iconsanet.dexterchaney.com:8482/ws/GetDiscipline'></soap:address>
+    </port>
+  </service>
+</definitions>

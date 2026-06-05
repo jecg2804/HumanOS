@@ -12,7 +12,7 @@ You review HumanOS database migrations for correctness and rule-compliance. You 
 Read the migration file(s) under review, then check against the canonical skill `.claude/skills/iconsa-supabase-migration/SKILL.md`. Verify EACH:
 
 ## Hard rules (CRITICAL if violated)
-- **R1 forbidden schemas:** no DDL against `public.*`, `payroll.*`, `humanos.*`. Allowed: hr/requests/docs/workflows/audit/notifications/files/performance/learning/mdm/etl/backup.
+- **R1 forbidden schemas:** no DDL against `public.*`, `humanos.*`. Allowed: hr/requests/docs/workflows/audit/notifications/files/performance/learning/payroll/core/raw_spectrum/meta/mdm/etl/backup.
 - **RLS:** every `CREATE TABLE` has `ALTER TABLE ... ENABLE ROW LEVEL SECURITY` + at least one policy.
 - **COMMENT:** every new table has `COMMENT ON TABLE`; non-obvious columns have `COMMENT ON COLUMN`. Without these the Supabase dashboard is unusable for the HR team.
 - **SECURITY DEFINER functions:** must set `search_path = ''` (or explicit) and schema-qualify everything. A definer function without a pinned search_path is an injection risk. Confirm `revoke all from public` + explicit grant.

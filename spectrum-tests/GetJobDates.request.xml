@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <GetJobDates xmlns="http://www.northgate-is.com/proiv/webservices/types">
+      <Authorization_ID>API</Authorization_ID>
+      <GUID>cbd02785-7cd9-47fe-9a98-56c223c700c6</GUID>
+      <pCompany_Code>ICN</pCompany_Code>
+      <pDivision></pDivision>
+      <pStatus_Code></pStatus_Code>
+      <pProject_Manager></pProject_Manager>
+      <pSuperintendent></pSuperintendent>
+      <pEstimator></pEstimator>
+      <pCustomer_Code></pCustomer_Code>
+      <pCost_Center></pCost_Center>
+      <pSort_By></pSort_By>
+    </GetJobDates>
+  </soap:Body>
+</soap:Envelope>

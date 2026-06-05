@@ -9,12 +9,13 @@
 **CRITICAL. Hook `PreToolUse` debe bloquear cualquier intento.**
 
 Code NUNCA modifica:
-- `public.*` (44 tablas — MovimientOS production)
-- `payroll.*` (9 tablas — sistema planillas)
+- `public.*` (44 tablas — MovimientOS production; **único schema HARD-prohibido**)
 - `humanos.*` (demo legacy v1 — **schema dropeado 2026-06-02 W3 SEC-LEGACY**; prohibición se mantiene contra recreación; snapshot en `backup.*`)
 
 Code SÍ modifica (DDL y DML):
 - `hr.*`, `requests.*`, `docs.*`, `workflows.*`, `audit.*`, `notifications.*`, `files.*`, `performance.*`, `learning.*`
+- `payroll.*` — **usable desde 2026-06-04** (ADR-0011 update + ADR-0028): lo creó un compañero que **NO usa Supabase**; es nuestro. Catálogos de proyectos/códigos (master data de planilla). Subir a estándar foundation (RLS + policies + COMMENT) antes de apoyarse — hoy tiene RLS deshabilitada.
+- `core.*`, `raw_spectrum.*`, `meta.*` — **schemas aditivos LIVE (ADR-0032, F0.2)**: `core.*` = masters conformados (EXPUESTO PostgREST); `raw_spectrum.*` = bronze landing + `meta.*` = metadata de pipeline (ambos service_role-only, NO exponer).
 
 Foundational (cuando integration real lo justifique):
 - `mdm.*`, `etl.*`, `backup.*`

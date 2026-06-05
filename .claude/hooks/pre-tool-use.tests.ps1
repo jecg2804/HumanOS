@@ -24,10 +24,12 @@ function Test-Case($desc, $toolName, $payloadInput, $expectBlock) {
 function Sql($q) { return @{ query = $q } }
 $mcp = 'mcp__claude_ai_Supabase__execute_sql'
 
-# --- R1: prohibited-schema writes (public/payroll/humanos) must block, all verbs, single space ---
+# --- R1: prohibited-schema writes (public/humanos) must block, all verbs, single space ---
 Test-Case "R1 single-space UPDATE public" $mcp (Sql "UPDATE public.solicitudes SET status=1 WHERE id=5") $true
-Test-Case "R1 single-space UPDATE payroll" $mcp (Sql "update payroll.salaries set s=999 where id=1") $true
 Test-Case "R1 single-space UPDATE humanos" $mcp (Sql "update humanos.foo set a=1 where id=1") $true
+# payroll.* is no longer prohibited (2026-06-04, ADR-0011 update + ADR-0028): writes/DDL are ALLOWED
+Test-Case "R1 payroll WRITE now allowed" $mcp (Sql "update payroll.phases set ct='x' where id='1'") $false
+Test-Case "R1 CREATE TABLE payroll now allowed" $mcp (Sql "create table payroll.time_entries (id int)") $false
 Test-Case "R1 INSERT INTO public" $mcp (Sql "insert into public.t (a) values (1)") $true
 Test-Case "R1 DELETE FROM public" $mcp (Sql "delete from public.t where id=1") $true
 Test-Case "R1 CREATE TABLE public" $mcp (Sql "create table public.newt (id int)") $true
@@ -43,5 +45,9 @@ Test-Case "R22 UPDATE auth.users properly filtered (allow)" $mcp (Sql "update au
 Test-Case "OK UPDATE hr.people WITH where" $mcp (Sql "update hr.people set full_name='x' where id='u'") $false
 Test-Case "OK SELECT referencing updated_at column" $mcp (Sql "select id from public.solicitudes where updated_at > now()") $false
 Test-Case "OK SELECT from prohibited schema (reads allowed)" $mcp (Sql "select * from public.solicitudes limit 1") $false
+# core/raw_spectrum/meta are additive HumanOS schemas (F0.2, ADR-0032), NOT prohibited - writes allowed
+Test-Case "OK CREATE TABLE core now allowed" $mcp (Sql "create table core.foo (id int)") $false
+Test-Case "OK INSERT INTO raw_spectrum allowed" $mcp (Sql "insert into raw_spectrum.employee (a) values (1)") $false
+Test-Case "OK CREATE TABLE meta allowed" $mcp (Sql "create table meta.watermark (id int)") $false
 
 if ($fail -eq 0) { Write-Output "ALL PASS"; exit 0 } else { Write-Output "FAILURES PRESENT"; exit 1 }

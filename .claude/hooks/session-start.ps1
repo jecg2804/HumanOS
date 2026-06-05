@@ -18,14 +18,19 @@ You are working on HumanOS - internal HR app for ICONSA (construction Panama).
 This codebase has hard rules. Read these BEFORE any tool call:
 
 [SCHEMAS PROHIBIDOS - Hook PreToolUse will block writes]
-- public.*       (MovimientOS production, owner: dev MovimientOS)
-- payroll.*      (compania de Jaime payroll system)
-- humanos.*      (legacy v1 demo, archived)
+- public.*       (MovimientOS production, owner: dev MovimientOS; ONLY hard-prohibited schema)
+- humanos.*      (dropped legacy v1 demo - do not recreate)
 
 [SCHEMAS TOCABLES - HumanOS canonical]
 - hr.*, requests.*, docs.*, workflows.*, audit.*, notifications.*,
   files.*, performance.*, learning.*
-- Future MDM/ETL: mdm.*, etl.*, backup.* (when first external integration arrives)
+- payroll.* USABLE since 2026-06-04 (ADR-0011 update + ADR-0028): the colleague who
+  created it does NOT use Supabase; it is ours. Project/code catalogs (planilla master
+  data). Raise to foundation standard (RLS + policies + COMMENT) before relying on it.
+- MDM/medallion LIVE (F0.2, ADR-0032): core.* (masters conformados desde Spectrum SDX,
+  EXPUESTO en PostgREST) + raw_spectrum.* (bronze landing) + meta.* (pipeline metadata).
+  raw_spectrum/meta = service_role-only, NO exponer. mdm.* = shell vacio (core lo supersede).
+- Reservados: etl.*, backup.* (cuando lleguen mas integraciones)
 
 [AUTH.USERS - SHARED across apps - R22 enforced]
 auth.users is SHARED between MovimientOS, HumanOS and future apps.
