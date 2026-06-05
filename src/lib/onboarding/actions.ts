@@ -351,6 +351,14 @@ export interface CompleteOnboardingInput {
   };
   ack_ethics_at: string;
   ack_child_labor_at: string;
+  // SEC-CONSENT (R27 / Ley 81): consentimiento explícito capturado en Step6Consent.
+  // El guard atómico de hr.complete_onboarding_writes RAISE (rollback total) si un
+  // dato sensible llega sin su consentimiento. consent_legal_version pinea el texto
+  // exacto consentido (LEY81_CONSENT_VERSION).
+  consent_medical: boolean;
+  consent_emergency: boolean;
+  consent_data_processing: boolean;
+  consent_legal_version: string;
   photo_path: string | null;
 }
 
@@ -358,6 +366,17 @@ export async function completeOnboardingAction(
   input: CompleteOnboardingInput & { ip_address?: string; user_agent?: string }
 ): Promise<FormState> {
   const admin = createSupabaseAdminClient();
+
+  // SEC-CONSENT: capturar ip/user_agent del request para la auditoría de
+  // consentimiento Ley 81 (hr.consent.ip / user_agent). headers() es async en
+  // Next.js 16 (verificado vía Context7). El caller puede sobreescribir vía
+  // input.ip_address / input.user_agent; si no, se derivan aquí.
+  const headersList = await headers();
+  const forwardedFor = headersList.get('x-forwarded-for');
+  const realIp = headersList.get('x-real-ip');
+  const ipAddress =
+    input.ip_address ?? (forwardedFor?.split(',')[0]?.trim() || realIp || undefined);
+  const userAgent = input.user_agent ?? headersList.get('user-agent') ?? undefined;
 
   // NEW.A Batch 3 (Codex review fix): enforce the delivery_target commitment at
   // completion too. validateInviteCodeAction commits validated_delivery_target_hash
@@ -452,8 +471,14 @@ export async function completeOnboardingAction(
     p_address: input.address,
     p_ack_ethics_at: input.ack_ethics_at,
     p_ack_child_labor_at: input.ack_child_labor_at,
-    p_ip_address: input.ip_address ?? undefined,
-    p_user_agent: input.user_agent ?? undefined,
+    p_ip_address: ipAddress,
+    p_user_agent: userAgent,
+    // SEC-CONSENT: el guard atómico de la RPC escribe hr.consent ANTES del INSERT
+    // sensible y RAISE (rollback total) si falta el scope requerido.
+    p_consent_medical: input.consent_medical,
+    p_consent_emergency: input.consent_emergency,
+    p_consent_data_processing: input.consent_data_processing,
+    p_consent_legal_version: input.consent_legal_version,
   });
 
   if (rpcErr) {

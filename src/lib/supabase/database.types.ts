@@ -1900,6 +1900,13 @@ export type Database = {
             referencedColumns: ["person_id"]
           },
           {
+            foreignKeyName: "addresses_deleted_by_fkey"
+            columns: ["deleted_by"]
+            isOneToOne: false
+            referencedRelation: "v_pending_reconsent"
+            referencedColumns: ["person_id"]
+          },
+          {
             foreignKeyName: "addresses_person_id_fkey"
             columns: ["person_id"]
             isOneToOne: false
@@ -1911,6 +1918,13 @@ export type Database = {
             columns: ["person_id"]
             isOneToOne: false
             referencedRelation: "v_directory"
+            referencedColumns: ["person_id"]
+          },
+          {
+            foreignKeyName: "addresses_person_id_fkey"
+            columns: ["person_id"]
+            isOneToOne: false
+            referencedRelation: "v_pending_reconsent"
             referencedColumns: ["person_id"]
           },
         ]
@@ -1971,6 +1985,13 @@ export type Database = {
             referencedColumns: ["person_id"]
           },
           {
+            foreignKeyName: "consent_actor_id_fkey"
+            columns: ["actor_id"]
+            isOneToOne: false
+            referencedRelation: "v_pending_reconsent"
+            referencedColumns: ["person_id"]
+          },
+          {
             foreignKeyName: "consent_person_id_fkey"
             columns: ["person_id"]
             isOneToOne: false
@@ -1982,6 +2003,13 @@ export type Database = {
             columns: ["person_id"]
             isOneToOne: false
             referencedRelation: "v_directory"
+            referencedColumns: ["person_id"]
+          },
+          {
+            foreignKeyName: "consent_person_id_fkey"
+            columns: ["person_id"]
+            isOneToOne: false
+            referencedRelation: "v_pending_reconsent"
             referencedColumns: ["person_id"]
           },
         ]
@@ -2054,6 +2082,13 @@ export type Database = {
             referencedColumns: ["person_id"]
           },
           {
+            foreignKeyName: "contacts_deleted_by_fkey"
+            columns: ["deleted_by"]
+            isOneToOne: false
+            referencedRelation: "v_pending_reconsent"
+            referencedColumns: ["person_id"]
+          },
+          {
             foreignKeyName: "contacts_person_id_fkey"
             columns: ["person_id"]
             isOneToOne: false
@@ -2065,6 +2100,13 @@ export type Database = {
             columns: ["person_id"]
             isOneToOne: false
             referencedRelation: "v_directory"
+            referencedColumns: ["person_id"]
+          },
+          {
+            foreignKeyName: "contacts_person_id_fkey"
+            columns: ["person_id"]
+            isOneToOne: false
+            referencedRelation: "v_pending_reconsent"
             referencedColumns: ["person_id"]
           },
         ]
@@ -2143,6 +2185,13 @@ export type Database = {
             columns: ["person_id"]
             isOneToOne: false
             referencedRelation: "v_directory"
+            referencedColumns: ["person_id"]
+          },
+          {
+            foreignKeyName: "employment_classifications_person_id_fkey"
+            columns: ["person_id"]
+            isOneToOne: false
+            referencedRelation: "v_pending_reconsent"
             referencedColumns: ["person_id"]
           },
         ]
@@ -2311,6 +2360,13 @@ export type Database = {
             referencedColumns: ["person_id"]
           },
           {
+            foreignKeyName: "employments_deleted_by_fkey"
+            columns: ["deleted_by"]
+            isOneToOne: false
+            referencedRelation: "v_pending_reconsent"
+            referencedColumns: ["person_id"]
+          },
+          {
             foreignKeyName: "employments_department_id_fkey"
             columns: ["department_id"]
             isOneToOne: false
@@ -2346,6 +2402,13 @@ export type Database = {
             referencedColumns: ["person_id"]
           },
           {
+            foreignKeyName: "employments_person_id_fkey"
+            columns: ["person_id"]
+            isOneToOne: false
+            referencedRelation: "v_pending_reconsent"
+            referencedColumns: ["person_id"]
+          },
+          {
             foreignKeyName: "employments_position_id_fkey"
             columns: ["position_id"]
             isOneToOne: false
@@ -2364,6 +2427,13 @@ export type Database = {
             columns: ["supervisor_id"]
             isOneToOne: false
             referencedRelation: "v_directory"
+            referencedColumns: ["person_id"]
+          },
+          {
+            foreignKeyName: "employments_supervisor_id_fkey"
+            columns: ["supervisor_id"]
+            isOneToOne: false
+            referencedRelation: "v_pending_reconsent"
             referencedColumns: ["person_id"]
           },
         ]
@@ -2480,6 +2550,13 @@ export type Database = {
             referencedColumns: ["person_id"]
           },
           {
+            foreignKeyName: "invite_codes_generated_by_fkey"
+            columns: ["generated_by"]
+            isOneToOne: false
+            referencedRelation: "v_pending_reconsent"
+            referencedColumns: ["person_id"]
+          },
+          {
             foreignKeyName: "invite_codes_person_id_fkey"
             columns: ["person_id"]
             isOneToOne: false
@@ -2491,6 +2568,13 @@ export type Database = {
             columns: ["person_id"]
             isOneToOne: false
             referencedRelation: "v_directory"
+            referencedColumns: ["person_id"]
+          },
+          {
+            foreignKeyName: "invite_codes_person_id_fkey"
+            columns: ["person_id"]
+            isOneToOne: false
+            referencedRelation: "v_pending_reconsent"
             referencedColumns: ["person_id"]
           },
         ]
@@ -2548,6 +2632,13 @@ export type Database = {
             columns: ["person_id"]
             isOneToOne: false
             referencedRelation: "v_directory"
+            referencedColumns: ["person_id"]
+          },
+          {
+            foreignKeyName: "leave_assignments_person_id_fkey"
+            columns: ["person_id"]
+            isOneToOne: false
+            referencedRelation: "v_pending_reconsent"
             referencedColumns: ["person_id"]
           },
           {
@@ -2669,6 +2760,13 @@ export type Database = {
             columns: ["created_by"]
             isOneToOne: false
             referencedRelation: "v_directory"
+            referencedColumns: ["person_id"]
+          },
+          {
+            foreignKeyName: "leave_ledger_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "v_pending_reconsent"
             referencedColumns: ["person_id"]
           },
           {
@@ -2873,6 +2971,13 @@ export type Database = {
             referencedColumns: ["person_id"]
           },
           {
+            foreignKeyName: "medical_info_deleted_by_fkey"
+            columns: ["deleted_by"]
+            isOneToOne: false
+            referencedRelation: "v_pending_reconsent"
+            referencedColumns: ["person_id"]
+          },
+          {
             foreignKeyName: "medical_info_person_id_fkey"
             columns: ["person_id"]
             isOneToOne: true
@@ -2884,6 +2989,13 @@ export type Database = {
             columns: ["person_id"]
             isOneToOne: true
             referencedRelation: "v_directory"
+            referencedColumns: ["person_id"]
+          },
+          {
+            foreignKeyName: "medical_info_person_id_fkey"
+            columns: ["person_id"]
+            isOneToOne: true
+            referencedRelation: "v_pending_reconsent"
             referencedColumns: ["person_id"]
           },
         ]
@@ -3026,6 +3138,13 @@ export type Database = {
             referencedRelation: "v_directory"
             referencedColumns: ["person_id"]
           },
+          {
+            foreignKeyName: "people_deleted_by_fkey"
+            columns: ["deleted_by"]
+            isOneToOne: false
+            referencedRelation: "v_pending_reconsent"
+            referencedColumns: ["person_id"]
+          },
         ]
       }
       person_sources: {
@@ -3072,6 +3191,13 @@ export type Database = {
             columns: ["person_id"]
             isOneToOne: false
             referencedRelation: "v_directory"
+            referencedColumns: ["person_id"]
+          },
+          {
+            foreignKeyName: "person_sources_person_id_fkey"
+            columns: ["person_id"]
+            isOneToOne: false
+            referencedRelation: "v_pending_reconsent"
             referencedColumns: ["person_id"]
           },
         ]
@@ -3150,6 +3276,13 @@ export type Database = {
             referencedColumns: ["person_id"]
           },
           {
+            foreignKeyName: "personal_documents_deleted_by_fkey"
+            columns: ["deleted_by"]
+            isOneToOne: false
+            referencedRelation: "v_pending_reconsent"
+            referencedColumns: ["person_id"]
+          },
+          {
             foreignKeyName: "personal_documents_person_id_fkey"
             columns: ["person_id"]
             isOneToOne: false
@@ -3161,6 +3294,13 @@ export type Database = {
             columns: ["person_id"]
             isOneToOne: false
             referencedRelation: "v_directory"
+            referencedColumns: ["person_id"]
+          },
+          {
+            foreignKeyName: "personal_documents_person_id_fkey"
+            columns: ["person_id"]
+            isOneToOne: false
+            referencedRelation: "v_pending_reconsent"
             referencedColumns: ["person_id"]
           },
         ]
@@ -3265,6 +3405,13 @@ export type Database = {
             referencedRelation: "v_directory"
             referencedColumns: ["person_id"]
           },
+          {
+            foreignKeyName: "user_settings_person_id_fkey"
+            columns: ["person_id"]
+            isOneToOne: true
+            referencedRelation: "v_pending_reconsent"
+            referencedColumns: ["person_id"]
+          },
         ]
       }
     }
@@ -3299,6 +3446,13 @@ export type Database = {
             referencedRelation: "v_directory"
             referencedColumns: ["person_id"]
           },
+          {
+            foreignKeyName: "employments_supervisor_id_fkey"
+            columns: ["supervisor_id"]
+            isOneToOne: false
+            referencedRelation: "v_pending_reconsent"
+            referencedColumns: ["person_id"]
+          },
         ]
       }
       v_org_chart: {
@@ -3306,6 +3460,27 @@ export type Database = {
           depth: number | null
           person_id: string | null
           supervisor_id: string | null
+        }
+        Relationships: []
+      }
+      v_pending_reconsent: {
+        Row: {
+          auth_id: string | null
+          can_prompt_now: boolean | null
+          full_name: string | null
+          person_id: string | null
+        }
+        Insert: {
+          auth_id?: string | null
+          can_prompt_now?: never
+          full_name?: string | null
+          person_id?: string | null
+        }
+        Update: {
+          auth_id?: string | null
+          can_prompt_now?: never
+          full_name?: string | null
+          person_id?: string | null
         }
         Relationships: []
       }
@@ -3358,6 +3533,10 @@ export type Database = {
           p_ack_ethics_at?: string
           p_address?: Json
           p_auth_id: string
+          p_consent_data_processing?: boolean
+          p_consent_emergency?: boolean
+          p_consent_legal_version?: string
+          p_consent_medical?: boolean
           p_emergency?: Json
           p_invite_id: string
           p_ip_address?: string
@@ -3405,6 +3584,10 @@ export type Database = {
           phone: string
           raw_app_meta_data: Json
         }[]
+      }
+      has_active_consent: {
+        Args: { p_person_id: string; p_scope: string }
+        Returns: boolean
       }
       has_direct_reports: { Args: never; Returns: boolean }
       is_hr_admin: { Args: never; Returns: boolean }

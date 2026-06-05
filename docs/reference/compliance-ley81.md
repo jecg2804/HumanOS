@@ -32,7 +32,7 @@ R13 ya restringe `hr.medical_info` + `hr.personal_documents` a owner + hr_admin 
 
 | Obligación | Estado actual | Acción requerida |
 |---|---|---|
-| **Consentimiento** previo/informado/inequívoco (y **expreso+irrefutable** para salud) | ❌ no se captura | Agregar paso de consentimiento en el onboarding wizard (F1) ANTES de capturar médicos/emergencia (Step 6/7). Registrar `consent_at`, `consent_version`, `consent_scope` en BD. |
+| **Consentimiento** previo/informado/inequívoco (y **expreso+irrefutable** para salud) | ✅ **enforced + capturado** (090 + UI, 2026-06-05) — DB L1 (guard atómico en `hr.complete_onboarding_writes`, fail-closed rollback-total) + L2 (trigger `trg_medical_consent_guard` en `hr.medical_info`) + UI L3 (`Step6Consent`, 3 casillas no-bundled). `hr.consent` registra `scope`/`legal_version`/`consent_at`/`granted` (append-only). **Texto = BORRADOR** (`legal-text.ts`, `ley81-onboarding-v1`). 43 registros médicos previos **flagged para re-consentimiento** (`hr.v_pending_reconsent`), **0 consentimientos fabricados**. | Validar el texto del aviso con abogado (queda BORRADOR); banner de re-consentimiento en `/perfil` para la 1 persona onboardeada de las 43 (P3). |
 | **Limitación de finalidad** (usar solo para el fin declarado) | parcial (RLS limita acceso) | Declarar finalidad en el aviso de privacidad mostrado en onboarding. |
 | **Confidencialidad** de quien trata los datos | parcial (R13 RLS) | Acuse de confidencialidad firmado por hr_admin (Samantha, Rocío, Milagros, Jerelyn). |
 | **Seguridad** del tratamiento | ✅ fuerte (RLS, SECURITY DEFINER, Sentry R13-safe, ClamAV pendiente para uploads) | Mantener; agregar scan de malware (P2 ClamAV) + cifrado en reposo (Supabase lo da). |
@@ -57,7 +57,7 @@ R13 ya restringe `hr.medical_info` + `hr.personal_documents` a owner + hr_admin 
 
 ## 5. Próximos pasos técnicos (Code, cuando se aprueben)
 
-- Onboarding: paso de consentimiento + aviso de privacidad antes de Step 6/7 (médicos/emergencia); columnas `consent_*` en BD (migración futura, schema permitido).
+- ~~Onboarding: paso de consentimiento + aviso de privacidad antes de médicos/emergencia~~ **DONE (090 + UI, 2026-06-05):** `Step6Consent` (3 casillas no-bundled) ANTES de emergencia/médicos + `hr.consent` (scope/legal_version/granted) + guard L1/L2. **Pendiente:** revisión legal del texto (BORRADOR) + banner de re-consentimiento en `/perfil` para la 1 persona onboardeada de las 43 (P3).
 - `/perfil`: sección de derechos del titular (solicitar acceso/rectificación/eliminación).
 - Runbook de brechas en `docs/` + integración con Sentry (detección).
 - Política de retención + job de purga/anonimización (post-MVP).

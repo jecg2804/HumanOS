@@ -48,6 +48,12 @@ export interface WizardState {
   };
   ack_ethics_at: string | null;
   ack_child_labor_at: string | null;
+  // SEC-CONSENT (R27 / Ley 81): timestamps de las 3 casillas de consentimiento
+  // (mirror de ack_*_at). Capturados en el nuevo Step6Consent, antes de los
+  // pasos que escriben datos sensibles (emergencia/médicos).
+  consent_data_processing_at: string | null;
+  consent_emergency_at: string | null;
+  consent_medical_at: string | null;
   photo_path: string | null;
   pausedDueToCriticalError: boolean;
 }
@@ -65,6 +71,9 @@ export const initialState: WizardState = {
   address: { street: '', neighborhood: '', city: '', province: '', postal_code: '' },
   ack_ethics_at: null,
   ack_child_labor_at: null,
+  consent_data_processing_at: null,
+  consent_emergency_at: null,
+  consent_medical_at: null,
   photo_path: null,
   pausedDueToCriticalError: false,
 };
@@ -84,7 +93,16 @@ export type WizardAction =
   | { type: 'PREV_STEP' }
   | { type: 'GO_TO'; step: number }
   | { type: 'SET_PHOTO'; path: string }
-  | { type: 'ACK'; key: 'ack_ethics_at' | 'ack_child_labor_at'; at: string }
+  | {
+      type: 'ACK';
+      key:
+        | 'ack_ethics_at'
+        | 'ack_child_labor_at'
+        | 'consent_data_processing_at'
+        | 'consent_emergency_at'
+        | 'consent_medical_at';
+      at: string;
+    }
   | { type: 'PAUSE_CRITICAL_ERROR' }
   | { type: 'RESET' };
 
@@ -112,7 +130,8 @@ export function wizardReducer(state: WizardState, action: WizardAction): WizardS
         step: 4,
       };
     case 'NEXT_STEP':
-      return { ...state, step: Math.min(state.step + 1, 10) };
+      // SEC-CONSENT: wizard pasó de 10 a 11 pasos (nuevo Step6Consent).
+      return { ...state, step: Math.min(state.step + 1, 11) };
     case 'PREV_STEP':
       return { ...state, step: Math.max(state.step - 1, 1) };
     case 'GO_TO':

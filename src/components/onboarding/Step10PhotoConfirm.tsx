@@ -7,6 +7,7 @@ import {
   completeOnboardingAction,
   uploadOnboardingAvatarAction,
 } from '@/lib/onboarding/actions';
+import { LEY81_CONSENT_VERSION } from '@/lib/consent/legal-text';
 import type { WizardState, WizardAction } from './WizardReducer';
 
 interface Props {
@@ -88,6 +89,11 @@ export function Step10PhotoConfirm({ state, dispatch }: Props) {
       address: state.address,
       ack_ethics_at: state.ack_ethics_at!,
       ack_child_labor_at: state.ack_child_labor_at!,
+      // SEC-CONSENT (R27 / Ley 81): consentimiento capturado en Step6Consent.
+      consent_medical: !!state.consent_medical_at,
+      consent_emergency: !!state.consent_emergency_at,
+      consent_data_processing: !!state.consent_data_processing_at,
+      consent_legal_version: LEY81_CONSENT_VERSION,
       photo_path: photoPath,
     });
 

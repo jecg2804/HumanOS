@@ -221,6 +221,23 @@ Array JSON en `auth.users.raw_app_meta_data.allowed_apps` declarando que apps pu
 Al consumir invite code, sign-up wizard busca auth.user con `email` O `phone` match (el `delivery_target` captado por hr_admin en F4). Si existe Y allowed_apps no contiene `humanOS`, append via `auth.admin.updateUserById` con spread merge de `raw_app_meta_data`; sino crea nuevo auth.user via `auth.admin.createUser` con allowed_apps=[`humanOS`]. `docs/adr/0006-service-role-admin-client-onboarding-exception.md` documenta el algoritmo y por qué NO usar `national_id` (campo no existe en raw_app_meta_data) ni `public.people` cross-schema (viola `docs/adr/0014` MDM gradual).
 _Avoid_: "national_id match" (pseudo-plan de `docs/adr/0012-auth-multi-app-allowed-apps.md` nunca implementado).
 
+### Consentimiento (R27 Ley 81)
+
+**Consentimiento (consent)**:
+Otorgamiento libre, expreso e informado de una persona para tratar sus datos, por **scope** (`data_processing | emergency_contact | medical`). Vive en `hr.consent`, **append-only**: una revocacion es una fila nueva `granted=false`; la ultima fila por scope gana. Cada fila pinea el `legal_version` (el texto exacto consentido). Categoria estricta = **medical** (dato sensible de salud; Ley 81 exige consentimiento previo). Se captura en el wizard de onboarding (paso `Step6Consent`, 3 casillas no-bundled). ADR-0035 / R27.
+_Avoid_: tratar consent como un boolean en `hr.people` (es historico por scope); "aceptar terminos" generico (es granular por scope).
+
+**has_active_consent** (`hr.has_active_consent(person_id, scope)`):
+Predicado vivo: true si la persona tiene consentimiento vigente para el scope (last-row-per-scope gana). Helper compartido consumido por el guard L1 (RPC de onboarding) y el trigger L2 (`hr.medical_info`).
+
+**Defensa en profundidad L1/L2/L3**:
+Tres capas fail-closed para el consentimiento. **L1** = guard atomico dentro de `hr.complete_onboarding_writes` (escribe `hr.consent` PRIMERO y RAISEa rollback-total antes de escribir datos sensibles si falta el scope/legal_version). **L2** = trigger `trg_medical_consent_guard` BEFORE INSERT/UPDATE en `hr.medical_info` (bloquea cualquier ruta: RPC, owner-self-insert via RLS, SQL ad-hoc). **L3** = captura en UI (`Step6Consent`). Medical tiene L1+L2; emergency_contact es L1-only (la unica ruta viva es la RPC).
+_Avoid_: confiar solo en la UI (L3) — la RLS de `hr.medical_info` permite owner-self-insert, por eso existe L2.
+
+**Flag-for-reconsent (las 43)**:
+43 personas tienen datos en `hr.medical_info` capturados ANTES del wiring de consentimiento, sin fila `medical` en `hr.consent`. **NUNCA se fabrica consent** (Ley 81 prohibe el backfill). Se marcan con `needs_review=true` + marker `SEC-CONSENT:` en `hr.people.review_notes`; re-consienten al onboardear (42 ETL) o via banner de /perfil (1 con cuenta). Worklist `hr.v_pending_reconsent` (read-only, `security_invoker`, sin payload medico).
+_Avoid_: insertar filas `hr.consent` por backfill para "limpiar" el flag.
+
 ### Manual entry F32
 
 **Manual entry**:

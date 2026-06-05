@@ -56,6 +56,21 @@ export const Step9Schema = z.object({
   ack_child_labor: z.literal(true, { error: 'Debes aceptar la política de trabajo infantil' }),
 });
 
+// SEC-CONSENT (ADR-0035 / R27 Ley 81): three separate, non-bundled, unchecked
+// consent checkboxes. Each must be literal true to advance (mirrors Step9Schema).
+// Health consent is its own field (Ley 81 forbids bundling sensitive-data consent).
+export const ConsentSchema = z.object({
+  consent_data_processing: z.literal(true, {
+    error: 'Debes aceptar el aviso de privacidad para continuar',
+  }),
+  consent_emergency: z.literal(true, {
+    error: 'Debes otorgar el consentimiento de contacto de emergencia',
+  }),
+  consent_medical: z.literal(true, {
+    error: 'Debes otorgar el consentimiento de informacion medica',
+  }),
+});
+
 export const ErrorReportSchema = z.object({
   severity: z.enum(['leve', 'critica']),
   description: z.string().min(5, 'Describe el error con más detalle'),
@@ -69,4 +84,5 @@ export type Step6Input = z.infer<typeof Step6Schema>;
 export type Step7Input = z.infer<typeof Step7Schema>;
 export type Step8Input = z.infer<typeof Step8Schema>;
 export type Step9Input = z.infer<typeof Step9Schema>;
+export type ConsentInput = z.infer<typeof ConsentSchema>;
 export type ErrorReportInput = z.infer<typeof ErrorReportSchema>;

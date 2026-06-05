@@ -8,6 +8,7 @@ import { Step2Identity } from '@/components/onboarding/Step2Identity';
 import { Step3Identifier } from '@/components/onboarding/Step3Identifier';
 import { Step4Password } from '@/components/onboarding/Step4Password';
 import { Step5Confirm } from '@/components/onboarding/Step5Confirm';
+import { Step6Consent } from '@/components/onboarding/Step6Consent';
 import { Step6Emergency } from '@/components/onboarding/Step6Emergency';
 import { Step7Medical } from '@/components/onboarding/Step7Medical';
 import { Step8Address } from '@/components/onboarding/Step8Address';
@@ -48,15 +49,19 @@ export function Wizard({ initialCode }: { initialCode: string }) {
             preview={state.validated!.preview}
           />
         );
+      // SEC-CONSENT: nuevo paso de consentimiento antes de emergencia/médicos.
+      // El renumber empuja emergencia→7, médicos→8, dirección→9, acks→10, foto→11.
       case 6:
-        return <Step6Emergency state={state} dispatch={dispatch} />;
+        return <Step6Consent state={state} dispatch={dispatch} />;
       case 7:
-        return <Step7Medical state={state} dispatch={dispatch} />;
+        return <Step6Emergency state={state} dispatch={dispatch} />;
       case 8:
-        return <Step8Address state={state} dispatch={dispatch} />;
+        return <Step7Medical state={state} dispatch={dispatch} />;
       case 9:
-        return <Step9Acknowledgments state={state} dispatch={dispatch} />;
+        return <Step8Address state={state} dispatch={dispatch} />;
       case 10:
+        return <Step9Acknowledgments state={state} dispatch={dispatch} />;
+      case 11:
         return <Step10PhotoConfirm state={state} dispatch={dispatch} />;
       default:
         return null;
@@ -66,7 +71,7 @@ export function Wizard({ initialCode }: { initialCode: string }) {
   return (
     <WizardLayout
       step={state.step}
-      totalSteps={10}
+      totalSteps={11}
       onCancel={() => dispatch({ type: 'RESET' })}
     >
       {renderStep()}
