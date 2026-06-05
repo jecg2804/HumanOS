@@ -3635,6 +3635,7 @@ export type Database = {
         Args: { p_apellido_paterno: string; p_national_id: string }
         Returns: string
       }
+      get_leave_balance: { Args: { p_person_id: string }; Returns: number }
       has_active_consent: {
         Args: { p_person_id: string; p_scope: string }
         Returns: boolean
@@ -8202,6 +8203,7 @@ export type Database = {
           delegated_to_id: string | null
           delegation_reason: string | null
           id: string
+          kind: string
           stamp_data: Json | null
           stamp_text: string | null
           step_order: number
@@ -8219,6 +8221,7 @@ export type Database = {
           delegated_to_id?: string | null
           delegation_reason?: string | null
           id?: string
+          kind?: string
           stamp_data?: Json | null
           stamp_text?: string | null
           step_order: number
@@ -8236,6 +8239,7 @@ export type Database = {
           delegated_to_id?: string | null
           delegation_reason?: string | null
           id?: string
+          kind?: string
           stamp_data?: Json | null
           stamp_text?: string | null
           step_order?: number
@@ -8683,8 +8687,144 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      act_on_approval: {
+        Args: { p_comments?: string; p_decision: string; p_ticket_id: string }
+        Returns: {
+          created_at: string
+          created_by_hr_admin: string | null
+          current_assignee_id: string | null
+          current_step: number
+          deleted_at: string | null
+          form_data: Json
+          id: string
+          manual_entry: boolean
+          notes: string | null
+          parent_ticket_id: string | null
+          priority: string
+          processed_at: string | null
+          processed_by: string | null
+          received_at: string | null
+          received_by: string | null
+          requester_id: string
+          resolved_at: string | null
+          selected_supervisor_id: string | null
+          sla_deadline: string | null
+          sla_hours: number | null
+          status: string
+          submitted_at: string | null
+          tags: string[] | null
+          ticket_number: string
+          type_id: string
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "tickets"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      active_leave_assignment: {
+        Args: { p_person_id: string }
+        Returns: string
+      }
+      apply_leave_effect: {
+        Args: {
+          p_assignment_id: string
+          p_dias: number
+          p_effect: string
+          p_ticket_id: string
+        }
+        Returns: undefined
+      }
       can_view_ticket: { Args: { p_ticket_id: string }; Returns: boolean }
+      instantiate_chain: { Args: { p_ticket_id: string }; Returns: undefined }
       next_sequence: { Args: { p_seq_type: string }; Returns: string }
+      process_step: {
+        Args: { p_role_kind: string; p_ticket_id: string }
+        Returns: {
+          created_at: string
+          created_by_hr_admin: string | null
+          current_assignee_id: string | null
+          current_step: number
+          deleted_at: string | null
+          form_data: Json
+          id: string
+          manual_entry: boolean
+          notes: string | null
+          parent_ticket_id: string | null
+          priority: string
+          processed_at: string | null
+          processed_by: string | null
+          received_at: string | null
+          received_by: string | null
+          requester_id: string
+          resolved_at: string | null
+          selected_supervisor_id: string | null
+          sla_deadline: string | null
+          sla_hours: number | null
+          status: string
+          submitted_at: string | null
+          tags: string[] | null
+          ticket_number: string
+          type_id: string
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "tickets"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      submit_vacaciones: {
+        Args: {
+          p_dias: number
+          p_form_data: Json
+          p_manual_entry?: boolean
+          p_selected_supervisor?: string
+        }
+        Returns: {
+          created_at: string
+          created_by_hr_admin: string | null
+          current_assignee_id: string | null
+          current_step: number
+          deleted_at: string | null
+          form_data: Json
+          id: string
+          manual_entry: boolean
+          notes: string | null
+          parent_ticket_id: string | null
+          priority: string
+          processed_at: string | null
+          processed_by: string | null
+          received_at: string | null
+          received_by: string | null
+          requester_id: string
+          resolved_at: string | null
+          selected_supervisor_id: string | null
+          sla_deadline: string | null
+          sla_hours: number | null
+          status: string
+          submitted_at: string | null
+          tags: string[] | null
+          ticket_number: string
+          type_id: string
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "tickets"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      ticket_pending_recipients: {
+        Args: { p_ticket_id: string }
+        Returns: {
+          person_id: string
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never

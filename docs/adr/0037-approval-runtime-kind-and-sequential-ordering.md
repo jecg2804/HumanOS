@@ -1,8 +1,8 @@
 # El modelo de runtime de aprobación lleva `kind` por step y reinstaura el ordering (`sequential`), desacoplado de la visibilidad de RRHH
 
-**Decidido (DESIGN-ONLY, propuesto 2026-06-05; ratificación de Jaime PENDIENTE).** Surge del worked example VACACIONES en el spec de Group 4 (`docs/superpowers/specs/2026-06-05-group4-engines-vacaciones-design.md`). Es la decisión nueva que NO estaba resuelta por ADR-0015 / ADR-0020 / ADR-0027: cómo el **modelo de runtime** del ApprovalEngine representa gates, processing y **orden**.
+**Decidido (propuesto 2026-06-05; CONSTRUIDO + aplicado 2026-06-05 vía mig 094; ratificación de Jaime PENDIENTE).** Surge del worked example VACACIONES en el spec de Group 4 (`docs/superpowers/specs/2026-06-05-group4-engines-vacaciones-design.md`). Es la decisión nueva que NO estaba resuelta por ADR-0015 / ADR-0020 / ADR-0027: cómo el **modelo de runtime** del ApprovalEngine representa gates, processing y **orden**.
 
-> **Status:** Proposed (design-only, ADR-0033). No aplicado: sin migración, sin código, sin escritura a BD. Una sesión **atendida** (ADR-0026) lo construye.
+> **Status:** Proposed → **construido + aplicado** (mig `094_approvals_kind_vacaciones_engines`, 2026-06-05): `requests.approvals.kind` + RPCs de orquestación + re-seed VACACIONES (`sequential`, 5 steps). **Live-verified** end-to-end (happy path → Aprobada; S1 ordering; R5; reserve/commit/release+N3; rolled-back, cero residuo). **Ratificación de Jaime PENDIENTE** — si rechaza la reinstauración de `sequential` o el hogar de `kind`, esto se revierte. Los engines TS (`src/lib/engines/*`) + VACACIONES backend (server actions) shipped; UI + PdfEngine = slice siguiente.
 
 ## Decisión
 
