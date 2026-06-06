@@ -49,6 +49,9 @@ export default async function NuevaSolicitudPage({
           schema={ctx.schema}
           prefill={ctx.prefill ?? {}}
           supervisorName={ctx.supervisorName ?? null}
+          defaultSupervisorId={ctx.defaultSupervisorId ?? null}
+          allowSupervisorOverride={ctx.allowSupervisorOverride ?? false}
+          supervisors={ctx.supervisors ?? []}
           onSubmit={submitVacaciones}
         />
       </div>

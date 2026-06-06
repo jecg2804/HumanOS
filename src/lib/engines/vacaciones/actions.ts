@@ -217,8 +217,14 @@ export interface VacacionesFormContext {
   schema?: FormSchema;
   /** profile + computed values for read-only display (the authoritative snapshot is rebuilt at submit). */
   prefill?: Record<string, unknown>;
-  /** name of the employment supervisor who will approve (display only). */
+  /** name of the employment supervisor who will approve by default (display). */
   supervisorName?: string | null;
+  /** the employment supervisor's id (default selection for the override picker). */
+  defaultSupervisorId?: string | null;
+  /** whether the requester may pick a different supervisor (R6/R10). */
+  allowSupervisorOverride?: boolean;
+  /** candidate supervisors for the override picker (active real supervisors + president, minus self). */
+  supervisors?: { id: string; full_name: string }[];
 }
 
 /**
@@ -243,7 +249,7 @@ export async function getVacacionesFormContext(): Promise<VacacionesFormContext>
   const { data: typeRow, error: typeErr } = await supabase
     .schema('requests')
     .from('types')
-    .select('name, form_schema')
+    .select('name, form_schema, allow_supervisor_override')
     .eq('code', 'VACACIONES')
     .maybeSingle();
   if (typeErr || !typeRow?.form_schema) {
@@ -255,7 +261,7 @@ export async function getVacacionesFormContext(): Promise<VacacionesFormContext>
     .schema('hr')
     .from('employments')
     .select(
-      'position_text, department_text, hire_date, supervisor:people!supervisor_id(full_name)'
+      'position_text, department_text, hire_date, supervisor_id, supervisor:people!supervisor_id(full_name)'
     )
     .eq('person_id', person.id)
     .eq('is_current', true)
@@ -276,7 +282,12 @@ export async function getVacacionesFormContext(): Promise<VacacionesFormContext>
     | undefined;
 
   const empTyped = emp as
-    | { position_text: string | null; department_text: string | null; hire_date: string | null }
+    | {
+        position_text: string | null;
+        department_text: string | null;
+        hire_date: string | null;
+        supervisor_id: string | null;
+      }
     | null;
 
   const tenureYears =
@@ -297,12 +308,24 @@ export async function getVacacionesFormContext(): Promise<VacacionesFormContext>
     // dias_solicitados is computed live from the date ranges in the form (and authoritatively at submit).
   };
 
+  // Override candidates (R6/R10), only when the type allows it. RLS-safe via the definer resolver.
+  let supervisors: { id: string; full_name: string }[] = [];
+  if (typeRow.allow_supervisor_override) {
+    const { data: cand } = await callRpc(supabase, 'requests', 'supervisor_candidates', {});
+    supervisors = Array.isArray(cand)
+      ? (cand as { id: string; full_name: string }[]).filter((c) => c?.id)
+      : [];
+  }
+
   return {
     ok: true,
     typeName: typeRow.name,
     schema,
     prefill,
     supervisorName: supervisor?.full_name ?? null,
+    defaultSupervisorId: empTyped?.supervisor_id ?? null,
+    allowSupervisorOverride: Boolean(typeRow.allow_supervisor_override),
+    supervisors,
   };
 }
 

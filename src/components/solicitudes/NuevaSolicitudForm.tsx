@@ -23,8 +23,14 @@ export interface NuevaSolicitudFormProps {
   schema: FormSchema;
   /** profile + computed values resolved server-side (read-only display). */
   prefill: Record<string, unknown>;
-  /** name of the supervisor who will approve (employment supervisor), or null. */
+  /** name of the default (employment) supervisor who will approve, or null. */
   supervisorName: string | null;
+  /** the employment supervisor's id (default selection). */
+  defaultSupervisorId?: string | null;
+  /** whether the requester may pick a different supervisor (R6/R10). */
+  allowSupervisorOverride?: boolean;
+  /** candidate supervisors for the override picker. */
+  supervisors?: { id: string; full_name: string }[];
   /** the server action that creates the ticket. */
   onSubmit: (input: {
     userInput: Record<string, unknown>;
@@ -37,13 +43,24 @@ export function NuevaSolicitudForm({
   schema,
   prefill,
   supervisorName,
+  defaultSupervisorId = null,
+  allowSupervisorOverride = false,
+  supervisors = [],
   onSubmit,
 }: NuevaSolicitudFormProps) {
   const router = useRouter();
   const [values, setValues] = useState<Record<string, unknown>>({});
+  const [supervisorId, setSupervisorId] = useState<string | null>(defaultSupervisorId);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [message, setMessage] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
+
+  // Build the option list; ensure the default supervisor is selectable even if not in the candidate set.
+  const options =
+    defaultSupervisorId && supervisorName && !supervisors.some((s) => s.id === defaultSupervisorId)
+      ? [{ id: defaultSupervisorId, full_name: supervisorName }, ...supervisors]
+      : supervisors;
+  const showPicker = allowSupervisorOverride && options.length > 0;
 
   const set = (key: string, value: unknown) =>
     setValues((prev) => ({ ...prev, [key]: value }));
@@ -61,7 +78,7 @@ export function NuevaSolicitudForm({
     setErrors({});
     setMessage(null);
     startTransition(async () => {
-      const res = await onSubmit({ userInput: values, selectedSupervisorId: null });
+      const res = await onSubmit({ userInput: values, selectedSupervisorId: supervisorId });
       if (res.ok && res.data) {
         router.push(`/solicitudes/${res.data.ticketId}`);
         return;
@@ -90,18 +107,41 @@ export function NuevaSolicitudForm({
         </p>
       )}
 
-      <div className="rounded-md bg-navy-50 border border-navy-100 p-3 text-sm text-navy-700">
-        {supervisorName ? (
-          <>
-            Tu solicitud la autorizará tu supervisor:{' '}
-            <strong>{supervisorName}</strong>. Recursos Humanos la recibe y verifica primero.
-          </>
-        ) : (
-          <>
-            No tienes un supervisor asignado, así que Recursos Humanos actuará en su lugar.
-          </>
-        )}
-      </div>
+      {showPicker ? (
+        <div>
+          <label htmlFor="supervisor-override" className="block text-sm font-medium mb-1">
+            Supervisor que autoriza
+          </label>
+          <select
+            id="supervisor-override"
+            value={supervisorId ?? ''}
+            onChange={(e) => setSupervisorId(e.target.value || null)}
+            disabled={pending}
+            className="w-full p-3 border rounded"
+          >
+            {!defaultSupervisorId && <option value="">Recursos Humanos (sin supervisor)</option>}
+            {options.map((s) => (
+              <option key={s.id} value={s.id}>
+                {s.full_name}
+              </option>
+            ))}
+          </select>
+          <p className="text-xs text-gray-500 mt-1">
+            Recursos Humanos recibe y verifica la solicitud antes y después de tu supervisor.
+          </p>
+        </div>
+      ) : (
+        <div className="rounded-md bg-navy-50 border border-navy-100 p-3 text-sm text-navy-700">
+          {supervisorName ? (
+            <>
+              Tu solicitud la autorizará tu supervisor: <strong>{supervisorName}</strong>. Recursos
+              Humanos la recibe y verifica primero.
+            </>
+          ) : (
+            <>No tienes un supervisor asignado, así que Recursos Humanos actuará en su lugar.</>
+          )}
+        </div>
+      )}
 
       {message && (
         <p role="alert" className="text-sm text-red-600">

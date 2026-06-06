@@ -1,7 +1,9 @@
+import Link from 'next/link';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 import { StatusBadge } from '@/components/solicitudes/StatusBadge';
 import { TicketActions, type TicketActionMode } from '@/components/solicitudes/TicketActions';
-import type { FormSchema, DateRange } from '@/lib/engines/types';
+import { formatFieldValue, stepLabel, decisionLabel } from '@/lib/solicitudes/format';
+import type { FormSchema } from '@/lib/engines/types';
 
 interface ApprovalRow {
   step_order: number;
@@ -103,6 +105,13 @@ export default async function SolicitudDetailPage({
           Solicitado por {requester?.full_name ?? '—'} ·{' '}
           {new Date(ticket.created_at).toLocaleDateString('es-PA')}
         </p>
+        <Link
+          href={`/solicitudes/${ticket.id}/imprimir`}
+          prefetch={false}
+          className="inline-block mt-2 text-sm font-medium text-navy-600 underline hover:text-navy-800"
+        >
+          Imprimir / descargar PDF
+        </Link>
       </div>
 
       {/* Snapshot (ADR-0003) */}
@@ -112,7 +121,7 @@ export default async function SolicitudDetailPage({
           {schema?.fields.map((f) => (
             <div key={f.key} className="flex justify-between gap-4 border-b last:border-0 py-1.5">
               <dt className="text-gray-600">{f.label}</dt>
-              <dd className="font-medium text-right">{formatValue(f.key, formData[f.key])}</dd>
+              <dd className="font-medium text-right">{formatFieldValue(f.key, formData[f.key])}</dd>
             </div>
           ))}
         </dl>
@@ -129,7 +138,7 @@ export default async function SolicitudDetailPage({
           </li>
           {approvals.map((a) => (
             <li key={a.step_order} className="text-sm">
-              <span className="font-medium">{stepLabel(a)}</span> ·{' '}
+              <span className="font-medium">{stepLabel(a.approver_role, a.kind)}</span> ·{' '}
               <DecisionLabel decision={a.decision} />
               {a.stamp_text && (
                 <span className="block text-xs text-gray-500">{a.stamp_text}</span>
@@ -191,34 +200,14 @@ function resolveAction(
   return null;
 }
 
-const ROLE_LABELS: Record<string, string> = {
-  supervisor: 'Supervisor (Gerente de Proyecto)',
-  hr_admin: 'Recursos Humanos',
-  president: 'Gerencia General',
-  specific_person: 'Aprobador asignado',
-};
-
-function stepLabel(a: ApprovalRow): string {
-  const role = ROLE_LABELS[a.approver_role] ?? a.approver_role;
-  if (a.kind === 'processing') return `${role} (recepción / verificación)`;
-  return role;
-}
-
 function DecisionLabel({ decision }: { decision: string | null }) {
-  if (decision === 'Aprobada') return <span className="text-green-700">Aprobada</span>;
-  if (decision === 'Rechazada') return <span className="text-red-700">Rechazada</span>;
-  if (decision === 'Modificada') return <span className="text-orange-700">Modificada</span>;
-  return <span className="text-amber-700">Pendiente</span>;
-}
-
-function formatValue(key: string, value: unknown): string {
-  if (value === null || value === undefined || value === '') return '—';
-  if (key === 'date_ranges' && Array.isArray(value)) {
-    return (value as DateRange[])
-      .filter((r) => r?.del || r?.al)
-      .map((r) => `Del ${r.del} al ${r.al}`)
-      .join(' · ');
-  }
-  if (typeof value === 'object') return JSON.stringify(value);
-  return String(value);
+  const color =
+    decision === 'Aprobada'
+      ? 'text-green-700'
+      : decision === 'Rechazada'
+        ? 'text-red-700'
+        : decision === 'Modificada'
+          ? 'text-orange-700'
+          : 'text-amber-700';
+  return <span className={color}>{decisionLabel(decision)}</span>;
 }
